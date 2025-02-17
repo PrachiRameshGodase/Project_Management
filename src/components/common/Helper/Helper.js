@@ -1,0 +1,5 @@
+export const status=["Active", "Inactive"]
+export const designation=["Maneger", "Team Lead", "Tester", "Jr. Developer", "Sr. Developer"]
+export const view=["Card", "List"]
+export const projectSortConstant=["Project Name", "Team"]
+export const departmentOptions=["IT", "Marketing"]
