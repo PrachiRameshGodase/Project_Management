@@ -2,24 +2,18 @@
 import { OtherIcons } from '@/assests/icons';
 import LayOut from '@/components/LayOut';
 import React, { useState } from 'react';
-import UserAvatar from '@/components/common/UserAvatar/UserAvatar';
 
 const UserDetails = () => {
     const [isActive, setIsActive] = useState(false);
-    const user = {
-        name: "Shubham Yadhav",
-      
-        isActive: true,
-        image: "", 
-    };
+
     return (
-        <LayOut> <div className="w-full  h-[550px]  mt-7 top-[104px] left-[80px] rounded-[10.17px] border border-[#F4EAEA] bg-white p-6 shadow-lg">
-            <div className="w-full  h-[40px] relative top-[6px] flex items-center justify-between px-2 border-b border-gray-100 ">
+        <LayOut> <div className="w-[1380px] h-[550px] absolute top-[104px] left-[80px] rounded-[10.17px] border border-[#F4EAEA] bg-white p-6 shadow-lg">
+            <div className="w-[1310px] h-[40px] relative top-[6px] flex items-center justify-between px-2 border-b border-gray-100 ">
                 <p className="text-[26px] mb-[20px]">
                     User Information
                 </p>
 
-                <div className="flex  items-center space-x-3 mb-[20px]">
+                <div className="flex items-center space-x-3 mb-[20px]">
                     {/* Toggle Switch */}
                     <label className="flex items-center cursor-pointer">
                         <span className="ml-2 text-[15px] mr-2">{isActive ? "Active" : "Inactive"}</span>
@@ -58,18 +52,22 @@ const UserDetails = () => {
                     </button>
                 </div>
             </div>
-            <div className="p-4 flex items-start justify-between mt-4">
+            <div className="p-4 flex">
                 {/* Avatar Section */}
-                <div className=" w-[260px] h-[69px] flex items-center gap-[12.21px] ">
-                    <UserAvatar name={user.name} image={user.image} isActive={user.isActive} />
-                    <div className=" text-xl text-gray-700">
-                        <p className="font-medium flex w-full ">Shubham Yadhav</p>
-                        <p className="text-xs text-gray-500">Software Developer</p>
+                <div className="w-[260px] h-[69px] flex items-center gap-[12.21px] mt-[60px]">
+                    <img
+                        src="https://randomuser.me/api/portraits/men/10.jpg"
+                        alt="avatar"
+                        className="w-[60px] h-[60px] rounded-full"
+                    />
+                    <div className="text-xl text-gray-700">
+                        <p className="font-bold">Shubham Yadhav</p>
+                        <p className="text-xs text-gray-500">Tech</p>
                     </div>
                 </div>
 
                 {/* User Information Section */}
-                <div className="flex flex-row gap-8  ">
+                <div className="flex flex-row gap-8 mt-4 ml-[300px]">
                     <ul className="flex flex-col space-y-2">
                         <li className="w-[367px] h-[24px] flex items-center">
                             <span className="w-[114px] h-[24px] opacity-70">Full Name:</span>
