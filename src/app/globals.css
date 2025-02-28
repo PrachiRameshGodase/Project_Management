@@ -24,3 +24,16 @@ body {
   }
 }
 
+/* Tailwind custom scrollbar */
+.drawer-scrollbar::-webkit-scrollbar {
+  width: 6px; /* Set the width of the scrollbar */
+}
+
+.drawer-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.1); /* Set the thumb color */
+  border-radius: 10px; /* Make the thumb rounded */
+}
+
+.drawer-scrollbar::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.05); /* Set the track color */
+}

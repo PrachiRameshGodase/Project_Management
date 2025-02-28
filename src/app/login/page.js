@@ -26,15 +26,13 @@ const LoginPage = ({onLoginSuccess}) => {
     return (
         <div className="flex justify-center items-center h-screen ">
             <div className=" w-[450px]">
-                <p className="font-[Supreme] font-bold text-[24px] leading-[26px] tracking-[-4%] text-[#17538A]  p-2 rounded-md text-center">
-                    Log In to Your Dashboard! 👋
-                </p>
-                <p className="font-[Supreme] font-normal text-[15px] leading-[24px] tracking-[-1.5%] text-[#525252]  p-2 rounded-md text-center mt-1">
-                    Welcome back. Enter your credentials to access your account
+               
+                <p className=" text-[32px] leading-[24px] tracking-[-1.5%] text-[#000000]  p-2 rounded-md  mt-1">
+                    Login
                 </p>
                 <div className="mt-4">
                     <label className="block font-[Supreme] font-medium text-[16px] leading-[16px] tracking-[-2%] text-[#2A2A2A]  p-1 rounded-md">
-                        Email Address*
+                    User Name or Email Address*
                     </label>
                     <input
                         type="email"
@@ -59,29 +57,8 @@ const LoginPage = ({onLoginSuccess}) => {
 
                     />
                 </div>
-                <div className="flex items-center justify-between mt-4">
-                    <div className="flex justify-between items-center">
-                        {/* Left Side - Checkbox & Label */}
-                        <div className="flex items-center">
-                            <input
-                                type="checkbox"
-                                className="w-[18px] h-[18px] border-[1px] border-[#6540A3] bg-[#6540A3] checked:text-white rounded-sm focus:ring-0"
-                            />
-                            <p className="ml-2 font-[Supreme] font-normal text-[15px] leading-[16px] tracking-[-2%] text-[#2C2C2C]">
-                                Remember me
-                            </p>
-                        </div>
-
-                        {/* Right Side - Forget Password */}
-                        <div className='ml-[215px]'>
-                            <p className="font-[Supreme] font-normal text-[15px] leading-[16px] tracking-[-2%] text-[#400F6F] cursor-pointer">
-                                Forget Password?
-                            </p>
-                        </div>
-                    </div>
-
-                </div>
-                <button className="w-full h-[56px] mt-6 bg-[#4B0082] text-white rounded-[8px] text-center font-[Supreme] font-medium text-[20px] leading-[27px] tracking-[-1.5%]" onClick={onLoginSuccess}>
+               
+                <button className="w-full h-[56px] mt-6 bg-[#000000] text-white rounded-[8px] text-center font-[Supreme] font-medium text-[20px] leading-[27px] tracking-[-1.5%]" onClick={onLoginSuccess}>
                     Login
                 </button>
             </div>

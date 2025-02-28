@@ -13,7 +13,7 @@ const Dropdown01 = ({ options, selectedValue, onSelect, label, icon }) => {
   return (
     <div className="relative" ref={dropdownOutsideClick?.ref}>
       <div
-        className={`h-[40px] flex items-center gap-2 border border-gray-300 rounded-lg px-3 py-2 cursor-pointer ${label === "Designation" ? "w-[130px]" : "w-[110px]"
+        className={`h-[44px] flex items-center gap-2 border border-gray-300 rounded-lg px-3 py-2 cursor-pointer ${label === "Designation" ? "w-[140px]":label === "Sort By" ? "w-[110px]" :label==="Task Type"? "W-[120px]" : "w-[100px]"
           }`}
         onClick={dropdownOutsideClick?.handleToggle}
         ref={dropdownOutsideClick?.buttonRef}
