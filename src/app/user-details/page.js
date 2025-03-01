@@ -69,7 +69,7 @@ const UserDetails = () => {
             <div className="p-4 flex flex-col gap-4 xl:gap-6  xl:flex-row items-start justify-between mt-4">
                 {/* Avatar Section */}
                 <div className=" w-[260px] h-[69px] flex items-center gap-[12.21px] ">
-                    <UserAvatar name={user.name} image={user.image} isActive={user.isActive} />
+                    <UserAvatar name={user.name} dotColor='green' size={66} image={user.image} isActive={user.isActive} />
                     <div className=" text-xl text-gray-700">
                         <p className="font-medium flex w-full ">Shubham Yadhav</p>
                         <p className="text-xs text-gray-500">Software Developer</p>

@@ -50,7 +50,7 @@ const Drawer01 = ({ isOpen, setIsDrawerOpen, children }) => {
                     >
                         Under Review
                     </p>
-                    <p>
+                    <div>
                         <label className="flex items-center cursor-pointer">
                             <span className="ml-2 text-sm mr-2">{isActive ? "Active" : "Inactive"}</span>
 
@@ -83,7 +83,7 @@ const Drawer01 = ({ isOpen, setIsDrawerOpen, children }) => {
                         </label>
 
 
-                    </p>
+                    </div>
 
                 </div>
                 {/* Project Details Section */}

@@ -11,8 +11,7 @@ const UserList = () => {
   const [selectedStatus, setSelectedStatus] = useState('');
   const [selectedDesignation, setSelectedDesignation] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const entriesPerPage = 10;  // Har page pe 10 entries dikhengi
-
+  const entriesPerPage = 10; 
 
   const users = [
     { userId: 'U001', firstName: 'John', email: 'john@example.com', mobileNumber: '+1234567890', designation: 'Manager', dateOfJoining: '2023-08-15', status: 'Active' },
