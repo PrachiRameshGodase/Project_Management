@@ -60,7 +60,7 @@ const UserList = () => {
           <div className="flex gap-6 items-center">
             <Dropdown01 options={status} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />
             <Dropdown01 options={designation} selectedValue={selectedDesignation} onSelect={setSelectedDesignation} label="Designation" icon={OtherIcons.designation_svg} />
-            <button className="w-12 h-12 bg-green-600 text-white rounded-lg text-2xl flex items-center justify-center" onClick={() => router.push('/add-user')}>+</button>
+            <button className="w-12 h-12 bg-green-600 text-white rounded-lg text-2xl flex items-center justify-center" onClick={() => router.push('/user/add')}>+</button>
           </div>
         </div>
 
@@ -93,13 +93,13 @@ const UserList = () => {
             <tbody>
               {paginatedUsers.map((user) => (
                 <tr key={user.userId} className="hover:bg-gray-100 cursor-pointer">
-                  <td className="py-4 px-4 border-b" onClick={() => router.push(`/user-details`)}>{user.userId}</td>
-                  <td className="py-4 px-4 border-b" onClick={() => router.push(`/user-details`)}>{user.firstName}</td>
-                  <td className="py-4 px-4 border-b" onClick={() => router.push(`/user-details`)}>{user.email}</td>
-                  <td className="py-4 px-4 border-b" onClick={() => router.push(`/user-details`)}>{user.mobileNumber}</td>
-                  <td className="py-4 px-4 border-b" onClick={() => router.push(`/user-details`)}>{user.designation}</td>
-                  <td className="py-4 px-4 border-b" onClick={() => router.push(`/user-details`)}>{user.dateOfJoining}</td>
-                  <td className="py-4 px-4 border-b" onClick={() => router.push(`/user-details`)}>
+                  <td className="py-4 px-4 border-b" onClick={() => router.push(`/user/details?id=${user.userId}`)}>{user.userId}</td>
+                  <td className="py-4 px-4 border-b" onClick={() => router.push(`/user/details?id=${user.userId}`)}>{user.firstName}</td>
+                  <td className="py-4 px-4 border-b" onClick={() => router.push(`/user/details?id=${user.userId}`)}>{user.email}</td>
+                  <td className="py-4 px-4 border-b" onClick={() => router.push(`/user/details?id=${user.userId}`)}>{user.mobileNumber}</td>
+                  <td className="py-4 px-4 border-b" onClick={() => router.push(`/user/details?id=${user.userId}`)}>{user.designation}</td>
+                  <td className="py-4 px-4 border-b" onClick={() => router.push(`/user/details?id=${user.userId}`)}>{user.dateOfJoining}</td>
+                  <td className="py-4 px-4 border-b" onClick={() => router.push(`/user/details?id=${user.userId}`)}>
                     <span className={`w-3 h-3 inline-block rounded-full ${user.status === 'Active' ? 'bg-green-600' : 'bg-red-600'}`}></span>
                   </td>
                 </tr>

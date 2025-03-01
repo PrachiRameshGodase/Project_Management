@@ -196,7 +196,7 @@ const ProjectList = () => {
 
           <div className="w-[1px] h-[40px] bg-gray-400 opacity-40" />
 
-          <button className="w-[49px] h-[44px] bg-[#048339] text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/add-project')}>+</button>
+          <button className="w-[49px] h-[44px] bg-[#048339] text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/project/add')}>+</button>
         </div>
       </div>
 
@@ -225,10 +225,10 @@ const ProjectList = () => {
               </thead>
               <tbody>
                 {paginatedUsers.map((user) => (
-                  <tr key={user.id} className="hover:bg-gray-50 rounded">
-                    <td className="py-4 px-4 border-b border-gray-50 rounded text-[15px]" onClick={() => router.push('/project-details')}>{user.userId}</td>
-                    <td className="py-4 px-4 border-b border-gray-50 rounded text-[15px]" onClick={() => router.push('/project-details')}>{user.firstName}</td>
-                    <td className={`py-4 px-4 min-w-[150px] border-b border-gray-50 rounded text-[15px]  font-bold`} onClick={() => router.push('/project-details')}>
+                  <tr key={user.id} className="hover:bg-gray-50 rounded cursor-pointer">
+                    <td className="py-4 px-4 border-b border-gray-50 rounded text-[15px]" onClick={() => router.push(`/project/details?id=${user.id}`)}>{user.userId}</td>
+                    <td className="py-4 px-4 border-b border-gray-50 rounded text-[15px]" onClick={(`/project/details?id=${user.id}`)}>{user.firstName}</td>
+                    <td className={`py-4 px-4 min-w-[150px] border-b border-gray-50 rounded text-[15px]  font-bold`} onClick={() => router.push(`/project/details?id=${user.id}`)}>
                       <span
                         className={`px-3 py-1 border rounded-md ${user.status === 'To Do'
                           ? 'text-[#6C757D] border-[#6C757D]'
@@ -239,13 +239,13 @@ const ProjectList = () => {
                         {user.status}
                       </span>
                     </td>
-                    <td className="py-4 px-4 border-b border-gray-50 text-[15px]" onClick={() => router.push('/project-details')}>{user.dateOfJoining}</td>
-                    <td className="py-4 px-4 border-b border-gray-50 ] text-[15px]" onClick={() => router.push('/project-details')}>2022-11-20</td>
-                    <td className="py-4 px-4 border-b border-gray-50 text-[15px]" onClick={() => router.push('/project-details')}>Vasu Shastri</td>
-                    <td className="py-4 px-4 border-b border-gray-50 text-[15px]" onClick={() => router.push('/project-details')}>
+                    <td className="py-4 px-4 border-b border-gray-50 text-[15px]" onClick={() => router.push(`/project/details?id=${user.id}`)}>{user.dateOfJoining}</td>
+                    <td className="py-4 px-4 border-b border-gray-50 ] text-[15px]" onClick={() => router.push(`/project/details?id=${user.id}`)}>2022-11-20</td>
+                    <td className="py-4 px-4 border-b border-gray-50 text-[15px]" onClick={() => router.push(`/project/details?id=${user.id}`)}>Vasu Shastri</td>
+                    <td className="py-4 px-4 border-b border-gray-50 text-[15px]" onClick={() => router.push(`/project/details?id=${user.id}`)}>
                       <TruncatedTooltipText text="Prachi Godase, Sumit Yadav, Punit Omar, Aryan Singh" maxLength={25} />
                     </td>
-                    <td className={`py-4 px-4 border-b border-gray-50 font-bold`} onClick={() => router.push('/project-details')}>
+                    <td className={`py-4 px-4 border-b border-gray-50 font-bold`} onClick={() => router.push(`/project/details?id=${user.id}`)}>
                       <span
                         className={`px-3 py-1 border rounded-md text-[15px] ${user.priority === 'High'
                           ? 'text-[#4976F4] border-[#4976F4]' : user.priority === 'Low' ?
