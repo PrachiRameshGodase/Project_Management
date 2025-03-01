@@ -3,17 +3,25 @@ import { OtherIcons } from '@/assests/icons';
 import LayOut from '@/components/LayOut';
 import React, { useState } from 'react';
 import UserAvatar from '@/components/common/UserAvatar/UserAvatar';
+import { useRouter } from 'next/navigation';
+import SkillsList from '@/components/common/SkillsList/SkillsList';
 
 const UserDetails = () => {
+    const router = useRouter();
+
     const [isActive, setIsActive] = useState(false);
     const user = {
         name: "Shubham Yadhav",
-      
+
         isActive: true,
-        image: "", 
+        image: "",
     };
+    const mySkills = [
+        "HTML", "CSS", "JavaScript", "React", "Node.js",
+        "MongoDB", "Tailwind CSS", "Redux", "Next.js", "TypeScript"
+    ]
     return (
-        <LayOut> <div className="w-full  h-[550px]  mt-7 top-[104px] left-[80px] rounded-[10.17px] border border-[#F4EAEA] bg-white p-6 shadow-lg">
+        <LayOut> <div className="w-full  h-full  mt-7  left-[80px] rounded-[10.17px] border border-[#F4EAEA] bg-white p-6 shadow-lg">
             <div className="w-full  h-[40px] relative top-[6px] flex items-center justify-between px-2 border-b border-gray-100 ">
                 <p className="text-[26px] mb-[20px]">
                     User Information
@@ -53,12 +61,12 @@ const UserDetails = () => {
                     </label>
 
                     {/* Edit Button */}
-                    <button className="w-[80px] h-[35px] rounded-[4px] py-[4px] bg-black text-white text-lg mr-[10px] mb-2">
+                    <button onClick={() => router.push(`/add-user`)} className="w-[80px] h-[35px] rounded-[4px] py-[4px] bg-black text-white text-lg mr-[10px] mb-2">
                         Edit
                     </button>
                 </div>
             </div>
-            <div className="p-4 flex items-start justify-between mt-4">
+            <div className="p-4 flex flex-col gap-4 xl:gap-6  xl:flex-row items-start justify-between mt-4">
                 {/* Avatar Section */}
                 <div className=" w-[260px] h-[69px] flex items-center gap-[12.21px] ">
                     <UserAvatar name={user.name} image={user.image} isActive={user.isActive} />
@@ -69,8 +77,8 @@ const UserDetails = () => {
                 </div>
 
                 {/* User Information Section */}
-                <div className="flex flex-row gap-8  ">
-                    <ul className="flex flex-col space-y-2">
+                <div className="flex flex-row gap-8   ">
+                    <ul className="flex  flex-col space-y-2 ">
                         <li className="w-[367px] h-[24px] flex items-center">
                             <span className="w-[114px] h-[24px] opacity-70">Full Name:</span>
                             <span className="w-[183px] h-[23px] ml-[35px]">Shubham Yadhav</span>
@@ -87,9 +95,11 @@ const UserDetails = () => {
                             <span className="w-[114px] h-[24px] opacity-70">Date of Join:</span>
                             <span className="w-[183px] h-[23px] ml-[35px]">14 Mar, 2024</span>
                         </li>
-                        <li className="w-[367px] h-[24px] flex items-center">
+                        <li className="w-[767px] pt-[120px] pb-10 mt-[200px] t-2 absolute  flex items-start">
                             <span className="w-[114px] h-[24px] opacity-70">Skills:</span>
-                            <span className="w-[183px] h-[23px] ml-[35px]">HTML, JS, CSS</span>
+                            <span className=" left-1  flex gap-2 items-center ml-[35px]">
+                                <SkillsList skills={mySkills} />
+                            </span>
                         </li>
                     </ul>
 
@@ -114,7 +124,7 @@ const UserDetails = () => {
                 </div>
             </div>
 
-            <div className="ml-[33] mt-[20px]">
+            <div className="ml-[33] mt-[40px]">
                 {/* Projects Heading */}
                 <div className="w-[112.39px] h-[34.39px] flex items-center gap-[6px]">
                     {OtherIcons.projects_svg}
@@ -122,7 +132,7 @@ const UserDetails = () => {
                 </div>
 
                 {/* Projects Grid */}
-                <div className="grid grid-cols-4 gap-4 mt-4">
+                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4  mt-4  ">
                     {[...Array(4)].map((_, index) => (
                         <div
                             key={index}
