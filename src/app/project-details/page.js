@@ -2,13 +2,21 @@
 import { OtherIcons } from '@/assests/icons';
 import Drawer01, { Drawer001 } from '@/components/common/Drawer/Drawer01';
 import Dropdown01 from '@/components/common/Dropdown/Dropdown01';
-import { projectSortConstant, status, taskView, view } from '@/components/common/Helper/Helper';
+import { projectSortConstant, statusProject, taskView, view } from '@/components/common/Helper/Helper';
+import TruncatedTooltipText from '@/components/common/TruncatedTooltipText/TruncatedTooltipText';
+import UserAvatar from '@/components/common/UserAvatar/UserAvatar';
 import LayOut from '@/components/LayOut';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 
 const TaskList = () => {
   const router = useRouter()
+  const user = {
+    name: "Shubham Pall",
+
+    isActive: true,
+    image: "",
+  };
   const users = [
     {
       id: 1,
@@ -99,7 +107,7 @@ const TaskList = () => {
       priority: 'Low'
     },
   ];
-  const [selectedStatus, setSelectedStatus] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState('');
   const [selectedView, setSelectedView] = useState("List");
   const [selectedSort, setSelectedSort] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
@@ -113,18 +121,35 @@ const TaskList = () => {
     status,
     users: users.filter(user => user.status === status)
   }));
+ 
+  
+  const [currentPage, setCurrentPage] = useState(1);
+  
+  const entriesPerPage = 5;
+  const totalEntries = users.length;
+  const totalPages = Math.ceil(totalEntries / entriesPerPage);
+
+  // Filtered Users
+  const filteredUsers = users.filter((user) => {
+    return selectedStatus === "" || user.status === selectedStatus;
+  });
+
+
+
+  // Pagination Logic
+  const startEntry = (currentPage - 1) * entriesPerPage;
+  const endEntry = startEntry + entriesPerPage;
+  const paginatedUsers = filteredUsers.slice(startEntry, endEntry);
+
   return (
     <LayOut>
-      <div className="w-[1362px] h-full mx-auto  px-4 mt-[40px] ml-[5px] border border-gray-200 shadow-md">
-        <div className='flex justify-between mt-[10px] p-4 w-[1343px]'>
+      <div className="w-full  h-full mx-auto  px-4 mt-[40px] ml-[5px] border border-gray-200 shadow-md">
+        <div className='flex  justify-between mt-[10px] p-4 w-full'>
 
           {/* Avatar Section */}
-          <div className="w-[360px] h-[69px] flex items-center gap-[12.21px] ">
-            <img
-              src="https://randomuser.me/api/portraits/men/10.jpg"
-              alt="avatar"
-              className="w-[60px] h-[60px] rounded-full"
-            />
+          <div className=" w-[360px] h-[69px] flex items-center gap-[12.21px] ">
+            <UserAvatar name={user.name} dotColor='blue' size={66} image={user.image} isActive={user.isActive} />
+
             <div className="text-xl text-gray-700">
               <p className="font-bold">Marketing website</p>
               <p className="text-xs text-gray-500">EcoVision Enterprises</p>
@@ -137,7 +162,7 @@ const TaskList = () => {
               In Progress
             </p>
           </div>
-          <div className="w-[260px] h-[69px] border border-gray-100 rounded p-2">
+          <div className="w-[260px] h-[69px] border border-gray-150 rounded p-2">
             <p className="text-[#000000] text-400">Project Completion</p>
             <div className='flex'>
               <div className="relative mt-2" style={{ width: '177.73px', height: '10px' }}>
@@ -197,10 +222,10 @@ const TaskList = () => {
           </div>
 
         </div>
-        <div className="w-[1362px] h-[24px] mx-auto flex justify-between items-center px-4 mt-[10px] ml-[5px]">
+        <div className="  w-full h-[24px] mx-auto flex justify-between items-center px-4 mt-[10px] ml-[5px]">
           <div className="w-[227px] flex">
             <p className="text-[30px] leading-[32px] tracking-[-1.5px] font-700">All Tasks List</p>
-            <p className="font-bold text-[10.16px] leading-[12.19px] text-[#400F6F] text-center mt-4 ml-2 bg-[#f0e7fa] w-[30px] h-[10px]">
+            <p className="font-bold p-2 rounded-full text-[10.16px] leading-[12.19px] text-[#400F6F]  mt-3 ml-2 bg-[#f0e7fa] flex items-center justify-center  w-[50px] h-[10px]">
               {users.length} total
             </p>
           </div>
@@ -214,7 +239,7 @@ const TaskList = () => {
               icon={OtherIcons.view_svg}
             />
             <Dropdown01
-              options={status}
+              options={statusProject}
               selectedValue={selectedStatus}
               onSelect={setSelectedStatus}
               label="Status"
@@ -237,64 +262,78 @@ const TaskList = () => {
             <button className="w-[49px] h-[44px] bg-[#048339] text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/add-task')}>+</button>
           </div>
         </div>
-
+{/* w */}
         {/* Table Section */}
-        {selectedView == 'List' && <div className="w-[1300px] mx-auto mt-[50px]">
-          <table className="w-full border-collapse border border-gray-100 rounded">
-            <thead>
-              <tr className="text-left text-sm font-bold uppercase text-gray-800">
-                <th className="py-3 px-4 border-b border-gray-100  flex">
-                  TASK NAME<span className="mt-1 ml-2 flex flex-col gap-1">{OtherIcons.arrow_up_svg}{OtherIcons.arrow_down_svg}</span>
-                </th>
-                <th className="py-3 px-4 border-b border-gray-100">STATUS</th>
-                <th className="py-3 px-4 border-b border-gray-100">DUE DATE</th>
-                <th className="py-3 px-4 border-b border-gray-100">TASK TYPE</th>
-                <th className="py-3 px-4 border-b border-gray-100 w-[300px]">TEAM</th>
-                <th className="py-3 px-4 border-b border-gray-100">PRIORITY</th>
+        {selectedView == "List" && (
+          <>
 
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((user) => (
-                <tr key={user.id} className="hover:bg-gray-50 rounded cursor-pointer">
-                  <td className="py-4 px-4 border-b border-gray-50 rounded text-[15px]" onClick={() => setIsDrawerOpen1(true)}>{user.userId}</td>
-                  <td className={`py-4 px-4 border-b border-gray-50 rounded text-[15px]  font-bold`} onClick={() => setIsDrawerOpen1(true)}>
-                    <span
-                      className={`px-3 py-1 border rounded-md ${user.status === 'To Do'
-                        ? 'text-[#6C757D] border-[#6C757D]'
-                        : user.status === 'In progress' ?
-                          'text-[#CA9700] border-[#CA9700]' : user.status === 'Completed' ? 'text-[#008053] border-[#008053]' : 'text-[#0D4FA7] border-[#0D4FA7]'
-                        } inline-block`}
-                    >
-                      {user.status}
-                    </span>
-                  </td>
-                  <td className="py-4 px-4 border-b border-gray-50 text-[15px]" onClick={() => setIsDrawerOpen1(true)}>2022-11-20</td>
-                  <td className="py-4 px-4 border-b border-gray-50 text-[15px]" onClick={() => setIsDrawerOpen1(true)}>Vasu Shastri</td>
-                  <td className="py-4 px-4 border-b border-gray-50 text-[15px] w-[300px]" onClick={() => setIsDrawerOpen1(true)}>Prachi Godase, Sumit Yadav, Punit Omar, Aryan Singh</td>
-                  <td className={`py-4 px-4 border-b border-gray-50 font-bold`}>
-                    <span
-                      className={`px-3 py-1 border rounded-md text-[15px] ${user.priority === 'High'
-                        ? 'text-[#4976F4] border-[#4976F4]' : user.priority === 'Low' ?
-                          'text-red-400 border-red-400' : 'text-[#954BAF] border-[#954BAF]'
-                        } inline-block`}
-                    >
-                      {user.priority}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <div className="w-[1300px] mx-auto mt-4 flex justify-end gap-4 mb-3 mr-[70px]">
-            <button className="w-[80px] h-[39px] text-gray-400 rounded-md border border-gray-400">
-              Previous
-            </button>
-            <button className="w-[80px] h-[39px] text-gray-500 rounded-md border border-gray-400">
-              Next
-            </button>
-          </div>
-        </div>}
+
+            <div className="max-w-full overflow-x-auto mt-6 ">
+
+              <table className="w-full min-w-[1000px] border-collapse border border-gray-100">
+                <thead>
+                  <tr className="text-left text-sm font-bold uppercase text-gray-800">
+                    <th className="py-3 px-4 border-b border-gray-100  flex">
+                      PROJECT NAME<span className="mt-1 ml-2 flex flex-col gap-1">{OtherIcons.arrow_up_svg}{OtherIcons.arrow_down_svg}</span>
+                    </th>
+                    <th className="py-3 px-4 border-b border-gray-100">CLIENT  NAME</th>
+                    <th className="py-3 px-4 border-b border-gray-100">STATUS</th>
+                    <th className="py-3 px-4 border-b border-gray-100">STARTING DATE</th>
+                    <th className="py-3 px-4 border-b border-gray-100">DEADLINE</th>
+                    <th className="py-3 px-4 border-b border-gray-100">PROJECT LEADER</th>
+                    <th className="py-3 px-4 border-b border-gray-100">TEAM</th>
+                    <th className="py-3 px-4 border-b border-gray-100">PRIORITY</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  {paginatedUsers.map((user) => (
+                    <tr key={user.id} className="hover:bg-gray-50 rounded">
+                      <td className="py-4 px-4 border-b border-gray-50 rounded text-[15px]" onClick={() => router.push('/project-details')}>{user.userId}</td>
+                      <td className="py-4 px-4 border-b border-gray-50 rounded text-[15px]" onClick={() => router.push('/project-details')}>{user.firstName}</td>
+                      <td className={`py-4 px-4 min-w-[150px] border-b border-gray-50 rounded text-[15px]  font-bold`} onClick={() => router.push('/project-details')}>
+                        <span
+                          className={`px-3 py-1 border rounded-md ${user.status === 'To Do'
+                            ? 'text-[#6C757D] border-[#6C757D]'
+                            : user.status === 'In progress' ?
+                              'text-[#CA9700] border-[#CA9700]' : user.status === 'Completed' ? 'text-[#008053] border-[#008053]' : 'text-[#0D4FA7] border-[#0D4FA7]'
+                            } inline-block`}
+                        >
+                          {user.status}
+                        </span>
+                      </td>
+                      <td className="py-4 px-4 border-b border-gray-50 text-[15px]" onClick={() => router.push('/project-details')}>{user.dateOfJoining}</td>
+                      <td className="py-4 px-4 border-b border-gray-50 ] text-[15px]" onClick={() => router.push('/project-details')}>2022-11-20</td>
+                      <td className="py-4 px-4 border-b border-gray-50 text-[15px]" onClick={() => router.push('/project-details')}>Vasu Shastri</td>
+                      <td className="py-4 px-4 border-b border-gray-50 text-[15px]" onClick={() => router.push('/project-details')}>
+                        <TruncatedTooltipText text="Prachi Godase, Sumit Yadav, Punit Omar, Aryan Singh" maxLength={25} />
+                      </td>
+                      <td className={`py-4 px-4 border-b border-gray-50 font-bold`} onClick={() => router.push('/project-details')}>
+                        <span
+                          className={`px-3 py-1 border rounded-md text-[15px] ${user.priority === 'High'
+                            ? 'text-[#4976F4] border-[#4976F4]' : user.priority === 'Low' ?
+                              'text-red-400 border-red-400' : 'text-[#954BAF] border-[#954BAF]'
+                            } inline-block`}
+                        >
+                          {user.priority}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {/* Pagination */}
+            <div className="flex justify-between items-center mt-4 px-4 py-2">
+              <div className='text-gray-700'>{`Showing   ${startEntry + 1} - ${Math.min(endEntry, filteredUsers.length)} of ${filteredUsers.length} entries`}</div>
+              <div className="flex gap-2">
+                <button className={`w-[80px] h-[39px] rounded-md border ${currentPage === 1 ? 'bg-gray-200 text-gray-400' : 'bg-white text-black hover:bg-gray-300'}`} disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>Previous</button>
+                <button className={`w-[80px] h-[39px] rounded-md border ${currentPage === totalPages ? 'bg-gray-200 text-gray-400' : 'bg-white text-black hover:bg-gray-300'}`} disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>Next</button>
+              </div>
+            </div>
+          </>
+        )}
+
         {selectedView == 'Kanban' &&
           <div className="w-[1280px] mx-auto mt-[50px]">
             <div className="flex gap-4">

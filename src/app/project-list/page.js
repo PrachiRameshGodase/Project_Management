@@ -4,7 +4,8 @@ import { OtherIcons } from '@/assests/icons';
 import { useRouter } from 'next/navigation';
 import LayOut from '@/components/LayOut';
 import Dropdown01 from '@/components/common/Dropdown/Dropdown01';
-import { projectSortConstant, status, view } from '@/components/common/Helper/Helper';
+import { projectSortConstant, statusProject, view } from '@/components/common/Helper/Helper';
+import TruncatedTooltipText from '@/components/common/TruncatedTooltipText/TruncatedTooltipText';
 
 const ProjectList = () => {
   const router = useRouter()
@@ -97,25 +98,76 @@ const ProjectList = () => {
       status: 'Under Review',
       priority: 'Low'
     },
+    {
+      id: 8,
+      userId: 'HRMS Dashboard',
+      firstName: 'Shubham Yadav',
+      email: 'alice@example.com',
+      mobileNumber: '+1987654321',
+      designation: 'Developer',
+      dateOfJoining: '2022-11-20',
+      status: 'Under Review',
+      priority: 'Low'
+    },
+    {
+      id: 8,
+      userId: 'HRMS Dashboard',
+      firstName: 'Shubham Yadav',
+      email: 'alice@example.com',
+      mobileNumber: '+1987654321',
+      designation: 'Developer',
+      dateOfJoining: '2022-11-20',
+      status: 'Under Review',
+      priority: 'Low'
+    },
+    {
+      id: 8,
+      userId: 'HRMS Dashboard',
+      firstName: 'Shubham Yadav',
+      email: 'alice@example.com',
+      mobileNumber: '+1987654321',
+      designation: 'Developer',
+      dateOfJoining: '2022-11-20',
+      status: 'Under Review',
+      priority: 'Low'
+    },
   ];
 
 
-  const [selectedStatus, setSelectedStatus] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState('');
   const [selectedView, setSelectedView] = useState("List");
   const [selectedSort, setSelectedSort] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
+  const entriesPerPage = 5;
+  const totalEntries = users.length;
+  const totalPages = Math.ceil(totalEntries / entriesPerPage);
+
+  // Filtered Users
+  const filteredUsers = users.filter((user) => {
+    return selectedStatus === "" || user.status === selectedStatus;
+  });
+
+
+
+  // Pagination Logic
+  const startEntry = (currentPage - 1) * entriesPerPage;
+  const endEntry = startEntry + entriesPerPage;
+  const paginatedUsers = filteredUsers.slice(startEntry, endEntry);
+
+  // filter short-list
   return (
     <LayOut> <div>
       {/* Top Section with Filters and Buttons */}
-      <div className="w-[1410px] h-[24px] mx-auto flex justify-between items-center px-4 mt-[40px] ml-[5px]">
-        <div className="w-[227px] flex">
-          <p className="text-[30px] leading-[32px] tracking-[-1.5px] font-700">All Projects List</p>
-          <p className="font-bold text-[10.16px] leading-[12.19px] text-[#400F6F] text-center mt-4 ml-2 bg-[#f0e7fa] w-[30px] h-[10px]">
+      <div className="w-full h-[44px] flex justify-between items-center px-4 mt-10">
+        <div className="flex">
+          <p className="text-[30px] leading-[32px] tracking-[-1.5px]">All Projects list</p>
+          <p className="font-bold p-2 rounded-full text-[10.16px] leading-[12.19px] text-[#400F6F]  mt-3 ml-2 bg-[#f0e7fa] flex items-center justify-center  w-[50px] h-[10px]">
             {users.length} total
           </p>
         </div>
 
-        <div className="w-[558px] flex gap-[20px] items-center relative">
+        <div className="flex gap-6 items-center">
           <Dropdown01
             options={view}
             selectedValue={selectedView}
@@ -124,7 +176,7 @@ const ProjectList = () => {
             icon={OtherIcons.view_svg}
           />
           <Dropdown01
-            options={status}
+            options={statusProject}
             selectedValue={selectedStatus}
             onSelect={setSelectedStatus}
             label="Status"
@@ -149,68 +201,82 @@ const ProjectList = () => {
       </div>
 
       {/* Table Section */}
-      {selectedView=="List" && (  <div className="w-[1332px] h-[644px] mx-auto mt-[50px]">
-        <table className="w-full border-collapse border border-gray-100 rounded">
-          <thead>
-            <tr className="text-left text-sm font-bold uppercase text-gray-800">
-              <th className="py-3 px-4 border-b border-gray-100  flex">
-                PROJECT NAME<span className="mt-1 ml-2 flex flex-col gap-1">{OtherIcons.arrow_up_svg}{OtherIcons.arrow_down_svg}</span>
-              </th>
-              <th className="py-3 px-4 border-b border-gray-100">CLIENT  NAME</th>
-              <th className="py-3 px-4 border-b border-gray-100">STATUS</th>
-              <th className="py-3 px-4 border-b border-gray-100">STARTING DATE</th>
-              <th className="py-3 px-4 border-b border-gray-100">DEADLINE</th>
-              <th className="py-3 px-4 border-b border-gray-100">PROJECT LEADER</th>
-              <th className="py-3 px-4 border-b border-gray-100">TEAM</th>
-              <th className="py-3 px-4 border-b border-gray-100">PRIORITY</th>
+      {selectedView == "List" && (
+        <>
 
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr key={user.id} className="hover:bg-gray-50 rounded">
-                <td className="py-4 px-4 border-b border-gray-50 rounded text-[15px]" onClick={()=> router.push('/project-details')}>{user.userId}</td>
-                <td className="py-4 px-4 border-b border-gray-50 rounded text-[15px]" onClick={()=> router.push('/project-details')}>{user.firstName}</td>
-                <td className={`py-4 px-4 border-b border-gray-50 rounded text-[15px]  font-bold`} onClick={()=> router.push('/project-details')}>
-                  <span
-                    className={`px-3 py-1 border rounded-md ${user.status === 'To Do'
-                      ? 'text-[#6C757D] border-[#6C757D]'
-                      : user.status === 'In progress' ?
-                        'text-[#CA9700] border-[#CA9700]' : user.status === 'Completed' ? 'text-[#008053] border-[#008053]' : 'text-[#0D4FA7] border-[#0D4FA7]'
-                      } inline-block`}
-                  >
-                    {user.status}
-                  </span>
-                </td>
-                <td className="py-4 px-4 border-b border-gray-50 text-[15px]" onClick={()=> router.push('/project-details')}>2022-11-20</td>
-                <td className="py-4 px-4 border-b border-gray-50 ] text-[15px]" onClick={()=> router.push('/project-details')}>2022-11-20</td>
-                <td className="py-4 px-4 border-b border-gray-50 text-[15px]" onClick={()=> router.push('/project-details')}>Vasu Shastri</td>
-                <td className="py-4 px-4 border-b border-gray-50 text-[15px]" onClick={()=> router.push('/project-details')}>Prachi Godase, Sumit Yadav, Punit Omar, Aryan Singh</td>
-                <td className={`py-4 px-4 border-b border-gray-50 font-bold`} onClick={()=> router.push('/project-details')}>
-                  <span
-                    className={`px-3 py-1 border rounded-md text-[15px] ${user.priority === 'High'
-                      ? 'text-[#4976F4] border-[#4976F4]' : user.priority === 'Low' ?
-                        'text-red-400 border-red-400' : 'text-[#954BAF] border-[#954BAF]'
-                      } inline-block`}
-                  >
-                    {user.priority}
-                  </span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <div className="absolute bottom-[-100] right-0 flex gap-4 mt-[20px] mr-[90px]">
-          <button className="w-[80px] h-[39px] text-gray-400 rounded-md">Previous</button>
-          <button className="w-[80px] h-[39px] text-gray-500 rounded-md border border-gray-400">Next</button>
-        </div>
-      </div>)}
-    
+
+          <div className="max-w-full overflow-x-auto mt-6 ">
+
+            <table className="w-full min-w-[1000px] border-collapse border border-gray-100">
+              <thead>
+                <tr className="text-left text-sm font-bold uppercase text-gray-800">
+                  <th className="py-3 px-4 border-b border-gray-100  flex">
+                    PROJECT NAME<span className="mt-1 ml-2 flex flex-col gap-1">{OtherIcons.arrow_up_svg}{OtherIcons.arrow_down_svg}</span>
+                  </th>
+                  <th className="py-3 px-4 border-b border-gray-100">CLIENT  NAME</th>
+                  <th className="py-3 px-4 border-b border-gray-100">STATUS</th>
+                  <th className="py-3 px-4 border-b border-gray-100">STARTING DATE</th>
+                  <th className="py-3 px-4 border-b border-gray-100">DEADLINE</th>
+                  <th className="py-3 px-4 border-b border-gray-100">PROJECT LEADER</th>
+                  <th className="py-3 px-4 border-b border-gray-100">TEAM</th>
+                  <th className="py-3 px-4 border-b border-gray-100">PRIORITY</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedUsers.map((user) => (
+                  <tr key={user.id} className="hover:bg-gray-50 rounded">
+                    <td className="py-4 px-4 border-b border-gray-50 rounded text-[15px]" onClick={() => router.push('/project-details')}>{user.userId}</td>
+                    <td className="py-4 px-4 border-b border-gray-50 rounded text-[15px]" onClick={() => router.push('/project-details')}>{user.firstName}</td>
+                    <td className={`py-4 px-4 min-w-[150px] border-b border-gray-50 rounded text-[15px]  font-bold`} onClick={() => router.push('/project-details')}>
+                      <span
+                        className={`px-3 py-1 border rounded-md ${user.status === 'To Do'
+                          ? 'text-[#6C757D] border-[#6C757D]'
+                          : user.status === 'In progress' ?
+                            'text-[#CA9700] border-[#CA9700]' : user.status === 'Completed' ? 'text-[#008053] border-[#008053]' : 'text-[#0D4FA7] border-[#0D4FA7]'
+                          } inline-block`}
+                      >
+                        {user.status}
+                      </span>
+                    </td>
+                    <td className="py-4 px-4 border-b border-gray-50 text-[15px]" onClick={() => router.push('/project-details')}>{user.dateOfJoining}</td>
+                    <td className="py-4 px-4 border-b border-gray-50 ] text-[15px]" onClick={() => router.push('/project-details')}>2022-11-20</td>
+                    <td className="py-4 px-4 border-b border-gray-50 text-[15px]" onClick={() => router.push('/project-details')}>Vasu Shastri</td>
+                    <td className="py-4 px-4 border-b border-gray-50 text-[15px]" onClick={() => router.push('/project-details')}>
+                      <TruncatedTooltipText text="Prachi Godase, Sumit Yadav, Punit Omar, Aryan Singh" maxLength={25} />
+                    </td>
+                    <td className={`py-4 px-4 border-b border-gray-50 font-bold`} onClick={() => router.push('/project-details')}>
+                      <span
+                        className={`px-3 py-1 border rounded-md text-[15px] ${user.priority === 'High'
+                          ? 'text-[#4976F4] border-[#4976F4]' : user.priority === 'Low' ?
+                            'text-red-400 border-red-400' : 'text-[#954BAF] border-[#954BAF]'
+                          } inline-block`}
+                      >
+                        {user.priority}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {/* Pagination */}
+          <div className="flex justify-between items-center mt-4 px-4 py-2">
+            <div className='text-gray-700'>{`Showing   ${startEntry + 1} - ${Math.min(endEntry, filteredUsers.length)} of ${filteredUsers.length} entries`}</div>
+            <div className="flex gap-2">
+              <button className={`w-[80px] h-[39px] rounded-md border ${currentPage === 1 ? 'bg-gray-200 text-gray-400' : 'bg-white text-black hover:bg-gray-300'}`} disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>Previous</button>
+              <button className={`w-[80px] h-[39px] rounded-md border ${currentPage === totalPages ? 'bg-gray-200 text-gray-400' : 'bg-white text-black hover:bg-gray-300'}`} disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>Next</button>
+            </div>
+          </div>
+        </>
+      )}
+
 
       {/* Card Section */}
-      {selectedView == "Card" && (<div className="grid grid-cols-4 gap-6 mx-auto mt-[50px]">
+      {selectedView == "Card" && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mx-auto mt-[50px]">
         {users.map((user) => (
-          <div key={user.id} className="w-[305px] h-[240px] border border-gray-100 rounded-xl p-4 shadow-md">
+          <div key={user.id} className="w-full min-w-[305px] h-[240px] hover:border-gray-200 hover:shadow-lg  border border-gray-100 rounded-xl p-4 shadow-md">
             <div className="flex justify-between items-center mb-4">
               <p className="font-700 text-[21.33px] leading-[28.8px] ">HRMS Dashboard</p>
               {/* <p className="font-[400] text-[12px] leading-[16.8px] text-green-600 w-[70px] h-[20px]  rounded flex items-center justify-center">
@@ -226,27 +292,27 @@ const ProjectList = () => {
             </div>
             <div className="flex justify-between items-center mb-2">
               <ul className="flex gap-1 flex-col w-[150px]">
-                <li className="font-[Supreme]  text-[12.8px] leading-[17.28px] text-gray-400">Team</li>
-                <li className="font-[Supreme] text-[12.8px] leading-[17.28px] text-gray-800 ">Prachi Godase, Sumit Yadav, Aryan</li>
+                <li className=" text-[12.8px] leading-[17.28px] text-gray-400">Team</li>
+                <li className=" text-[12.8px] leading-[17.28px] text-gray-800 ">Prachi Godase, Sumit Yadav, Aryan</li>
               </ul>
               <ul className="flex gap-1 flex-col">
-                <li className="font-[Supreme]  text-[12.8px] text-gray-400">Due Date</li>
-                <li className="font-[Supreme]  text-[12.8px]  text-gray-800">1 Jan, 2024</li>
+                <li className=" text-[12.8px] text-gray-400">Due Date</li>
+                <li className=" text-[12.8px]  text-gray-800">1 Jan, 2024</li>
 
               </ul>
 
             </div>
             <div className="flex items-center gap-2 mb-2 justify-between">
               <p className='flex items-center flex-row gap-1'> {OtherIcons.projects_svg}
-              <p className="font-[Supreme] font-normal text-[12.8px] leading-[17.28px]">Tasks (20)</p></p>
-             
+                <p className=" font-normal text-[12.8px] leading-[17.28px]">Tasks (20)</p></p>
+
               <ul className="flex gap-1 flex-col mr-[20px]">
 
-                <li className="font-[Supreme]  text-[12.8px] text-gray-400">Priority</li>
+                <li className=" text-[12.8px] text-gray-400">Priority</li>
                 <li className={`text-[12.8px]  text-gray-800 font-700 ${user.priority === 'High'
-                      ? 'text-[#4976F4]' : user.priority === 'Low' ?
-                        'text-red-400' : 'text-[#954BAF]'
-                      }`}>{user.priority}</li>
+                  ? 'text-[#4976F4]' : user.priority === 'Low' ?
+                    'text-red-400' : 'text-[#954BAF]'
+                  }`}>{user.priority}</li>
               </ul>
             </div>
             <div className="w-[270px] h-[39px]">
@@ -272,10 +338,11 @@ const ProjectList = () => {
           </div>
         ))}
       </div>)}
-      
+
     </div></LayOut>
 
   );
 };
 
 export default ProjectList
+// 
