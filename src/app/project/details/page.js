@@ -302,13 +302,13 @@ const TaskList = () => {
                           {user.status}
                         </span>
                       </td>
-                      <td className="py-4 px-4 border-b border-gray-50 text-[15px]">{user.dateOfJoining}</td>
-                      <td className="py-4 px-4 border-b border-gray-50 ] text-[15px]" >2022-11-20</td>
-                      <td className="py-4 px-4 border-b border-gray-50 text-[15px]" >Vasu Shastri</td>
-                      <td className="py-4 px-4 border-b border-gray-50 text-[15px]">
+                      <td className="py-4 px-4 border-b border-gray-50 text-[15px]" onClick={() => setIsDrawerOpen1((prev) => !prev)}>{user.dateOfJoining}</td>
+                      <td className="py-4 px-4 border-b border-gray-50 ] text-[15px]" onClick={() => setIsDrawerOpen1((prev) => !prev)}>2022-11-20</td>
+                      <td className="py-4 px-4 border-b border-gray-50 text-[15px]" onClick={() => setIsDrawerOpen1((prev) => !prev)}>Vasu Shastri</td>
+                      <td className="py-4 px-4 border-b border-gray-50 text-[15px]" onClick={() => setIsDrawerOpen1((prev) => !prev)}>
                         <TruncatedTooltipText text="Prachi Godase, Sumit Yadav, Punit Omar, Aryan Singh" maxLength={25} />
                       </td>
-                      <td className={`py-4 px-4 border-b border-gray-50 font-bold`} >
+                      <td className={`py-4 px-4 border-b border-gray-50 font-bold`} onClick={() => setIsDrawerOpen1((prev) => !prev)}>
                         <span
                           className={`px-3 py-1 border rounded-md text-[15px] ${user.priority === 'High'
                             ? 'text-[#4976F4] border-[#4976F4]' : user.priority === 'Low' ?

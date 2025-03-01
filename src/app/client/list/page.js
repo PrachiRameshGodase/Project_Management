@@ -160,15 +160,15 @@ const ClientList = () => {
                         </thead>
                         <tbody>
                             {paginatedUsers.map((user) => (
-                                <tr key={user.userId} className="hover:bg-gray-100">
-                                    <td className="py-4 px-4 border-b border-gray-50" onClick={() => router.push(`/client-details`)}>{user.userId}</td>
-                                    <td className="py-4 px-4 border-b border-gray-50" onClick={() => router.push(`/client-details`)}>{user.firstName}</td>
-                                    <td className="py-4 px-4 border-b border-gray-50" onClick={() => router.push(`/client-details`)}>{user.email}</td>
-                                    <td className="py-4 px-4 border-b border-gray-50" onClick={() => router.push(`/client-details`)}>{user.mobileNumber}</td>
-                                    <td className="py-4 px-4 border-b border-gray-50" onClick={() => router.push(`/client-details`)}>{user.mobileNumber}</td>
+                                <tr key={user.userId} className="hover:bg-gray-100 cursor-pointer">
+                                    <td className="py-4 px-4 border-b border-gray-50" onClick={() => router.push(`/client/details?id=${user.userId}`)}>{user.userId}</td>
+                                    <td className="py-4 px-4 border-b border-gray-50" onClick={() => router.push(`/client/details?id=${user.userId}`)}>{user.firstName}</td>
+                                    <td className="py-4 px-4 border-b border-gray-50" onClick={() => router.push(`/client/details?id=${user.userId}`)}>{user.email}</td>
+                                    <td className="py-4 px-4 border-b border-gray-50" onClick={() => router.push(`/client/details?id=${user.userId}`)}>{user.mobileNumber}</td>
+                                    <td className="py-4 px-4 border-b border-gray-50" onClick={() => router.push(`/client/details?id=${user.userId}`)}>{user.mobileNumber}</td>
                                     <td
                                         className="py-4 px-4 border-b border-gray-50 font-bold items-center flex align-middle"
-                                        onClick={() => router.push('/client-details')}
+                                        onClick={() => router.push(`/client/details?id=${user.userId}`)}
                                     >
                                         <span
                                             className={`w-3 h-3 inline-block rounded-full ${user.status === 'Active' ? 'bg-green-600' : 'bg-red-600'} ml-4`}
