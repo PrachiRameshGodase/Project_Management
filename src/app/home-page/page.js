@@ -23,23 +23,21 @@ const HomePage = () => {
                     alt="avatar"
                     className="w-[42px] h-[42px] rounded-full"
                 />
-                {/* <div className="text-sm text-gray-700">
-                    <p className="font-bold">Ravikirn</p>
-                    <p className="text-xs text-gray-500">admin</p>
-                </div> */}
-            </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            </div>
+            <div className="flex flex-col w-full mt-[40px]">
+                <h1 className="text-3xl font-semibold text-gray-800 flex text-center">All Projects</h1>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-[40px]">
                 {cardData.map((card) => (
                     <div
                         key={card.id}
-                        className="w-[280px] h-[290px] bg-white shadow-lg rounded-[17.5px] p-6 text-center flex flex-col justify-between"
+                        className="w-full h-full bg-white shadow-lg rounded-[17.5px] p-6 text-center flex flex-col justify-between"
                     >
-                        <div className="flex flex-col ">
+                        <div className="flex flex-col gap-2">
 
 
                             <div className="flex justify-between">
-                                <p className=" text-[18px] leading-[28px]  text-[#2A2A2A] ">
+                                <p className=" text-[18px] text-[#2A2A2A] text-left">
                                     {card.title}
                                 </p>
 
@@ -54,13 +52,59 @@ const HomePage = () => {
                                 </span>
                             </div>
 
+                            <div className="flex items-center gap-2">
+                                <div className="w-8 h-8 flex items-center justify-center rounded-full bg-blue-100">
+                                    {OtherIcons.projects_svg}
+                                </div>
+                                <div className="flex flex-col">
+                                    <p className="text-gray-800 text-[14px]">1 Jan, 2025</p>
+                                    <p className="text-gray-400 text-[12px]">Deadline Date</p>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center gap-2 mt-2">
+                                <div className="w-12 h-8 flex items-center justify-center rounded-full bg-blue-100">
+                                    {OtherIcons.clients_svg}
+                                </div>
+                                <div className="flex flex-col text-left">
+                                    <p className="text-gray-800 text-[14px]">Prachi Godase, Anurag, Punit, Sumit, Aryan</p>
+                                    <p className="text-gray-400 text-[12px]">Team</p>
+                                </div>
+                            </div>
+
+                            <div> <div className="flex items-center gap-2 mb-2 justify-between">
+                                <p className='flex items-center flex-row gap-1'> {OtherIcons.projects_svg}
+                                    <p className="font-[Supreme] font-normal text-[12.8px] leading-[17.28px]">Tasks (20)</p></p>
+
+
+                            </div>
+                                <div className="w-[270px] h-[39px]">
+                                    <table className="w-[90%]">
+                                        <thead>
+                                            <tr className="text-left">
+                                                <td className='font-300 text-gray-400 text-[12px]'>To Do</td>
+                                                <td className='font-300 text-gray-400 text-[12px]'>In Progress</td>
+                                                <td className='font-300 text-gray-400 text-[12px]'>Under Review</td>
+                                                <td className='font-300 text-gray-400 text-[12px]'>Completed</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td className='font-300 text-gray-700 text-[12px] text-center'>08</td>
+                                                <td className='font-300 text-gray-700 text-[12px] text-center'>08</td>
+                                                <td className='font-300 text-gray-700 text-[12px] text-center'>08</td>
+                                                <td className='font-300 text-gray-700 text-[12px] text-center'>08</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div></div>
                         </div>
 
 
                     </div>
                 ))}
             </div>
-
+            </div>
         </div>
     );
 };
