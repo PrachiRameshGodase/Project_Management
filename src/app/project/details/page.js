@@ -216,7 +216,7 @@ const TaskList = () => {
             <button className="w-[140px] h-[35px] rounded-[4px] py-[4px] border border-black text-black text-lg mr-[10px] mb-2" onClick={() => setIsDrawerOpen(true)}>
               See All Details
             </button>
-            <button className="w-[80px] h-[35px] rounded-[4px] py-[4px] bg-black text-white text-lg mr-[10px] mb-2">
+            <button onClick={() => router.push('/add-project')} className="w-[80px] h-[35px] rounded-[4px] py-[4px] bg-black text-white text-lg mr-[10px] mb-2">
               Edit
             </button>
           </div>
@@ -302,13 +302,13 @@ const TaskList = () => {
                           {user.status}
                         </span>
                       </td>
-                      <td className="py-4 px-4 border-b border-gray-50 text-[15px]" onClick={() => setIsDrawerOpen1((prev) => !prev)}>{user.dateOfJoining}</td>
-                      <td className="py-4 px-4 border-b border-gray-50 ] text-[15px]" onClick={() => setIsDrawerOpen1((prev) => !prev)}>2022-11-20</td>
-                      <td className="py-4 px-4 border-b border-gray-50 text-[15px]" onClick={() => setIsDrawerOpen1((prev) => !prev)}>Vasu Shastri</td>
-                      <td className="py-4 px-4 border-b border-gray-50 text-[15px]" onClick={() => setIsDrawerOpen1((prev) => !prev)}>
+                      <td className="py-4 px-4 border-b border-gray-50 text-[15px]">{user.dateOfJoining}</td>
+                      <td className="py-4 px-4 border-b border-gray-50 ] text-[15px]" >2022-11-20</td>
+                      <td className="py-4 px-4 border-b border-gray-50 text-[15px]" >Vasu Shastri</td>
+                      <td className="py-4 px-4 border-b border-gray-50 text-[15px]">
                         <TruncatedTooltipText text="Prachi Godase, Sumit Yadav, Punit Omar, Aryan Singh" maxLength={25} />
                       </td>
-                      <td className={`py-4 px-4 border-b border-gray-50 font-bold`} onClick={() => setIsDrawerOpen1((prev) => !prev)}>
+                      <td className={`py-4 px-4 border-b border-gray-50 font-bold`} >
                         <span
                           className={`px-3 py-1 border rounded-md text-[15px] ${user.priority === 'High'
                             ? 'text-[#4976F4] border-[#4976F4]' : user.priority === 'Low' ?
@@ -335,8 +335,8 @@ const TaskList = () => {
         )}
 
         {selectedView == 'Kanban' &&
-          <div className="w-[1280px] mx-auto mt-[50px]">
-            <div className="flex gap-4">
+          <div className="w-full mx-auto max-w-full overflow-x-auto  mt-[50px]">
+            <div className="flex w-full min-w-[1000px]  gap-4 ">
               {groupedUsers.map(group => (
                 <div key={group.status} className="w-[310px] h-full border border-gray-100 rounded bg-gray-100 mb-4">
                   <div className="w-full h-[40px] bg-[#F0E7FA] flex items-center px-4">

@@ -21,7 +21,8 @@ const UserDetails = () => {
         "MongoDB", "Tailwind CSS", "Redux", "Next.js", "TypeScript"
     ]
     return (
-        <LayOut> <div className="w-full  h-full  mt-7  left-[80px] rounded-[10.17px] border border-[#F4EAEA] bg-white p-6 shadow-lg">
+        <LayOut>
+            <div className="w-full  h-full  mt-7  left-[80px] rounded-[10.17px] border border-[#F4EAEA] bg-white p-6 shadow-lg">
             <div className="w-full  h-[40px] relative top-[6px] flex items-center justify-between px-2 border-b border-gray-100 ">
                 <p className="text-[26px] mb-[20px]">
                     User Information
@@ -136,7 +137,7 @@ const UserDetails = () => {
                     {[...Array(4)].map((_, index) => (
                         <div
                             key={index}
-                            className="w-[280px] h-[132px] border border-gray-300 rounded-[8.93px] p-4 shadow-md hover:shadow-lg transition-all"
+                            className="w-[100%] h-[132px] border border-gray-300 rounded-[8.93px] p-4 shadow-md hover:shadow-lg transition-all"
                         >
                             <p className="text-[18px] leading-[24.3px] tracking-[-3%] text-gray-800">
                                 HRMS Dashboard
@@ -144,18 +145,18 @@ const UserDetails = () => {
 
                             <ul className="mt-2 space-y-2">
                                 <li className="flex text-gray-700">
-                                    <span className="text-[10.72px] w-[60px]">
+                                    <span className="text-[10.72px] w-[60px]  text-gray-600">
                                         End Date
                                     </span>
-                                    <span className="text-[10.72px]">
+                                    <span className="text-[12px]">
                                         01 Jan, 2025
                                     </span>
                                 </li>
-                                <li className="flex text-gray-700 ">
+                                <li className="flex text-gray-700  text-gray-600 ">
                                     <span className="text-[10.72px] w-6">
                                         Team
                                     </span>
-                                    <span className="text-[10.72px] ml-9">
+                                    <span className="text-[12px] ml-9">
                                         Akash Shinde, Aryan Singh, Puneet Omar, Prachi Jadhav
                                     </span>
                                 </li>

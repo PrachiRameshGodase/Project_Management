@@ -1,6 +1,7 @@
 import React from "react";
 import { ArrowUpRight } from "lucide-react";
 import { OtherIcons } from "@/assests/icons";
+import UserAvatar from "@/components/common/UserAvatar/UserAvatar";
 
 const cardData = [
     { id: 1, logo: <OtherIcons.accounts_logo />, title: "Accounting", description: "Manage your finances effectively." },
@@ -14,27 +15,27 @@ const cardData = [
 ];
 
 const HomePage = () => {
+    const user = {
+        name: "Shubham Yadhav",
+        isActive: true,
+        image: "",
+    };
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100 p-10 relative">
             {/* Avatar and Text Outside of Cards (Top-right of Page) */}
             <div className="absolute top-4 right-4 flex items-center space-x-2">
-                <img
-                    src="https://randomuser.me/api/portraits/men/10.jpg" // Replace with actual avatar image URL
-                    alt="avatar"
-                    className="w-[42px] h-[42px] rounded-full"
-                />
-
+                <UserAvatar name={user.name} dotColor='green' size={56} image={user.image} isActive={user.isActive} />
             </div>
             <div className="flex flex-col w-full mt-[40px]">
                 {/* <div className="flex items-center justify-center h-screen"> */}
                     <h1 className="text-3xl font-semibold text-gray-800 text-center flex items-center justify-center">All Projects</h1>
                 {/* </div> */}
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-[40px]">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mx-auto mt-[50px]">
                     {cardData.map((card) => (
                         <div
                             key={card.id}
-                            className="w-full h-full bg-white shadow-lg rounded-[17.5px] p-6 text-center flex flex-col justify-between"
+                            className="w-full h-full bg-white shadow-sm hover:shadow-md rounded-[17.5px] p-6 text-center flex flex-col justify-between"
                         >
                             <div className="flex flex-col gap-2">
 
@@ -77,7 +78,7 @@ const HomePage = () => {
 
                                 <div> <div className="flex items-center gap-2 mb-2 justify-between">
                                     <p className='flex items-center flex-row gap-1'> {OtherIcons.projects_svg}
-                                        <p className="font-[Supreme] font-normal text-[12.8px] leading-[17.28px]">Tasks (20)</p></p>
+                                        <p className=" font-normal text-[12.8px] leading-[17.28px]">Tasks (20)</p></p>
 
 
                                 </div>

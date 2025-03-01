@@ -1,3 +1,4 @@
+"use client";
 import * as React from "react";
 import { styled } from "@mui/material/styles";
 import Badge from "@mui/material/Badge";
@@ -50,9 +51,10 @@ const UserAvatar = ({ name, image, isActive, size = 68, dotColor = "green", onCl
                         width: size,
                         height: size,
                         bgcolor: "#E4E4E4",
-                        fontSize: size / 2.5,
+                        fontSize: size / 2,
                         color: "black",
                         fontWeight: "bold",
+                        fontFamily: 'Supreme-Medium',
                     }}
                 >
                     {name ? name.split(" ").map((n) => n[0]).join("") : "U"}
