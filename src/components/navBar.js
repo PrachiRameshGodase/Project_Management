@@ -9,7 +9,7 @@ const NavBar = () => {
   const pathname = usePathname();
 
   const navItems = [
-    { path: "/", icon: OtherIcons.home_svg, label: "Home" },
+    { path: "/home", icon: OtherIcons.home_svg, label: "Home" },
     { path: "/user-list", icon: OtherIcons.user_svg, label: "User" },
     { path: "/project-list", icon: OtherIcons.projects_svg, label: "Projects" },
     { path: "/client-list", icon: OtherIcons.clients_svg, label: "Clients" },
