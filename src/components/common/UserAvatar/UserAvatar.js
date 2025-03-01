@@ -4,10 +4,10 @@ import Badge from "@mui/material/Badge";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 
-const StyledBadge = styled(Badge)(({ theme }) => ({
+const StyledBadge = styled(Badge)(({ theme, dotColor }) => ({
     "& .MuiBadge-badge": {
-        backgroundColor: "#44b700",
-        color: "#44b700",
+        backgroundColor: dotColor,
+        color: dotColor,
         boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
         "&::after": {
             position: "absolute",
@@ -33,24 +33,25 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
     },
 }));
 
-const UserAvatar = ({ name, image, isActive, onClick }) => {
+const UserAvatar = ({ name, image, isActive, size = 68, dotColor = "green", onClick }) => {
     return (
         <Box sx={{ display: "flex", alignItems: "center", cursor: "pointer" }} onClick={onClick}>
             <StyledBadge
                 overlap="circular"
                 anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                variant={isActive ? "dot" : "standard"}
-                className="border-2 border-[#A448EE] rounded-full p-[2px] "
+                variant={isActive && dotColor !== "none" ? "dot" : "standard"}
+                dotColor={dotColor}
+                className="border-2 border-[#A448EE] rounded-full p-[2px]"
             >
                 <Avatar
                     alt={name}
                     src={image}
                     sx={{
-                        width: 68,
-                        height: 68,
+                        width: size,
+                        height: size,
                         bgcolor: "#E4E4E4",
-                        fontSize: 26,
-                        color:'black',
+                        fontSize: size / 2.5,
+                        color: "black",
                         fontWeight: "bold",
                     }}
                 >
