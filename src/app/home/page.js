@@ -1,112 +1,139 @@
+"use client";
+
 import React from "react";
-import { ArrowUpRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { OtherIcons } from "@/assests/icons";
 import UserAvatar from "@/components/common/UserAvatar/UserAvatar";
 
 const cardData = [
-    { id: 1, logo: <OtherIcons.accounts_logo />, title: "Accounting", description: "Manage your finances effectively." },
-    { id: 2, logo: <OtherIcons.hrms_logo />, title: "Finance", description: "Track your income and expenses." },
-    { id: 3, logo: <OtherIcons.cms_logo />, title: "Invoicing", description: "Create invoices with ease." },
-    { id: 4, logo: <OtherIcons.accounts_logo />, title: "marketing Webapp", description: "Stay tax compliant effortlessly." },
-    { id: 5, logo: <OtherIcons.accounts_logo />, title: "Accounting", description: "Manage your finances effectively." },
-    { id: 6, logo: <OtherIcons.accounts_logo />, title: "Finance", description: "Track your income and expenses." },
-    { id: 7, logo: <OtherIcons.accounts_logo />, title: "Invoicing", description: "Create invoices with ease." },
-    { id: 8, logo: <OtherIcons.accounts_logo />, title: "Tax Management", description: "Stay tax compliant effortlessly." },
+    { id: 1, logo: <OtherIcons.accounts_logo />, title: "Accounting", description: "Manage your finances effectively.", status: "In Progress", task: [1, 2, 3, 4] },
+    { id: 2, logo: <OtherIcons.hrms_logo />, title: "Finance", description: "Track your income and expenses.", status: "In Progress", task: [1, 0, 1, 1] },
+    { id: 3, logo: <OtherIcons.cms_logo />, title: "Invoicing", description: "Create invoices with ease.", status: "In Progress", task: [0, 1, 1, 2] },
+    { id: 4, logo: <OtherIcons.accounts_logo />, title: "Marketing Webapp", description: "Stay tax compliant effortlessly.", status: "In Progress", task: [1, 1, 1, 1] },
+    { id: 5, logo: <OtherIcons.accounts_logo />, title: "Accounting", description: "Manage your finances effectively.", status: "In Progress", task: [1, 1, 8, 1] },
+    { id: 6, logo: <OtherIcons.accounts_logo />, title: "Finance", description: "Track your income and expenses.", status: "In Progress", task: [1, 1, 1, 1] },
+    { id: 7, logo: <OtherIcons.accounts_logo />, title: "Invoicing", description: "Create invoices with ease.", status: "Under Review", task: [1, 1, 1, 1] },
+    { id: 8, logo: <OtherIcons.accounts_logo />, title: "Tax Management", description: "Stay tax compliant effortlessly.", status: "Under Review", task: [3, 1, 4, 1] },
 ];
 
 const HomePage = () => {
+    const router = useRouter();
     const user = {
         name: "Shubham Yadhav",
         isActive: true,
         image: "",
     };
+
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100 p-10 relative">
-            {/* Avatar and Text Outside of Cards (Top-right of Page) */}
-            <div className="absolute top-4 right-4 flex items-center space-x-2">
-                <UserAvatar name={user.name} dotColor='green' size={56} image={user.image} isActive={user.isActive} />
+            {/* Avatar Section (Top-Right) */}
+            <div className="absolute top-4 right-14 flex items-center space-x-2">
+                <UserAvatar name={user.name} dotColor="green" size={36} image={user.image} isActive={user.isActive} />
+                <span className="cursor-pointer" onClick={() => router.push(`/`)}>
+                    {OtherIcons.back_svg}
+                </span>
             </div>
+
             <div className="flex flex-col w-full mt-[40px]">
-                {/* <div className="flex items-center justify-center h-screen"> */}
-                    <h1 className="text-3xl font-semibold text-gray-800 text-center flex items-center justify-center">All Projects</h1>
-                {/* </div> */}
+                <h1 className="text-3xl font-semibold text-gray-800 text-center">All Projects</h1>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mx-auto mt-[50px]">
-                    {cardData.map((card) => (
-                        <div
-                            key={card.id}
-                            className="w-full h-full bg-white shadow-sm hover:shadow-md rounded-[17.5px] p-6 text-center flex flex-col justify-between"
-                        >
-                            <div className="flex flex-col gap-2">
+                {/* Projects Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mx-auto mt-[50px]">
+                    {cardData.map((card) => {
+                        const [toDo, inProgress, underReview, completed] = card.task || [0, 0, 0, 0];
+                        const taskSum = card.task.reduce((acc, num) => acc + num, 0); // 🔹 Har card ka apna total task sum
 
+                        return (
+                            <div
+                                key={card.id}
+                                className="w-full h-full bg-white shadow-sm hover:shadow-md rounded-[17.5px] p-4 text-center flex flex-col justify-between"
+                            >
+                                <div className="flex flex-col gap-2">
+                                    <div className="flex justify-between">
+                                        <p className="capitalize text-[18px] text-[#2A2A2A] text-left">{card.title}</p>
 
-                                <div className="flex justify-between">
-                                    <p className=" text-[18px] text-[#2A2A2A] text-left">
-                                        {card.title}
-                                    </p>
-
-                                    <span
-                                        className={` border rounded-md ${"user.status" === 'To Do'
-                                            ? 'text-[#6C757D] border-[#6C757D]'
-                                            : "user.status" === 'In progress' ?
-                                                'text-[#CA9700] border-[#CA9700]' : " user.status" === 'Completed' ? 'text-[#008053] border-[#008053]' : 'text-[#0D4FA7] border-[#0D4FA7] h-[24px] w-[120px]'
-                                            } inline-block`}
-                                    >
-                                        In Progress
-                                    </span>
-                                </div>
-
-                                <div className="flex items-center gap-2">
-                                    <div className="w-8 h-8 flex items-center justify-center rounded-full bg-blue-100">
-                                        {OtherIcons.projects_svg}
+                                        <span
+                                            className={`border rounded-[4px] ${card.status === "In Progress"
+                                                ? "text-[#CA9700] border-[#CA9700]"
+                                                : card.status === "Under Review"
+                                                    ? "text-[#0D4FA7] border-[#0D4FA7]"
+                                                    : ""
+                                                } h-[24px] w-fit px-2 py-1 flex items-center text-[12px]`}
+                                        >
+                                            {card.status}
+                                        </span>
                                     </div>
-                                    <div className="flex flex-col">
-                                        <p className="text-gray-800 text-[14px]">1 Jan, 2025</p>
-                                        <p className="text-gray-400 text-[12px]">Deadline Date</p>
+
+                                    {/* Date Section */}
+                                    <div className="flex items-center gap-2">
+                                        <div className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-100">
+                                            {OtherIcons.dateTime_svg}
+                                        </div>
+                                        <div className="flex flex-col">
+                                            <p className="text-gray-800 text-[14px]">1 Jan, 2025</p>
+                                            <p className="text-[#320b5775] text-[12px]">Deadline Date</p>
+                                        </div>
+                                    </div>
+
+                                    {/* Team Members */}
+                                    <div className="flex items-center gap-2 mt-2">
+                                        <div className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-100">
+                                            {OtherIcons.clients_svg}
+                                        </div>
+                                        <div className="flex flex-col text-left">
+                                            <p className="text-gray-800 text-[14px]">
+                                                Prachi Godase, Anurag, Punit, Sumit, Aryan
+                                            </p>
+                                            <p className="text-[#320b5775] text-[12px]">Team</p>
+                                        </div>
+                                    </div>
+
+                                    {/* Task Counts Table */}
+                                    <div className="border border-gray-200 -mb-2 rounded-b-lg p-1 bg-[#EDF2FE99] mt-1 w-[106%] -ml-[9px]">
+                                        <div className=" flex items-center gap-2 mb-2 justify-between">
+                                            <p className="flex items-center flex-row gap-1">
+                                                <div className="border bg-white border-gray-400 p-1 rounded-full">
+                                                    {OtherIcons.task_svg}
+                                               </div>
+                                                <p className="font-normal text-[14px] leading-[17.28px]">
+                                                    Tasks ({taskSum}) {/* 🔹 Har Card ka apna total sum */}
+                                                </p>
+                                            </p>
+                                        </div>
+
+                                        <div className=" h-[45px] border rounded-sm p-1 border-gray-200 bg-white">
+                                            <table className="  w-full">
+                                                <thead>
+                                                    <tr className="text-left ">
+                                                        <td className="font-300 text-gray-400 text-[12px]">To Do</td>
+                                                        <td className="font-300 text-gray-400 text-[12px]">In Progress</td>
+                                                        <td className="font-300 text-gray-400 text-[12px]">Under Review</td>
+                                                        <td className="font-300 text-gray-400 text-[12px]">Completed</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr className="">
+                                                        <td className="font-300 text-gray-700 text-[12px] text-center">
+                                                            {toDo}
+                                                        </td>
+                                                        <td className="font-300 text-gray-700 text-[12px] text-center">
+                                                            {inProgress}
+                                                        </td>
+                                                        <td className="font-300 text-gray-700 text-[12px] text-center">
+                                                            {underReview}
+                                                        </td>
+                                                        <td className="font-300 text-gray-700 text-[12px] text-center">
+                                                            {completed}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
-
-                                <div className="flex items-center gap-2 mt-2">
-                                    <div className="w-12 h-8 flex items-center justify-center rounded-full bg-blue-100">
-                                        {OtherIcons.clients_svg}
-                                    </div>
-                                    <div className="flex flex-col text-left">
-                                        <p className="text-gray-800 text-[14px]">Prachi Godase, Anurag, Punit, Sumit, Aryan</p>
-                                        <p className="text-gray-400 text-[12px]">Team</p>
-                                    </div>
-                                </div>
-
-                                <div> <div className="flex items-center gap-2 mb-2 justify-between">
-                                    <p className='flex items-center flex-row gap-1'> {OtherIcons.projects_svg}
-                                        <p className=" font-normal text-[12.8px] leading-[17.28px]">Tasks (20)</p></p>
-
-
-                                </div>
-                                    <div className="w-[270px] h-[39px]">
-                                        <table className="w-[90%]">
-                                            <thead>
-                                                <tr className="text-left">
-                                                    <td className='font-300 text-gray-400 text-[12px]'>To Do</td>
-                                                    <td className='font-300 text-gray-400 text-[12px]'>In Progress</td>
-                                                    <td className='font-300 text-gray-400 text-[12px]'>Under Review</td>
-                                                    <td className='font-300 text-gray-400 text-[12px]'>Completed</td>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td className='font-300 text-gray-700 text-[12px] text-center'>08</td>
-                                                    <td className='font-300 text-gray-700 text-[12px] text-center'>08</td>
-                                                    <td className='font-300 text-gray-700 text-[12px] text-center'>08</td>
-                                                    <td className='font-300 text-gray-700 text-[12px] text-center'>08</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div></div>
                             </div>
-
-
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             </div>
         </div>
