@@ -1,9 +1,9 @@
-"use client";
+// "use client";
 
-import { store } from "./store";
+// import { store } from "./store";
 
-const { Provider } = require("react-redux");
+// const { Provider } = require("react-redux");
 
-export const Providers=Provider(({childern})=>{
-    return <Provider store={store}>{childern}</Provider>
-})
+// export const Providers=Provider(({childern})=>{
+//     return <Provider store={store}>{childern}</Provider>
+// })
