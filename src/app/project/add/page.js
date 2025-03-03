@@ -112,7 +112,7 @@ const AddProject = () => {
                         </div>
 
                         <div className=" flex justify-end">
-                            <button className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m ml-[55px] bg-black text-gray-100 mr-2">Submit</button>
+                            <button className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m ml-[55px] bg-black text-gray-100 ">Submit</button>
 
                         </div>
                     </form>
