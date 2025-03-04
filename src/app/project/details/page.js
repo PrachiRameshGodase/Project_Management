@@ -3,6 +3,7 @@ import { OtherIcons } from '@/assests/icons';
 import Drawer01, { Drawer001 } from '@/components/common/Drawer/Drawer01';
 import Dropdown01 from '@/components/common/Dropdown/Dropdown01';
 import { projectSortConstant, statusProject, taskView, view } from '@/components/common/Helper/Helper';
+import KanBanView from '@/components/common/KanBanView/KanBanView';
 import TruncatedTooltipText from '@/components/common/TruncatedTooltipText/TruncatedTooltipText';
 import UserAvatar from '@/components/common/UserAvatar/UserAvatar';
 import LayOut from '@/components/LayOut';
@@ -31,13 +32,13 @@ const TaskList = () => {
     },
     {
       id: 2,
-      userId: 'HRMS Dashboard',
+      userId: 'HRMS',
       firstName: 'Shubham Yadav',
       email: 'alice@example.com',
       mobileNumber: '+1987654321',
       designation: 'Developer',
       dateOfJoining: '2022-11-20',
-      status: 'In progress',
+      status: 'To Do',
       priority: 'Low'
     },
     {
@@ -335,56 +336,8 @@ const TaskList = () => {
         )}
 
         {selectedView == 'Kanban' &&
-          <div className="w-full mx-auto max-w-full overflow-x-auto  mt-[50px]">
-            <div className="flex w-full min-w-[1000px]  gap-4 ">
-              {groupedUsers.map(group => (
-                <div key={group.status} className="w-[310px] h-full border border-gray-100 rounded bg-gray-100 mb-4">
-                  <div className="w-full h-[40px] bg-[#F0E7FA] flex items-center px-4">
-                    <p
-                      className={`w-[13px] h-[13px] rounded-full ${group.status === 'To Do' ? 'bg-[#6C757D]' :
-                        group.status === 'In progress' ? 'bg-[#CA9700]' :
-                          group.status === 'Under Review' ? 'bg-[#0D4FA7]' : 'bg-[#048339]'
-                        }`}
-                    ></p>
-                    <p className="text-[15px] ml-2">
-                      {group.status}
-                    </p>
-                    <p className="text-[14px] ml-4">
-                      {group.users.length}
-                    </p>
-                  </div>
-                  <div className="w-full h-full bg-gray-50  p-2">
-                    {group.users.map(user => (
-                      <div key={user.id} className="w-[300px] h-[240px] mt-4 bg-white p-4 gap-4 shadow-md rounded">
-                        <p
-                          className={`px-3 py-1 border rounded-md text-[15px] inline-block ${user.priority === 'High' ? 'text-[#4976F4] border-[#4976F4]' :
-                            user.priority === 'Low' ? 'text-red-400 border-red-400' : 'text-[#954BAF] border-[#954BAF]'
-                            }`}
-                        >
-                          {user.priority}
-                        </p>
-                        <p className='text-[18px] mt-2'>{user.userId}</p>
-                        <ul>
-                          <li className='flex'>
-                            <p className='text-[15px] text-gray-400 w-[120px] mt-2'>Due Date</p>
-                            <span className='text-[15px] mt-2'>{user.dueDate}</span>
-                          </li>
-                          <li className='flex'>
-                            <p className='text-[15px] text-gray-400 w-[280px] mt-2'>Team</p>
-                            <span className='text-[15px] mt-2'>{user.team}</span>
-                          </li>
-                          <li className='flex'>
-                            <p className='text-[15px] text-gray-400 w-[120px] mt-2'>Type</p>
-                            <span className='text-[15px] mt-2'>{user.type}</span>
-                          </li>
-                        </ul>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>}
+        <KanBanView groupedUsers={groupedUsers} />
+         }
       </div>
       <Drawer01 isOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} />
       <Drawer001 isOpen={isDrawerOpen1} setIsDrawerOpen={setIsDrawerOpen1} />
