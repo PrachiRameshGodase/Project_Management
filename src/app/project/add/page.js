@@ -1,6 +1,7 @@
 "use client"
 import { Dropdown001 } from '@/components/common/Dropdown/Dropdown01';
 import { Dropdown02 } from '@/components/common/Dropdown/Dropdown02';
+import CustomDatePicker from '@/components/common/Form/CustomDatePicker';
 import { projectPriority } from '@/components/common/Helper/Helper';
 import LayOut from '@/components/LayOut';
 import React, { useState } from 'react'
@@ -34,7 +35,8 @@ const AddProject = () => {
 
                         <div className="flex justify-between">
                             <label className="block text-m">Starting date</label>
-                            <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m ml-7 placeholder:text-gray-700" type='Date' placeholder='Enter Starting date' />
+                            {/* <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m ml-7 placeholder:text-gray-700" type='Date' placeholder='Enter Starting date' /> */}
+                            <CustomDatePicker />
                         </div>
 
                         <div className='flex justify-between '>
@@ -84,9 +86,8 @@ const AddProject = () => {
 
                         <div className="flex justify-between">
                             <label className="block text-black text-sm font-medium">Attachments</label>
-
                             <label
-                                className="w-[350px] h-10  text-[12px] border-2 border-dashed border-blue-400 rounded-lg flex items-center justify-center cursor-pointer hover:bg-blue-50 transition"
+                                className="w-[350px] h-10  text-[12px] border-2 border-dashed border-gray-400 rounded-lg flex items-center justify-center cursor-pointer hover:bg-gray-100 transition"
                             >
                                 <input
                                     type="file"
@@ -113,7 +114,6 @@ const AddProject = () => {
 
                         <div className=" flex justify-end">
                             <button className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m ml-[55px] bg-black text-gray-100 ">Submit</button>
-
                         </div>
                     </form>
                 </div>

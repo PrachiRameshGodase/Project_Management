@@ -34,11 +34,11 @@ const HomePage = () => {
                 </span>
             </div>
 
-            <div className="flex flex-col w-full mt-[40px]">
-                <h1 className="text-3xl font-semibold text-gray-800 text-center">All Projects</h1>
+            <div className="flex flex-col w-full mt-[10px] ">
+                <h1 className="text-3xl  font-semibold text-gray-800 text-center">All Projects</h1>
 
                 {/* Projects Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mx-auto mt-[50px]">
+                <div className="grid  grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mx-auto mt-[30px]">
                     {cardData.map((card) => {
                         const [toDo, inProgress, underReview, completed] = card.task || [0, 0, 0, 0];
                         const taskSum = card.task.reduce((acc, num) => acc + num, 0); // 🔹 Har card ka apna total task sum
@@ -101,7 +101,7 @@ const HomePage = () => {
                                             </p>
                                         </div>
 
-                                        <div className=" h-[45px] border rounded-sm p-1 border-gray-200 bg-white">
+                                        <div className=" h-[48px] border rounded-sm p-1 border-gray-200 bg-white">
                                             <table className="  w-full">
                                                 <thead>
                                                     <tr className="text-left ">
@@ -113,16 +113,16 @@ const HomePage = () => {
                                                 </thead>
                                                 <tbody>
                                                     <tr className="">
-                                                        <td className="font-300 text-gray-700 text-[12px] text-center">
+                                                        <td className="font-300 text-gray-700 text-[14px] text-center">
                                                             {toDo}
                                                         </td>
-                                                        <td className="font-300 text-gray-700 text-[12px] text-center">
+                                                        <td className="font-300 text-gray-700 text-[14px] text-center">
                                                             {inProgress}
                                                         </td>
-                                                        <td className="font-300 text-gray-700 text-[12px] text-center">
+                                                        <td className="font-300 text-gray-700 text-[14px] text-center">
                                                             {underReview}
                                                         </td>
-                                                        <td className="font-300 text-gray-700 text-[12px] text-center">
+                                                        <td className="font-300 text-gray-700 text-[14px] text-center">
                                                             {completed}
                                                         </td>
                                                     </tr>
