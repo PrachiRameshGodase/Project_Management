@@ -16,10 +16,10 @@ const DraggableCard = ({ user, index, status, moveUser, moveCard }) => {
     >
       <p
         className={`px-3 py-1 border rounded-md text-[15px] inline-block ${user.priority === "High"
-            ? "text-[#4976F4] border-[#4976F4]"
-            : user.priority === "Low"
-              ? "text-red-400 border-red-400"
-              : "text-[#954BAF] border-[#954BAF]"
+          ? "text-[#4976F4] border-[#4976F4]"
+          : user.priority === "Low"
+            ? "text-red-400 border-red-400"
+            : "text-[#954BAF] border-[#954BAF]"
           }`}
       >
         {user.priority}
@@ -72,12 +72,12 @@ const DroppableColumn = ({ status, users, moveUser, moveCard }) => {
       <div className="w-full h-[40px] bg-[#F0E7FA] flex items-center px-4">
         <p
           className={`w-[13px] h-[13px] rounded-full ${status === "To Do"
-              ? "bg-[#6C757D]"
-              : status === "In progress"
-                ? "bg-[#CA9700]"
-                : status === "Under Review"
-                  ? "bg-[#0D4FA7]"
-                  : "bg-[#048339]"
+            ? "bg-[#6C757D]"
+            : status === "In progress"
+              ? "bg-[#CA9700]"
+              : status === "Under Review"
+                ? "bg-[#0D4FA7]"
+                : "bg-[#048339]"
             }`}
         ></p>
         <p className="text-[15px] ml-2">{status}</p>
