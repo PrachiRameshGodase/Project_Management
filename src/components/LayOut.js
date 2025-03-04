@@ -2,14 +2,14 @@ import React from 'react'
 import NavBar from './navBar'
 // import { Providers } from '@/app/store/provider'
 
-const LayOut = ({children}) => {
+const LayOut = ({ children }) => {
   return (
     <div className="flex flex-col min-h-screen">
       <NavBar />
       {/* <Providers> */}
-      <div className="flex flex-col min-h-screen p-2 mt-12 sm:mt-0 sm:p-8 md:p-12 lg:p-16 xl:p-20 pb-16 sm:pb-20 gap-8 sm:gap-12 md:gap-16">
+      <div className="flex flex-col min-h-screen px-1 mt-20 pt-3   sm:px-4 md:px-8 lg:px-16 xl:py-10 pb-6 sm:pb-10 gap-8 sm:gap-12 md:gap-16">
         {children}
-      {/* </Providers> */}
+        {/* </Providers> */}
       </div>
     </div>
 

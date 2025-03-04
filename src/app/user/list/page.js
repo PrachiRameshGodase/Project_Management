@@ -51,7 +51,7 @@ const UserList = () => {
     <LayOut>
       <div>
         {/* Top Section with Filters and Buttons */}
-        <div className="w-full h-[44px] flex justify-between items-center px-4 mt-20 ">
+        <div className="w-full h-[44px] flex justify-between items-center px-4  ">
 
           {/* Left Section (Heading + Count) */}
           <div className="flex">

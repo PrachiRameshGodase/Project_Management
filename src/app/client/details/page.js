@@ -14,7 +14,7 @@ const ClientDetails = () => {
     };
     return (
         <LayOut>
-            <div className="w-full  h-full  mt-7  left-[80px] rounded-[10.17px] border border-[#F4EAEA] bg-white p-6 shadow-lg">
+            <div className="w-full  h-full  left-[80px] rounded-[10.17px] border border-[#F4EAEA] bg-white p-6 shadow-lg">
                 <div className="w-full  h-[40px] relative top-[6px] flex items-center justify-between px-2 border-b border-gray-100 ">
                     <p className="text-[26px] mb-[20px]">
                         Client Information

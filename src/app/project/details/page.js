@@ -146,7 +146,7 @@ const TaskList = () => {
 
   return (
     <LayOut>
-      <div className="w-full  h-full mx-auto  px-4 mt-[40px] ml-[5px] border border-gray-200 shadow-md">
+      <div className="w-full  h-full mx-auto  px-4  ml-[5px] border border-gray-200 shadow-md">
         <div className='lg:flex  justify-between mt-[10px] p-4 w-full'>
 
           {/* Avatar Section */}
