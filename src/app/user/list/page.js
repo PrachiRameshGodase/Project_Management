@@ -11,7 +11,7 @@ const UserList = () => {
   const [selectedStatus, setSelectedStatus] = useState('');
   const [selectedDesignation, setSelectedDesignation] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const entriesPerPage = 10; 
+  const entriesPerPage = 10;
 
   const users = [
     { userId: 'U001', firstName: 'John', email: 'john@example.com', mobileNumber: '+1234567890', designation: 'Manager', dateOfJoining: '2023-08-15', status: 'Active' },
@@ -49,15 +49,15 @@ const UserList = () => {
     <LayOut>
       <div>
         {/* Top Section with Filters and Buttons */}
-        <div className="w-full h-[44px] flex justify-between items-center px-4 mt-10">
-          <div className="flex">
-            <p className="text-[30px] leading-[32px] tracking-[-1.5px]">All Users List</p>
+        <div className="w-full h-[44px]  sm:flex   justify-between items-center px-4 mt-20 lg:mt-10">
+          <div className="flex  ">
+            <p className="text-[20px] sm:text-[30px] leading-[32px] tracking-[-1.5px]">All Users List</p>
             <p className="font-bold p-2 rounded-full text-[10.16px] leading-[12.19px] text-[#400F6F]  mt-3 ml-2 bg-[#f0e7fa] flex items-center justify-center  w-[50px] h-[10px]">
               {users.length} total
             </p>
           </div>
 
-          <div className="flex gap-6 items-center">
+          <div className="flex gap-6  items-center">
             <Dropdown01 options={status} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />
             <Dropdown01 options={designation} selectedValue={selectedDesignation} onSelect={setSelectedDesignation} label="Designation" icon={OtherIcons.designation_svg} />
             <button className="w-12 h-12 bg-green-600 text-white rounded-lg text-2xl flex items-center justify-center" onClick={() => router.push('/user/add')}>+</button>
