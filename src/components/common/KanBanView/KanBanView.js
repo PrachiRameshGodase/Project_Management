@@ -2,34 +2,16 @@ import React, { useState } from "react";
 
 const DraggableCard = ({ user, index, status, moveUser, moveCard }) => {
   const handleDragStart = (e) => {
-    e.dataTransfer.setData("userId", user.id);
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("userId", String(user.id)); // Ensure it's a string
     e.dataTransfer.setData("fromStatus", status);
-    e.dataTransfer.setData("fromIndex", index);
-  };
-
-  const handleDragOver = (e) => {
-    e.preventDefault();
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    const userId = e.dataTransfer.getData("userId");
-    const fromStatus = e.dataTransfer.getData("fromStatus");
-    const fromIndex = parseInt(e.dataTransfer.getData("fromIndex"), 10);
-
-    if (fromStatus !== status) {
-      moveUser(userId, fromStatus, status);
-    } else {
-      moveCard(userId, fromStatus, fromIndex, index);
-    }
+    e.dataTransfer.setData("fromIndex", String(index));
   };
 
   return (
     <div
       draggable
       onDragStart={handleDragStart}
-      onDragOver={handleDragOver}
-      onDrop={handleDrop}
       className="w-[300px] h-[240px] mt-4 bg-white p-4 gap-4 shadow-md rounded cursor-pointer"
     >
       <p
@@ -63,56 +45,69 @@ const DraggableCard = ({ user, index, status, moveUser, moveCard }) => {
 };
 
 const DroppableColumn = ({ status, users, moveUser, moveCard }) => {
-  const handleDragOver = (e) => {
-    e.preventDefault();
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    const userId = e.dataTransfer.getData("userId");
-    const fromStatus = e.dataTransfer.getData("fromStatus");
-
-    if (fromStatus !== status) {
-      moveUser(userId, fromStatus, status);
-    }
-  };
-
-  return (
-    <div
-      onDragOver={handleDragOver}
-      onDrop={handleDrop}
-      className="w-[310px] h-full border border-gray-100 rounded bg-gray-100 mb-4"
-    >
-      <div className="w-full h-[40px] bg-[#F0E7FA] flex items-center px-4">
-        <p
-          className={`w-[13px] h-[13px] rounded-full ${
-            status === "To Do"
-              ? "bg-[#6C757D]"
-              : status === "In progress"
-              ? "bg-[#CA9700]"
-              : status === "Under Review"
-              ? "bg-[#0D4FA7]"
-              : "bg-[#048339]"
-          }`}
-        ></p>
-        <p className="text-[15px] ml-2">{status}</p>
-        <p className="text-[14px] ml-4">{users.length}</p>
+    const handleDragOver = (e) => {
+      e.preventDefault();
+    };
+  
+    const handleDrop = (e) => {
+      e.preventDefault();
+      const userId = Number(e.dataTransfer.getData("userId"));
+      const fromStatus = e.dataTransfer.getData("fromStatus");
+      const fromIndex = Number(e.dataTransfer.getData("fromIndex"));
+  
+      if (fromStatus !== status) {
+        moveUser(userId, fromStatus, status);
+      } else {
+        // Allow reordering within the same column
+        const toIndex = users.length; // Move to the end of the list
+        moveCard(userId, fromStatus, fromIndex, toIndex);
+      }
+    };
+  
+    return (
+      <div
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+        className="w-[310px] h-full border border-gray-100 rounded bg-gray-100 mb-4 min-h-[1000px] flex flex-col"
+      >
+        <div className="w-full h-[40px] bg-[#F0E7FA] flex items-center px-4">
+          <p
+            className={`w-[13px] h-[13px] rounded-full ${
+              status === "To Do"
+                ? "bg-[#6C757D]"
+                : status === "In progress"
+                ? "bg-[#CA9700]"
+                : status === "Under Review"
+                ? "bg-[#0D4FA7]"
+                : "bg-[#048339]"
+            }`}
+          ></p>
+          <p className="text-[15px] ml-2">{status}</p>
+          <p className="text-[14px] ml-4">{users.length}</p>
+        </div>
+  
+        <div className="w-full h-full bg-gray-50 p-2  flex flex-col">
+          {users.length > 0 ? (
+            users.map((user, index) => (
+              <DraggableCard
+                key={user.id}
+                user={user}
+                index={index}
+                status={status}
+                moveUser={moveUser}
+                moveCard={moveCard}
+              />
+            ))
+          ) : (
+            <div className="w-full flex items-center justify-center text-gray-400 text-sm">
+              Drag here
+            </div>
+          )}
+        </div>
       </div>
-      <div className="w-full h-full bg-gray-50 p-2">
-        {users.map((user, index) => (
-          <DraggableCard
-            key={user.id}
-            user={user}
-            index={index}
-            status={status}
-            moveUser={moveUser}
-            moveCard={moveCard}
-          />
-        ))}
-      </div>
-    </div>
-  );
-};
+    );
+  };
+  
 
 const KanBanView = ({ groupedUsers }) => {
   const [columns, setColumns] = useState(groupedUsers);
@@ -148,8 +143,6 @@ const KanBanView = ({ groupedUsers }) => {
   };
 
   const moveCard = (id, fromStatus, fromIndex, toIndex) => {
-    if (fromStatus !== fromStatus) return;
-
     const updatedColumns = columns.map((group) => {
       if (group.status === fromStatus) {
         const updatedUsers = [...group.users];
