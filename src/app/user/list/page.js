@@ -1,13 +1,18 @@
 "use client"
+import { fetchUsers } from '@/app/store/userSlice';
 import { OtherIcons } from '@/assests/icons';
 import Dropdown01 from '@/components/common/Dropdown/Dropdown01';
 import { designation, status } from '@/components/common/Helper/Helper';
 import LayOut from '@/components/LayOut';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 const UserList = () => {
   const router = useRouter();
+const dispatch = useDispatch();
+  const usersList = useSelector((state) => state.users);
+  console.log("usersList", usersList)
   const [selectedStatus, setSelectedStatus] = useState('');
   const [selectedDesignation, setSelectedDesignation] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -27,6 +32,10 @@ const UserList = () => {
     { userId: 'U011', firstName: 'Jack', email: 'jack@example.com', mobileNumber: '+1987654330', designation: 'Manager', dateOfJoining: '2016-04-12', status: 'Active' },
   ];
 
+  useEffect(() => {
+    dispatch(fetchUsers()); // Fetch users when the component mounts
+  }, [dispatch]);
+  console.log("usersList", usersList)
   const totalEntries = users.length;
   const totalPages = Math.ceil(totalEntries / entriesPerPage);
 
