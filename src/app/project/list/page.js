@@ -160,11 +160,11 @@ const ProjectList = () => {
   return (
     <LayOut> <div>
       {/* Top Section with Filters and Buttons */}
-      <div className="w-full h-[44px] flex justify-between items-center px-4 mt-20 ">
+      <div className="w-full h-[44px] flex justify-between items-center px-4  ">
 
         {/* Left Section (Heading + Count) */}
         <div className="flex">
-          <p className="text-[30px] leading-[32px] tracking-[-1.5px]">All Projects list</p>
+          <p className="text-[20px] sm:text-[30px] leading-[32px] tracking-[-1.5px]">All Projects list</p>
           <p className="font-bold p-2 rounded-full text-[10.16px] leading-[12.19px] text-[#400F6F] mt-3 ml-2 bg-[#f0e7fa] flex items-center justify-center w-[50px] h-[10px]">
             {users.length} total
           </p>
@@ -236,25 +236,25 @@ const ProjectList = () => {
             <table className="w-full min-w-[1000px] border-collapse border border-gray-100">
               <thead>
                 <tr className="text-left text-sm font-bold uppercase text-gray-800">
-                  <th className="py-3 px-4 border-b border-gray-100  flex">
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b border-gray-100  flex">
                     PROJECT NAME<span className="mt-1 ml-2 flex flex-col gap-1">{OtherIcons.arrow_up_svg}{OtherIcons.arrow_down_svg}</span>
                   </th>
-                  <th className="py-3 px-4 border-b border-gray-100">CLIENT  NAME</th>
-                  <th className="py-3 px-4 border-b border-gray-100">STATUS</th>
-                  <th className="py-3 px-4 border-b border-gray-100">STARTING DATE</th>
-                  <th className="py-3 px-4 border-b border-gray-100">DEADLINE</th>
-                  <th className="py-3 px-4 border-b border-gray-100">PROJECT LEADER</th>
-                  <th className="py-3 px-4 border-b border-gray-100">TEAM</th>
-                  <th className="py-3 px-4 border-b border-gray-100">PRIORITY</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b border-gray-100">CLIENT  NAME</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] w-[110px] sm:w-[160px] border-b border-gray-100">STATUS</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b border-gray-100">STARTING DATE</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b border-gray-100">DEADLINE</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b border-gray-100">PROJECT LEADER</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b border-gray-100">TEAM</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b border-gray-100">PRIORITY</th>
 
                 </tr>
               </thead>
               <tbody>
                 {paginatedUsers.map((user) => (
                   <tr key={user.id} className="hover:bg-gray-50 rounded cursor-pointer">
-                    <td className="py-4 px-4 border-b border-gray-50 rounded text-[15px]" onClick={() => router.push(`/project/details?id=${user.id}`)}>{user.userId}</td>
-                    <td className="py-4 px-4 border-b border-gray-50 rounded text-[15px]" onClick={(`/project/details?id=${user.id}`)}>{user.firstName}</td>
-                    <td className={`py-4 px-4 min-w-[150px] border-b border-gray-50 rounded text-[15px]  font-bold`} onClick={() => router.push(`/project/details?id=${user.id}`)}>
+                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  border-b border-gray-50 rounded " onClick={() => router.push(`/project/details?id=${user.id}`)}>{user.userId}</td>
+                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] border-b border-gray-50 rounded " onClick={(`/project/details?id=${user.id}`)}>{user.firstName}</td>
+                    <td className={`py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]   border-b border-gray-50 rounded  font-bold`} onClick={() => router.push(`/project/details?id=${user.id}`)}>
                       <span
                         className={`px-3 py-1 border rounded-md ${user.status === 'To Do'
                           ? 'text-[#6C757D] border-[#6C757D]'
@@ -265,15 +265,15 @@ const ProjectList = () => {
                         {user.status}
                       </span>
                     </td>
-                    <td className="py-4 px-4 border-b border-gray-50 text-[15px]" onClick={() => router.push(`/project/details?id=${user.id}`)}>{user.dateOfJoining}</td>
-                    <td className="py-4 px-4 border-b border-gray-50 ] text-[15px]" onClick={() => router.push(`/project/details?id=${user.id}`)}>2022-11-20</td>
-                    <td className="py-4 px-4 border-b border-gray-50 text-[15px]" onClick={() => router.push(`/project/details?id=${user.id}`)}>Vasu Shastri</td>
-                    <td className="py-4 px-4 border-b border-gray-50 text-[15px]" onClick={() => router.push(`/project/details?id=${user.id}`)}>
+                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] border-b border-gray-50 " onClick={() => router.push(`/project/details?id=${user.id}`)}>{user.dateOfJoining}</td>
+                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  border-b border-gray-50 ] " onClick={() => router.push(`/project/details?id=${user.id}`)}>2022-11-20</td>
+                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  border-b border-gray-50 " onClick={() => router.push(`/project/details?id=${user.id}`)}>Vasu Shastri</td>
+                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  border-b border-gray-50 " onClick={() => router.push(`/project/details?id=${user.id}`)}>
                       <TruncatedTooltipText text="Prachi Godase, Sumit Yadav, Punit Omar, Aryan Singh" maxLength={25} />
                     </td>
-                    <td className={`py-4 px-4 border-b border-gray-50 font-bold`} onClick={() => router.push(`/project/details?id=${user.id}`)}>
+                    <td className={`py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] border-b border-gray-50 font-bold`} onClick={() => router.push(`/project/details?id=${user.id}`)}>
                       <span
-                        className={`px-3 py-1 border rounded-md text-[15px] ${user.priority === 'High'
+                        className={`py-1 sm:py-2 px-2 sm:px-4  text-[10px] sm:text-[14px] border rounded-md  ${user.priority === 'High'
                           ? 'text-[#4976F4] border-[#4976F4]' : user.priority === 'Low' ?
                             'text-red-400 border-red-400' : 'text-[#954BAF] border-[#954BAF]'
                           } inline-block`}
@@ -287,11 +287,11 @@ const ProjectList = () => {
             </table>
           </div>
           {/* Pagination */}
-          <div className="flex justify-between items-center mt-4 px-4 py-2">
-            <div className='text-gray-700'>{`Showing   ${startEntry + 1} - ${Math.min(endEntry, filteredUsers.length)} of ${filteredUsers.length} entries`}</div>
+          <div className="flex justify-between items-center mt-4 px-1 sm:px-2 py-2">
+            <div className='text-gray-700 text-[12px] sm:text-[18px]'>{`Showing   ${startEntry + 1} - ${Math.min(endEntry, filteredUsers.length)} of ${filteredUsers.length} entries`}</div>
             <div className="flex gap-2">
-              <button className={`w-[80px] h-[39px] rounded-md border ${currentPage === 1 ? 'bg-gray-200 text-gray-400' : 'bg-white text-black hover:bg-gray-300'}`} disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>Previous</button>
-              <button className={`w-[80px] h-[39px] rounded-md border ${currentPage === totalPages ? 'bg-gray-200 text-gray-400' : 'bg-white text-black hover:bg-gray-300'}`} disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>Next</button>
+              <button className={`w-[60px] h-[29px]   sm:w-[80px] sm:h-[39px] text-[10px] rounded-md border ${currentPage === 1 ? 'bg-gray-200 text-gray-400' : 'bg-white text-black hover:bg-gray-300'}`} disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>Previous</button>
+              <button className={`w-[60px] h-[29px]  sm:w-[80px] sm:h-[39px] text-[10px] rounded-md border ${currentPage === totalPages ? 'bg-gray-200 text-gray-400' : 'bg-white text-black hover:bg-gray-300'}`} disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>Next</button>
             </div>
           </div>
         </>

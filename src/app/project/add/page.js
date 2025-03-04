@@ -25,7 +25,7 @@ const AddProject = () => {
     return (
         <LayOut>
             <div className="flex text-center">
-                <div className="text-2xl tracking-tight  mt-12 ml-[70px]">Add New Project</div>
+                <div className="text-2xl tracking-tight  ml-[70px]">Add New Project</div>
 
                 <div className="flex justify-center items-center h-screen mx-auto">
                     <form className="w-[600px] h-[656px] bg-white p-8 rounded-lg space-y-5">

@@ -25,20 +25,20 @@ const HomePage = () => {
     };
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-100 p-10 relative">
+        <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4 sm:p-10 relative ">
             {/* Avatar Section (Top-Right) */}
-            <div className="absolute top-4 right-14 flex items-center space-x-2">
+            <div className="absolute top-4 right-5 sm:right-14 flex items-center space-x-2">
                 <UserAvatar name={user.name} dotColor="green" size={36} image={user.image} isActive={user.isActive} />
                 <span className="cursor-pointer" onClick={() => router.push(`/`)}>
                     {OtherIcons.back_svg}
                 </span>
             </div>
 
-            <div className="flex flex-col w-full mt-[10px] ">
-                <h1 className="text-3xl  font-semibold text-gray-800 text-center">All Projects</h1>
+            <div className="flex flex-col w-full mt-[10px]  ">
+                <h1 className="text-3xl  font-semibold text-gray-800 sm:text-center ">All Projects</h1>
 
                 {/* Projects Grid */}
-                <div className="grid  grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mx-auto mt-[30px]">
+                <div className="grid  grid-cols-1  md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mx-auto mt-[30px]">
                     {cardData.map((card) => {
                         const [toDo, inProgress, underReview, completed] = card.task || [0, 0, 0, 0];
                         const taskSum = card.task.reduce((acc, num) => acc + num, 0); // 🔹 Har card ka apna total task sum
@@ -94,7 +94,7 @@ const HomePage = () => {
                                             <p className="flex items-center flex-row gap-1">
                                                 <div className="border bg-white border-gray-400 p-1 rounded-full">
                                                     {OtherIcons.task_svg}
-                                               </div>
+                                                </div>
                                                 <p className="font-normal text-[14px] leading-[17.28px]">
                                                     Tasks ({taskSum}) {/* 🔹 Har Card ka apna total sum */}
                                                 </p>

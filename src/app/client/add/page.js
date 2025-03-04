@@ -5,7 +5,7 @@ const AddUser = () => {
   
     return (
         <LayOut> <div className="flex">
-            <div className="text-2xl tracking-tight mt-12 ml-[70px]">Add New Client</div>
+            <div className="text-2xl tracking-tight ml-[70px]">Add New Client</div>
 
             <div className="flex   justify-between items-center h-screen mx-auto">
                 <form className="w-[600px] h-[656px] bg-white p-8 rounded-lg space-y-8">

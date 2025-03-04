@@ -14,8 +14,8 @@ const ClientDetails = () => {
     };
     return (
         <LayOut>
-            <div className="w-full  h-full  mt-7  left-[80px] rounded-[10.17px] border border-[#F4EAEA] bg-white p-6 shadow-lg">
-                <div className="w-full  h-[40px] relative top-[6px] flex items-center justify-between px-2 border-b border-gray-100 ">
+            <div className="w-full  h-full  left-[80px] rounded-[10.17px] border border-[#F4EAEA] bg-white p-6 shadow-lg">
+                <div className="w-full  h-[40px] relative top-[6px] sm:flex items-center justify-between px-2 border-b border-gray-100 ">
                     <p className="text-[26px] mb-[20px]">
                         Client Information
                     </p>
@@ -59,7 +59,7 @@ const ClientDetails = () => {
                         </button>
                     </div>
                 </div>
-                <div className="p-4 flex flex-col gap-4 xl:gap-6  xl:flex-row items-start justify-between mt-4">
+                <div className="p-4 mt-16 sm:mt-0 flex flex-col gap-4 xl:gap-6  xl:flex-row items-start justify-between ">
                     {/* Avatar Section */}
                     <div className=" w-[260px] h-[69px] flex items-center gap-[12.21px] ">
                         <UserAvatar name={user.name} dotColor='purple' size={66} image={user.image} isActive={user.isActive} />
@@ -70,7 +70,7 @@ const ClientDetails = () => {
                     </div>
 
                     {/* User Information Section */}
-                    <div className="flex flex-row gap-4  ">
+                    <div className="md:flex  flex-row gap-4  ">
                         <ul className="flex flex-col space-y-2">
                             <li className="w-[367px] h-[24px] flex items-center">
                                 <span className=" h-[24px] opacity-90 text-[20px]">Contact Person</span>
@@ -86,7 +86,7 @@ const ClientDetails = () => {
 
                         </ul>
 
-                        <ul className="flex flex-col space-y-2">
+                        <ul className="flex  flex-col space-y-2">
                             <li className="w-[367px] h-[24px] flex items-center">
 
                             </li>
