@@ -122,10 +122,10 @@ const TaskList = () => {
     status,
     users: users.filter(user => user.status === status)
   }));
- 
-  
+
+
   const [currentPage, setCurrentPage] = useState(1);
-  
+
   const entriesPerPage = 5;
   const totalEntries = users.length;
   const totalPages = Math.ceil(totalEntries / entriesPerPage);
@@ -263,7 +263,7 @@ const TaskList = () => {
             <button className="w-[49px] h-[44px] bg-[#048339] text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/project/add-task')}>+</button>
           </div>
         </div>
-{/* w */}
+        {/* w */}
         {/* Table Section */}
         {selectedView == "List" && (
           <>
@@ -336,8 +336,8 @@ const TaskList = () => {
         )}
 
         {selectedView == 'Kanban' &&
-        <KanBanView groupedUsers={groupedUsers} />
-         }
+          <KanBanView groupedUsers={groupedUsers} />
+        }
       </div>
       <Drawer01 isOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} />
       <Drawer001 isOpen={isDrawerOpen1} setIsDrawerOpen={setIsDrawerOpen1} />

@@ -1,16 +1,36 @@
 import React, { useState } from "react";
 
-const DraggableCard = ({ user, index, status, moveUser }) => {
+const DraggableCard = ({ user, index, status, moveUser, moveCard }) => {
   const handleDragStart = (e) => {
     e.dataTransfer.setData("userId", user.id);
     e.dataTransfer.setData("fromStatus", status);
     e.dataTransfer.setData("fromIndex", index);
   };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const userId = e.dataTransfer.getData("userId");
+    const fromStatus = e.dataTransfer.getData("fromStatus");
+    const fromIndex = parseInt(e.dataTransfer.getData("fromIndex"), 10);
+
+    if (fromStatus !== status) {
+      moveUser(userId, fromStatus, status);
+    } else {
+      moveCard(userId, fromStatus, fromIndex, index);
+    }
+  };
+
   return (
     <div
       draggable
       onDragStart={handleDragStart}
-      className="w-[300px] h-[240px] mt-4 bg-white p-4 shadow-md rounded cursor-pointer"
+      onDragOver={handleDragOver}
+      onDrop={handleDrop}
+      className="w-[300px] h-[240px] mt-4 bg-white p-4 gap-4 shadow-md rounded cursor-pointer"
     >
       <p
         className={`px-3 py-1 border rounded-md text-[15px] inline-block ${user.priority === "High"
@@ -41,8 +61,10 @@ const DraggableCard = ({ user, index, status, moveUser }) => {
   );
 };
 
-const DroppableColumn = ({ status, users, moveUser }) => {
-  const handleDragOver = (e) => e.preventDefault();
+const DroppableColumn = ({ status, users, moveUser, moveCard }) => {
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
 
   const handleDrop = (e) => {
     e.preventDefault();
@@ -58,7 +80,7 @@ const DroppableColumn = ({ status, users, moveUser }) => {
     <div
       onDragOver={handleDragOver}
       onDrop={handleDrop}
-      className="w-[310px] min-h-[300px] border border-gray-100 rounded bg-gray-100 p-2"
+      className="w-[310px] h-full border border-gray-100 rounded bg-gray-100 mb-4"
     >
       <div className="w-full h-[40px] bg-[#F0E7FA] flex items-center px-4">
         <p
@@ -74,31 +96,36 @@ const DroppableColumn = ({ status, users, moveUser }) => {
         <p className="text-[15px] ml-2">{status}</p>
         <p className="text-[14px] ml-4">{users.length}</p>
       </div>
-      {users.map((user, index) => (
-        <DraggableCard
-          key={user.id}
-          user={user}
-          index={index}
-          status={status}
-          moveUser={moveUser} />
-      ))}
+      <div className="w-full h-full bg-gray-50 p-2">
+        {users.map((user, index) => (
+          <DraggableCard
+            key={user.id}
+            user={user}
+            index={index}
+            status={status}
+            moveUser={moveUser}
+            moveCard={moveCard}
+          />
+        ))}
+      </div>
     </div>
   );
 };
 
-const KanBanView = () => {
-  const [columns, setColumns] = useState([
-    { status: "To Do", users: [{ id: "1", userId: "Task 1", dueDate: "2024-03-10", team: "A", type: "Bug" }] },
-    { status: "In Progress", users: [] },
-    { status: "Done", users: [] }
-  ]);
+const KanBanView = ({ groupedUsers }) => {
+  const [columns, setColumns] = useState(groupedUsers);
 
   const moveUser = (userId, fromStatus, toStatus) => {
-    let userToMove = null;
+    if (fromStatus === toStatus) return;
+
+    let userToMove;
     const updatedColumns = columns.map((group) => {
       if (group.status === fromStatus) {
         userToMove = group.users.find((user) => user.id === userId);
-        return { ...group, users: group.users.filter((user) => user.id !== userId) };
+        return {
+          ...group,
+          users: group.users.filter((user) => user.id !== userId),
+        };
       }
       return group;
     });
@@ -107,7 +134,10 @@ const KanBanView = () => {
 
     const finalColumns = updatedColumns.map((group) => {
       if (group.status === toStatus) {
-        return { ...group, users: [userToMove, ...group.users] }; // 🆕 Top pe add ho raha hai
+        return {
+          ...group,
+          users: [...group.users, { ...userToMove, status: toStatus }],
+        };
       }
       return group;
     });
@@ -115,11 +145,36 @@ const KanBanView = () => {
     setColumns(finalColumns);
   };
 
+  const moveCard = (id, fromStatus, fromIndex, toIndex) => {
+    if (fromStatus !== fromStatus) return;
+
+    const updatedColumns = columns.map((group) => {
+      if (group.status === fromStatus) {
+        const updatedUsers = [...group.users];
+        const [movedUser] = updatedUsers.splice(fromIndex, 1);
+        updatedUsers.splice(toIndex, 0, movedUser);
+
+        return { ...group, users: updatedUsers };
+      }
+      return group;
+    });
+
+    setColumns(updatedColumns);
+  };
+
   return (
-    <div className="flex gap-4 p-4 overflow-x-auto">
-      {columns.map((group) => (
-        <DroppableColumn key={group.status} status={group.status} users={group.users} moveUser={moveUser} />
-      ))}
+    <div className="w-full cursor-move  mx-auto max-w-full overflow-x-auto mt-[50px]">
+      <div className="flex w-full min-w-[1000px] gap-4">
+        {columns.map((group) => (
+          <DroppableColumn
+            key={group.status}
+            status={group.status}
+            users={group.users}
+            moveUser={moveUser}
+            moveCard={moveCard}
+          />
+        ))}
+      </div>
     </div>
   );
 };

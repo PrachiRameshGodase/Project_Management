@@ -4,39 +4,18 @@ const DraggableCard = ({ user, index, status, moveUser }) => {
   const handleDragStart = (e) => {
     e.dataTransfer.setData("userId", user.id);
     e.dataTransfer.setData("fromStatus", status);
-    e.dataTransfer.setData("fromIndex", index);
   };
+
   return (
     <div
       draggable
       onDragStart={handleDragStart}
       className="w-[300px] h-[240px] mt-4 bg-white p-4 shadow-md rounded cursor-pointer"
     >
-      <p
-        className={`px-3 py-1 border rounded-md text-[15px] inline-block ${user.priority === "High"
-          ? "text-[#4976F4] border-[#4976F4]"
-          : user.priority === "Low"
-            ? "text-red-400 border-red-400"
-            : "text-[#954BAF] border-[#954BAF]"
-          }`}
-      >
-        {user.priority}
-      </p>
       <p className="text-[18px] mt-2">{user.userId}</p>
-      <ul>
-        <li className="flex">
-          <p className="text-[15px] text-gray-400 w-[120px] mt-2">Due Date</p>
-          <span className="text-[15px] mt-2">{user.dueDate}</span>
-        </li>
-        <li className="flex">
-          <p className="text-[15px] text-gray-400 w-[280px] mt-2">Team</p>
-          <span className="text-[15px] mt-2">{user.team}</span>
-        </li>
-        <li className="flex">
-          <p className="text-[15px] text-gray-400 w-[120px] mt-2">Type</p>
-          <span className="text-[15px] mt-2">{user.type}</span>
-        </li>
-      </ul>
+      <p className="text-[15px] text-gray-400">Due Date: {user.dueDate}</p>
+      <p className="text-[15px] text-gray-400">Team: {user.team}</p>
+      <p className="text-[15px] text-gray-400">Type: {user.type}</p>
     </div>
   );
 };
@@ -60,27 +39,9 @@ const DroppableColumn = ({ status, users, moveUser }) => {
       onDrop={handleDrop}
       className="w-[310px] min-h-[300px] border border-gray-100 rounded bg-gray-100 p-2"
     >
-      <div className="w-full h-[40px] bg-[#F0E7FA] flex items-center px-4">
-        <p
-          className={`w-[13px] h-[13px] rounded-full ${status === "To Do"
-            ? "bg-[#6C757D]"
-            : status === "In progress"
-              ? "bg-[#CA9700]"
-              : status === "Under Review"
-                ? "bg-[#0D4FA7]"
-                : "bg-[#048339]"
-            }`}
-        ></p>
-        <p className="text-[15px] ml-2">{status}</p>
-        <p className="text-[14px] ml-4">{users.length}</p>
-      </div>
+      <h3 className="bg-gray-200 p-2 text-center font-bold">{status}</h3>
       {users.map((user, index) => (
-        <DraggableCard
-          key={user.id}
-          user={user}
-          index={index}
-          status={status}
-          moveUser={moveUser} />
+        <DraggableCard key={user.id} user={user} index={index} status={status} moveUser={moveUser} />
       ))}
     </div>
   );
