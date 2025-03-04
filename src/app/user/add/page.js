@@ -1,4 +1,5 @@
 "use client"
+import CustomDatePicker from '@/components/common/DatePicker/CustomDatePicker';
 import { Dropdown001 } from '@/components/common/Dropdown/Dropdown01';
 import { Dropdown02 } from '@/components/common/Dropdown/Dropdown02';
 import { departmentOptions, designation, projectPriority } from '@/components/common/Helper/Helper';
@@ -63,7 +64,9 @@ const AddUser = () => {
 
           <div className="flex justify-between items-center">
             <label className="block text-m">Joining Date</label>
-            <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m ml-5 placeholder:text-gray-700" type='Date' placeholder='Select Joining Date' />
+            {/* <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m ml-5 placeholder:text-gray-700" type='Date' placeholder='Select Joining Date' /> */}
+            <CustomDatePicker onChange={(date) => console.log("Selected Date:", date)} />
+
           </div>
 
           <div className="flex justify-between items-center">

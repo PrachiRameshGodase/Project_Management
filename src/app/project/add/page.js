@@ -1,7 +1,7 @@
 "use client"
 import { Dropdown001 } from '@/components/common/Dropdown/Dropdown01';
 import { Dropdown02 } from '@/components/common/Dropdown/Dropdown02';
-import CustomDatePicker from '@/components/common/Form/CustomDatePicker';
+import CustomDatePicker from '@/components/common/DatePicker/CustomDatePicker';
 import { projectPriority } from '@/components/common/Helper/Helper';
 import LayOut from '@/components/LayOut';
 import React, { useState } from 'react'
@@ -36,12 +36,14 @@ const AddProject = () => {
                         <div className="flex justify-between">
                             <label className="block text-m">Starting date</label>
                             {/* <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m ml-7 placeholder:text-gray-700" type='Date' placeholder='Enter Starting date' /> */}
-                            <CustomDatePicker />
+                            <CustomDatePicker onChange={(date) => console.log("Selected Date:", date)} />
                         </div>
 
                         <div className='flex justify-between '>
                             <label className="block text-m">Due date</label>
-                            <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m ml-14 placeholder:text-gray-700" type='Date' placeholder='Enter Due date' />
+                            {/* <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m ml-14 placeholder:text-gray-700" type='Date' placeholder='Enter Due date' /> */}
+                            <CustomDatePicker onChange={(date) => console.log("Selected Date:", date)} />
+
                         </div>
 
                         <div className="flex justify-between">

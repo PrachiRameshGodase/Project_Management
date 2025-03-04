@@ -1,5 +1,8 @@
+"use client";
+
 import { useState } from "react";
 import "./datepicker.css";
+import { OtherIcons } from "@/assests/icons";
 
 const CustomDatePicker = ({ label = "Select Date", onChange }) => {
     const [date, setDate] = useState("");
@@ -17,8 +20,10 @@ const CustomDatePicker = ({ label = "Select Date", onChange }) => {
                 onChange={handleDateChange}
                 className="date-input"
             />
-            <span className="date-label">{date ? date : label}</span>
-            <span className="icon">📅</span>
+            <span className={`date-label ${date ? "hidden" : ""}`}>
+                {label}
+            </span>
+            <span className="icon">{OtherIcons.calender_svg}</span>
         </div>
     );
 };
