@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import { OutsideClick } from "../OutsideClick/OutsideClick";
 import { ChevronUp, ChevronDown } from "lucide-react";
@@ -15,14 +16,14 @@ const Dropdown01 = ({ options, selectedValue, onSelect, label, icon }) => {
   return (
     <div className="relative" ref={dropdownOutsideClick?.ref}>
       <div
-        className={`h-[44px] flex items-center gap-2 border border-gray-300 rounded-lg px-3 py-2 cursor-pointer ${
+        className={`h-[44px] flex items-center gap-2 border border-gray-900 hover:ring-purple-300 rounded-lg px-3 py-2 cursor-pointer ${
           label === "Designation"
-            ? "w-[140px]"
+            ? "w-fit"
             : label === "Sort By"
-            ? "w-[110px]"
+            ? "w-fit"
             : label === "Task Type"
-            ? "w-[120px]" // Fixed incorrect "W-[120px]" to "w-[120px]"
-            : "w-[100px]"
+            ? "w-fit" // Fixed incorrect "W-[120px]" to "w-[120px]"
+            : "w-fit"
         }`}
         onClick={dropdownOutsideClick?.handleToggle}
         ref={dropdownOutsideClick?.buttonRef}

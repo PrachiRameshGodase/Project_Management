@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Tooltip } from "@mui/material";
 import { useRouter } from "next/navigation";

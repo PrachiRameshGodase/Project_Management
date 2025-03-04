@@ -1,4 +1,3 @@
-"use client";
 import { OtherIcons } from "@/assests/icons";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";

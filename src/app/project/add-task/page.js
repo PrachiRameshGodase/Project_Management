@@ -1,4 +1,5 @@
 "use client"
+import FileUpload from '@/components/common/Attachments/FileUpload'
 import { Dropdown001 } from '@/components/common/Dropdown/Dropdown01'
 import { Dropdown02 } from '@/components/common/Dropdown/Dropdown02'
 import { departmentOptions, projectPriority } from '@/components/common/Helper/Helper'
@@ -17,7 +18,7 @@ const AddTask = () => {
                 <div className="text-2xl tracking-tight  mt-12 ml-[70px]">Add New Task</div>
 
                 <div className="flex justify-center items-center h-screen mx-auto">
-                    <form className="w-[600px] h-[656px] bg-white p-8 rounded-lg space-y-5">
+                    <form className="w-[600px] h-[656px] bg-white p-8 rounded-lg space-y-5 mb-12">
                         <div className="flex justify-between">
                             <label className="block text-m ">Task Title*</label>
                             <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m ml-7 placeholder:text-gray-700" type='text' placeholder='Enter Task Title' />
@@ -80,15 +81,18 @@ const AddTask = () => {
 
                         <div className="flex justify-between">
                             <label className="block text-m">Attachments</label>
-                            <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m ml-5" type='text' placeholder='Select Joining Date' />
+                            {/* <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m ml-5" type='text' placeholder='Select Joining Date' /> */}
+                            <FileUpload onFilesChange={(files) => console.log(files)} />
+
                         </div>
                         <div className="flex justify-between">
                             <label className="block text-m">Description..</label>
                             <textarea className="w-[350px] h-40 border border-gray-300 rounded-lg p-2 text-m ml-[35px] placeholder:text-gray-700" type='text' placeholder='Enter Description' />
                         </div>
 
-
-                        <button className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m ml-[55px] bg-black text-gray-100 mr-2">Submit</button>
+                        <div className="flex justify-end w-full ">
+                            <button className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m  bg-black text-gray-100 ">Submit</button>
+                        </div>
                     </form>
                 </div>
             </div>
