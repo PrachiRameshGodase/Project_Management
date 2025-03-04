@@ -37,7 +37,7 @@ const AddProject = () => {
                             <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m ml-7 placeholder:text-gray-700" type='Date' placeholder='Enter Starting date' />
                         </div>
 
-                        <div className="flex justify-between">
+                        <div className='flex justify-between '>
                             <label className="block text-m">Due date</label>
                             <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m ml-14 placeholder:text-gray-700" type='Date' placeholder='Enter Due date' />
                         </div>
