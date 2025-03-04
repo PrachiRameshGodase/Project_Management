@@ -2,6 +2,7 @@
 import { OtherIcons } from '@/assests/icons';
 import Dropdown01 from '@/components/common/Dropdown/Dropdown01';
 import { designation, projectSortConstant, status, view } from '@/components/common/Helper/Helper';
+import SearchComponent from '@/components/common/SearchComponent/SearchComponent';
 import LayOut from '@/components/LayOut';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
@@ -131,9 +132,10 @@ const ClientList = () => {
                         icon={OtherIcons.sort_by_svg}
                     />
 
-                    <div className="w-[44px] h-[44px] flex items-center justify-center border border-gray-300 rounded-lg p-3">
+                    {/* <div className="w-[44px] h-[44px] flex items-center justify-center border border-gray-300 rounded-lg p-3">
                         {OtherIcons.search_svg}
-                    </div>
+                    </div> */}
+                    <SearchComponent />
 
                     <div className="w-[1px] h-[40px] bg-gray-400 opacity-40" />
 

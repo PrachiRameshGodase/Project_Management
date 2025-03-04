@@ -6,6 +6,7 @@ import LayOut from '@/components/LayOut';
 import Dropdown01 from '@/components/common/Dropdown/Dropdown01';
 import { projectSortConstant, statusProject, view } from '@/components/common/Helper/Helper';
 import TruncatedTooltipText from '@/components/common/TruncatedTooltipText/TruncatedTooltipText';
+import SearchComponent from '@/components/common/SearchComponent/SearchComponent';
 
 const ProjectList = () => {
   const router = useRouter()
@@ -190,9 +191,11 @@ const ProjectList = () => {
             icon={OtherIcons.sort_by_svg}
           />
 
-          <div className="w-[44px] h-[44px] flex items-center justify-center border border-gray-300 rounded-lg p-3">
+          {/* <div className="w-[44px] h-[44px] flex items-center justify-center border border-gray-300 rounded-lg p-3">
             {OtherIcons.search_svg}
-          </div>
+          </div> */}
+          <SearchComponent />
+
 
           <div className="w-[1px] h-[40px] bg-gray-400 opacity-40" />
 
@@ -275,69 +278,69 @@ const ProjectList = () => {
       {/* Card Section */}
       {selectedView == "Card" && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mx-auto mt-[50px]">
-        {users.map((user) => (
-          <div key={user.id} className="w-full min-w-[305px] h-[240px] hover:border-gray-200 hover:shadow-lg  border border-gray-100 rounded-xl p-4 shadow-md">
-            <div className="flex justify-between items-center mb-4">
-              <p className="font-700 text-[21.33px] leading-[28.8px] ">HRMS Dashboard</p>
-              {/* <p className="font-[400] text-[12px] leading-[16.8px] text-green-600 w-[70px] h-[20px]  rounded flex items-center justify-center">
+          {users.map((user) => (
+            <div key={user.id} className="w-full min-w-[305px] h-[240px] hover:border-gray-200 hover:shadow-lg  border border-gray-100 rounded-xl p-4 shadow-md">
+              <div className="flex justify-between items-center mb-4">
+                <p className="font-700 text-[21.33px] leading-[28.8px] ">HRMS Dashboard</p>
+                {/* <p className="font-[400] text-[12px] leading-[16.8px] text-green-600 w-[70px] h-[20px]  rounded flex items-center justify-center">
                 Completed
               </p> */}
-              <p className={`font-[400] text-[12px] leading-[16.8px] border rounded flex items-center justify-center ${user.status === 'To Do'
-                ? 'text-[#6C757D] border-[#6C757D]  w-[50px] h-[20px]'
-                : user.status === 'In progress' ?
-                  'text-[#CA9700] border-[#CA9700]  w-[90px] h-[20px]' : user.status === 'Completed' ? 'text-[#008053] border-[#008053]  w-[90px] h-[20px]' : 'text-[#0D4FA7] border-[#0D4FA7]  w-[90px] h-[20px]'
-                }`}>
-                {user?.status}
-              </p>
-            </div>
-            <div className="flex justify-between items-center mb-2">
-              <ul className="flex gap-1 flex-col w-[150px]">
-                <li className=" text-[12.8px] leading-[17.28px] text-gray-400">Team</li>
-                <li className=" text-[12.8px] leading-[17.28px] text-gray-800 ">Prachi Godase, Sumit Yadav, Aryan</li>
-              </ul>
-              <ul className="flex gap-1 flex-col">
-                <li className=" text-[12.8px] text-gray-400">Due Date</li>
-                <li className=" text-[12.8px]  text-gray-800">1 Jan, 2024</li>
+                <p className={`font-[400] text-[12px] leading-[16.8px] border rounded flex items-center justify-center ${user.status === 'To Do'
+                  ? 'text-[#6C757D] border-[#6C757D]  w-[50px] h-[20px]'
+                  : user.status === 'In progress' ?
+                    'text-[#CA9700] border-[#CA9700]  w-[90px] h-[20px]' : user.status === 'Completed' ? 'text-[#008053] border-[#008053]  w-[90px] h-[20px]' : 'text-[#0D4FA7] border-[#0D4FA7]  w-[90px] h-[20px]'
+                  }`}>
+                  {user?.status}
+                </p>
+              </div>
+              <div className="flex justify-between items-center mb-2">
+                <ul className="flex gap-1 flex-col w-[150px]">
+                  <li className=" text-[12.8px] leading-[17.28px] text-gray-400">Team</li>
+                  <li className=" text-[12.8px] leading-[17.28px] text-gray-800 ">Prachi Godase, Sumit Yadav, Aryan</li>
+                </ul>
+                <ul className="flex gap-1 flex-col">
+                  <li className=" text-[12.8px] text-gray-400">Due Date</li>
+                  <li className=" text-[12.8px]  text-gray-800">1 Jan, 2024</li>
 
-              </ul>
+                </ul>
 
-            </div>
-            <div className="flex items-center gap-2 mb-2 justify-between">
-              <p className='flex items-center flex-row gap-1'> {OtherIcons.projects_svg}
-                <p className=" font-normal text-[12.8px] leading-[17.28px]">Tasks (20)</p></p>
+              </div>
+              <div className="flex items-center gap-2 mb-2 justify-between">
+                <p className='flex items-center flex-row gap-1'> {OtherIcons.projects_svg}
+                  <p className=" font-normal text-[12.8px] leading-[17.28px]">Tasks (20)</p></p>
 
-              <ul className="flex gap-1 flex-col mr-[20px]">
+                <ul className="flex gap-1 flex-col mr-[20px]">
 
-                <li className=" text-[12.8px] text-gray-400">Priority</li>
-                <li className={`text-[12.8px]  text-gray-800 font-700 ${user.priority === 'High'
-                  ? 'text-[#4976F4]' : user.priority === 'Low' ?
-                    'text-red-400' : 'text-[#954BAF]'
-                  }`}>{user.priority}</li>
-              </ul>
+                  <li className=" text-[12.8px] text-gray-400">Priority</li>
+                  <li className={`text-[12.8px]  text-gray-800 font-700 ${user.priority === 'High'
+                    ? 'text-[#4976F4]' : user.priority === 'Low' ?
+                      'text-red-400' : 'text-[#954BAF]'
+                    }`}>{user.priority}</li>
+                </ul>
+              </div>
+              <div className="w-[270px] h-[39px]">
+                <table className="w-full">
+                  <thead>
+                    <tr className="text-left">
+                      <td className='font-300 text-gray-400 text-[12px]'>To Do</td>
+                      <td className='font-300 text-gray-400 text-[12px]'>In Progress</td>
+                      <td className='font-300 text-gray-400 text-[12px]'>Under Review</td>
+                      <td className='font-300 text-gray-400 text-[12px]'>Completed</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className='font-300 text-gray-700 text-[12px] text-center'>08</td>
+                      <td className='font-300 text-gray-700 text-[12px] text-center'>08</td>
+                      <td className='font-300 text-gray-700 text-[12px] text-center'>08</td>
+                      <td className='font-300 text-gray-700 text-[12px] text-center'>08</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
-            <div className="w-[270px] h-[39px]">
-              <table className="w-full">
-                <thead>
-                  <tr className="text-left">
-                    <td className='font-300 text-gray-400 text-[12px]'>To Do</td>
-                    <td className='font-300 text-gray-400 text-[12px]'>In Progress</td>
-                    <td className='font-300 text-gray-400 text-[12px]'>Under Review</td>
-                    <td className='font-300 text-gray-400 text-[12px]'>Completed</td>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td className='font-300 text-gray-700 text-[12px] text-center'>08</td>
-                    <td className='font-300 text-gray-700 text-[12px] text-center'>08</td>
-                    <td className='font-300 text-gray-700 text-[12px] text-center'>08</td>
-                    <td className='font-300 text-gray-700 text-[12px] text-center'>08</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        ))}
-      </div>)}
+          ))}
+        </div>)}
 
     </div></LayOut>
 
