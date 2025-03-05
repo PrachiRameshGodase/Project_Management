@@ -14,6 +14,8 @@ const UserList = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const usersList = useSelector((state) => state.user?.list?.data);
+  const usersLoading = useSelector((state) => state.user);
+  
 
   const [selectedStatus, setSelectedStatus] = useState('');
   const [selectedDesignation, setSelectedDesignation] = useState('');
@@ -130,7 +132,7 @@ const UserList = () => {
 
         {/* Table Section */}
         <div className="max-w-full overflow-x-auto mt-6 ">
-          {loading ? (
+          {usersLoading?.loading ? (
             <TableSkeleton rows={7} columns={5} />
           ) : (
             <table className="w-full min-w-[600px] border-collapse border border-gray-100">
