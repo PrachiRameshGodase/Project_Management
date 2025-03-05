@@ -4,5 +4,5 @@ export const designation=["Maneger", "Team Lead", "Tester", "Jr. Developer", "Sr
 export const view=["Card", "List"]
 export const projectSortConstant=["Project Name", "Team"]
 export const departmentOptions=["IT", "Marketing"]
-export const taskView=["List", "Kanban"]
+export const taskView =["List", "Kanban"]
 export const projectPriority =["High", "Low", "Medium"]

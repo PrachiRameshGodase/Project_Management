@@ -122,7 +122,7 @@ const ClientList = () => {
 
                         <div className="w-[1px] h-[40px] bg-gray-400 opacity-40" />
 
-                        <button className="w-[49px] h-[44px] bg-[#048339] text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/project/add')}>+</button>
+                        <button className="w-[49px] h-[44px] bg-[#048339] text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/client/add')}>+</button>
                     </div>
 
                     {/* Mobile Filter Button */}
@@ -160,6 +160,8 @@ const ClientList = () => {
 
                         {/* Filter Options */}
                         <div className="mt-16 flex flex-col gap-4 px-4">
+                            <button className="w-[49px] h-[44px] bg-[#048339] text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/client/add')}>+</button>
+
                             <Dropdown01 options={view} selectedValue={selectedView} onSelect={setSelectedView} label="View" icon={OtherIcons.view_svg} />
                             <Dropdown01 options={designation} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />
                             <Dropdown01 options={projectSortConstant} selectedValue={selectedSort} onSelect={setSelectedSort} label="Sort By" icon={OtherIcons.sort_by_svg} />
@@ -171,7 +173,6 @@ const ClientList = () => {
                 {/* Table Section */}
                 {selectedView == "List" &&
                     <>
-
 
                         <div className="max-w-full overflow-x-auto mt-6">
                             <table className="w-full min-w-[900px] border-collapse border border-gray-100">

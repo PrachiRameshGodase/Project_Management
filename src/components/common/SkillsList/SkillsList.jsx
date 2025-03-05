@@ -7,9 +7,9 @@ const SkillsList = ({ skills }) => {
 
     useEffect(() => {
         const handleResize = () => {
-            if (window.innerWidth > 600) {
+            if (window.innerWidth < 600) {
                 setMaxVisible(2);
-            } else if (window.innerWidth > 800) {
+            } else if (window.innerWidth < 800) {
                 setMaxVisible(3);
             } else {
                 setMaxVisible(4);

@@ -79,7 +79,7 @@ const UserList = () => {
 
             <div className="w-[1px] h-[40px] bg-gray-400 opacity-40" />
 
-            <button className="w-[49px] h-[44px] bg-[#048339] text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/project/add')}>+</button>
+            <button className="w-[49px] h-[44px] bg-[#048339] text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/user/add')}>+</button>
           </div>
 
           {/* Mobile Filter Button */}
@@ -117,10 +117,12 @@ const UserList = () => {
 
             {/* Filter Options */}
             <div className="mt-16 flex flex-col gap-4 px-4">
+            <button className="w-[49px] h-[44px] bg-[#048339] text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/user/add')}>+</button>
               <Dropdown01 options={status} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />
               <Dropdown01 options={designation} selectedValue={selectedDesignation} onSelect={setSelectedDesignation} label="View" icon={OtherIcons.view_svg} />
               <SearchComponent />
             </div>
+
           </div>
         </div>
 
@@ -129,7 +131,7 @@ const UserList = () => {
           <table className="w-full min-w-[600px] border-collapse border border-gray-100">
             <thead>
               <tr className="text-left text-sm font-bold uppercase text-gray-800">
-                <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b ">
+                <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b ">
                   <div className='flex items-center justify-between'>
                     <span> User ID</span>
                     <span className="ml-2 flex flex-col gap-1">

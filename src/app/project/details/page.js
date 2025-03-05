@@ -154,7 +154,7 @@ const TaskList = () => {
             <UserAvatar name={user.name} dotcolor='blue' size={66} image={user.image} isActive={user.isActive} />
 
             <div className="text-xl text-gray-700">
-              <p className="font-bold">Marketing website</p>
+              <p className="font-bold text-[14px] sm:text-[18px]">Marketing website</p>
               <p className="text-xs text-gray-500">EcoVision Enterprises</p>
             </div>
             <p className={`font-[400] text-[12px] leading-[16.8px] border rounded flex items-center justify-center ${"user.status" === 'To Do'
@@ -183,7 +183,7 @@ const TaskList = () => {
           </div>
 
 
-          <div className="flex items-center gap-2">
+          <div className="sm:flex items-center gap-2">
             <p className="flex items-center mr-2">
               <label className="flex items-center cursor-pointer">
                 <span className="ml-2 text-[15px] mr-2">{isActive ? "Active" : "Inactive"}</span>
@@ -216,7 +216,7 @@ const TaskList = () => {
                 </div>
               </label>
             </p>
-            <button className="w-[140px] h-[35px] rounded-[4px] py-[4px] border border-black text-black text-lg mr-[10px] mb-2" onClick={() => setIsDrawerOpen(true)}>
+            <button className="w-[140px] mt-3 sm:mt-0 h-[35px] text-[10px] rounded-[4px] py-[4px] border border-black text-black text-lg mr-[10px] mb-2" onClick={() => setIsDrawerOpen(true)}>
               See All Details
             </button>
             <button onClick={() => router.push('/add-project')} className="w-[80px] h-[35px] rounded-[4px] py-[4px] bg-black text-white text-lg mr-[10px] mb-2">
@@ -238,7 +238,7 @@ const TaskList = () => {
 
           {/* Right Section (Filters & Search) */}
           <div className="hidden md:flex gap-6 items-center">
-            <Dropdown01 options={view} selectedValue={selectedView} onSelect={setSelectedView} label="View" icon={OtherIcons.view_svg} />
+            <Dropdown01 options={taskView} selectedValue={selectedView} onSelect={setSelectedView} label="View" icon={OtherIcons.view_svg} />
             <Dropdown01 options={statusProject} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />
             <Dropdown01 options={projectSortConstant} selectedValue={selectedSort} onSelect={setSelectedSort} label="Sort By" icon={OtherIcons.sort_by_svg} />
             <SearchComponent />
@@ -302,27 +302,27 @@ const TaskList = () => {
               <table className="w-full min-w-[1000px] border-collapse border border-gray-100">
                 <thead>
                   <tr className="text-left text-sm font-bold uppercase text-gray-800">
-                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  border-b border-gray-100  flex">
+                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100  flex">
                       PROJECT NAME<span className="mt-1 ml-2 flex flex-col gap-1">{OtherIcons.arrow_up_svg}{OtherIcons.arrow_down_svg}</span>
                     </th>
-                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  border-b border-gray-100">CLIENT  NAME</th>
-                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  border-b border-gray-100">STATUS</th>
-                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  border-b border-gray-100">STARTING DATE</th>
-                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  border-b border-gray-100">DEADLINE</th>
-                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  border-b border-gray-100">PROJECT LEADER</th>
-                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  border-b border-gray-100">TEAM</th>
-                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  border-b border-gray-100">PRIORITY</th>
+                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100">CLIENT  NAME</th>
+                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100">STATUS</th>
+                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100">STARTING DATE</th>
+                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100">DEADLINE</th>
+                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100">PROJECT LEADER</th>
+                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100">TEAM</th>
+                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100">PRIORITY</th>
 
                   </tr>
                 </thead>
                 <tbody>
                   {paginatedUsers.map((user) => (
                     <tr key={user.id} className="hover:bg-gray-50 rounded cursor-pointer">
-                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  border-b border-gray-50 rounded " onClick={() => setIsDrawerOpen1((prev) => !prev)}>{user.userId}</td>
-                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  border-b border-gray-50 rounded " onClick={() => setIsDrawerOpen1((prev) => !prev)}>{user.firstName}</td>
-                      <td className={`py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  min-w-[150px] border-b border-gray-50 rounded  font-bold`} onClick={() => setIsDrawerOpen1((prev) => !prev)}>
+                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 rounded " onClick={() => setIsDrawerOpen1((prev) => !prev)}>{user.userId}</td>
+                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 rounded " onClick={() => setIsDrawerOpen1((prev) => !prev)}>{user.firstName}</td>
+                      <td className={`py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  min-w-[150px] border-b border-gray-50 rounded  font-bold`} onClick={() => setIsDrawerOpen1((prev) => !prev)}>
                         <span
-                          className={`py-1 sm:py-2 px-2 sm:px-2  text-[10px] sm:text-[14px]  border rounded-md ${user.status === 'To Do'
+                          className={`py-1 sm:py-2 px-2 sm:px-2  text-[12px] sm:text-[15px]  border rounded-md ${user.status === 'To Do'
                             ? 'text-[#6C757D] border-[#6C757D]'
                             : user.status === 'In progress' ?
                               'text-[#CA9700] border-[#CA9700]' : user.status === 'Completed' ? 'text-[#008053] border-[#008053]' : 'text-[#0D4FA7] border-[#0D4FA7]'
@@ -331,15 +331,15 @@ const TaskList = () => {
                           {user.status}
                         </span>
                       </td>
-                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  border-b border-gray-50 " onClick={() => setIsDrawerOpen1((prev) => !prev)}>{user.dateOfJoining}</td>
-                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  border-b border-gray-50 ] " onClick={() => setIsDrawerOpen1((prev) => !prev)}>2022-11-20</td>
-                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  border-b border-gray-50 " onClick={() => setIsDrawerOpen1((prev) => !prev)}>Vasu Shastri</td>
-                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  border-b border-gray-50 " onClick={() => setIsDrawerOpen1((prev) => !prev)}>
+                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 " onClick={() => setIsDrawerOpen1((prev) => !prev)}>{user.dateOfJoining}</td>
+                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 ] " onClick={() => setIsDrawerOpen1((prev) => !prev)}>2022-11-20</td>
+                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 " onClick={() => setIsDrawerOpen1((prev) => !prev)}>Vasu Shastri</td>
+                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 " onClick={() => setIsDrawerOpen1((prev) => !prev)}>
                         <TruncatedTooltipText text="Prachi Godase, Sumit Yadav, Punit Omar, Aryan Singh" maxLength={25} />
                       </td>
-                      <td className={`py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  border-b border-gray-50 font-bold`} onClick={() => setIsDrawerOpen1((prev) => !prev)}>
+                      <td className={`py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 font-bold`} onClick={() => setIsDrawerOpen1((prev) => !prev)}>
                         <span
-                          className={`py-1 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  border rounded-md  ${user.priority === 'High'
+                          className={`py-1 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border rounded-md  ${user.priority === 'High'
                             ? 'text-[#4976F4] border-[#4976F4]' : user.priority === 'Low' ?
                               'text-red-400 border-red-400' : 'text-[#954BAF] border-[#954BAF]'
                             } inline-block`}
