@@ -1,7 +1,8 @@
 import { OtherIcons } from "@/assests/icons";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import UserAvatar from "./common/UserAvatar/UserAvatar";
+import toast, { Toaster } from "react-hot-toast";
 // import { FiMenu } from "react-icons/fi"; // Hamburger Icon
 // import { IoClose } from "react-icons/io5"; // Close Icon
 
@@ -9,6 +10,7 @@ const NavBar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false); // State for mobile menu
+  const [isOpen2, setIsOpen2] = useState(false); // State for mobile menu
 
   const navItems = [
     { path: "/home", icon: OtherIcons.home_svg, label: "Home" },
@@ -23,9 +25,26 @@ const NavBar = () => {
     image: "",
   };
 
+  useEffect(() => {
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      router.push("/login"); // Redirect to login page if token not found
+    }
+  }, []);
+
+
+  const handleLogout = () => {
+    localStorage.removeItem("access_token");
+    toast.success("Logout Successful!");
+    router.push("/login");
+  };
+
   return (
     <div className="w-full z-50 h-[80px] fixed left-0 flex items-center px-4 border-b border-gray-50 bg-white shadow-sm">
-
+      <Toaster
+        position="top-center"
+        reverseOrder={false}
+      />
       {/* Mobile Toggle Button */}
       <button
         className="lg:hidden text-2xl p-2 rounded-md focus:outline-none"
@@ -59,10 +78,61 @@ const NavBar = () => {
       </div>
 
       {/* User Avatar */}
-      <div className="absolute top-4 right-[20px] flex items-center space-x-2">
-        <UserAvatar name={user.name} dotcolor='yellow' size={40} image={user.image} isActive={user.isActive} />
-      </div>
 
+      <>
+        {/* Avatar Button */}
+        <div className="absolute top-4 right-[20px] flex items-center space-x-2">
+          <button onClick={() => setIsOpen2(true)}>
+            <UserAvatar
+              name={user.name}
+              dotcolor="yellow"
+              size={40}
+              image={user.image}
+              isActive={user.isActive}
+            />
+          </button>
+        </div>
+
+        {/* Sidebar Overlay */}
+        {isOpen2 && (
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+            onClick={() => setIsOpen2(false)}
+          ></div>
+        )}
+
+        {/* Sidebar Content */}
+        <div
+          className={`fixed top-0 right-0 w-64 h-full bg-white shadow-lg p-5 transition-transform duration-300 z-50 ${isOpen2 ? "translate-x-0" : "translate-x-full"
+            }`}
+        >
+          <button
+            className="absolute top-4 right-4 text-gray-500"
+            onClick={() => setIsOpen2(false)}
+          >
+            ✖
+          </button>
+
+          {/* User Info */}
+          <div className="flex gap-3 items-start mt-10">
+            <div className=" top-4 right-[20px] flex items-center space-x-2">
+              <UserAvatar name={user.name} dotcolor='yellow' size={50} image={user.image} isActive={user.isActive} />
+            </div>
+            <div>
+              <h2 className="text-lg font-semibold">{user.name}</h2>
+              <p className="text-sm text-gray-500">rk@gmail.com</p>
+            </div>
+          </div>
+
+          {/* Logout Button */}
+          <button
+            onClick={handleLogout}
+            className="mt-5 w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600"
+          >
+            Logout
+          </button>
+        </div>
+      </>
       {/* Mobile Sidebar */}
       <div
         className={`fixed top-0 left-0 w-[250px] h-full bg-white shadow-md transform 

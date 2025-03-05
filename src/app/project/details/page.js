@@ -226,7 +226,7 @@ const TaskList = () => {
 
         </div>
 
-        <div className="w-full h-[44px] flex justify-between items-center px-4 mt-20 ">
+        <div className="w-full h-[44px] flex justify-between items-center px-4 sm:mt-20 ">
 
           {/* Left Section (Heading + Count) */}
           <div className="flex">
@@ -283,7 +283,7 @@ const TaskList = () => {
 
             {/* Filter Options */}
             <div className="mt-16 flex flex-col gap-4 px-4">
-              <Dropdown01 options={view} selectedValue={selectedView} onSelect={setSelectedView} label="View" icon={OtherIcons.view_svg} />
+              <Dropdown01 options={taskView} selectedValue={selectedView} onSelect={setSelectedView} label="View" icon={OtherIcons.view_svg} />
               <Dropdown01 options={statusProject} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />
               <Dropdown01 options={projectSortConstant} selectedValue={selectedSort} onSelect={setSelectedSort} label="Sort By" icon={OtherIcons.sort_by_svg} />
               <SearchComponent />
