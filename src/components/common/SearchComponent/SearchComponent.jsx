@@ -9,7 +9,7 @@ const SearchComponent = () => {
         <div className="relative">
             {/* Search Icon Button */}
             <div
-                className="w-[44px] h-[44px] flex items-center justify-center border border-purple-300 hover:border-purple-900  hover:shadow-lg hover:ring-purple-300 rounded-lg p-3 cursor-pointer"
+                className={`${isOpen ? 'top-0 absolute sm:relative' : ''}  z-[999] bg-white w-[44px] h-[44px] flex items-center justify-center border border-purple-300 hover:border-purple-900  hover:shadow-lg hover:ring-purple-300 rounded-lg p-3 cursor-pointer`}
                 onClick={() => setIsOpen(!isOpen)}
             >
                 {!isOpen &&
@@ -26,7 +26,7 @@ const SearchComponent = () => {
 
             {/* Search Box Popup */}
             {isOpen && (
-                <div className="absolute left-[-450px] top-0 w-[440px]  bg-white shadow-lg border border-purple-300 rounded-lg">
+                <div className="absolute left-[-250px] sm:left-[-450px] top-0 w-[240px] sm:w-[440px]  bg-white shadow-lg border border-purple-300 rounded-lg">
                     <input
                         type="text"
                         placeholder="Search..."
