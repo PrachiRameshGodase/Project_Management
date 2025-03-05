@@ -3,6 +3,7 @@ import { OtherIcons } from '@/assests/icons';
 import Dropdown01 from '@/components/common/Dropdown/Dropdown01';
 import { designation, projectSortConstant, status, view } from '@/components/common/Helper/Helper';
 import SearchComponent from '@/components/common/SearchComponent/SearchComponent';
+import TableSkeleton from '@/components/common/TableSkeleton/TableSkeleton';
 import LayOut from '@/components/LayOut';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
@@ -78,6 +79,7 @@ const ClientList = () => {
     const [selectedStatus, setSelectedStatus] = useState('');
     const [selectedView, setSelectedView] = useState("List");
     const [selectedSort, setSelectedSort] = useState('');
+  const [loading, setLoading] = useState(false);
 
     const [currentPage, setCurrentPage] = useState(1);
     const entriesPerPage = 5;
@@ -175,6 +177,9 @@ const ClientList = () => {
                     <>
 
                         <div className="max-w-full overflow-x-auto mt-6">
+                        {loading ? (
+                            <TableSkeleton rows={7} columns={5} />
+                        ) : (
                             <table className="w-full min-w-[900px] border-collapse border border-gray-100">
                                 <thead>
                                     <tr className="text-left text-sm font-bold uppercase text-gray-800">
@@ -210,6 +215,7 @@ const ClientList = () => {
                                     ))}
                                 </tbody>
                             </table>
+                        )}
                         </div>
                         <div className="flex justify-between items-center mt-4 px-1 sm:px-2 py-2">
                             <div className='text-gray-700 text-[12px] sm:text-[18px]'>{`Showing   ${startEntry + 1} - ${Math.min(endEntry, filteredUsers.length)} of ${filteredUsers.length} entries`}</div>

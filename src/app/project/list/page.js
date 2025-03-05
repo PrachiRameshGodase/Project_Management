@@ -7,6 +7,7 @@ import Dropdown01 from '@/components/common/Dropdown/Dropdown01';
 import { projectSortConstant, statusProject, view } from '@/components/common/Helper/Helper';
 import TruncatedTooltipText from '@/components/common/TruncatedTooltipText/TruncatedTooltipText';
 import SearchComponent from '@/components/common/SearchComponent/SearchComponent';
+import TableSkeleton from '@/components/common/TableSkeleton/TableSkeleton';
 
 const ProjectList = () => {
   const router = useRouter()
@@ -139,6 +140,7 @@ const ProjectList = () => {
   const [selectedView, setSelectedView] = useState("List");
   const [selectedSort, setSelectedSort] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   const entriesPerPage = 5;
   const totalEntries = users.length;
@@ -233,59 +235,62 @@ const ProjectList = () => {
 
 
           <div className="max-w-full overflow-x-auto mt-6 ">
+            {loading ? (
+              <TableSkeleton rows={7} columns={5} />
+            ) : (
+              <table className="w-full min-w-[1000px] border-collapse border border-gray-100">
+                <thead>
+                  <tr className="text-left text-sm font-bold uppercase text-gray-800">
+                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b border-gray-100  flex">
+                      PROJECT NAME<span className="mt-1 ml-2 flex flex-col gap-1">{OtherIcons.arrow_up_svg}{OtherIcons.arrow_down_svg}</span>
+                    </th>
+                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b border-gray-100">CLIENT  NAME</th>
+                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] w-[118px] sm:w-[160px] border-b border-gray-100">STATUS</th>
+                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b border-gray-100">STARTING DATE</th>
+                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b border-gray-100">DEADLINE</th>
+                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b border-gray-100">PROJECT LEADER</th>
+                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b border-gray-100">TEAM</th>
+                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b border-gray-100">PRIORITY</th>
 
-            <table className="w-full min-w-[1000px] border-collapse border border-gray-100">
-              <thead>
-                <tr className="text-left text-sm font-bold uppercase text-gray-800">
-                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b border-gray-100  flex">
-                    PROJECT NAME<span className="mt-1 ml-2 flex flex-col gap-1">{OtherIcons.arrow_up_svg}{OtherIcons.arrow_down_svg}</span>
-                  </th>
-                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b border-gray-100">CLIENT  NAME</th>
-                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] w-[118px] sm:w-[160px] border-b border-gray-100">STATUS</th>
-                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b border-gray-100">STARTING DATE</th>
-                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b border-gray-100">DEADLINE</th>
-                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b border-gray-100">PROJECT LEADER</th>
-                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b border-gray-100">TEAM</th>
-                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b border-gray-100">PRIORITY</th>
-
-                </tr>
-              </thead>
-              <tbody>
-                {paginatedUsers.map((user) => (
-                  <tr key={user.id} className="hover:bg-gray-50 rounded cursor-pointer">
-                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 rounded " onClick={() => router.push(`/project/details?id=${user.id}`)}>{user.userId}</td>
-                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-50 rounded " onClick={(`/project/details?id=${user.id}`)}>{user.firstName}</td>
-                    <td className={`py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]   border-b border-gray-50 rounded  font-bold`} onClick={() => router.push(`/project/details?id=${user.id}`)}>
-                      <span
-                        className={`px-3 py-1 border rounded-md ${user.status === 'To Do'
-                          ? 'text-[#6C757D] border-[#6C757D]'
-                          : user.status === 'In progress' ?
-                            'text-[#CA9700] border-[#CA9700]' : user.status === 'Completed' ? 'text-[#008053] border-[#008053]' : 'text-[#0D4FA7] border-[#0D4FA7]'
-                          } inline-block`}
-                      >
-                        {user.status}
-                      </span>
-                    </td>
-                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-50 " onClick={() => router.push(`/project/details?id=${user.id}`)}>{user.dateOfJoining}</td>
-                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 ] " onClick={() => router.push(`/project/details?id=${user.id}`)}>2022-11-20</td>
-                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 " onClick={() => router.push(`/project/details?id=${user.id}`)}>Vasu Shastri</td>
-                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 " onClick={() => router.push(`/project/details?id=${user.id}`)}>
-                      <TruncatedTooltipText text="Prachi Godase, Sumit Yadav, Punit Omar, Aryan Singh" maxLength={25} />
-                    </td>
-                    <td className={`py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-50 font-bold`} onClick={() => router.push(`/project/details?id=${user.id}`)}>
-                      <span
-                        className={`py-1 sm:py-2 px-2 sm:px-4  text-[12px] sm:text-[15px] border rounded-md  ${user.priority === 'High'
-                          ? 'text-[#4976F4] border-[#4976F4]' : user.priority === 'Low' ?
-                            'text-red-400 border-red-400' : 'text-[#954BAF] border-[#954BAF]'
-                          } inline-block`}
-                      >
-                        {user.priority}
-                      </span>
-                    </td>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {paginatedUsers.map((user) => (
+                    <tr key={user.id} className="hover:bg-gray-50 rounded cursor-pointer">
+                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 rounded " onClick={() => router.push(`/project/details?id=${user.id}`)}>{user.userId}</td>
+                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-50 rounded " onClick={(`/project/details?id=${user.id}`)}>{user.firstName}</td>
+                      <td className={`py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]   border-b border-gray-50 rounded  font-bold`} onClick={() => router.push(`/project/details?id=${user.id}`)}>
+                        <span
+                          className={`px-3 py-1 border rounded-md ${user.status === 'To Do'
+                            ? 'text-[#6C757D] border-[#6C757D]'
+                            : user.status === 'In progress' ?
+                              'text-[#CA9700] border-[#CA9700]' : user.status === 'Completed' ? 'text-[#008053] border-[#008053]' : 'text-[#0D4FA7] border-[#0D4FA7]'
+                            } inline-block`}
+                        >
+                          {user.status}
+                        </span>
+                      </td>
+                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-50 " onClick={() => router.push(`/project/details?id=${user.id}`)}>{user.dateOfJoining}</td>
+                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 ] " onClick={() => router.push(`/project/details?id=${user.id}`)}>2022-11-20</td>
+                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 " onClick={() => router.push(`/project/details?id=${user.id}`)}>Vasu Shastri</td>
+                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 " onClick={() => router.push(`/project/details?id=${user.id}`)}>
+                        <TruncatedTooltipText text="Prachi Godase, Sumit Yadav, Punit Omar, Aryan Singh" maxLength={25} />
+                      </td>
+                      <td className={`py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-50 font-bold`} onClick={() => router.push(`/project/details?id=${user.id}`)}>
+                        <span
+                          className={`py-1 sm:py-2 px-2 sm:px-4  text-[12px] sm:text-[15px] border rounded-md  ${user.priority === 'High'
+                            ? 'text-[#4976F4] border-[#4976F4]' : user.priority === 'Low' ?
+                              'text-red-400 border-red-400' : 'text-[#954BAF] border-[#954BAF]'
+                            } inline-block`}
+                        >
+                          {user.priority}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
           {/* Pagination */}
           <div className="flex justify-between items-center mt-4 px-1 sm:px-2 py-2">

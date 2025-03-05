@@ -4,6 +4,7 @@ import { OtherIcons } from '@/assests/icons';
 import Dropdown01 from '@/components/common/Dropdown/Dropdown01';
 import { designation, status } from '@/components/common/Helper/Helper';
 import SearchComponent from '@/components/common/SearchComponent/SearchComponent';
+import TableSkeleton from '@/components/common/TableSkeleton/TableSkeleton';
 import LayOut from '@/components/LayOut';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
@@ -13,7 +14,7 @@ const UserList = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const usersList = useSelector((state) => state.user?.list?.data);
-  
+
   const [selectedStatus, setSelectedStatus] = useState('');
   const [selectedDesignation, setSelectedDesignation] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -34,8 +35,8 @@ const UserList = () => {
   ];
 
   useEffect(() => {
-     
-    dispatch(fetchUsers()); 
+
+    dispatch(fetchUsers());
   }, [dispatch]);
 
   const totalEntries = usersList?.length;
@@ -53,6 +54,7 @@ const UserList = () => {
   const startEntry = (currentPage - 1) * entriesPerPage;
   const endEntry = startEntry + entriesPerPage;
   const paginatedUsers = filteredUsers?.slice(startEntry, endEntry);
+  const [loading, setLoading] = useState(true);
 
   // filter short-list
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -117,7 +119,7 @@ const UserList = () => {
 
             {/* Filter Options */}
             <div className="mt-16 flex flex-col gap-4 px-4">
-            <button className="w-[49px] h-[44px] bg-[#048339] text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/user/add')}>+</button>
+              <button className="w-[49px] h-[44px] bg-[#048339] text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/user/add')}>+</button>
               <Dropdown01 options={status} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />
               <Dropdown01 options={designation} selectedValue={selectedDesignation} onSelect={setSelectedDesignation} label="View" icon={OtherIcons.view_svg} />
               <SearchComponent />
@@ -128,47 +130,50 @@ const UserList = () => {
 
         {/* Table Section */}
         <div className="max-w-full overflow-x-auto mt-6 ">
-          <table className="w-full min-w-[600px] border-collapse border border-gray-100">
-            <thead>
-              <tr className="text-left text-sm font-bold uppercase text-gray-800">
-                <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b ">
-                  <div className='flex items-center justify-between'>
-                    <span> User ID</span>
-                    <span className="ml-2 flex flex-col gap-1">
-                      <button >
-                        {OtherIcons.arrow_up_svg}
-                      </button>
-                      <button >
-                        {OtherIcons.arrow_down_svg}
-                      </button>
-                    </span>
-                  </div>
-                </th>
-                <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b">User Name</th>
-                <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b">Email ID</th>
-                <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b">Mobile Number</th>
-                <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b">Designation</th>
-                <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b">Date Of Joining</th>
-                <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {usersList?.map((user, index) => (
-                <tr key={user?.id} className="hover:bg-gray-100 cursor-pointer">
-                  <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{index+1}</td>
-                  <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.first_name}</td>
-                  <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.email}</td>
-                  <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.phone_number}</td>
-                  <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.designation}</td>
-                  <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.joining_date}</td>
-                  <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>
-                    <span className={`w-3 h-3 inline-block rounded-full ${user.status === 'Active' ? 'bg-green-600' : 'bg-red-600'}`}></span>
-                  </td>
+          {loading ? (
+            <TableSkeleton rows={7} columns={5} />
+          ) : (
+            <table className="w-full min-w-[600px] border-collapse border border-gray-100">
+              <thead>
+                <tr className="text-left text-sm font-bold uppercase text-gray-800">
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b ">
+                    <div className='flex items-center justify-between'>
+                      <span> User ID</span>
+                      <span className="ml-2 flex flex-col gap-1">
+                        <button >
+                          {OtherIcons.arrow_up_svg}
+                        </button>
+                        <button >
+                          {OtherIcons.arrow_down_svg}
+                        </button>
+                      </span>
+                    </div>
+                  </th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b">User Name</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b">Email ID</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b">Mobile Number</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b">Designation</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b">Date Of Joining</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b">Status</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-
+              </thead>
+              <tbody>
+                {usersList?.map((user, index) => (
+                  <tr key={user?.id} className="hover:bg-gray-100 cursor-pointer">
+                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{index + 1}</td>
+                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.first_name}</td>
+                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.email}</td>
+                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.phone_number}</td>
+                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.designation}</td>
+                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.joining_date}</td>
+                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>
+                      <span className={`w-3 h-3 inline-block rounded-full ${user.status === 'Active' ? 'bg-green-600' : 'bg-red-600'}`}></span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
         {/* Pagination */}
         <div className="flex justify-between items-center mt-4 px-1 sm:px-2 py-2">
