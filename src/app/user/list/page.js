@@ -34,7 +34,7 @@ const UserList = () => {
   ];
 
   useEffect(() => {
-    console.log("Callingddddddddddddddd API...");  
+     
     dispatch(fetchUsers()); 
   }, [dispatch]);
 
@@ -153,7 +153,7 @@ const UserList = () => {
               </tr>
             </thead>
             <tbody>
-              {paginatedUsers?.map((user, index) => (
+              {usersList?.map((user, index) => (
                 <tr key={user?.id} className="hover:bg-gray-100 cursor-pointer">
                   <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{index+1}</td>
                   <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.first_name}</td>

@@ -2,8 +2,13 @@
 import { useState, useEffect } from "react";
 
 const SkillsList = ({ skills }) => {
-    const [maxVisible, setMaxVisible] = useState(4); // Default 4 skills show hongi
+    const [maxVisible, setMaxVisible] = useState(4);
     const [showMore, setShowMore] = useState(false);
+
+    // Ensure skills is always an array of individual skill strings
+    const formattedSkills = Array.isArray(skills)
+        ? skills.flatMap(skill => skill.split(",").map(s => s.trim()))
+        : [];
 
     useEffect(() => {
         const handleResize = () => {
@@ -16,22 +21,21 @@ const SkillsList = ({ skills }) => {
             }
         };
 
-        handleResize(); // Initial run
+        handleResize();
         window.addEventListener("resize", handleResize);
 
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
     return (
-        <li className="flex flex-wrap  items-center gap-2 w-[100%]">
-            {/* <span className="opacity-70">Skills:</span> */}
-            <span className="flex    flex-wrap gap-2 w-full   items-center">
-                {(showMore ? skills : skills.slice(0, maxVisible)).map((skill, index) => (
+        <div className="flex flex-wrap items-center gap-2 w-full">
+            <span className="flex flex-wrap gap-2 w-full items-center">
+                {(showMore ? formattedSkills : formattedSkills.slice(0, maxVisible)).map((skill, index) => (
                     <span key={index} className="bg-[#F0F0FF] py-1 px-3 rounded-full">
                         {skill}
                     </span>
                 ))}
-                {!showMore && skills.length > maxVisible && (
+                {!showMore && formattedSkills.length > maxVisible && (
                     <button
                         onClick={() => setShowMore(true)}
                         className="bg-gray-200 px-3 py-1 w-[110px] rounded-full text-sm text-blue-600 hover:bg-gray-300"
@@ -40,7 +44,7 @@ const SkillsList = ({ skills }) => {
                     </button>
                 )}
             </span>
-        </li>
+        </div>
     );
 };
 

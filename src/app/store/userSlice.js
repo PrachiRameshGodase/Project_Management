@@ -1,17 +1,37 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
 import axiosInstance from "../Config/axiosInstance";
-const BASE_URL = "https://pm.codesquarry.com/api";
+import toast from "react-hot-toast";
 
+
+// Async thunk to add a new user
+export const addUser = createAsyncThunk(
+  "users/addUser",
+  async ({userData, router}, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.post(`/users/create`, userData);
+      if (response?.data?.success === true) {
+        toast.success(response?.data?.message);
+        router.push("/user/list"); // Navigate on success
+      }
+      return response.data;
+
+      
+    } catch (error) {
+      console.error("Add User API Error:", error);
+      toast.error(response?.payload?.message);
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
 
 // Async thunk to fetch users list
 export const fetchUsers = createAsyncThunk(
   "users/fetchList",
   async (_, { rejectWithValue }) => {
     try {
-    
+
       const response = await axiosInstance.post(`/users/list`);
-      console.log("API Response:", response.data);
+
       return response.data;
     } catch (error) {
       console.error("API Error:", error);
@@ -24,7 +44,7 @@ export const fetchUsers = createAsyncThunk(
 // Async thunk to fetch user details by ID
 export const fetchUserDetails = createAsyncThunk("users/fetchDetails", async (userId, { rejectWithValue }) => {
   try {
-    const response = await axios.post(`${BASE_URL}/users/details`, { params: { id: userId } });
+    const response = await axiosInstance.post(`/users/details`,  { id: userId } );
     return response.data;
   } catch (error) {
     return rejectWithValue(error.response?.data || error.message);
@@ -46,6 +66,22 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+
+     // Add User
+     .addCase(addUser.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+      state.successMessage = null;
+    })
+    .addCase(addUser.fulfilled, (state, action) => {
+      state.loading = false;
+      state.successMessage = "User added successfully!";
+      state.list.push(action.payload);
+    })
+    .addCase(addUser.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    })
       // Fetch Users List
       .addCase(fetchUsers.pending, (state) => {
         state.loading = true;
@@ -72,7 +108,9 @@ const userSlice = createSlice({
       .addCase(fetchUserDetails.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      })
+;
+      
   },
 });
 

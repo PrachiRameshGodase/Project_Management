@@ -1,25 +1,39 @@
 "use client";
 import { OtherIcons } from '@/assests/icons';
 import LayOut from '@/components/LayOut';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import UserAvatar from '@/components/common/UserAvatar/UserAvatar';
 import { useRouter } from 'next/navigation';
 import SkillsList from '@/components/common/SkillsList/SkillsList';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUserDetails } from '@/app/store/userSlice';
 
 const UserDetails = () => {
     const router = useRouter();
+    const dispatch = useDispatch();
+    const itemId = new URLSearchParams(location.search).get("id");
 
+    const userDetailData=useSelector(state=>state?.user?.userDetails?.data);
+  
     const [isActive, setIsActive] = useState(false);
+
     const user = {
-        name: "Shubham Yadhav",
+        name:  `${userDetailData?.first_name || ""} ${userDetailData?.last_name || ""}`.trim(),
 
         isActive: true,
         image: "",
     };
-    const mySkills = [
-        "HTML", "CSS", "JavaScript", "React", "Node.js",
-        "MongoDB", "Tailwind CSS", "Redux", "Next.js", "TypeScript"
-    ]
+  
+
+    useEffect(() => {
+        if(itemId)
+        dispatch(fetchUserDetails(itemId));
+    }, [dispatch, itemId]);
+    const skillsArray = userDetailData?.skill_set?.split(", ").map(skill => skill.trim());
+   
+    const handleEditUser=()=>{
+    router.push(`/user/add?id=${itemId}`)
+    }
     return (
         <LayOut>
             <div className="w-full  h-full    left-[80px] rounded-[10.17px] border border-[#F4EAEA] bg-white p-6 shadow-lg">
@@ -62,7 +76,7 @@ const UserDetails = () => {
                     </label>
 
                     {/* Edit Button */}
-                    <button onClick={() => router.push(`/add-user`)} className="w-[80px] h-[35px] rounded-[4px] py-[4px] bg-black text-white text-lg mr-[10px] mb-2">
+                    <button onClick={handleEditUser} className="w-[80px] h-[35px] rounded-[4px] py-[4px] bg-black text-white text-lg mr-[10px] mb-2">
                         Edit
                     </button>
                 </div>
@@ -72,8 +86,8 @@ const UserDetails = () => {
                 <div className=" w-[260px] h-[69px] flex items-center gap-[12.21px] ">
                     <UserAvatar name={user.name} dotcolor='green' size={66} image={user.image} isActive={user.isActive} />
                     <div className=" text-xl text-gray-700">
-                        <p className="font-medium flex w-full ">Shubham Yadhav</p>
-                        <p className="text-xs text-gray-500">Software Developer</p>
+                        <p className="font-medium flex w-full ">{`${userDetailData?.first_name || ""} ${userDetailData?.last_name || ""}`}</p>
+                        <p className="text-xs text-gray-500">{userDetailData?.designation ||""}</p>
                     </div>
                 </div>
 
@@ -82,24 +96,24 @@ const UserDetails = () => {
                     <ul className="flex  flex-col space-y-2 ">
                         <li className="w-[367px] h-[24px] flex items-center">
                             <span className="w-[114px] h-[24px] opacity-70">Full Name:</span>
-                            <span className="w-[183px] h-[23px] ml-[35px]">Shubham Yadhav</span>
+                            <span className="w-[183px] h-[23px] ml-[35px]">{`${userDetailData?.first_name || ""} ${userDetailData?.last_name || ""}`}</span>
                         </li>
                         <li className="w-[367px] h-[24px] flex items-center">
                             <span className="w-[114px] h-[24px] opacity-70">Email ID:</span>
-                            <span className="w-[183px] h-[23px] ml-[35px]">shubham@gmail.com</span>
+                            <span className="w-[183px] h-[23px] ml-[35px]">{userDetailData?.email ||""}</span>
                         </li>
                         <li className="w-[367px] h-[24px] flex items-center">
                             <span className="w-[114px] h-[24px] opacity-70">Department:</span>
-                            <span className="w-[183px] h-[23px] ml-[35px]">Tech</span>
+                            <span className="w-[183px] h-[23px] ml-[35px]">{userDetailData?.department ||""}</span>
                         </li>
                         <li className="w-[367px] h-[24px] flex items-center">
                             <span className="w-[114px] h-[24px] opacity-70">Date of Join:</span>
-                            <span className="w-[183px] h-[23px] ml-[35px]">14 Mar, 2024</span>
+                            <span className="w-[183px] h-[23px] ml-[35px]">{userDetailData?.joining_date || ""}</span>
                         </li>
                         <li className="sm:w-[767px] sm:pt-[120px] sm:pb-10 sm:mt-[200px] t-2 sm:absolute  flex items-start">
                             <span className="w-[114px] h-[24px] opacity-70">Skills:</span>
                             <span className=" left-1  flex gap-2 items-center ml-[35px]">
-                                <SkillsList skills={mySkills} />
+                                <SkillsList skills={skillsArray} />
                             </span>
                         </li>
                     </ul>
@@ -107,19 +121,19 @@ const UserDetails = () => {
                     <ul className="mt-14 md:mt-0 flex flex-col space-y-2">
                         <li className="w-[367px] h-[24px] flex items-center">
                             <span className="w-[114px] h-[24px] opacity-70">Contact:</span>
-                            <span className="w-[183px] h-[23px] ml-[35px]">+91 80173 65995</span>
+                            <span className="w-[183px] h-[23px] ml-[35px]">{userDetailData?.phone_number ||""}</span>
                         </li>
                         <li className="w-[367px] h-[24px] flex items-center">
                             <span className="w-[114px] h-[24px] opacity-70">Employee ID:</span>
-                            <span className="w-[183px] h-[23px] ml-[35px]">USER - 0078659</span>
+                            <span className="w-[183px] h-[23px] ml-[35px]">{userDetailData?.employee_id || ""}</span>
                         </li>
                         <li className="w-[367px] h-[24px] flex items-center">
                             <span className="w-[114px] h-[24px] opacity-70">Department:</span>
-                            <span className="w-[183px] h-[23px] ml-[35px]">Tech</span>
+                            <span className="w-[183px] h-[23px] ml-[35px]">{userDetailData?.department || ""}</span>
                         </li>
                         <li className="w-[367px] h-[24px] flex items-center">
                             <span className="w-[114px] h-[24px] opacity-70">Designation:</span>
-                            <span className="w-[183px] h-[23px] ml-[35px]">Senior Developer</span>
+                            <span className="w-[183px] h-[23px] ml-[35px]">{userDetailData?.designation || ""}</span>
                         </li>
                     </ul>
                 </div>
