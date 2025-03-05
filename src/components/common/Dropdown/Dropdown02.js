@@ -1,11 +1,11 @@
-"use client";
 import { useState } from "react";
-import { ChevronUp, ChevronDown, X } from "lucide-react"; // Import close icon
-import { OutsideClick } from "../OutsideClick/OutsideClick";
+import { ChevronDown, ChevronUp, X, Search } from "lucide-react";
+import { OutsideClick } from "../OutsideClick/OutsideClick";// Ensure this is properly implemented
 
 export const Dropdown02 = ({ options, selectedValues, onSelect, label, icon }) => {
   const dropdownOutsideClick = OutsideClick();
   const [selected, setSelected] = useState(selectedValues || []); // Store selected options
+  const [searchQuery, setSearchQuery] = useState(""); // Store search input
 
   // Handle select/deselect option
   const handleOptionSelect = (value) => {
@@ -25,6 +25,11 @@ export const Dropdown02 = ({ options, selectedValues, onSelect, label, icon }) =
     setSelected(updatedSelection);
     onSelect(updatedSelection);
   };
+
+  // Filter options based on search query
+  const filteredOptions = options.filter((option) =>
+    option.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="relative w-[350px]" ref={dropdownOutsideClick?.ref}>
@@ -61,27 +66,45 @@ export const Dropdown02 = ({ options, selectedValues, onSelect, label, icon }) =
         {/* Arrow Icon (Right-Aligned & Clickable) */}
         <div className="ml-auto cursor-pointer" onClick={dropdownOutsideClick?.handleToggle}>
           {dropdownOutsideClick?.isOpen ? (
-            <ChevronUp className="w-4 h-4 text-gray-500" onClick={dropdownOutsideClick?.handleToggle} />
+            <ChevronUp className="w-4 h-4 text-gray-500" />
           ) : (
-            <ChevronDown className="w-4 h-4 text-gray-500" onClick={dropdownOutsideClick?.handleToggle} />
+            <ChevronDown className="w-4 h-4 text-gray-500" />
           )}
         </div>
       </div>
 
       {/* Dropdown Menu */}
       {dropdownOutsideClick?.isOpen && (
-        <div className="absolute top-[100%] mt-2 bg-white shadow-lg border border-gray-300 rounded-lg w-full z-50">
+        <div className="absolute top-[100%] mt-2 bg-white shadow-lg border border-gray-200 rounded-lg w-full z-50">
+          {/* Search Bar */}
+          <div className="flex items-center border-b border-gray-300 px-3 py-2">
+            <Search className="w-4 h-4 text-gray-500 mr-2 " />
+            <input
+              type="text"
+              className="w-full outline-none text-sm "
+              placeholder="Search..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+
+          {/* Options List */}
           <ul>
-            {options.map((option) => (
-              <li
-                key={option}
-                className={`flex px-4 py-2 hover:bg-gray-100 cursor-pointer text-left ${selected.includes(option) ? "bg-gray-200" : ""
+            {filteredOptions.length > 0 ? (
+              filteredOptions.map((option) => (
+                <li
+                  key={option}
+                  className={`flex px-4 py-2 hover:bg-gray-100 cursor-pointer text-left ${
+                    selected.includes(option) ? "bg-gray-200" : ""
                   }`}
-                onClick={() => handleOptionSelect(option)}
-              >
-                {option}
-              </li>
-            ))}
+                  onClick={() => handleOptionSelect(option)}
+                >
+                  {option}
+                </li>
+              ))
+            ) : (
+              <li className="px-4 py-2 text-gray-500 text-sm">No results found</li>
+            )}
           </ul>
         </div>
       )}
