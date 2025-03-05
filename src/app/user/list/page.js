@@ -104,7 +104,7 @@ const UserList = () => {
 
           {/* Mobile Filter Panel */}
           <div
-            className={`fixed mt-20 top-0 right-0 w-[250px] h-full bg-white shadow-lg transform 
+            className={`fixed z-50 mt-20 top-0 right-0 w-[250px] h-full bg-white shadow-lg transform 
           ${isFilterOpen ? "translate-x-0" : "translate-x-full"} transition-transform duration-300 ease-in-out md:hidden`}
           >
             {/* Close Button */}
