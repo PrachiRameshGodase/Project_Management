@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const UserList = () => {
   const router = useRouter();
-const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const usersList = useSelector((state) => state.users);
   console.log("usersList", usersList)
   const [selectedStatus, setSelectedStatus] = useState('');
@@ -78,7 +78,7 @@ const dispatch = useDispatch();
 
             <div className="w-[1px] h-[40px] bg-gray-400 opacity-40" />
 
-            <button className="w-[49px] h-[44px] bg-[#048339] text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/project/add')}>+</button>
+            <button className="w-[49px] h-[44px] bg-[#048339] text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/user/add')}>+</button>
           </div>
 
           {/* Mobile Filter Button */}
@@ -116,10 +116,12 @@ const dispatch = useDispatch();
 
             {/* Filter Options */}
             <div className="mt-16 flex flex-col gap-4 px-4">
+            <button className="w-[49px] h-[44px] bg-[#048339] text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/user/add')}>+</button>
               <Dropdown01 options={status} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />
               <Dropdown01 options={designation} selectedValue={selectedDesignation} onSelect={setSelectedDesignation} label="View" icon={OtherIcons.view_svg} />
               <SearchComponent />
             </div>
+
           </div>
         </div>
 
@@ -128,7 +130,7 @@ const dispatch = useDispatch();
           <table className="w-full min-w-[600px] border-collapse border border-gray-100">
             <thead>
               <tr className="text-left text-sm font-bold uppercase text-gray-800">
-                <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b ">
+                <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b ">
                   <div className='flex items-center justify-between'>
                     <span> User ID</span>
                     <span className="ml-2 flex flex-col gap-1">
@@ -141,24 +143,24 @@ const dispatch = useDispatch();
                     </span>
                   </div>
                 </th>
-                <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b">First Name</th>
-                <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b">Email ID</th>
-                <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b">Mobile Number</th>
-                <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b">Designation</th>
-                <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b">Date Of Joining</th>
-                <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b">Status</th>
+                <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b">First Name</th>
+                <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b">Email ID</th>
+                <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b">Mobile Number</th>
+                <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b">Designation</th>
+                <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b">Date Of Joining</th>
+                <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b">Status</th>
               </tr>
             </thead>
             <tbody>
               {paginatedUsers.map((user) => (
                 <tr key={user.userId} className="hover:bg-gray-100 cursor-pointer">
-                  <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user.userId}`)}>{user.userId}</td>
-                  <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user.userId}`)}>{user.firstName}</td>
-                  <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user.userId}`)}>{user.email}</td>
-                  <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user.userId}`)}>{user.mobileNumber}</td>
-                  <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user.userId}`)}>{user.designation}</td>
-                  <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user.userId}`)}>{user.dateOfJoining}</td>
-                  <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user.userId}`)}>
+                  <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user.userId}`)}>{user.userId}</td>
+                  <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user.userId}`)}>{user.firstName}</td>
+                  <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user.userId}`)}>{user.email}</td>
+                  <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user.userId}`)}>{user.mobileNumber}</td>
+                  <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user.userId}`)}>{user.designation}</td>
+                  <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user.userId}`)}>{user.dateOfJoining}</td>
+                  <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user.userId}`)}>
                     <span className={`w-3 h-3 inline-block rounded-full ${user.status === 'Active' ? 'bg-green-600' : 'bg-red-600'}`}></span>
                   </td>
                 </tr>

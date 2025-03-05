@@ -24,30 +24,30 @@ const AddProject = () => {
     };
     return (
         <LayOut>
-            <div className="flex text-center">
+            <div className="sm:flex sm:text-center">
                 <div className="text-2xl tracking-tight  ml-[70px]">Add New Project</div>
 
-                <div className="flex justify-center items-center h-screen mx-auto">
-                    <form className="w-[600px] h-[656px] bg-white p-8 rounded-lg space-y-5">
-                        <div className="flex justify-between">
+                <div className="sm:flex justify-center items-center h-screen mx-auto">
+                    <form className="sm:w-[600px] mb-4 h-[656px] bg-white p-3 sm:p-8 rounded-lg space-y-5">
+                        <div className="sm:flex justify-between">
                             <label className="block text-m ">Project Name</label>
-                            <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m ml-7 placeholder:text-gray-700" type='text' placeholder='Enter Project Name ' />
+                            <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m sm:ml-7 placeholder:text-gray-700" type='text' placeholder='Enter Project Name ' />
                         </div>
 
-                        <div className="flex justify-between">
+                        <div className="sm:flex justify-between">
                             <label className="block text-m">Starting date</label>
                             {/* <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m ml-7 placeholder:text-gray-700" type='Date' placeholder='Enter Starting date' /> */}
                             <CustomDatePicker onChange={(date) => console.log("Selected Date:", date)} />
                         </div>
 
-                        <div className='flex justify-between '>
+                        <div className='sm:flex justify-between '>
                             <label className="block text-m">Due date</label>
                             {/* <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m ml-14 placeholder:text-gray-700" type='Date' placeholder='Enter Due date' /> */}
                             <CustomDatePicker onChange={(date) => console.log("Selected Date:", date)} />
 
                         </div>
 
-                        <div className="flex justify-between">
+                        <div className="sm:flex justify-between">
                             <label className="block text-m mr-16">Priority</label>
                             <Dropdown001
                                 options={projectPriority}
@@ -57,7 +57,7 @@ const AddProject = () => {
                             />
                         </div>
 
-                        <div className="flex justify-between">
+                        <div className="sm:flex justify-between">
                             <label className="block text-m mr-4">Project Leader</label>
                             <Dropdown001
                                 options={projectPriority}
@@ -67,7 +67,7 @@ const AddProject = () => {
                             />
                         </div>
 
-                        <div className="flex justify-between">
+                        <div className="sm:flex justify-between">
                             <label className="block text-m mr-6">Project Stage</label>
                             <Dropdown001
                                 options={projectPriority}
@@ -77,7 +77,7 @@ const AddProject = () => {
                             />
                         </div>
 
-                        <div className="flex justify-between">
+                        <div className="sm:flex justify-between">
                             <label className="block text-m mr-20">Team</label>
                             <Dropdown02
                                 options={projectPriority}
@@ -87,18 +87,18 @@ const AddProject = () => {
                             />
                         </div>
 
-                        <div className="flex justify-between">
+                        <div className="sm:flex justify-between">
                             <label className="block text-black text-sm font-medium">Attachments</label>
                             <FileUpload onFilesChange={(files) => console.log(files)} />
 
                         </div>
-                        <div className="flex justify-between">
+                        <div className="sm:flex justify-between">
                             <label className="block text-m">Description</label>
-                            <textarea className="w-[350px] h-40 border border-gray-300 rounded-lg p-2 text-m ml-[35px] placeholder:text-gray-700" type='text' placeholder='Enter Description....' />
+                            <textarea className="w-[350px] h-40 border border-gray-300 rounded-lg p-2 text-m sm:ml-[35px] placeholder:text-gray-700" type='text' placeholder='Enter Description....' />
                         </div>
 
-                        <div className=" flex justify-end">
-                            <button className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m ml-[55px] bg-black text-gray-100 ">Submit</button>
+                        <div className=" sm:flex justify-end">
+                            <button className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m sm:ml-[55px] bg-black text-gray-100 ">Submit</button>
                         </div>
                     </form>
                 </div>

@@ -122,7 +122,7 @@ const ClientList = () => {
 
                         <div className="w-[1px] h-[40px] bg-gray-400 opacity-40" />
 
-                        <button className="w-[49px] h-[44px] bg-[#048339] text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/project/add')}>+</button>
+                        <button className="w-[49px] h-[44px] bg-[#048339] text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/client/add')}>+</button>
                     </div>
 
                     {/* Mobile Filter Button */}
@@ -160,6 +160,8 @@ const ClientList = () => {
 
                         {/* Filter Options */}
                         <div className="mt-16 flex flex-col gap-4 px-4">
+                            <button className="w-[49px] h-[44px] bg-[#048339] text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/client/add')}>+</button>
+
                             <Dropdown01 options={view} selectedValue={selectedView} onSelect={setSelectedView} label="View" icon={OtherIcons.view_svg} />
                             <Dropdown01 options={designation} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />
                             <Dropdown01 options={projectSortConstant} selectedValue={selectedSort} onSelect={setSelectedSort} label="Sort By" icon={OtherIcons.sort_by_svg} />
@@ -177,27 +179,27 @@ const ClientList = () => {
                         <table className="w-full min-w-[900px] border-collapse border border-gray-100">
                             <thead>
                                 <tr className="text-left text-sm font-bold uppercase text-gray-800">
-                                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] border-b border-gray-100 rounded-t-lg flex">
+                                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-100 rounded-t-lg flex">
                                         Client ID <span className="mt-1 ml-2 flex flex-col gap-1">{OtherIcons.arrow_up_svg}{OtherIcons.arrow_down_svg}</span>
                                     </th>
-                                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] border-b border-gray-100 rounded-t-lg">Client Name</th>
-                                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] border-b border-gray-100 rounded-t-lg">Email ID</th>
-                                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] border-b border-gray-100 rounded-t-lg">CONTACT PERSON NAME</th>
-                                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] border-b border-gray-100 rounded-t-lg">MOBILE NUMBER</th>
+                                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-100 rounded-t-lg">Client Name</th>
+                                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-100 rounded-t-lg">Email ID</th>
+                                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-100 rounded-t-lg">CONTACT PERSON NAME</th>
+                                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-100 rounded-t-lg">MOBILE NUMBER</th>
 
-                                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] border-b border-gray-100 rounded-t-lg">Status</th>
+                                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-100 rounded-t-lg">Status</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {paginatedUsers.map((user) => (
                                     <tr key={user.userId} className="hover:bg-gray-100 cursor-pointer">
-                                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] border-b border-gray-50" onClick={() => router.push(`/client/details?id=${user.userId}`)}>{user.userId}</td>
-                                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] border-b border-gray-50" onClick={() => router.push(`/client/details?id=${user.userId}`)}>{user.firstName}</td>
-                                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] border-b border-gray-50" onClick={() => router.push(`/client/details?id=${user.userId}`)}>{user.email}</td>
-                                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] border-b border-gray-50" onClick={() => router.push(`/client/details?id=${user.userId}`)}>{user.mobileNumber}</td>
-                                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] border-b border-gray-50" onClick={() => router.push(`/client/details?id=${user.userId}`)}>{user.mobileNumber}</td>
+                                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-50" onClick={() => router.push(`/client/details?id=${user.userId}`)}>{user.userId}</td>
+                                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-50" onClick={() => router.push(`/client/details?id=${user.userId}`)}>{user.firstName}</td>
+                                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-50" onClick={() => router.push(`/client/details?id=${user.userId}`)}>{user.email}</td>
+                                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-50" onClick={() => router.push(`/client/details?id=${user.userId}`)}>{user.mobileNumber}</td>
+                                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-50" onClick={() => router.push(`/client/details?id=${user.userId}`)}>{user.mobileNumber}</td>
                                         <td
-                                            className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] border-b border-gray-50 font-bold items-center flex align-middle"
+                                            className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-50 font-bold items-center flex align-middle"
                                             onClick={() => router.push(`/client/details?id=${user.userId}`)}
                                         >
                                             <span

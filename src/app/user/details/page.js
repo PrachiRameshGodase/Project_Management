@@ -96,7 +96,7 @@ const UserDetails = () => {
                             <span className="w-[114px] h-[24px] opacity-70">Date of Join:</span>
                             <span className="w-[183px] h-[23px] ml-[35px]">14 Mar, 2024</span>
                         </li>
-                        <li className="w-[767px] pt-[120px] pb-10 mt-[200px] t-2 absolute  flex items-start">
+                        <li className="sm:w-[767px] sm:pt-[120px] sm:pb-10 sm:mt-[200px] t-2 sm:absolute  flex items-start">
                             <span className="w-[114px] h-[24px] opacity-70">Skills:</span>
                             <span className=" left-1  flex gap-2 items-center ml-[35px]">
                                 <SkillsList skills={mySkills} />
@@ -133,7 +133,7 @@ const UserDetails = () => {
                 </div>
 
                 {/* Projects Grid */}
-                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4  mt-4  ">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4  mt-4  ">
                     {[...Array(4)].map((_, index) => (
                         <div
                             key={index}
