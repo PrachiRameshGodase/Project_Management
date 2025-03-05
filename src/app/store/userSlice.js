@@ -1,20 +1,25 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-const BASE_URL = "https://pm.codesquarry.com/api"; 
+import axiosInstance from "../Config/axiosInstance";
+const BASE_URL = "https://pm.codesquarry.com/api";
 
 
 // Async thunk to fetch users list
-export const fetchUsers = createAsyncThunk("users/fetchList", async (_, { rejectWithValue }) => {
-  try {
-    const response = await axios.post(`${BASE_URL}/users/list`);
-    console.log("response", response)
-
-    return response.data; // Assuming the API returns a JSON object
-    // console.log("response", response)
-  } catch (error) {
-    return rejectWithValue(error.response?.data || error.message);
+export const fetchUsers = createAsyncThunk(
+  "users/fetchList",
+  async (_, { rejectWithValue }) => {
+    try {
+    
+      const response = await axiosInstance.post(`/users/list`);
+      console.log("API Response:", response.data);
+      return response.data;
+    } catch (error) {
+      console.error("API Error:", error);
+      return rejectWithValue(error.response?.data || error.message);
+    }
   }
-});
+);
+
 
 // Async thunk to fetch user details by ID
 export const fetchUserDetails = createAsyncThunk("users/fetchDetails", async (userId, { rejectWithValue }) => {

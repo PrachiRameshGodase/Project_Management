@@ -23,12 +23,14 @@ const LoginPage = () => {
   };
 
   const handleSubmit = () => {
-    const result = dispatch(loginUser(formData));
-
-    if (loginUser.fulfilled.match(result)) {
-      router.push("/home_page"); // Redirect to home page on success
+    dispatch(loginUser(formData)).then((res)=>{
+     
+       if (res?.payload?.success== true) {
+        router.push("/home"); 
     }
-  };
+    });
+
+   };
 
   return (
     <div className="flex justify-center items-center h-screen">

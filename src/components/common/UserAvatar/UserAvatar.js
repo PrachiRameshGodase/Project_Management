@@ -5,10 +5,10 @@ import Badge from "@mui/material/Badge";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 
-const StyledBadge = styled(Badge)(({ theme, dotColor }) => ({
+const StyledBadge = styled(Badge)(({ theme, dotcolor }) => ({
     "& .MuiBadge-badge": {
-        backgroundColor: dotColor,
-        color: dotColor,
+        backgroundColor: dotcolor,
+        color: dotcolor,
         boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
         "&::after": {
             position: "absolute",
@@ -34,14 +34,14 @@ const StyledBadge = styled(Badge)(({ theme, dotColor }) => ({
     },
 }));
 
-const UserAvatar = ({ name, image, isActive, size = 68, dotColor = "green", onClick }) => {
+const UserAvatar = ({ name, image, isActive, size = 68, dotcolor = "green", onClick }) => {
     return (
         <Box sx={{ display: "flex", alignItems: "center", cursor: "pointer" }} onClick={onClick}>
             <StyledBadge
                 overlap="circular"
                 anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                variant={isActive && dotColor !== "none" ? "dot" : "standard"}
-                dotColor={dotColor}
+                variant={isActive && dotcolor !== "none" ? "dot" : "standard"}
+                dotcolor={dotcolor}
                 className="border-2 border-[#A448EE] rounded-full p-[2px]"
             >
                 <Avatar

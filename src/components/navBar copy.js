@@ -42,7 +42,7 @@ const NavBar = () => {
       </div>
 
       <div className="absolute top-4 right-[90px] flex items-center space-x-2">
-        <UserAvatar name={user.name} dotColor='yellow' size={40} image={user.image} isActive={user.isActive} />
+        <UserAvatar name={user.name} dotcolor='yellow' size={40} image={user.image} isActive={user.isActive} />
       </div>
     </div>
   );

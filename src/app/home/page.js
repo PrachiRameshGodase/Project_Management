@@ -28,7 +28,7 @@ const HomePage = () => {
         <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4 sm:p-10 relative ">
             {/* Avatar Section (Top-Right) */}
             <div className="absolute top-4 right-5 sm:right-14 flex items-center space-x-2">
-                <UserAvatar name={user.name} dotColor="green" size={36} image={user.image} isActive={user.isActive} />
+                <UserAvatar name={user.name} dotcolor="green" size={36} image={user.image} isActive={user.isActive} />
                 <span className="cursor-pointer" onClick={() => router.push(`/`)}>
                     {OtherIcons.back_svg}
                 </span>

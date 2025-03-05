@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axiosInstance from "../Config/axiosInstance";
 
 // API URL
 const API_URL = "https://pm.codesquarry.com/api/login";
@@ -9,11 +9,15 @@ export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (credentials, { rejectWithValue }) => {
     try {
-      const response = await axios.post(API_URL, credentials, {
-        headers: { "Content-Type": "application/json" },
-      });
+      const response =await axiosInstance.post(API_URL, credentials)
 
-      return response.data; // Return the response data
+      // Extract token from API response
+      const token = response.data.access_token;
+
+      // Store token in localStorage
+      localStorage.setItem("access_token", token);
+
+      return response.data; // Return the full response data
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.message || "Login failed"
@@ -29,6 +33,7 @@ const authSlice = createSlice({
     logout: (state) => {
       state.user = null;
       state.token = null;
+      localStorage.removeItem("access_token"); // Remove token on logout
     },
   },
   extraReducers: (builder) => {
@@ -40,7 +45,7 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload.user;
-        state.token = action.payload.token;
+        state.token = action.payload.access_token; // Store token in Redux state
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
