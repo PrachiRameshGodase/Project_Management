@@ -11,8 +11,15 @@ import { fetchUserDetails } from '@/app/store/userSlice';
 const UserDetails = () => {
     const router = useRouter();
     const dispatch = useDispatch();
-    const itemId = new URLSearchParams(location.search).get("id");
+    // const itemId = new URLSearchParams(location.search).get("id");
+    const [itemId, setItemId] = useState(null);
 
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const params = new URLSearchParams(window.location.search);
+            setItemId(params.get("id"));
+        }
+    }, []);
     const userDetailData=useSelector(state=>state?.user?.userDetails?.data);
   
     const [isActive, setIsActive] = useState(false);

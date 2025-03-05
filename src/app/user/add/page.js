@@ -13,6 +13,14 @@ const AddUser = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   // const itemId = new URLSearchParams(location.search).get("id");
+  const [itemId, setItemId] = useState(null);
+  
+      useEffect(() => {
+          if (typeof window !== "undefined") {
+              const params = new URLSearchParams(window.location.search);
+              setItemId(params.get("id"));
+          }
+      }, []);
 
   const [formData, setFormData] = useState({
     first_name: "",
@@ -29,11 +37,11 @@ const AddUser = () => {
 
   const userDetailData = useSelector(state => state?.user?.userDetails?.data);
 
-  // useEffect(() => {
-  //   if (itemId) {
-  //     dispatch(fetchUserDetails(itemId));
-  //   }
-  // }, [dispatch, itemId]);
+  useEffect(() => {
+    if (itemId) {
+      dispatch(fetchUserDetails(itemId));
+    }
+  }, [dispatch, itemId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
