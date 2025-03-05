@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ChevronDown, ChevronUp, X, Search } from "lucide-react";
-import { OutsideClick } from "../OutsideClick/OutsideClick";// Ensure this is properly implemented
+import { OutsideClick } from "../OutsideClick/OutsideClick"; // Ensure this is properly implemented
 
 export const Dropdown02 = ({ options, selectedValues, onSelect, label, icon }) => {
   const dropdownOutsideClick = OutsideClick();
@@ -35,7 +35,7 @@ export const Dropdown02 = ({ options, selectedValues, onSelect, label, icon }) =
     <div className="relative w-[350px]" ref={dropdownOutsideClick?.ref}>
       {/* Dropdown Header */}
       <div
-        className="h-auto min-h-10 flex items-center gap-2 border border-gray-300 rounded-lg px-3 py-2 cursor-pointer w-full flex-wrap"
+        className="h-auto min-h-10 flex items-center gap-2 border border-gray-300 rounded-lg px-3 py-2 cursor-pointer w-full flex-wrap mb-4"
         ref={dropdownOutsideClick?.buttonRef}
         onClick={dropdownOutsideClick?.handleToggle}
       >
@@ -78,18 +78,18 @@ export const Dropdown02 = ({ options, selectedValues, onSelect, label, icon }) =
         <div className="absolute top-[100%] mt-2 bg-white shadow-lg border border-gray-200 rounded-lg w-full z-50">
           {/* Search Bar */}
           <div className="flex items-center border-b border-gray-300 px-3 py-2">
-            <Search className="w-4 h-4 text-gray-500 mr-2 " />
+            <Search className="w-4 h-4 text-gray-500 mr-2" />
             <input
               type="text"
-              className="w-full outline-none text-sm "
+              className="w-full outline-none text-sm"
               placeholder="Search..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
 
-          {/* Options List */}
-          <ul>
+          {/* Options List (Scrollable) */}
+          <ul className="max-h-60 overflow-y-auto">
             {filteredOptions.length > 0 ? (
               filteredOptions.map((option) => (
                 <li

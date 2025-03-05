@@ -37,7 +37,9 @@ const UserList = () => {
   ];
 
   useEffect(() => {
-
+const sendData={
+  
+}
     dispatch(fetchUsers());
   }, [dispatch]);
 
@@ -169,7 +171,7 @@ const UserList = () => {
                     <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.designation}</td>
                     <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.joining_date}</td>
                     <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>
-                      <span className={`w-3 h-3 inline-block rounded-full ${user.status === 'Active' ? 'bg-green-600' : 'bg-red-600'}`}></span>
+                      <span className={`w-3 h-3 inline-block rounded-full ${user.status == 0 ? 'bg-green-600' : 'bg-red-600'}`}></span>
                     </td>
                   </tr>
                 ))}
