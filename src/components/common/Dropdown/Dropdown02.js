@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChevronDown, ChevronUp, X, Search } from "lucide-react";
 import { OutsideClick } from "../OutsideClick/OutsideClick"; // Ensure this is properly implemented
 
@@ -31,19 +31,23 @@ export const Dropdown02 = ({ options, selectedValues, onSelect, label, icon }) =
     option.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  // useEffect(() => {
+  //           setSelected(selectedValues); // Update state when selectedDate changes
+  //       }, [selectedValues]);
+  
   return (
     <div className="relative w-[350px]" ref={dropdownOutsideClick?.ref}>
       {/* Dropdown Header */}
       <div
-        className="h-auto min-h-10 flex items-center gap-2 border border-gray-300 rounded-lg px-3 py-2 cursor-pointer w-full flex-wrap mb-4"
+        className="h-auto min-h-10 flex items-center gap-2 border border-gray-300 rounded-lg px-3 py-2 cursor-pointer w-full flex-wrap"
         ref={dropdownOutsideClick?.buttonRef}
         onClick={dropdownOutsideClick?.handleToggle}
       >
         <div className="flex items-center gap-2 flex-wrap">
           {icon}
           {/* Show selected items as pills */}
-          {selected.length > 0 ? (
-            selected.map((item) => (
+          {selected?.length > 0 ? (
+            selected?.map((item) => (
               <div
                 key={item}
                 className="flex items-center bg-gray-200 text-gray-700 rounded-md px-2 py-1 text-sm"
@@ -75,7 +79,7 @@ export const Dropdown02 = ({ options, selectedValues, onSelect, label, icon }) =
 
       {/* Dropdown Menu */}
       {dropdownOutsideClick?.isOpen && (
-        <div className="absolute top-[100%] mt-2 bg-white shadow-lg border border-gray-200 rounded-lg w-full z-50">
+        <div className="absolute top-[100%] mt-1 bg-white shadow-lg border border-gray-200 rounded-lg w-full z-50 mb-4">
           {/* Search Bar */}
           <div className="flex items-center border-b border-gray-300 px-3 py-2">
             <Search className="w-4 h-4 text-gray-500 mr-2" />

@@ -1,9 +1,12 @@
 "use client"
 import { fetchUsers } from '@/app/store/userSlice';
 import { OtherIcons } from '@/assests/icons';
-import Dropdown01 from '@/components/common/Dropdown/Dropdown01';
+import Dropdown01, { DropdownStatus } from '@/components/common/Dropdown/Dropdown01';
 import { designation, status } from '@/components/common/Helper/Helper';
+import { useDebounceSearch } from '@/components/common/Helper/HelperFunction';
+import Pagenation from '@/components/common/Pagenation/Pagenation';
 import SearchComponent from '@/components/common/SearchComponent/SearchComponent';
+import SortBy from '@/components/common/Sort/SortBy';
 import TableSkeleton from '@/components/common/TableSkeleton/TableSkeleton';
 import LayOut from '@/components/LayOut';
 import { useRouter } from 'next/navigation';
@@ -15,52 +18,63 @@ const UserList = () => {
   const dispatch = useDispatch();
   const usersList = useSelector((state) => state.user?.list?.data);
   const usersLoading = useSelector((state) => state.user);
+  const totalCount = useSelector((state) => state?.user?.list?.total);
 
-
-  const [selectedStatus, setSelectedStatus] = useState('');
   const [selectedDesignation, setSelectedDesignation] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const entriesPerPage = 10;
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [searchTrigger, setSearchTrigger] = useState(0);
 
-  const users = [
-    { userId: 'U001', firstName: 'John', email: 'john@example.com', mobileNumber: '+1234567890', designation: 'Manager', dateOfJoining: '2023-08-15', status: 'Active' },
-    { userId: 'U002', firstName: 'Alice', email: 'alice@example.com', mobileNumber: '+1987654321', designation: 'Developer', dateOfJoining: '2022-11-20', status: 'Inactive' },
-    { userId: 'U003', firstName: 'Bob', email: 'bob@example.com', mobileNumber: '+1987654322', designation: 'Designer', dateOfJoining: '2021-09-10', status: 'Active' },
-    { userId: 'U004', firstName: 'Charlie', email: 'charlie@example.com', mobileNumber: '+1987654323', designation: 'HR', dateOfJoining: '2020-05-18', status: 'Inactive' },
-    { userId: 'U005', firstName: 'David', email: 'david@example.com', mobileNumber: '+1987654324', designation: 'Tester', dateOfJoining: '2021-12-22', status: 'Active' },
-    { userId: 'U006', firstName: 'Eva', email: 'eva@example.com', mobileNumber: '+1987654325', designation: 'Manager', dateOfJoining: '2019-07-30', status: 'Inactive' },
-    { userId: 'U007', firstName: 'Frank', email: 'frank@example.com', mobileNumber: '+1987654326', designation: 'Developer', dateOfJoining: '2018-11-05', status: 'Active' },
-    { userId: 'U008', firstName: 'Grace', email: 'grace@example.com', mobileNumber: '+1987654327', designation: 'Designer', dateOfJoining: '2022-03-14', status: 'Inactive' },
-    { userId: 'U009', firstName: 'Hannah', email: 'hannah@example.com', mobileNumber: '+1987654328', designation: 'HR', dateOfJoining: '2017-09-21', status: 'Active' },
-    { userId: 'U010', firstName: 'Isaac', email: 'isaac@example.com', mobileNumber: '+1987654329', designation: 'Tester', dateOfJoining: '2023-06-08', status: 'Inactive' },
-    { userId: 'U011', firstName: 'Jack', email: 'jack@example.com', mobileNumber: '+1987654330', designation: 'Manager', dateOfJoining: '2016-04-12', status: 'Active' },
-  ];
+  // reset current page to 1 when any filters are applied
+  const resetPageIfNeeded = () => {
+    if (currentPage > 1) {
+      setCurrentPage(1);
+    }
+  };
+
+
+  //Search/////////////////////////////////////////////////////////////
+  const [searchTermFromChild, setSearchTermFromChild] = useState("");
+  // Debounced function to trigger search
+  const debouncedSearch = useDebounceSearch(() => {
+    setSearchTrigger((prev) => prev + 1);
+  }, 800);
+
+  // Handle search term change from child component
+  const onSearch = (term) => {
+    setSearchTermFromChild(term);
+    if (term.length > 0 || term === "") {
+      debouncedSearch();
+    }
+  };
+
+  // sortBy
+  const [selectedSortBy, setSelectedSortBy] = useState("");
+  const [sortOrder, setSortOrder] = useState(1);
+  //sortby
+
+  // filter
+  const [selectedStatus, setSelectedStatus] = useState('View');
+  // filter
 
   useEffect(() => {
-const sendData={
-  
-}
-    dispatch(fetchUsers());
-  }, [dispatch]);
+    const sendData = {
+      limit: itemsPerPage,
+      page: currentPage,
+      ...(searchTermFromChild ? { search: searchTermFromChild } : {}),
+      ...(selectedSortBy && { sort_by: selectedSortBy, sort_order: sortOrder }),
+      ...(selectedDesignation && { designation: selectedDesignation }),
 
-  const totalEntries = usersList?.length;
-  const totalPages = Math.ceil(totalEntries / entriesPerPage);
+      ...(selectedStatus !== null && selectedStatus !== undefined
+        ? { status: selectedStatus }
+        : {}),
+    };
 
-  // Filtered Users
-  const filteredUsers = usersList?.filter((user) => {
-    return (
-      (selectedStatus === '' || user.status === selectedStatus) &&
-      (selectedDesignation === '' || user.designation === selectedDesignation)
-    );
-  });
+    dispatch(fetchUsers(sendData));
+  }, [searchTrigger, dispatch, selectedStatus, selectedDesignation]);
 
-  // Pagination Logic
-  const startEntry = (currentPage - 1) * entriesPerPage;
-  const endEntry = startEntry + entriesPerPage;
-  const paginatedUsers = filteredUsers?.slice(startEntry, endEntry);
-  const [loading, setLoading] = useState(true);
 
-  // filter short-list
+// filter short-list
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   return (
@@ -73,15 +87,19 @@ const sendData={
           <div className="flex">
             <p className="text-[20px] sm:text-[30px]  leading-[32px] tracking-[-1.5px]">All User list</p>
             <p className="font-bold p-2 rounded-full text-[10.16px] leading-[12.19px] text-[#400F6F] mt-3 ml-2 bg-[#f0e7fa] flex items-center justify-center w-[50px] h-[10px]">
-              {users?.length} total
+              {totalCount} total
             </p>
           </div>
 
           {/* Right Section (Filters & Search) */}
           <div className="hidden md:flex gap-6 items-center">
-            <Dropdown01 options={status} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />
+            {/* <DropdownStatus options={status} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} /> */}
+            <DropdownStatus
+              selectedValue={selectedStatus}
+              onSelect={setSelectedStatus}
+            />
             <Dropdown01 options={designation} selectedValue={selectedDesignation} onSelect={setSelectedDesignation} label="View" icon={OtherIcons.view_svg} />
-            <SearchComponent />
+            <SearchComponent onSearch={onSearch} section={searchTrigger} />
 
             <div className="w-[1px] h-[40px] bg-gray-400 opacity-40" />
 
@@ -92,7 +110,8 @@ const sendData={
           {/* Mobile Filter Button */}
           <div className='flex gap-2 md:hidden'>
 
-            <SearchComponent />
+            <SearchComponent onSearch={onSearch} section={searchTrigger} />
+
             <button
               className="md:hidden w-[44px] h-[44px] bg-gray-100 text-gray-600 rounded-lg flex items-center justify-center text-2xl"
               onClick={() => setIsFilterOpen(true)}
@@ -147,14 +166,16 @@ const sendData={
                   <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b ">
                     <div className='flex items-center justify-between'>
                       <span> User ID</span>
-                      <span className="ml-2 flex flex-col gap-1">
-                        <button >
-                          {OtherIcons.arrow_up_svg}
-                        </button>
-                        <button >
-                          {OtherIcons.arrow_down_svg}
-                        </button>
-                      </span>
+
+                      <SortBy
+                        setSearchTrigger={setSearchTrigger}
+                        selectedSortBy={selectedSortBy}
+                        setSelectedSortBy={setSelectedSortBy}
+                        sortOrder={sortOrder}
+                        setSortOrder={setSortOrder}
+                        sortOptions="id"
+                        resetPageIfNeeded={resetPageIfNeeded}
+                      />
                     </div>
                   </th>
                   <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b">User Name</th>
@@ -168,7 +189,7 @@ const sendData={
               <tbody>
                 {usersList?.map((user, index) => (
                   <tr key={user?.id} className="hover:bg-gray-100 cursor-pointer">
-                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{index + 1}</td>
+                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.id}</td>
                     <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.first_name}</td>
                     <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.email}</td>
                     <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.phone_number}</td>
@@ -183,14 +204,13 @@ const sendData={
             </table>
           )}
         </div>
-        {/* Pagination */}
-        <div className="flex justify-between items-center mt-4 px-1 sm:px-2 py-2">
-          <div className='text-gray-700 text-[12px] sm:text-[18px]'>{`Showing   ${startEntry + 1} - ${Math.min(endEntry, filteredUsers?.length)} of ${filteredUsers?.length} entries`}</div>
-          <div className="flex gap-2">
-            <button className={`w-[60px] h-[29px]   sm:w-[80px] sm:h-[39px] text-[10px] rounded-md border ${currentPage === 1 ? 'bg-gray-200 text-gray-400' : 'bg-white text-black hover:bg-gray-300'}`} disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>Previous</button>
-            <button className={`w-[60px] h-[29px]  sm:w-[80px] sm:h-[39px] text-[10px] rounded-md border ${currentPage === totalPages ? 'bg-gray-200 text-gray-400' : 'bg-white text-black hover:bg-gray-300'}`} disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>Next</button>
-          </div>
-        </div>
+
+        <Pagenation itemList={totalCount}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          itemsPerPage={itemsPerPage}
+          setItemsPerPage={setItemsPerPage}
+          setSearchCall={setSearchTrigger} />
       </div>
     </LayOut>
   );

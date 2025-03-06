@@ -1,7 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { OutsideClick } from "../OutsideClick/OutsideClick";
 import { ChevronUp, ChevronDown } from "lucide-react";
+import { OtherIcons } from "@/assests/icons";
+import { statusOptions } from "../Helper/Helper";
 
 const Dropdown01 = ({ options, selectedValue, onSelect, label, icon }) => {
   const dropdownOutsideClick = OutsideClick();
@@ -59,13 +61,16 @@ export default Dropdown01;
 
 export const Dropdown001 = ({ options, selectedValue, onSelect, label, icon }) => {
   const dropdownOutsideClick = OutsideClick();
-  const [selected, setSelected] = useState(selectedValue || ""); // Store selected option
+  const [selected, setSelected] = useState(selectedValue); // Store selected option
 
   const handleOptionSelect = (value) => {
     setSelected(value);
     onSelect(value);
     dropdownOutsideClick.handleToggle(); // Close dropdown after selection
   };
+  useEffect(() => {
+          setSelected(selectedValue); // Update state when selectedDate changes
+      }, [selectedValue]);
 
   return (
     <div className="relative" ref={dropdownOutsideClick?.ref}>
@@ -103,6 +108,58 @@ export const Dropdown001 = ({ options, selectedValue, onSelect, label, icon }) =
                 onClick={() => handleOptionSelect(option)}
               >
                 {option}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+};
+
+
+
+export const DropdownStatus = ({ selectedValue, onSelect }) => {
+  const dropdownOutsideClick = OutsideClick();
+  
+
+  const [selected, setSelected] = useState(
+    statusOptions.find((option) => option.value === selectedValue) || null
+  );
+
+  const handleOptionSelect = (option) => {
+    setSelected(option);
+    onSelect(option.value);
+    dropdownOutsideClick.handleToggle();
+  };
+
+  return (
+    <div className="relative" ref={dropdownOutsideClick?.ref}>
+      {/* Dropdown Button */}
+      <div
+        className={`h-[44px] flex items-center gap-2 border border-gray-900 hover:ring-purple-300 rounded-lg px-3 py-2 cursor-pointer w-[120px]`}
+        onClick={dropdownOutsideClick?.handleToggle}
+        ref={dropdownOutsideClick?.buttonRef}
+      >
+        {OtherIcons.user_svg}
+        <span className={`text-gray-700 ${!selected ? "text-gray-400" : ""}`}>
+          {selected ? selected.label : "Status"}
+        </span>
+      </div>
+
+      {/* Dropdown List */}
+      {dropdownOutsideClick?.isOpen && (
+        <div className="absolute top-[100%] mt-2 bg-white shadow-lg border border-gray-300 rounded-lg w-[150px] z-50">
+          <ul>
+            {statusOptions?.map((option) => (
+              <li
+                key={option.value}
+                className={`flex px-4 py-2 hover:bg-gray-100 cursor-pointer text-left ${
+                  selected?.value === option.value ? "bg-gray-200" : ""
+                }`}
+                onClick={() => handleOptionSelect(option)}
+              >
+                {option.label}
               </li>
             ))}
           </ul>

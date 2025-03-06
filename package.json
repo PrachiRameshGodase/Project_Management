@@ -25,7 +25,8 @@
     "react-hot-toast": "^2.5.2",
     "react-photo-view": "^1.2.7",
     "react-redux": "^9.2.0",
-    "react-router-dom": "^7.1.5"
+    "react-router-dom": "^7.1.5",
+    "sweetalert2": "^11.17.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

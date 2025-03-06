@@ -1,11 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./datepicker.css";
 import { OtherIcons } from "@/assests/icons";
 
-const CustomDatePicker = ({ label = "Select Date", onChange }) => {
+const CustomDatePicker = ({selectedDate, label = "Select Date", onChange }) => {
     const [date, setDate] = useState("");
+    useEffect(() => {
+        setDate(selectedDate); // Update state when selectedDate changes
+    }, [selectedDate]);
 
     const handleDateChange = (e) => {
         setDate(e.target.value);

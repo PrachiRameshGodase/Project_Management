@@ -35,6 +35,10 @@ const AddProject = () => {
                         </div>
 
                         <div className="sm:flex justify-between">
+                            <label className="block text-m ">Client Name</label>
+                            <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m sm:ml-7 placeholder:text-gray-700" type='text' placeholder='Enter Client Name ' />
+                        </div>
+                        <div className="sm:flex justify-between">
                             <label className="block text-m">Starting date</label>
                             {/* <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m ml-7 placeholder:text-gray-700" type='Date' placeholder='Enter Starting date' /> */}
                             <CustomDatePicker onChange={(date) => console.log("Selected Date:", date)} />

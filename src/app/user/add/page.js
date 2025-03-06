@@ -3,7 +3,7 @@ import { addUser, fetchUserDetails } from '@/app/store/userSlice';
 import CustomDatePicker from '@/components/common/DatePicker/CustomDatePicker';
 import { Dropdown001 } from '@/components/common/Dropdown/Dropdown01';
 import { Dropdown02 } from '@/components/common/Dropdown/Dropdown02';
-import { departmentOptions, designation, projectPriority, Skills } from '@/components/common/Helper/Helper';
+import { departmentOptions, designation, projectPriority, Skills, status } from '@/components/common/Helper/Helper';
 import LayOut from '@/components/LayOut';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
@@ -12,15 +12,18 @@ import { useDispatch, useSelector } from 'react-redux';
 const AddUser = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  // const itemId = new URLSearchParams(location.search).get("id");
-  const [itemId, setItemId] = useState(null);
   
-      useEffect(() => {
-          if (typeof window !== "undefined") {
-              const params = new URLSearchParams(window.location.search);
-              setItemId(params.get("id"));
-          }
-      }, []);
+  const [itemId, setItemId] = useState(null);
+  const [isEditMode, setIsEditMode] = useState(false);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      setItemId(params.get("id"));
+      setIsEditMode(params.get("edit") === "true"); // Convert string to boolean
+    }
+  }, []);
+  const userDetailData = useSelector(state => state?.user?.userDetails?.data);
+
 
   const [formData, setFormData] = useState({
     first_name: "",
@@ -35,7 +38,8 @@ const AddUser = () => {
     status: 1
   });
 
-  const userDetailData = useSelector(state => state?.user?.userDetails?.data);
+  
+console.log("Selected Department:", formData.department);
 
   useEffect(() => {
     if (itemId) {
@@ -63,6 +67,25 @@ const AddUser = () => {
     dispatch(addUser({ userData: formData, router }));
   };
 
+  
+  useEffect(() => {
+    if (userDetailData && itemId) {
+      setFormData({
+        id: userDetailData?.id,
+        first_name: userDetailData?.first_name,
+        last_name: userDetailData?.last_name,
+        employee_id: userDetailData?.employee_id,
+        email: userDetailData?.email,
+        phone_number: userDetailData?.phone_number,
+        department: userDetailData?.department || "",  // Ensure default value
+        designation: userDetailData?.designation || "",
+        joining_date: userDetailData?.joining_date || "", // Ensure default value
+        // skill_set: userDetailData?.skill_set ? userDetailData.skill_set.split(",") : [],
+        status: userDetailData?.status,
+      });
+    }
+  }, [userDetailData, itemId]);
+
   return (
     <LayOut>
       <div className="sm:flex">
@@ -70,10 +93,10 @@ const AddUser = () => {
 
         <div className="sm:flex justify-between items-center h-screen mx-auto">
           <form className="sm:w-[600px] h-[100%] bg-white p-2 sm:p-8 rounded-lg space-y-5" onSubmit={handleSubmit}>
-            
+
             <div className="sm:flex justify-between items-center">
               <label className="block text-m">First Name <span className='text-red-600'>*</span></label>
-              <input 
+              <input
                 className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m placeholder:text-gray-700"
                 type="text"
                 name="first_name"
@@ -85,7 +108,7 @@ const AddUser = () => {
 
             <div className="sm:flex justify-between items-center">
               <label className="block text-m">Last Name</label>
-              <input 
+              <input
                 className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m placeholder:text-gray-700"
                 type="text"
                 name="last_name"
@@ -97,7 +120,7 @@ const AddUser = () => {
 
             <div className="sm:flex justify-between items-center">
               <label className="block text-m">Employee ID <span className='text-red-600'>*</span></label>
-              <input 
+              <input
                 className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m placeholder:text-gray-700"
                 type="text"
                 name="employee_id"
@@ -109,7 +132,7 @@ const AddUser = () => {
 
             <div className="sm:flex justify-between items-center">
               <label className="block text-m">Email <span className='text-red-600'>*</span></label>
-              <input 
+              <input
                 className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m placeholder:text-gray-700"
                 type="email"
                 name="email"
@@ -121,7 +144,7 @@ const AddUser = () => {
 
             <div className="sm:flex justify-between items-center">
               <label className="block text-m">Phone Number</label>
-              <input 
+              <input
                 className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m placeholder:text-gray-700"
                 type="text"
                 name="phone_number"
@@ -153,7 +176,8 @@ const AddUser = () => {
 
             <div className="sm:flex justify-between items-center">
               <label className="block text-m">Joining Date</label>
-              <CustomDatePicker 
+              <CustomDatePicker
+               selectedDate={formData.joining_date}
                 onChange={(date) => handleDropdownChange("joining_date", date)}
               />
             </div>
@@ -169,8 +193,8 @@ const AddUser = () => {
             </div>
 
             <div className='sm:flex w-full justify-end'>
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m bg-black text-gray-100"
               >
                 Submit
