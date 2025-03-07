@@ -147,8 +147,7 @@ const TaskList = () => {
   return (
     <LayOut>
       <div className="w-full  h-full mx-auto px-1  sm:px-4  ml-[5px] sm:border sm:border-gray-200 sm:shadow-md">
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-4 lg:flex  justify-between mt-[10px] sm:p-4 w-full'>
-
+        <div className=' min-[1250px]:flex   justify-between mt-[10px] sm:p-4 w-full'>
           {/* Avatar Section */}
           <div className="  sm:w-[360px] h-[69px] flex items-center gap-[12.21px] ">
             <UserAvatar name={user.name} dotcolor='blue' size={66} image={user.image} isActive={user.isActive} />
@@ -165,68 +164,68 @@ const TaskList = () => {
               In Progress
             </p>
           </div>
-          <div className="w-[260px] h-[69px] border border-gray-150 rounded p-2">
-            <p className="text-[#000000] text-400">Project Completion</p>
-            <div className='flex'>
-              <div className="relative mt-2" style={{ width: '177.73px', height: '10px' }}>
-                {/* Remaining part */}
-                <div className="w-full h-full bg-[#EBF0FF] rounded-full"></div>
-                {/* Completed part */}
-                <div
-                  className="absolute top-0 left-0 h-full rounded-full"
-                  style={{ width: '45%', backgroundColor: '#A3B3FF' }} // Use a slightly darker color
-                ></div>
+          <div className='flex max-[850px]:flex-col justify-between gap-5 md:gap-10 lg:gap-4 max-[1250px]:mt-4'>
+            <div className="w-[260px] h-[69px] border border-gray-150 rounded p-2">
+              <p className="text-[#000000] text-400">Project Completion</p>
+              <div className='flex'>
+                <div className="relative mt-2" style={{ width: '177.73px', height: '10px' }}>
+                  {/* Remaining part */}
+                  <div className="w-full h-full bg-[#EBF0FF] rounded-full"></div>
+                  {/* Completed part */}
+                  <div
+                    className="absolute top-0 left-0 h-full rounded-full"
+                    style={{ width: '45%', backgroundColor: '#A3B3FF' }} // Use a slightly darker color
+                  ></div>
+                </div>
+                <span className="block mt-1 text-sm ml-4">45%</span>
               </div>
-              <span className="block mt-1 text-sm ml-4">45%</span>
+
             </div>
 
-          </div>
+            <div className="sm:flex items-center gap-2">
+              <p className="flex items-center mr-2">
+                <label className="flex items-center cursor-pointer">
+                  <span className="ml-2 text-[15px] mr-2">{isActive ? "Active" : "Inactive"}</span>
 
-
-          <div className="sm:flex items-center gap-2">
-            <p className="flex items-center mr-2">
-              <label className="flex items-center cursor-pointer">
-                <span className="ml-2 text-[15px] mr-2">{isActive ? "Active" : "Inactive"}</span>
-
-                <div className="relative">
-                  <input
-                    type="checkbox"
-                    className="sr-only"
-                    checked={isActive}
-                    onChange={() => setIsActive(!isActive)}
-                  />
-                  <div
-                    className={`w-16 h-[33px] rounded-full shadow-inner transition duration-300 ease-in-out bg-gray-100`}
-                  ></div>
-                  <div
-                    className={`absolute w-8 h-7 rounded-full shadow-md top-[2px] left-[2px] transition-transform duration-300 ease-in-out ${isActive ? 'translate-x-7 bg-green-400' : 'bg-red-400'
-                      }`}
-                  >
-                    {isActive && (
-                      <span className="absolute inset-0 flex items-center justify-center text-white text-[10px]">
-                        ✔
-                      </span>
-                    )}
-                    {!isActive && (
-                      <span className="absolute inset-0 flex items-center justify-center text-white text-[10px]">
-                        ✘
-                      </span>
-                    )}
+                  <div className="relative">
+                    <input
+                      type="checkbox"
+                      className="sr-only"
+                      checked={isActive}
+                      onChange={() => setIsActive(!isActive)}
+                    />
+                    <div
+                      className={`w-16 h-[33px] rounded-full shadow-inner transition duration-300 ease-in-out bg-gray-100`}
+                    ></div>
+                    <div
+                      className={`absolute w-8 h-7 rounded-full shadow-md top-[2px] left-[2px] transition-transform duration-300 ease-in-out ${isActive ? 'translate-x-7 bg-green-400' : 'bg-red-400'
+                        }`}
+                    >
+                      {isActive && (
+                        <span className="absolute inset-0 flex items-center justify-center text-white text-[10px]">
+                          ✔
+                        </span>
+                      )}
+                      {!isActive && (
+                        <span className="absolute inset-0 flex items-center justify-center text-white text-[10px]">
+                          ✘
+                        </span>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </label>
-            </p>
-            <button className="w-[140px] mt-3 sm:mt-0 h-[35px] text-[10px] rounded-[4px] py-[4px] border border-black text-black text-lg mr-[10px] mb-2" onClick={() => setIsDrawerOpen(true)}>
-              See All Details
-            </button>
-            <button onClick={() => router.push('/add-project')} className="w-[80px] h-[35px] rounded-[4px] py-[4px] bg-black text-white text-lg mr-[10px] mb-2">
-              Edit
-            </button>
+                </label>
+              </p>
+              <button className="w-[140px] mt-3 sm:mt-0 h-[35px] text-[10px] rounded-[4px] py-[4px] border border-black text-black text-lg mr-[10px] mb-2" onClick={() => setIsDrawerOpen(true)}>
+                See All Details
+              </button>
+              <button onClick={() => router.push('/add-project')} className="w-[80px] h-[35px] rounded-[4px] py-[4px] bg-black text-white text-lg mr-[10px] mb-2">
+                Edit
+              </button>
+            </div>
           </div>
-
         </div>
 
-        <div className="w-full h-[44px] mt-6  flex justify-between items-center px-2 sm:px-4 sm:mt-20 ">
+        <div className="w-full h-[44px] mt-6  flex justify-between items-center px-2 sm:px-4  ">
 
           {/* Left Section (Heading + Count) */}
           <div className="flex">
@@ -237,7 +236,7 @@ const TaskList = () => {
           </div>
 
           {/* Right Section (Filters & Search) */}
-          <div className="hidden md:flex gap-6 items-center">
+          <div className="hidden min-[950px]:flex gap-6 items-center">
             <Dropdown01 options={taskView} selectedValue={selectedView} onSelect={setSelectedView} label="View" icon={OtherIcons.view_svg} />
             <Dropdown01 options={statusProject} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />
             <Dropdown01 options={projectSortConstant} selectedValue={selectedSort} onSelect={setSelectedSort} label="Sort By" icon={OtherIcons.sort_by_svg} />
@@ -249,10 +248,10 @@ const TaskList = () => {
           </div>
 
           {/* Mobile Filter Button */}
-          <div className="flex  gap-2">
+          <div className="flex  gap-2  min-[950px]:hidden ">
             <SearchComponent />
             <button
-              className="md:hidden w-[44px] h-[44px] bg-gray-100 text-gray-600 rounded-lg flex items-center justify-center text-2xl"
+              className="min-[950px]:hidden w-[44px] h-[44px] bg-gray-100 text-gray-600 rounded-lg flex items-center justify-center text-2xl"
               onClick={() => setIsFilterOpen(true)}
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#000000" fill="none">
@@ -267,7 +266,7 @@ const TaskList = () => {
                 <path d="M9.5 14.5C9.5 14.0341 9.5 13.8011 9.57612 13.6173C9.67761 13.3723 9.87229 13.1776 10.1173 13.0761C10.3011 13 10.5341 13 11 13H12C12.4659 13 12.6989 13 12.8827 13.0761C13.1277 13.1776 13.3224 13.3723 13.4239 13.6173C13.5 13.8011 13.5 14.0341 13.5 14.5C13.5 14.9659 13.5 15.1989 13.4239 15.3827C13.3224 15.6277 13.1277 15.8224 12.8827 15.9239C12.6989 16 12.4659 16 12 16H11C10.5341 16 10.3011 16 10.1173 15.9239C9.87229 15.8224 9.67761 15.6277 9.57612 15.3827C9.5 15.1989 9.5 14.9659 9.5 14.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </button>
-         </div>
+          </div>
 
           {/* Mobile Filter Panel */}
           <div

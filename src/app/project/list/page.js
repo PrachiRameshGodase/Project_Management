@@ -162,9 +162,9 @@ const ProjectList = () => {
 
 
           <div className="max-w-full overflow-x-auto mt-6 ">
-            {/* {projectLoading ? (
-              <TableSkeleton rows={7} columns={5} />
-            ) : ( */}
+            {projectLoading?.loading ? (
+              <TableSkeleton rows={7} columns={8} />
+            ) : (
               <table className="w-full min-w-[1000px] border-collapse border border-gray-100">
                 <thead>
                   <tr className="text-left text-sm font-bold uppercase text-gray-800">
@@ -203,9 +203,9 @@ const ProjectList = () => {
                       <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 " onClick={() => router.push(`/project/details?id=${item?.id}`)}>
                         <TruncatedTooltipText text={JSON.parse(item?.team)?.join(" , ")} maxLength={25} />
                       </td>
-                      <td className={`py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-50 font-bold`} onClick={() => router.push(`/project/details?id=${item?.id}`)}>
+                      <td className={`py-2  sm:py-2 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-50 font-bold`} onClick={() => router.push(`/project/details?id=${item?.id}`)}>
                         <span
-                          className={`py-1 sm:py-2 px-2 sm:px-4  text-[12px] sm:text-[15px] border rounded-md  ${item?.priority === 'High'
+                          className={`py-1  px-2 sm:px-4  text-[12px] sm:text-[15px] border rounded-md  ${item?.priority === 'High'
                             ? 'text-[#4976F4] border-[#4976F4]' : item?.priority === 'Low' ?
                               'text-red-400 border-red-400' : 'text-[#954BAF] border-[#954BAF]'
                             } inline-block`}
@@ -217,7 +217,7 @@ const ProjectList = () => {
                   ))}
                 </tbody>
               </table>
-            {/* )} */}
+            )}
           </div>
           {/* Pagination */}
           <Pagenation

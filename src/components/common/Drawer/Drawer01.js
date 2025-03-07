@@ -31,11 +31,11 @@ const Drawer01 = ({ isOpen, setIsDrawerOpen, children }) => {
                             <p className="text-xs text-gray-500">EcoVision Enterprises</p>
                         </div>
                     </div>
-                    <div>
+                    {/* <div>
                         <button className="w-[100px] h-[35px] rounded-[4px] py-[4px] bg-black text-white text-[16px] mb-2 p-4 mt-4">
                             Edit
                         </button>
-                    </div>
+                    </div> */}
                 </div>
                 <div className="flex justify-between">
                     <p
