@@ -39,7 +39,6 @@ const AddUser = () => {
   });
 
   
-console.log("Selected Department:", formData.department);
 
   useEffect(() => {
     if (itemId) {
@@ -86,7 +85,6 @@ console.log("Selected Department:", formData.department);
     }
   }, [userDetailData, itemId]);
 
-  console.log("userDetailData?.skill_set", formData?.skill_set)
 
   return (
     <LayOut>

@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { OtherIcons } from '@/assests/icons';
 import { useRouter } from 'next/navigation';
 import LayOut from '@/components/LayOut';
@@ -8,157 +8,75 @@ import { projectSortConstant, statusProject, view } from '@/components/common/He
 import TruncatedTooltipText from '@/components/common/TruncatedTooltipText/TruncatedTooltipText';
 import SearchComponent from '@/components/common/SearchComponent/SearchComponent';
 import TableSkeleton from '@/components/common/TableSkeleton/TableSkeleton';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProjects } from '@/app/store/projectSlice';
+import { useDebounceSearch } from '@/components/common/Helper/HelperFunction';
 
 const ProjectList = () => {
-  const router = useRouter()
-  const users = [
-    {
-      id: 1,
-      userId: 'HRMS Dashboard',
-      firstName: 'Shubham Yadav',
-      email: 'john@example.com',
-      mobileNumber: '+1234567890',
-      designation: 'Manager',
-      dateOfJoining: '2023-08-15',
-      status: 'To Do',
-      priority: 'High'
-    },
-    {
-      id: 2,
-      userId: 'HRMS Dashboard',
-      firstName: 'Shubham Yadav',
-      email: 'alice@example.com',
-      mobileNumber: '+1987654321',
-      designation: 'Developer',
-      dateOfJoining: '2022-11-20',
-      status: 'In progress',
-      priority: 'Low'
-    },
-    {
-      id: 3,
-      userId: 'HRMS Dashboard',
-      firstName: 'Shubham Yadav',
-      email: 'alice@example.com',
-      mobileNumber: '+1987654321',
-      designation: 'Developer',
-      dateOfJoining: '2022-11-20',
-      status: 'Completed',
-      priority: 'Low'
-    },
-    {
-      id: 4,
-      userId: 'HRMS Dashboard',
-      firstName: 'Shubham Yadav',
-      email: 'alice@example.com',
-      mobileNumber: '+1987654321',
-      designation: 'Developer',
-      dateOfJoining: '2022-11-20',
-      status: 'In progress',
-      priority: 'Medium'
-    },
-    {
-      id: 5,
-      userId: 'HRMS Dashboard',
-      firstName: 'Shubham Yadav',
-      email: 'alice@example.com',
-      mobileNumber: '+1987654321',
-      designation: 'Developer',
-      dateOfJoining: '2022-11-20',
-      status: 'Under Review',
-      priority: 'Low'
-    },
-    {
-      id: 6,
-      userId: 'HRMS Dashboard',
-      firstName: 'Shubham Yadav',
-      email: 'alice@example.com',
-      mobileNumber: '+1987654321',
-      designation: 'Developer',
-      dateOfJoining: '2022-11-20',
-      status: 'Under Review',
-      priority: 'Low'
-    },
-    {
-      id: 7,
-      userId: 'HRMS Dashboard',
-      firstName: 'Shubham Yadav',
-      email: 'alice@example.com',
-      mobileNumber: '+1987654321',
-      designation: 'Developer',
-      dateOfJoining: '2022-11-20',
-      status: 'Under Review',
-      priority: 'Low'
-    },
-    {
-      id: 8,
-      userId: 'HRMS Dashboard',
-      firstName: 'Shubham Yadav',
-      email: 'alice@example.com',
-      mobileNumber: '+1987654321',
-      designation: 'Developer',
-      dateOfJoining: '2022-11-20',
-      status: 'Under Review',
-      priority: 'Low'
-    },
-    {
-      id: 8,
-      userId: 'HRMS Dashboard',
-      firstName: 'Shubham Yadav',
-      email: 'alice@example.com',
-      mobileNumber: '+1987654321',
-      designation: 'Developer',
-      dateOfJoining: '2022-11-20',
-      status: 'Under Review',
-      priority: 'Low'
-    },
-    {
-      id: 8,
-      userId: 'HRMS Dashboard',
-      firstName: 'Shubham Yadav',
-      email: 'alice@example.com',
-      mobileNumber: '+1987654321',
-      designation: 'Developer',
-      dateOfJoining: '2022-11-20',
-      status: 'Under Review',
-      priority: 'Low'
-    },
-    {
-      id: 8,
-      userId: 'HRMS Dashboard',
-      firstName: 'Shubham Yadav',
-      email: 'alice@example.com',
-      mobileNumber: '+1987654321',
-      designation: 'Developer',
-      dateOfJoining: '2022-11-20',
-      status: 'Under Review',
-      priority: 'Low'
-    },
-  ];
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const projectListData = useSelector((state) => state.project?.list?.data);
+  console.log("projectListData", projectListData)
+  const projectLoading = useSelector((state) => state.project);
+  const totalCount = useSelector((state) => state?.project?.list?.total);
+  const [selectedView, setSelectedView] = useState('List');
 
-
-  const [selectedStatus, setSelectedStatus] = useState('');
-  const [selectedView, setSelectedView] = useState("List");
-  const [selectedSort, setSelectedSort] = useState(false);
+  const [selectedDesignation, setSelectedDesignation] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [searchTrigger, setSearchTrigger] = useState(0);
 
-  const entriesPerPage = 5;
-  const totalEntries = users.length;
-  const totalPages = Math.ceil(totalEntries / entriesPerPage);
-
-  // Filtered Users
-  const filteredUsers = users.filter((user) => {
-    return selectedStatus === "" || user.status === selectedStatus;
-  });
-
+  // reset current page to 1 when any filters are applied
+  const resetPageIfNeeded = () => {
+    if (currentPage > 1) {
+      setCurrentPage(1);
+    }
+  };
 
 
-  // Pagination Logic
-  const startEntry = (currentPage - 1) * entriesPerPage;
-  const endEntry = startEntry + entriesPerPage;
-  const paginatedUsers = filteredUsers.slice(startEntry, endEntry);
+  //Search/////////////////////////////////////////////////////////////
+  const [searchTermFromChild, setSearchTermFromChild] = useState("");
+  // Debounced function to trigger search
+  const debouncedSearch = useDebounceSearch(() => {
+    setSearchTrigger((prev) => prev + 1);
+  }, 800);
+
+  // Handle search term change from child component
+  const onSearch = (term) => {
+    setSearchTermFromChild(term);
+    if (term.length > 0 || term === "") {
+      debouncedSearch();
+    }
+  };
+
+  // sortBy
+  const [selectedSortBy, setSelectedSortBy] = useState("");
+  const [sortOrder, setSortOrder] = useState(1);
+  //sortby
+
+  // filter
+  const [selectedStatus, setSelectedStatus] = useState('View');
+  // filter
+
+  useEffect(() => {
+    const sendData = {
+      limit: itemsPerPage,
+      page: currentPage,
+      ...(searchTermFromChild ? { search: searchTermFromChild } : {}),
+      ...(selectedSortBy && { sort_by: selectedSortBy, sort_order: sortOrder }),
+      ...(selectedDesignation && { designation: selectedDesignation }),
+
+      // ...(selectedStatus !== null && selectedStatus !== undefined
+      //   ? { status: selectedStatus }
+      //   : {}),
+    };
+
+    dispatch(fetchProjects(sendData));
+  }, [searchTrigger, dispatch, selectedStatus, selectedDesignation]);
+
+
+// filter short-list
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  // filter short-list
   return (
     <LayOut> <div>
       {/* Top Section with Filters and Buttons */}
@@ -168,16 +86,17 @@ const ProjectList = () => {
         <div className="flex">
           <p className="text-[20px] sm:text-[30px] leading-[32px] tracking-[-1.5px]">All Projects list</p>
           <p className="font-bold p-2 rounded-full text-[10.16px] leading-[12.19px] text-[#400F6F] mt-3 ml-2 bg-[#f0e7fa] flex items-center justify-center w-[50px] h-[10px]">
-            {users.length} total
+            {totalCount} total
           </p>
         </div>
 
         {/* Right Section (Filters & Search) */}
         <div className="hidden md:flex gap-6 items-center">
-          <Dropdown01 options={view} selectedValue={selectedView} onSelect={setSelectedView} label="View" icon={OtherIcons.view_svg} />
-          <Dropdown01 options={statusProject} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />
-          <Dropdown01 options={projectSortConstant} selectedValue={selectedSort} onSelect={setSelectedSort} label="Sort By" icon={OtherIcons.sort_by_svg} />
-          <SearchComponent />
+         <Dropdown01 options={view} selectedValue={selectedView} onSelect={setSelectedView} label="View" icon={OtherIcons.view_svg} />
+          {/* <Dropdown01 options={statusProject} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />  */}
+          {/* <Dropdown01 options={projectSortConstant} selectedValue={selectedSort} onSelect={setSelectedSort} label="Sort By" icon={OtherIcons.sort_by_svg} /> */}
+          <SearchComponent onSearch={onSearch} section={searchTrigger} />
+          
 
           <div className="w-[1px] h-[40px] bg-gray-400 opacity-40" />
 
@@ -187,7 +106,8 @@ const ProjectList = () => {
         {/* Mobile Filter Button */}
         <div className='flex gap-2 md:hidden'>
        
-            <SearchComponent />
+        <SearchComponent onSearch={onSearch} section={searchTrigger} />
+            
       
     
         <button
@@ -227,8 +147,8 @@ const ProjectList = () => {
           <div className="mt-16 flex flex-col gap-4 px-4">
             <button className="w-[49px] h-[44px] bg-[#048339] text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/project/add')}>+</button>
             <Dropdown01 options={view} selectedValue={selectedView} onSelect={setSelectedView} label="View" icon={OtherIcons.view_svg} />
-            <Dropdown01 options={statusProject} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />
-            <Dropdown01 options={projectSortConstant} selectedValue={selectedSort} onSelect={setSelectedSort} label="Sort By" icon={OtherIcons.sort_by_svg} />
+            {/* <Dropdown01 options={statusProject} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />
+            <Dropdown01 options={projectSortConstant} selectedValue={selectedSort} onSelect={setSelectedSort} label="Sort By" icon={OtherIcons.sort_by_svg} /> */}
             {/* <SearchComponent /> */}
           </div>
         </div>
@@ -241,9 +161,9 @@ const ProjectList = () => {
 
 
           <div className="max-w-full overflow-x-auto mt-6 ">
-            {loading ? (
+            {/* {projectLoading ? (
               <TableSkeleton rows={7} columns={5} />
-            ) : (
+            ) : ( */}
               <table className="w-full min-w-[1000px] border-collapse border border-gray-100">
                 <thead>
                   <tr className="text-left text-sm font-bold uppercase text-gray-800">
@@ -261,51 +181,51 @@ const ProjectList = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {paginatedUsers.map((user) => (
-                    <tr key={user.id} className="hover:bg-gray-50 rounded cursor-pointer">
-                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 rounded " onClick={() => router.push(`/project/details?id=${user.id}`)}>{user.userId}</td>
-                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-50 rounded " onClick={(`/project/details?id=${user.id}`)}>{user.firstName}</td>
-                      <td className={`py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]   border-b border-gray-50 rounded  font-bold`} onClick={() => router.push(`/project/details?id=${user.id}`)}>
+                  {projectListData?.map((item, index) => (
+                    <tr key={item?.id} className="hover:bg-gray-50 rounded cursor-pointer">
+                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 rounded " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.project_name || ""}</td>
+                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-50 rounded " onClick={(`/project/details?id=${item?.id}`)}>{item?.client_name ||""}</td>
+                      <td className={`py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]   border-b border-gray-50 rounded  font-bold`} onClick={() => router.push(`/project/details?id=${item?.id}`)}>
                         <span
-                          className={`px-3 py-1 border rounded-md ${user.status === 'To Do'
+                          className={`px-3 py-1 border rounded-md ${item.status === 'To Do'
                             ? 'text-[#6C757D] border-[#6C757D]'
-                            : user.status === 'In progress' ?
-                              'text-[#CA9700] border-[#CA9700]' : user.status === 'Completed' ? 'text-[#008053] border-[#008053]' : 'text-[#0D4FA7] border-[#0D4FA7]'
+                            : item.status === 'In progress' ?
+                              'text-[#CA9700] border-[#CA9700]' : item.status === 'Completed' ? 'text-[#008053] border-[#008053]' : 'text-[#0D4FA7] border-[#0D4FA7]'
                             } inline-block`}
                         >
-                          {user.status}
+                          {item.status}
                         </span>
                       </td>
-                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-50 " onClick={() => router.push(`/project/details?id=${user.id}`)}>{user.dateOfJoining}</td>
-                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 ] " onClick={() => router.push(`/project/details?id=${user.id}`)}>2022-11-20</td>
-                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 " onClick={() => router.push(`/project/details?id=${user.id}`)}>Vasu Shastri</td>
-                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 " onClick={() => router.push(`/project/details?id=${user.id}`)}>
-                        <TruncatedTooltipText text="Prachi Godase, Sumit Yadav, Punit Omar, Aryan Singh" maxLength={25} />
+                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-50 " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.start_date}</td>
+                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 ] " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.due_date}</td>
+                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.project_leader}</td>
+                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 " onClick={() => router.push(`/project/details?id=${item?.id}`)}>
+                        <TruncatedTooltipText text={JSON.parse(item?.team)?.join(" , ")} maxLength={25} />
                       </td>
-                      <td className={`py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-50 font-bold`} onClick={() => router.push(`/project/details?id=${user.id}`)}>
+                      <td className={`py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-50 font-bold`} onClick={() => router.push(`/project/details?id=${item?.id}`)}>
                         <span
-                          className={`py-1 sm:py-2 px-2 sm:px-4  text-[12px] sm:text-[15px] border rounded-md  ${user.priority === 'High'
-                            ? 'text-[#4976F4] border-[#4976F4]' : user.priority === 'Low' ?
+                          className={`py-1 sm:py-2 px-2 sm:px-4  text-[12px] sm:text-[15px] border rounded-md  ${item?.priority === 'High'
+                            ? 'text-[#4976F4] border-[#4976F4]' : item?.priority === 'Low' ?
                               'text-red-400 border-red-400' : 'text-[#954BAF] border-[#954BAF]'
                             } inline-block`}
                         >
-                          {user.priority}
+                          {item?.priority?.charAt(0).toUpperCase() + item?.priority?.slice(1)}
                         </span>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-            )}
+            {/* )} */}
           </div>
           {/* Pagination */}
-          <div className="flex justify-between items-center mt-4 px-1 sm:px-2 py-2">
+          {/* <div className="flex justify-between items-center mt-4 px-1 sm:px-2 py-2">
             <div className='text-gray-700 text-[12px] sm:text-[18px]'>{`Showing   ${startEntry + 1} - ${Math.min(endEntry, filteredUsers.length)} of ${filteredUsers.length} entries`}</div>
             <div className="flex gap-2">
               <button className={`w-[60px] h-[29px]   sm:w-[80px] sm:h-[39px] text-[10px] rounded-md border ${currentPage === 1 ? 'bg-gray-200 text-gray-400' : 'bg-white text-black hover:bg-gray-300'}`} disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>Previous</button>
               <button className={`w-[60px] h-[29px]  sm:w-[80px] sm:h-[39px] text-[10px] rounded-md border ${currentPage === totalPages ? 'bg-gray-200 text-gray-400' : 'bg-white text-black hover:bg-gray-300'}`} disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>Next</button>
             </div>
-          </div>
+          </div> */}
         </>
       )}
 
@@ -313,7 +233,7 @@ const ProjectList = () => {
       {/* Card Section */}
       {selectedView == "Card" && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mx-auto mt-[50px]">
-          {users.map((user) => (
+          {projectListData?.map((user) => (
             <div key={user.id} className="w-full min-w-[305px] h-[240px] hover:border-gray-200 hover:shadow-lg  border border-gray-100 rounded-xl p-4 shadow-md">
               <div className="flex justify-between items-center mb-4">
                 <p className="font-700 text-[21.33px] leading-[28.8px] ">HRMS Dashboard</p>
