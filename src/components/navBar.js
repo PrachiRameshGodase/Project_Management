@@ -81,7 +81,7 @@ const NavBar = () => {
 
       <>
         {/* Avatar Button */}
-        <div className="absolute  top-4 right-1 sm:right-10 md:right-14 lg:right-20 flex items-center space-x-2">
+        <div className="absolute   top-4 right-3 sm:right-10 md:right-14 lg:right-20 flex items-center space-x-2">
           <button onClick={() => setIsOpen2(true)}>
             <UserAvatar
               name={user.name}
