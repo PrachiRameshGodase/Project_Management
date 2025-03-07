@@ -26,14 +26,7 @@ export const Dropdown03 = ({ options, selectedValue, onSelect, label, icon }) =>
     }
   }, [selectedValue, options]);
 
-  // Filter options based on search input
-  const filteredOptions = options?.filter(
-    (option) =>
-      `${option?.first_name} ${option?.last_name}`
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase())
-  );
-
+ 
   return (
     <div className="relative w-[350px]" ref={dropdownOutsideClick?.ref}>
       {/* Dropdown Header */}
@@ -76,8 +69,8 @@ export const Dropdown03 = ({ options, selectedValue, onSelect, label, icon }) =>
 
           {/* Options List */}
           <ul className="max-h-60 overflow-y-auto">
-            {filteredOptions.length > 0 ? (
-              filteredOptions.map((option) => (
+            {options?.length > 0 ? (
+              options?.map((option) => (
                 <li
                   key={option?.id}
                   className={`flex px-4 py-2 hover:bg-gray-100 cursor-pointer text-left ${

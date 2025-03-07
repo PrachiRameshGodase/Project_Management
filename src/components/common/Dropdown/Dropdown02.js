@@ -157,8 +157,8 @@ export const Dropdown002 = ({ options, selectedValues = [], onSelect, label, ico
         <div className="flex items-center gap-2 flex-wrap">
           {icon}
           {/* Show selected items as pills */}
-          {selectedOptions.length > 0 ? (
-            selectedOptions.map((item) => (
+          {selectedOptions?.length > 0 ? (
+            selectedOptions?.map((item) => (
               <div
                 key={item.id}
                 className="flex items-center bg-gray-200 text-gray-700 rounded-md px-2 py-1 text-sm"
