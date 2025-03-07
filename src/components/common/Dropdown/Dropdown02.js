@@ -124,10 +124,10 @@ export const Dropdown002 = ({ options, selectedValues = [], onSelect, label, ico
   // Handle select/deselect option
   const handleOptionSelect = (option) => {
     let updatedSelection;
-    const isAlreadySelected = selected.includes(option.id);
+    const isAlreadySelected = selected?.includes(option.id);
 
     if (isAlreadySelected) {
-      updatedSelection = selected.filter((id) => id !== option.id);
+      updatedSelection = selected?.filter((id) => id !== option.id);
     } else {
       updatedSelection = [...selected, option.id];
     }
@@ -138,13 +138,13 @@ export const Dropdown002 = ({ options, selectedValues = [], onSelect, label, ico
 
   // Remove selected item from list
   const removeSelected = (id) => {
-    const updatedSelection = selected.filter((selectedId) => selectedId !== id);
+    const updatedSelection = selected?.filter((selectedId) => selectedId !== id);
     setSelected(updatedSelection);
     onSelect(updatedSelection);
   };
 
   // Convert selected IDs to full option objects for display
-  const selectedOptions = options.filter((option) => selected.includes(option.id));
+  const selectedOptions = options?.filter((option) => selected.includes(option.id));
 
   return (
     <div className="relative w-[350px]" ref={dropdownOutsideClick?.ref}>
