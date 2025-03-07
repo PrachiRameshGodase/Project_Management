@@ -18,7 +18,7 @@ const Dropdown01 = ({ options, selectedValue, onSelect, label, icon }) => {
   return (
     <div className="relative" ref={dropdownOutsideClick?.ref}>
       <div
-        className={`h-[44px] flex items-center gap-2 border border-gray-900 hover:ring-purple-300 rounded-lg px-3 py-2 cursor-pointer ${
+        className={`h-[44px] flex items-center gap-2 border border-gray-300 hover:border-purple-500 hover:ring-2 hover:ring-purple-200 rounded-lg px-3 py-2 cursor-pointer ${
           label === "Designation"
             ? "w-fit"
             : label === "Sort By"
@@ -75,7 +75,7 @@ export const Dropdown001 = ({ options, selectedValue, onSelect, label, icon }) =
   return (
     <div className="relative" ref={dropdownOutsideClick?.ref}>
       <div
-        className="h-10 flex items-center justify-between gap-2 border border-gray-300 rounded-lg px-3 py-2 cursor-pointer w-[350px]"
+        className="h-10 flex items-center justify-between gap-2 border border-gray-300 rounded-lg px-3 py-2 cursor-pointer w-[310px] sm:w-[350px] "
         onClick={dropdownOutsideClick?.handleToggle}
         ref={dropdownOutsideClick?.buttonRef}
       >
@@ -97,7 +97,7 @@ export const Dropdown001 = ({ options, selectedValue, onSelect, label, icon }) =
 
       {/* Dropdown Menu */}
       {dropdownOutsideClick?.isOpen && (
-        <div className="absolute top-[100%] mt-2 bg-white shadow-lg border border-gray-300 rounded-lg w-[350px] z-50">
+        <div className="absolute top-[100%] mt-2 bg-white shadow-lg border border-gray-300 rounded-lg w-[310px] sm:w-[350px]  z-50">
           <ul>
             {options.map((option) => (
               <li

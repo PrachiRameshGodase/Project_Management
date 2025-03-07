@@ -181,7 +181,7 @@ const ProjectList = () => {
 
           <div className="w-[1px] h-[40px] bg-gray-400 opacity-40" />
 
-          <button className="w-[49px] h-[44px] bg-[#048339] text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/project/add')}>+</button>
+          <button className="w-[49px] h-[44px] bg-[#048339]  text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/project/add')}>+</button>
         </div>
 
         {/* Mobile Filter Button */}
@@ -284,7 +284,7 @@ const ProjectList = () => {
                       </td>
                       <td className={`py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-50 font-bold`} onClick={() => router.push(`/project/details?id=${user.id}`)}>
                         <span
-                          className={`py-1 sm:py-2 px-2 sm:px-4  text-[12px] sm:text-[15px] border rounded-md  ${user.priority === 'High'
+                          className={`py-1  px-2 sm:px-4  text-[12px] sm:text-[15px] border rounded-md  ${user.priority === 'High'
                             ? 'text-[#4976F4] border-[#4976F4]' : user.priority === 'Low' ?
                               'text-red-400 border-red-400' : 'text-[#954BAF] border-[#954BAF]'
                             } inline-block`}

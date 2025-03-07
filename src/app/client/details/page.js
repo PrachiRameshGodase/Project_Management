@@ -14,7 +14,7 @@ const ClientDetails = () => {
     };
     return (
         <LayOut>
-            <div className="w-full  h-full  left-[80px] rounded-[10.17px] border border-[#F4EAEA] bg-white p-6 shadow-lg">
+            <div className="w-full  h-full  left-[80px] rounded-[10.17px] sm:border border-[#F4EAEA] bg-white p-6 sm:shadow-lg">
                 <div className="w-full  h-[40px] relative top-[6px] sm:flex items-center justify-between px-2 border-b border-gray-100 ">
                     <p className="text-[26px] mb-[20px]">
                         Client Information
@@ -61,7 +61,7 @@ const ClientDetails = () => {
                 </div>
                 <div className="p-4 mt-16 sm:mt-0 flex flex-col gap-4 xl:gap-6  xl:flex-row items-start justify-between ">
                     {/* Avatar Section */}
-                    <div className=" w-[260px] h-[69px] flex items-center gap-[12.21px] ">
+                    <div className="  sm:w-[260px] h-[69px] flex items-center gap-[12.21px] ">
                         <UserAvatar name={user.name} dotcolor='purple' size={66} image={user.image} isActive={user.isActive} />
                         <div className=" text-xl text-gray-700">
                             <p className="font-medium flex w-full ">Abhilash Singh</p>
@@ -72,31 +72,31 @@ const ClientDetails = () => {
                     {/* User Information Section */}
                     <div className="md:flex  flex-row gap-4  ">
                         <ul className="flex flex-col space-y-2">
-                            <li className="w-[367px] h-[24px] flex items-center">
+                            <li className=" w-fit sm:w-[367px] h-[24px] flex items-center">
                                 <span className=" h-[24px] opacity-90 text-[20px]">Contact Person</span>
                             </li>
-                            <li className="w-[367px] h-[24px] flex items-center">
-                                <span className="w-[130px] h-[24px] opacity-50">Name:</span>
-                                <span className="w-[183px] h-[23px] ml-[35px]">Akash Singh</span>
+                            <li className="w-fit sm:w-[367px] h-[24px] flex items-center">
+                                <span className="sm:w-[130px] h-[24px] opacity-50">Name:</span>
+                                <span className="sm:w-[183px] h-[23px] ml-[35px]">Akash Singh</span>
                             </li>
-                            <li className="w-[367px] h-[24px] flex items-center">
-                                <span className="w-[130px] h-[24px] opacity-50">Mobile Number:</span>
-                                <span className="w-[183px] h-[23px] ml-[35px]">Tech</span>
+                            <li className="sm:w-[367px] h-[24px] flex items-center">
+                                <span className="sm:w-[130px] h-[24px] opacity-50">Mobile Number:</span>
+                                <span className="sm:w-[183px] h-[23px] ml-[35px]">Tech</span>
                             </li>
 
                         </ul>
 
                         <ul className="flex  flex-col space-y-2">
-                            <li className="w-[367px] h-[24px] flex items-center">
+                            <li className="sm:w-[367px] h-[24px] flex items-center">
 
                             </li>
-                            <li className="w-[367px] h-[24px] flex items-center">
-                                <span className="w-[114px] h-[24px] opacity-70">Username:</span>
-                                <span className="w-[183px] h-[23px] ml-[35px]">user@gmail.com</span>
+                            <li className="sm:w-[367px] h-[24px] flex items-center">
+                                <span className="sm:w-[114px] h-[24px] opacity-70">Username:</span>
+                                <span className="sm:w-[183px] h-[23px] ml-[35px]">user@gmail.com</span>
                             </li>
-                            <li className="w-[367px] h-[24px] flex items-center">
-                                <span className="w-[114px] h-[24px] opacity-70">Client ID:</span>
-                                <span className="w-[183px] h-[23px] ml-[35px]">CL-001</span>
+                            <li className="sm:w-[367px] h-[24px] flex items-center">
+                                <span className="sm:w-[114px] h-[24px] opacity-70">Client ID:</span>
+                                <span className="sm:w-[183px] h-[23px] ml-[35px]">CL-001</span>
                             </li>
 
                         </ul>

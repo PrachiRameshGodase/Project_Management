@@ -9,6 +9,11 @@
   font-family: Arial, sans-serif;
   background-color: white;
 }
+@media only screen and (max-width: 640px) {
+  .date-picker {
+    width: 310px;
+  }
+}
 
 .date-input {
   width: 100%;
@@ -23,7 +28,9 @@
 
 .date-input::-webkit-calendar-picker-indicator {
   opacity: 0;
-  border: 1px solid red;
+  /* background: #ffffff !important; */
+  z-index: 1;
+  /* border: 1px solid red; */
   margin-left: -10px;
   border-radius: 8px;
   position: absolute;
@@ -33,8 +40,8 @@
 }
 
 .date-label {
-    background: #fff !important;
-    padding: 2px 10px;
+  background: #fff !important;
+  padding: 2px 10px;
 
   position: absolute;
   left: 5px;
@@ -53,14 +60,13 @@
   transform: translateY(-50%);
   font-size: 18px;
   color: #888888a4;
-  
+  /* z-index: 1; */
+  cursor: pointer;
 }
 
-.icon svg{
+.icon svg {
   color: #606060;
 }
 
-
-input:hover{
-  
+input:hover {
 }

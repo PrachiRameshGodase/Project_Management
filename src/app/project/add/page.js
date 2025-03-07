@@ -24,29 +24,29 @@ const AddProject = () => {
     };
     return (
         <LayOut>
-            <div className="sm:flex sm:text-center">
-                <div className="text-2xl tracking-tight  ml-[70px]">Add New Project</div>
+            <div className="mx-auto sm:mx-0 sm:flex sm:text-center pb-14 ">
+                <div className="text-2xl tracking-tight   sm:ml-[70px]">Add New Project</div>
 
                 <div className="sm:flex justify-center items-center h-screen mx-auto">
-                    <form className="sm:w-[600px] mb-4 h-[656px] bg-white p-3 sm:p-8 rounded-lg space-y-5">
+                    <form className="w-full sm:w-[600px] mb-4 h-[656px] bg-white p-3 sm:p-8 rounded-lg space-y-5">
                         <div className="sm:flex justify-between">
                             <label className="block text-m ">Project Name</label>
-                            <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m sm:ml-7 placeholder:text-gray-700" type='text' placeholder='Enter Project Name ' />
+                            <input className="w-[310px] sm:w-[350px]  h-10 border border-gray-300 rounded-lg p-2 text-m sm:ml-7 placeholder:text-gray-700" type='text' placeholder='Enter Project Name ' />
                         </div>
 
                         <div className="sm:flex justify-between">
                             <label className="block text-m ">Client Name</label>
-                            <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m sm:ml-7 placeholder:text-gray-700" type='text' placeholder='Enter Client Name ' />
+                            <input className="w-[310px] sm:w-[350px]  h-10 border border-gray-300 rounded-lg p-2 text-m sm:ml-7 placeholder:text-gray-700" type='text' placeholder='Enter Client Name ' />
                         </div>
                         <div className="sm:flex justify-between">
                             <label className="block text-m">Starting date</label>
-                            {/* <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m ml-7 placeholder:text-gray-700" type='Date' placeholder='Enter Starting date' /> */}
+                            {/* <input className="w-[310px] sm:w-[350px]  h-10 border border-gray-300 rounded-lg p-2 text-m ml-7 placeholder:text-gray-700" type='Date' placeholder='Enter Starting date' /> */}
                             <CustomDatePicker onChange={(date) => console.log("Selected Date:", date)} />
                         </div>
 
                         <div className='sm:flex justify-between '>
                             <label className="block text-m">Due date</label>
-                            {/* <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m ml-14 placeholder:text-gray-700" type='Date' placeholder='Enter Due date' /> */}
+                            {/* <input className="w-[310px] sm:w-[350px]  h-10 border border-gray-300 rounded-lg p-2 text-m ml-14 placeholder:text-gray-700" type='Date' placeholder='Enter Due date' /> */}
                             <CustomDatePicker onChange={(date) => console.log("Selected Date:", date)} />
 
                         </div>
@@ -98,11 +98,11 @@ const AddProject = () => {
                         </div>
                         <div className="sm:flex justify-between">
                             <label className="block text-m">Description</label>
-                            <textarea className="w-[350px] h-40 border border-gray-300 rounded-lg p-2 text-m sm:ml-[35px] placeholder:text-gray-700" type='text' placeholder='Enter Description....' />
+                            <textarea className="w-[310px] sm:w-[350px]  h-40 border border-gray-300 rounded-lg p-2 text-m sm:ml-[35px] placeholder:text-gray-700" type='text' placeholder='Enter Description....' />
                         </div>
 
                         <div className=" sm:flex justify-end">
-                            <button className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m sm:ml-[55px] bg-black text-gray-100 ">Submit</button>
+                            <button className="w-[310px] sm:w-[350px]  h-10 border border-gray-300 rounded-lg p-2 text-m sm:ml-[55px] bg-black text-gray-100 ">Submit</button>
                         </div>
                     </form>
                 </div>
