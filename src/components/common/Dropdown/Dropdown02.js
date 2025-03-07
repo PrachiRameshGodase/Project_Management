@@ -30,10 +30,10 @@ export const Dropdown02 = ({ options, selectedValues, onSelect, label, icon }) =
   const filteredOptions = options.filter((option) =>
     option.toLowerCase().includes(searchQuery.toLowerCase())
   );
-
-  // useEffect(() => {
-  //           setSelected(selectedValues); // Update state when selectedDate changes
-  //       }, [selectedValues]);
+  useEffect(() => {
+    setSelected(Array.isArray(selectedValues) ? selectedValues : []);
+  }, [selectedValues]);
+  
   
   return (
     <div className="relative w-[350px]" ref={dropdownOutsideClick?.ref}>

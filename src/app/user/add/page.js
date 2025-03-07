@@ -80,11 +80,13 @@ console.log("Selected Department:", formData.department);
         department: userDetailData?.department || "",  // Ensure default value
         designation: userDetailData?.designation || "",
         joining_date: userDetailData?.joining_date || "", // Ensure default value
-        // skill_set: userDetailData?.skill_set ? userDetailData.skill_set.split(",") : [],
+        skill_set: userDetailData?.skill_set || [],
         status: userDetailData?.status,
       });
     }
   }, [userDetailData, itemId]);
+
+  console.log("userDetailData?.skill_set", formData?.skill_set)
 
   return (
     <LayOut>
@@ -186,7 +188,7 @@ console.log("Selected Department:", formData.department);
               <label className="block text-m">Skill Set</label>
               <Dropdown02
                 options={Skills}
-                selectedValue={formData.skill_set}
+                selectedValues={Array.isArray(formData.skill_set) ? formData.skill_set : []}
                 onSelect={(value) => handleDropdownChange("skill_set", value)}
                 label="Select Skill"
               />

@@ -63,9 +63,7 @@ const UserDetails = () => {
     }
   };
 
-  const skillsArray = userDetailData?.skill_set
-    ?.split(", ")
-    .map((skill) => skill.trim());
+
 
     const handleEditUser = () => {
       router.push(`/user/add?id=${itemId}&edit=true`);
@@ -172,7 +170,7 @@ const UserDetails = () => {
               <li className="sm:w-[767px] sm:pt-[120px] sm:pb-10 sm:mt-[200px] t-2 sm:absolute  flex items-start">
                 <span className="w-[114px] h-[24px] opacity-70">Skills:</span>
                 <span className=" left-1  flex gap-2 items-center ml-[35px]">
-                  <SkillsList skills={skillsArray} />
+                  <SkillsList skills={userDetailData?.skill_set} />
                 </span>
               </li>
             </ul>
