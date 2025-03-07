@@ -146,11 +146,11 @@ const TaskList = () => {
 
   return (
     <LayOut>
-      <div className="w-full  h-full mx-auto  px-4  ml-[5px] border border-gray-200 shadow-md">
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-4 lg:flex  justify-between mt-[10px] p-4 w-full'>
+      <div className="w-full  h-full mx-auto  px-4  ml-[5px] sm:border sm:border-gray-200 sm:shadow-md">
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-4 lg:flex  justify-between mt-[10px] sm:p-4 w-full'>
 
           {/* Avatar Section */}
-          <div className=" w-[360px] h-[69px] flex items-center gap-[12.21px] ">
+          <div className="  sm:w-[360px] h-[69px] flex items-center gap-[12.21px] ">
             <UserAvatar name={user.name} dotcolor='blue' size={66} image={user.image} isActive={user.isActive} />
 
             <div className="text-xl text-gray-700">
@@ -226,7 +226,7 @@ const TaskList = () => {
 
         </div>
 
-        <div className="w-full h-[44px] flex justify-between items-center px-4 sm:mt-20 ">
+        <div className="w-full h-[44px] mt-6  flex justify-between items-center px-4 sm:mt-20 ">
 
           {/* Left Section (Heading + Count) */}
           <div className="flex">

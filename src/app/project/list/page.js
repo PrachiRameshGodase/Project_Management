@@ -101,7 +101,7 @@ const ProjectList = () => {
 
           <div className="w-[1px] h-[40px] bg-gray-400 opacity-40" />
 
-          <button className="w-[49px] h-[44px] bg-[#048339] text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/project/add')}>+</button>
+          <button className="w-[49px] h-[44px] bg-[#048339]  text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/project/add')}>+</button>
         </div>
 
         {/* Mobile Filter Button */}

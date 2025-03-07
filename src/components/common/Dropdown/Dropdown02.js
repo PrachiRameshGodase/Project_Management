@@ -36,7 +36,7 @@ console.log("options", options)
   
   
   return (
-    <div className="relative w-[350px]" ref={dropdownOutsideClick?.ref}>
+    <div className="relative w-[310px] sm:w-[350px] " ref={dropdownOutsideClick?.ref}>
       {/* Dropdown Header */}
       <div
         className="h-auto min-h-10 flex items-center gap-2 border border-gray-300 rounded-lg px-3 py-2 cursor-pointer w-full flex-wrap"

@@ -72,7 +72,7 @@ const UserDetails = () => {
  
   return (
     <LayOut>
-      <div className="w-full  h-full    left-[80px] rounded-[10.17px] border border-[#F4EAEA] bg-white p-6 shadow-lg">
+      <div className="w-full  h-full   sm:left-[80px] rounded-[10.17px] sm:border border-[#F4EAEA] bg-white p-6 sm:shadow-lg">
         <div className="w-full  h-[40px] relative top-[6px] sm:flex items-center justify-between px-2 border-b border-gray-100 ">
           <p className="text-[26px] mb-[20px]">User Information</p>
 
@@ -137,38 +137,38 @@ const UserDetails = () => {
           {/* User Information Section */}
           <div className="md:flex flex-row gap-8   ">
             <ul className="flex  flex-col space-y-2 ">
-              <li className="w-[367px] h-[24px] flex items-center">
-                <span className="w-[114px] h-[24px] opacity-70">
+              <li className=" sm:w-[367px] h-[24px] flex items-center">
+                <span className="sm:w-[114px] h-[24px] opacity-70">
                   Full Name:
                 </span>
-                <span className="w-[183px] h-[23px] ml-[35px]">{`${
+                <span className="sm:w-[183px] h-[23px] ml-[35px]">{`${
                   userDetailData?.first_name || ""
                 } ${userDetailData?.last_name || ""}`}</span>
               </li>
-              <li className="w-[367px] h-[24px] flex items-center">
-                <span className="w-[114px] h-[24px] opacity-70">Email ID:</span>
-                <span className="w-[183px] h-[23px] ml-[35px]">
+              <li className="sm:w-[367px] h-[24px] flex items-center">
+                <span className="sm:w-[114px] h-[24px] opacity-70">Email ID:</span>
+                <span className="sm:w-[183px] h-[23px] ml-[35px]">
                   {userDetailData?.email || ""}
                 </span>
               </li>
-              <li className="w-[367px] h-[24px] flex items-center">
-                <span className="w-[114px] h-[24px] opacity-70">
+              <li className="sm:w-[367px] h-[24px] flex items-center">
+                <span className="sm:w-[114px] h-[24px] opacity-70">
                   Department:
                 </span>
-                <span className="w-[183px] h-[23px] ml-[35px]">
+                <span className="sm:w-[183px] h-[23px] ml-[35px]">
                   {userDetailData?.department || ""}
                 </span>
               </li>
-              <li className="w-[367px] h-[24px] flex items-center">
-                <span className="w-[114px] h-[24px] opacity-70">
+              <li className="sm:w-[367px] h-[24px] flex items-center">
+                <span className="sm:w-[114px] h-[24px] opacity-70">
                   Date of Join:
                 </span>
-                <span className="w-[183px] h-[23px] ml-[35px]">
+                <span className="sm:w-[183px] h-[23px] ml-[35px]">
                   {userDetailData?.joining_date || ""}
                 </span>
               </li>
               <li className="sm:w-[767px] sm:pt-[120px] sm:pb-10 sm:mt-[200px] t-2 sm:absolute  flex items-start">
-                <span className="w-[114px] h-[24px] opacity-70">Skills:</span>
+                <span className="sm:w-[114px] h-[24px] opacity-70">Skills:</span>
                 <span className=" left-1  flex gap-2 items-center ml-[35px]">
                   <SkillsList skills={userDetailData?.skill_set} />
                 </span>
@@ -176,33 +176,33 @@ const UserDetails = () => {
             </ul>
 
             <ul className="mt-14 md:mt-0 flex flex-col space-y-2">
-              <li className="w-[367px] h-[24px] flex items-center">
-                <span className="w-[114px] h-[24px] opacity-70">Contact:</span>
-                <span className="w-[183px] h-[23px] ml-[35px]">
+              <li className="sm:w-[367px] h-[24px] flex items-center">
+                <span className="sm:w-[114px] h-[24px] opacity-70">Contact:</span>
+                <span className="sm:w-[183px] h-[23px] ml-[35px]">
                   {userDetailData?.phone_number || ""}
                 </span>
               </li>
-              <li className="w-[367px] h-[24px] flex items-center">
-                <span className="w-[114px] h-[24px] opacity-70">
+              <li className="sm:w-[367px] h-[24px] flex items-center">
+                <span className="sm:w-[114px] h-[24px] opacity-70">
                   Employee ID:
                 </span>
-                <span className="w-[183px] h-[23px] ml-[35px]">
+                <span className="sm:w-[183px] h-[23px] ml-[35px]">
                   {userDetailData?.employee_id || ""}
                 </span>
               </li>
-              <li className="w-[367px] h-[24px] flex items-center">
-                <span className="w-[114px] h-[24px] opacity-70">
+              <li className="sm:w-[367px] h-[24px] flex items-center">
+                <span className="sm:w-[114px] h-[24px] opacity-70">
                   Department:
                 </span>
-                <span className="w-[183px] h-[23px] ml-[35px]">
+                <span className="sm:w-[183px] h-[23px] ml-[35px]">
                   {userDetailData?.department || ""}
                 </span>
               </li>
-              <li className="w-[367px] h-[24px] flex items-center">
-                <span className="w-[114px] h-[24px] opacity-70">
+              <li className="sm:w-[367px] h-[24px] flex items-center">
+                <span className="sm:w-[114px] h-[24px] opacity-70">
                   Designation:
                 </span>
-                <span className="w-[183px] h-[23px] ml-[35px]">
+                <span className="sm:w-[183px] h-[23px] ml-[35px]">
                   {userDetailData?.designation || ""}
                 </span>
               </li>

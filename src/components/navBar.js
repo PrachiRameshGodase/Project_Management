@@ -40,14 +40,14 @@ const NavBar = () => {
   };
 
   return (
-    <div className="w-full z-50 h-[80px] fixed left-0 flex items-center px-4 border-b border-gray-50 bg-white shadow-sm">
+    <div className="w-full z-50 h-[80px] fixed  flex items-center  border-b border-gray-50 bg-white shadow-sm">
       <Toaster
         position="top-center"
         reverseOrder={false}
       />
       {/* Mobile Toggle Button */}
       <button
-        className="lg:hidden text-2xl p-2 rounded-md focus:outline-none"
+        className="lg:hidden text-2xl absolute p-2 left-2 sm:left-10 md:left-14  lg:left-20 rounded-md focus:outline-none "
         onClick={() => setIsOpen(true)}
       >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#000000" fill="none">
@@ -59,14 +59,14 @@ const NavBar = () => {
       </button>
 
       {/* Desktop Navbar */}
-      <div className="hidden lg:flex w-[441px] h-[44px] absolute top-[20.5px] left-[80px] gap-2">
+      <div className="hidden  lg:flex w-[441px] h-[44px] absolute top-[20.5px] left-2 sm:left-10 md:left-14  lg:left-20 gap-2">
         {navItems.map((item) => {
           const isActive = Array.isArray(item.path) ? item.path.includes(pathname) : pathname === item.path;
           return (
             <div
               key={Array.isArray(item.path) ? item.path[0] : item.path}
               onClick={() => router.push(Array.isArray(item.path) ? item.path[0] : item.path)}
-              className={`rounded-lg flex items-center gap-1.5 px-2 py-1.5 cursor-pointer 
+              className={`hover:opacity-80 rounded-lg flex items-center gap-1.5 px-2 py-1.5 cursor-pointer 
                 ${isActive ? "border border-gray-300 bg-gray-100" : "opacity-70"} 
                 ${(item.label === "Projects" || item.label === "Clients") ? "w-[110px] h-[44px]" : "w-[93px] h-[44px]"}`}
             >
@@ -81,7 +81,7 @@ const NavBar = () => {
 
       <>
         {/* Avatar Button */}
-        <div className="absolute top-4 right-[20px] flex items-center space-x-2">
+        <div className="absolute   top-4 right-3 sm:right-10 md:right-14 lg:right-20 flex items-center space-x-2">
           <button onClick={() => setIsOpen2(true)}>
             <UserAvatar
               name={user.name}
@@ -127,20 +127,24 @@ const NavBar = () => {
           {/* Logout Button */}
           <button
             onClick={handleLogout}
-            className="mt-5 w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600"
+            className="mt-5 flex items-center justify-center hover:gap-3 gap-1 w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600"
           >
-            Logout
+            Logout 
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#ffffff" fill="none">
+              <path d="M11 3L10.3374 3.23384C7.75867 4.144 6.46928 4.59908 5.73464 5.63742C5 6.67576 5 8.0431 5 10.7778V13.2222C5 15.9569 5 17.3242 5.73464 18.3626C6.46928 19.4009 7.75867 19.856 10.3374 20.7662L11 21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+              <path d="M21 12L11 12M21 12C21 11.2998 19.0057 9.99153 18.5 9.5M21 12C21 12.7002 19.0057 14.0085 18.5 14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
           </button>
         </div>
       </>
       {/* Mobile Sidebar */}
       <div
-        className={`fixed top-0 left-0 w-[250px] h-full bg-white shadow-md transform 
+        className={`fixed  top-0 left-0 w-[250px] h-full bg-white shadow-md transform 
           ${isOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-300 ease-in-out lg:hidden`}
       >
         {/* Close Button */}
         <button
-          className="absolute top-4 right-4 text-2xl"
+          className="absolute top-4 right-4 text-2xl "
           onClick={() => setIsOpen(false)}
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#000000" fill="none">
@@ -149,7 +153,7 @@ const NavBar = () => {
         </button>
 
         {/* Sidebar Navigation */}
-        <div className="mt-16 flex flex-col gap-4 px-4">
+        <div className="mt-16  flex flex-col gap-4 px-4">
           {navItems.map((item) => {
             const isActive = Array.isArray(item.path) ? item.path.includes(pathname) : pathname === item.path;
             return (

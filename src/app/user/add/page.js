@@ -88,8 +88,8 @@ const AddUser = () => {
 
   return (
     <LayOut>
-      <div className="sm:flex">
-        <div className="text-2xl tracking-tight ml-[70px]">Add User</div>
+      <div className="sm:flex mx-auto sm:mx-0">
+        <div className="text-2xl tracking-tight sm:ml-[70px]">Add User</div>
 
         <div className="sm:flex justify-between items-center h-screen mx-auto">
           <form className="sm:w-[600px] h-[100%] bg-white p-2 sm:p-8 rounded-lg space-y-5" onSubmit={handleSubmit}>
@@ -97,7 +97,7 @@ const AddUser = () => {
             <div className="sm:flex justify-between items-center">
               <label className="block text-m">First Name <span className='text-red-600'>*</span></label>
               <input
-                className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m placeholder:text-gray-700"
+                className="w-[310px] sm:w-[350px]  h-10 border border-gray-300 rounded-lg p-2 text-m placeholder:text-gray-700"
                 type="text"
                 name="first_name"
                 placeholder="Enter First Name"
@@ -109,7 +109,7 @@ const AddUser = () => {
             <div className="sm:flex justify-between items-center">
               <label className="block text-m">Last Name</label>
               <input
-                className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m placeholder:text-gray-700"
+                className="w-[310px] sm:w-[350px]  h-10 border border-gray-300 rounded-lg p-2 text-m placeholder:text-gray-700"
                 type="text"
                 name="last_name"
                 placeholder="Enter Last Name"
@@ -121,7 +121,7 @@ const AddUser = () => {
             <div className="sm:flex justify-between items-center">
               <label className="block text-m">Employee ID <span className='text-red-600'>*</span></label>
               <input
-                className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m placeholder:text-gray-700"
+                className="w-[310px] sm:w-[350px]  h-10 border border-gray-300 rounded-lg p-2 text-m placeholder:text-gray-700"
                 type="text"
                 name="employee_id"
                 placeholder="Enter Employee ID"
@@ -133,7 +133,7 @@ const AddUser = () => {
             <div className="sm:flex justify-between items-center">
               <label className="block text-m">Email <span className='text-red-600'>*</span></label>
               <input
-                className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m placeholder:text-gray-700"
+                className="w-[310px] sm:w-[350px]  h-10 border border-gray-300 rounded-lg p-2 text-m placeholder:text-gray-700"
                 type="email"
                 name="email"
                 placeholder="Enter Email"
@@ -145,7 +145,7 @@ const AddUser = () => {
             <div className="sm:flex justify-between items-center">
               <label className="block text-m">Phone Number</label>
               <input
-                className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m placeholder:text-gray-700"
+                className="w-[310px] sm:w-[350px]  h-10 border border-gray-300 rounded-lg p-2 text-m placeholder:text-gray-700"
                 type="text"
                 name="phone_number"
                 placeholder="Enter Phone Number"
@@ -195,7 +195,7 @@ const AddUser = () => {
             <div className='sm:flex w-full justify-end'>
               <button
                 type="submit"
-                className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m bg-black text-gray-100"
+                className="w-[310px] sm:w-[350px]  h-10 border border-gray-300 rounded-lg p-2 text-m bg-black text-gray-100"
               >
                 Submit
               </button>
