@@ -11,12 +11,13 @@ import TableSkeleton from '@/components/common/TableSkeleton/TableSkeleton';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProjects } from '@/app/store/projectSlice';
 import { useDebounceSearch } from '@/components/common/Helper/HelperFunction';
+import Pagenation from '@/components/common/Pagenation/Pagenation';
 
 const ProjectList = () => {
   const router = useRouter();
   const dispatch = useDispatch();
+
   const projectListData = useSelector((state) => state.project?.list?.data);
-  console.log("projectListData", projectListData)
   const projectLoading = useSelector((state) => state.project);
   const totalCount = useSelector((state) => state?.project?.list?.total);
   const [selectedView, setSelectedView] = useState('List');
@@ -219,13 +220,13 @@ const ProjectList = () => {
             {/* )} */}
           </div>
           {/* Pagination */}
-          {/* <div className="flex justify-between items-center mt-4 px-1 sm:px-2 py-2">
-            <div className='text-gray-700 text-[12px] sm:text-[18px]'>{`Showing   ${startEntry + 1} - ${Math.min(endEntry, filteredUsers.length)} of ${filteredUsers.length} entries`}</div>
-            <div className="flex gap-2">
-              <button className={`w-[60px] h-[29px]   sm:w-[80px] sm:h-[39px] text-[10px] rounded-md border ${currentPage === 1 ? 'bg-gray-200 text-gray-400' : 'bg-white text-black hover:bg-gray-300'}`} disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>Previous</button>
-              <button className={`w-[60px] h-[29px]  sm:w-[80px] sm:h-[39px] text-[10px] rounded-md border ${currentPage === totalPages ? 'bg-gray-200 text-gray-400' : 'bg-white text-black hover:bg-gray-300'}`} disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>Next</button>
-            </div>
-          </div> */}
+          <Pagenation
+          itemList={totalCount}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          itemsPerPage={itemsPerPage}
+          setItemsPerPage={setItemsPerPage}
+          setSearchCall={setSearchTrigger} />
         </>
       )}
 
@@ -233,29 +234,29 @@ const ProjectList = () => {
       {/* Card Section */}
       {selectedView == "Card" && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mx-auto mt-[50px]">
-          {projectListData?.map((user) => (
-            <div key={user.id} className="w-full min-w-[305px] h-[240px] hover:border-gray-200 hover:shadow-lg  border border-gray-100 rounded-xl p-4 shadow-md">
+          {projectListData?.map((item, index) => (
+            <div key={item?.id} className="w-full min-w-[305px] h-[240px] hover:border-gray-200 hover:shadow-lg  border border-gray-100 rounded-xl p-4 shadow-md">
               <div className="flex justify-between items-center mb-4">
-                <p className="font-700 text-[21.33px] leading-[28.8px] ">HRMS Dashboard</p>
+                <p className="font-700 text-[21.33px] leading-[28.8px] ">{item?.project_name ||""}</p>
                 {/* <p className="font-[400] text-[12px] leading-[16.8px] text-green-600 w-[70px] h-[20px]  rounded flex items-center justify-center">
                 Completed
               </p> */}
-                <p className={`font-[400] text-[12px] leading-[16.8px] border rounded flex items-center justify-center ${user.status === 'To Do'
+                <p className={`font-[400] text-[12px] leading-[16.8px] border rounded flex items-center justify-center ${item.status === 'To Do'
                   ? 'text-[#6C757D] border-[#6C757D]  w-[50px] h-[20px]'
-                  : user.status === 'In progress' ?
-                    'text-[#CA9700] border-[#CA9700]  w-[90px] h-[20px]' : user.status === 'Completed' ? 'text-[#008053] border-[#008053]  w-[90px] h-[20px]' : 'text-[#0D4FA7] border-[#0D4FA7]  w-[90px] h-[20px]'
+                  : item?.status === 'In progress' ?
+                    'text-[#CA9700] border-[#CA9700]  w-[90px] h-[20px]' : item?.status === 'Completed' ? 'text-[#008053] border-[#008053]  w-[90px] h-[20px]' : 'text-[#0D4FA7] border-[#0D4FA7]  w-[90px] h-[20px]'
                   }`}>
-                  {user?.status}
+                  {item?.status}
                 </p>
               </div>
               <div className="flex justify-between items-center mb-2">
                 <ul className="flex gap-1 flex-col w-[150px]">
                   <li className=" text-[12.8px] leading-[17.28px] text-gray-400">Team</li>
-                  <li className=" text-[12.8px] leading-[17.28px] text-gray-800 ">Prachi Godase, Sumit Yadav, Aryan</li>
+                  <li className=" text-[12.8px] leading-[17.28px] text-gray-800 ">{JSON.parse(item?.team)?.join(", ")}</li>
                 </ul>
                 <ul className="flex gap-1 flex-col">
                   <li className=" text-[12.8px] text-gray-400">Due Date</li>
-                  <li className=" text-[12.8px]  text-gray-800">1 Jan, 2024</li>
+                  <li className=" text-[12.8px]  text-gray-800">{item?.due_date ||""}</li>
 
                 </ul>
 
@@ -267,10 +268,10 @@ const ProjectList = () => {
                 <ul className="flex gap-1 flex-col mr-[20px]">
 
                   <li className=" text-[12.8px] text-gray-400">Priority</li>
-                  <li className={`text-[12.8px]  text-gray-800 font-700 ${user.priority === 'High'
-                    ? 'text-[#4976F4]' : user.priority === 'Low' ?
+                  <li className={`text-[12.8px]  text-gray-800 font-700 ${item.priority === 'high'
+                    ? 'text-[#4976F4]' : item?.priority === 'low' ?
                       'text-red-400' : 'text-[#954BAF]'
-                    }`}>{user.priority}</li>
+                    }`}>{item?.priority?.charAt(0).toUpperCase() + item?.priority?.slice(1)}</li>
                 </ul>
               </div>
               <div className="w-[270px] h-[39px]">
