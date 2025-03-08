@@ -8,6 +8,7 @@ import { useDebounceSearch } from '@/components/common/Helper/HelperFunction';
 import Pagenation from '@/components/common/Pagenation/Pagenation';
 import SearchComponent from '@/components/common/SearchComponent/SearchComponent';
 import SortBy from '@/components/common/Sort/SortBy';
+import TableSkeleton from '@/components/common/TableSkeleton/TableSkeleton';
 import TruncatedTooltipText from '@/components/common/TruncatedTooltipText/TruncatedTooltipText';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -162,9 +163,9 @@ const ProjectList = () => {
 
 
           <div className="max-w-full overflow-x-auto mt-6 ">
-            {/* {projectLoading ? (
+            {projectLoading?.loading ? (
               <TableSkeleton rows={7} columns={5} />
-            ) : ( */}
+            ) : (
             <table className="w-full min-w-[1000px] border-collapse border border-gray-100">
               <thead>
                 <tr className="text-left text-sm font-bold uppercase text-gray-800">
@@ -217,7 +218,7 @@ const ProjectList = () => {
                 ))}
               </tbody>
             </table>
-            {/* )} */}
+            )}
           </div>
           {/* Pagination */}
           <Pagenation

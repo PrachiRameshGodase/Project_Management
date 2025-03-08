@@ -3,8 +3,10 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { X } from "lucide-react";
 import { OtherIcons } from "@/assests/icons";
+import AttachmentPreview from "../Attachments/AttachmentPreview";
 
-const Drawer01 = ({ isOpen, setIsDrawerOpen, children }) => {
+const Drawer01 = ({ isOpen, setIsDrawerOpen, details }) => {
+    
     if (!isOpen) return null;
     const [isActive, setIsActive] = useState(true)
     return (
@@ -27,8 +29,8 @@ const Drawer01 = ({ isOpen, setIsDrawerOpen, children }) => {
                 <div className="flex justify-between">
                     <div className="w-[360px] h-[69px] flex items-center gap-[10px] ">
                         <div className="text-xl text-gray-700">
-                            <p className="font-bold">Marketing website</p>
-                            <p className="text-xs text-gray-500">EcoVision Enterprises</p>
+                            <p className="font-bold">{details?.project_name}</p>
+                            <p className="text-xs text-gray-500">{details?.client_name}</p>
                         </div>
                     </div>
                     {/* <div>
@@ -92,40 +94,37 @@ const Drawer01 = ({ isOpen, setIsDrawerOpen, children }) => {
                     <ul className=" h-[22px] mt-[20px] ">
                         <li className="flex mb-2 gap-4">
                             <span className="text-gray-400 w-[120px] text-[14px]">Priority</span><h4>:</h4>
-                            <span className="text-gray-700 w-[200px] text-[14px]">High</span>
+                            <span className="text-gray-700 w-[200px] text-[14px]">{details?.priority ||""}</span>
                         </li>
                         <li className="flex mb-2 gap-4">
                             <span className="text-gray-400 w-[120px] text-[14px]">Project Stage </span><h4>:</h4>
-                            <span className="text-gray-700 w-[200px] text-[14px]">Primary</span>
+                            <span className="text-gray-700 w-[200px] text-[14px]">{details?.project_stage}</span>
                         </li>
                         <li className="flex mb-2 gap-4">
                             <span className="text-gray-400 w-[120px] text-[14px]">Starting Date</span><h4>:</h4>
-                            <span className="text-gray-700 w-[200px] text-[14px]">14 Mar, 2024</span>
+                            <span className="text-gray-700 w-[200px] text-[14px]">{details?.start_date ||""}</span>
                         </li>
                         <li className="flex mb-2 gap-4">
                             <span className="text-gray-400 w-[120px] text-[14px]">Deadline</span><h4>:</h4>
-                            <span className="text-gray-700 w-[200px] text-[14px]">10 Apr, 2024</span>
+                            <span className="text-gray-700 w-[200px] text-[14px]">{details?.due_date ||""}</span>
                         </li>
                         <li className="flex mb-2 gap-4">
                             <span className="text-gray-400 w-[120px] text-[14px]">Project Leader</span><h4>:</h4>
-                            <span className="text-gray-700 w-[200px] text-[14px]">Puneet Omar</span>
+                            <span className="text-gray-700 w-[200px] text-[14px]">{details?.project_leader_name ||""}</span>
                         </li>
                         <li className="flex mb-2 gap-4">
                             <span className="text-gray-400 w-[120px] text-[14px]">Team</span><h4>:</h4>
-                            <span className="text-gray-700 w-[200px] text-[14px]">Satyam Pardeshi, Prachi Jadhav, Sumit yadav, Aryan</span>
+                            <span className="text-gray-700 w-[200px] text-[14px]">{details?.team?.join(", ") || ""}</span>
                         </li>
                         <li className="flex mb-2 gap-4">
                             <span className="text-gray-400 w-[120px] text-[14px]">Description</span><h4>:</h4>
-                            <span className="text-gray-700 w-[200px] text-[14px]">Lorem ipsum dolor sit amet consectetur. Ipsum in amet arcu gravida enim dui ipsum. Id id</span>
+                            <span className="text-gray-700 w-[200px] text-[14px]">{details?.description ||""}</span>
                         </li>
                         <li className="flex mb-2 gap-4">
                             <span className="text-gray-400 w-[120px] text-[14px]">Attachments</span>
                             <h4>:</h4>
                             <span className="text-gray-700 w-[200px]">
-                                <div className="grid grid-cols-2 gap-4">
-                                    <div className="w-[76px] h-[84px] bg-white border border-gray-100 rounded-[5.67px] shadow-sm"></div>
-                                    <div className="w-[76px] h-[84px] bg-white border border-gray-100 rounded-[5.67px] shadow-sm"></div>
-                                </div>
+                               <AttachmentPreview files={details?.attachments}/>
                             </span>
                         </li>
                     </ul>

@@ -38,7 +38,7 @@ const AddProject = () => {
         team: [],
         attachments: [],
         description: "",
-        // status: ""
+
     });
 
     const [selectedPriority, setSelectedPriority] = useState(false)
@@ -71,7 +71,7 @@ const AddProject = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
+
         dispatch(addProject({ projectData: formData, router }));
     };
     console.log("formData", formData)
@@ -85,12 +85,12 @@ const AddProject = () => {
                     <form className="w-full sm:w-[600px] mb-4 h-[656px] bg-white p-3 sm:p-8 rounded-lg space-y-5">
                         <div className="sm:flex justify-between">
                             <label className="block text-m ">Project Name</label>
-                            <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m sm:ml-7 placeholder:text-gray-700" type='text' placeholder='Enter Project Name 'value={formData?.project_name} onChange={handleChange} name='project_name'/>
+                            <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m sm:ml-7 placeholder:text-gray-700" type='text' placeholder='Enter Project Name ' value={formData?.project_name} onChange={handleChange} name='project_name' />
                         </div>
 
                         <div className="sm:flex justify-between">
                             <label className="block text-m ">Client Name</label>
-                            <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m sm:ml-7 placeholder:text-gray-700" type='text' placeholder='Enter Client Name ' value={formData?.client_name} onChange={handleChange} name='client_name'/>
+                            <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m sm:ml-7 placeholder:text-gray-700" type='text' placeholder='Enter Client Name ' value={formData?.client_name} onChange={handleChange} name='client_name' />
                         </div>
                         <div className="sm:flex justify-between">
                             <label className="block text-m">Starting date</label>
@@ -154,7 +154,15 @@ const AddProject = () => {
                         <div className="sm:flex justify-between">
                             <label className="block text-black text-sm font-medium">Attachments</label>
                             <FileUpload
-                                onFilesChange={(files) => console.log(files)} />
+
+                                onFilesChange={(files) => {
+                                    // const fileNames = files.map((file) => file.name);
+                                    setFormData((prev) => ({
+                                        ...prev,
+                                        attachments: files,
+                                    }))
+                                }
+                                } />
 
                         </div>
                         <div className="sm:flex justify-between">
