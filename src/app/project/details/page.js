@@ -1,4 +1,5 @@
 "use client"
+import { fetchProjectDetails, updateProjectStatus } from '@/app/store/projectSlice';
 import { OtherIcons } from '@/assests/icons';
 import Drawer01, { Drawer001 } from '@/components/common/Drawer/Drawer01';
 import Dropdown01 from '@/components/common/Dropdown/Dropdown01';
@@ -9,16 +10,57 @@ import TruncatedTooltipText from '@/components/common/TruncatedTooltipText/Trunc
 import UserAvatar from '@/components/common/UserAvatar/UserAvatar';
 import LayOut from '@/components/LayOut';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 
 const TaskList = () => {
   const router = useRouter()
+  const dispatch = useDispatch();
+  const [itemId, setItemId] = useState(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      setItemId(params.get("id"));
+    }
+  }, []); // ✅ Keep this effect separate
+  
+  useEffect(() => {
+    if (itemId) {
+      dispatch(fetchProjectDetails(itemId));
+    }
+  }, [dispatch, itemId]); // ✅ Separate useEffect to watch itemId
+  
+  const projectDetailData = useSelector((state) => state?.project?.projectDetails?.data);
+  console.log("projectDetailData", projectDetailData);
+  
   const user = {
-    name: "Shubham Pall",
+    name: projectDetailData?.project_name ||"",
 
     isActive: true,
     image: "",
   };
+
+
+    //  const handleToggleStatus = async (event) => {
+    //     const newStatus = !isActive ? 1 : 0; // Toggle logic: Active (0) → Inactive (1), Inactive (1) → Active (0)
+    
+    //     const result = await Swal.fire({
+    //       text: `Do you want to ${
+    //         newStatus === 1 ? "Inactive" : "Active"
+    //       } this User?`,
+    //       showCancelButton: true,
+    //       confirmButtonText: "Yes",
+    //       cancelButtonText: "No",
+    //     });
+    
+    //     if (result.isConfirmed && itemId) {
+    //       setIsActive(!isActive); // Update local state immediately
+    
+    //       // Dispatch updateUserStatus with the new status
+    //       dispatch(updateProjectStatus({ id: itemId, status: newStatus, router }));
+    //     }
+    //   };
   const users = [
     {
       id: 1,
@@ -154,15 +196,15 @@ const TaskList = () => {
             <UserAvatar name={user.name} dotcolor='blue' size={66} image={user.image} isActive={user.isActive} />
 
             <div className="text-xl text-gray-700">
-              <p className="font-bold text-[14px] sm:text-[18px]">Marketing website</p>
-              <p className="text-xs text-gray-500">EcoVision Enterprises</p>
+              <p className="font-bold text-[14px] sm:text-[18px]">{projectDetailData?.project_name || ""}</p>
+              <p className="text-xs text-gray-500">{projectDetailData?.client_name ||""}</p>
             </div>
-            <p className={`font-[400] text-[12px] leading-[16.8px] border rounded flex items-center justify-center ${"user.status" === 'To Do'
+            <p className={`font-[400] text-[12px] leading-[16.8px] border rounded flex items-center justify-center ${projectDetailData?.status === 'To Do'
               ? 'text-[#6C757D] border-[#6C757D]  w-[50px] h-[20px]'
-              : "user.status" === 'In progress' ?
-                'text-[#CA9700] border-[#CA9700]  w-[90px] h-[20px]' : "user.status" === 'Completed' ? 'text-[#008053] border-[#008053]  w-[90px] h-[20px]' : 'text-[#0D4FA7] border-[#0D4FA7]  w-[90px] h-[20px]'
+              : projectDetailData?.status === 'In Progress' ?
+                'text-[#CA9700] border-[#CA9700]  w-[90px] h-[20px]' : projectDetailData?.status === 'Completed' ? 'text-[#008053] border-[#008053]  w-[90px] h-[20px]' : 'text-[#0D4FA7] border-[#0D4FA7]  w-[90px] h-[20px]'
               }`}>
-              In Progress
+              {projectDetailData?.status}
             </p>
           </div>
           <div className="w-[260px] h-[69px] border border-gray-150 rounded p-2">
@@ -184,7 +226,7 @@ const TaskList = () => {
 
 
           <div className="sm:flex items-center gap-2">
-            <p className="flex items-center mr-2">
+            <div className="flex items-center mr-2">
               <label className="flex items-center cursor-pointer">
                 <span className="ml-2 text-[15px] mr-2">{isActive ? "Active" : "Inactive"}</span>
 
@@ -215,7 +257,7 @@ const TaskList = () => {
                   </div>
                 </div>
               </label>
-            </p>
+            </div>
             <button className="w-[140px] mt-3 sm:mt-0 h-[35px] text-[10px] rounded-[4px] py-[4px] border border-black text-black text-lg mr-[10px] mb-2" onClick={() => setIsDrawerOpen(true)}>
               See All Details
             </button>

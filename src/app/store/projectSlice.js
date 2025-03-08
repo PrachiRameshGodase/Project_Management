@@ -42,9 +42,9 @@ export const fetchProjects = createAsyncThunk(
 
 
 // Async thunk to fetch user details by ID
-export const fetchUserDetails = createAsyncThunk("users/fetchDetails", async (userId, { rejectWithValue }) => {
+export const fetchProjectDetails = createAsyncThunk("project/fetchDetails", async (projectId, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.post(`/users/details`, { id: userId });
+    const response = await axiosInstance.post(`/project/details`, { id: projectId });
     return response.data;
   } catch (error) {
     return rejectWithValue(error.response?.data || error.message);
@@ -52,12 +52,12 @@ export const fetchUserDetails = createAsyncThunk("users/fetchDetails", async (us
 });
 
 // Async thunk to fetch user details by ID
-export const updateUserStatus = createAsyncThunk("users/updateUserStatus", async ({ id, status, router }, { rejectWithValue }) => {
+export const updateProjectStatus = createAsyncThunk("project/updateProjectStatus", async ({ id, status, router }, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.post(`/users_status`, { id, status });
     if (response?.data?.success === true) {
       toast.success(response?.data?.message);
-      router.push("/user/list"); // Navigate on success
+      router.push("/project/list"); // Navigate on success
     }
     return response.data;
   } catch (error) {
@@ -69,7 +69,7 @@ const projectSlice = createSlice({
   name: "project",
   initialState: {
     list: [],
-    userDetails: null,
+    projectDetails: null,
     loading: false,
     error: null,
   },
@@ -111,26 +111,26 @@ const projectSlice = createSlice({
       })
 
       // Fetch User Details
-      .addCase(fetchUserDetails.pending, (state) => {
+      .addCase(fetchProjectDetails.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchUserDetails.fulfilled, (state, action) => {
+      .addCase(fetchProjectDetails.fulfilled, (state, action) => {
         state.loading = false;
-        state.userDetails = action.payload;
+        state.projectDetails = action.payload;
       })
-      .addCase(fetchUserDetails.rejected, (state, action) => {
+      .addCase(fetchProjectDetails.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
 
       // Handle Update User Status
-      .addCase(updateUserStatus.pending, (state) => {
+      .addCase(updateProjectStatus.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(updateUserStatus.fulfilled, (state, action) => {
+      .addCase(updateProjectStatus.fulfilled, (state, action) => {
         state.loading = false;
         // Update the user status in the list
         const updatedUser = action.payload;
@@ -138,7 +138,7 @@ const projectSlice = createSlice({
           user.id === updatedUser.id ? { ...user, status: updatedUser.status } : user
         );
       })
-      .addCase(updateUserStatus.rejected, (state, action) => {
+      .addCase(updateProjectStatus.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

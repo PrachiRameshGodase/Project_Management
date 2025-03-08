@@ -12,7 +12,6 @@ import Swal from "sweetalert2";
 const UserDetails = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  // const itemId = new URLSearchParams(location.search).get("id");
   const [itemId, setItemId] = useState(null);
 
   useEffect(() => {
