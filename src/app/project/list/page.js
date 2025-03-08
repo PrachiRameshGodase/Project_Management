@@ -206,7 +206,7 @@ const ProjectList = () => {
                     </td>
                     <td className={`py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-50 font-bold`} onClick={() => router.push(`/project/details?id=${item?.id}`)}>
                       <span
-                        className={`py-1 sm:py-2 px-2 sm:px-4  text-[12px] sm:text-[15px] border rounded-md  ${item?.priority === 'High'
+                        className={`py-1 sm:py-1 px-2 sm:px-4  text-[12px] sm:text-[15px] border rounded-md  ${item?.priority === 'High'
                           ? 'text-[#4976F4] border-[#4976F4]' : item?.priority === 'Low' ?
                             'text-red-400 border-red-400' : 'text-[#954BAF] border-[#954BAF]'
                           } inline-block`}
