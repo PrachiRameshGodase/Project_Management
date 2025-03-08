@@ -3,6 +3,7 @@ import { fetchProjectDetails, updateProjectStatus } from '@/app/store/projectSli
 import { OtherIcons } from '@/assests/icons';
 import Drawer01, { Drawer001 } from '@/components/common/Drawer/Drawer01';
 import Dropdown01 from '@/components/common/Dropdown/Dropdown01';
+import DropdownStatus01 from '@/components/common/Dropdown/DropdownStatus01';
 import { projectSortConstant, statusProject, taskView, view } from '@/components/common/Helper/Helper';
 import KanBanView from '@/components/common/KanBanView/KanBanView';
 import SearchComponent from '@/components/common/SearchComponent/SearchComponent';
@@ -24,43 +25,43 @@ const TaskList = () => {
       setItemId(params.get("id"));
     }
   }, []); // ✅ Keep this effect separate
-  
+
   useEffect(() => {
     if (itemId) {
       dispatch(fetchProjectDetails(itemId));
     }
   }, [dispatch, itemId]); // ✅ Separate useEffect to watch itemId
-  
+
   const projectDetailData = useSelector((state) => state?.project?.projectDetails?.data);
   console.log("projectDetailData", projectDetailData);
-  
+
   const user = {
-    name: projectDetailData?.project_name ||"",
+    name: projectDetailData?.project_name || "",
 
     isActive: true,
     image: "",
   };
 
 
-    //  const handleToggleStatus = async (event) => {
-    //     const newStatus = !isActive ? 1 : 0; // Toggle logic: Active (0) → Inactive (1), Inactive (1) → Active (0)
-    
-    //     const result = await Swal.fire({
-    //       text: `Do you want to ${
-    //         newStatus === 1 ? "Inactive" : "Active"
-    //       } this User?`,
-    //       showCancelButton: true,
-    //       confirmButtonText: "Yes",
-    //       cancelButtonText: "No",
-    //     });
-    
-    //     if (result.isConfirmed && itemId) {
-    //       setIsActive(!isActive); // Update local state immediately
-    
-    //       // Dispatch updateUserStatus with the new status
-    //       dispatch(updateProjectStatus({ id: itemId, status: newStatus, router }));
-    //     }
-    //   };
+  //  const handleToggleStatus = async (event) => {
+  //     const newStatus = !isActive ? 1 : 0; // Toggle logic: Active (0) → Inactive (1), Inactive (1) → Active (0)
+
+  //     const result = await Swal.fire({
+  //       text: `Do you want to ${
+  //         newStatus === 1 ? "Inactive" : "Active"
+  //       } this User?`,
+  //       showCancelButton: true,
+  //       confirmButtonText: "Yes",
+  //       cancelButtonText: "No",
+  //     });
+
+  //     if (result.isConfirmed && itemId) {
+  //       setIsActive(!isActive); // Update local state immediately
+
+  //       // Dispatch updateUserStatus with the new status
+  //       dispatch(updateProjectStatus({ id: itemId, status: newStatus, router }));
+  //     }
+  //   };
   const users = [
     {
       id: 1,
@@ -185,6 +186,10 @@ const TaskList = () => {
   const startEntry = (currentPage - 1) * entriesPerPage;
   const endEntry = startEntry + entriesPerPage;
   const paginatedUsers = filteredUsers.slice(startEntry, endEntry);
+  const handleStatusChange = (newStatus) => {
+    console.log("Selected Status:", newStatus);
+    // Yahan API call ya state update ka logic laga sakte ho
+  };
 
   return (
     <LayOut>
@@ -196,15 +201,9 @@ const TaskList = () => {
 
             <div className="text-xl text-gray-700">
               <p className="font-bold text-[14px] sm:text-[18px]">{projectDetailData?.project_name || ""}</p>
-              <p className="text-xs text-gray-500">{projectDetailData?.client_name ||""}</p>
+              <p className="text-xs text-gray-500">{projectDetailData?.client_name || ""}</p>
             </div>
-            <p className={`font-[400] text-[12px] leading-[16.8px] border rounded flex items-center justify-center ${projectDetailData?.status === 'To Do'
-              ? 'text-[#6C757D] border-[#6C757D]  w-[50px] h-[20px]'
-              : projectDetailData?.status === 'In Progress' ?
-                'text-[#CA9700] border-[#CA9700]  w-[90px] h-[20px]' : projectDetailData?.status === 'Completed' ? 'text-[#008053] border-[#008053]  w-[90px] h-[20px]' : 'text-[#0D4FA7] border-[#0D4FA7]  w-[90px] h-[20px]'
-              }`}>
-              {projectDetailData?.status}
-            </p>
+
           </div>
           <div className='flex max-[850px]:flex-col justify-between gap-5 md:gap-10 lg:gap-4 max-[1250px]:mt-4'>
             <div className="w-[260px] h-[69px] border border-gray-150 rounded p-2">
@@ -226,10 +225,10 @@ const TaskList = () => {
 
             <div className="sm:flex items-center gap-2">
               <div className="flex items-center mr-2">
-                <label className="flex items-center cursor-pointer">
-                  <span className="ml-2 text-[15px] mr-2">{isActive ? "Active" : "Inactive"}</span>
+                {/* <label className="flex items-center cursor-pointer"> */}
+                {/* <span className="ml-2 text-[15px] mr-2">{isActive ? "Active" : "Inactive"}</span> */}
 
-                  <div className="relative">
+                {/* <div className="relative">
                     <input
                       type="checkbox"
                       className="sr-only"
@@ -254,8 +253,24 @@ const TaskList = () => {
                         </span>
                       )}
                     </div>
-                  </div>
-                </label>
+                  </div> */}
+                {/* <p className={`font-[400] text-[12px] leading-[16.8px] border rounded flex items-center justify-center ${projectDetailData?.status === 'To Do'
+                    ? 'text-[#6C757D] border-[#6C757D]  w-[50px] h-[20px]'
+                    : projectDetailData?.status === 'In Progress' ?
+                      'text-[#CA9700] border-[#CA9700]  w-[90px] h-[20px]' : projectDetailData?.status === 'Completed' ? 'text-[#008053] border-[#008053]  w-[90px] h-[20px]' : 'text-[#0D4FA7] border-[#0D4FA7]  w-[90px] h-[20px]'
+                    }`}>
+                    {projectDetailData?.status}
+                  </p> */}
+                {/* </label> */}
+                <DropdownStatus01
+                  options={["To Do", "In Progress", "Under Review", "Completed"]}
+                  selectedValue="To Do"
+                  onSelect={(value) => console.log("Selected:", value)}
+                  label="Status"
+                  className="w-[150px]"
+                />
+
+
               </div>
               <button className="w-[140px] mt-3 sm:mt-0 h-[35px] text-[10px] rounded-[4px] py-[4px] border border-black text-black text-lg mr-[10px] mb-2" onClick={() => setIsDrawerOpen(true)}>
                 See All Details
