@@ -18,15 +18,14 @@ const Dropdown01 = ({ options, selectedValue, onSelect, label, icon }) => {
   return (
     <div className="relative" ref={dropdownOutsideClick?.ref}>
       <div
-        className={`h-[44px] flex items-center gap-2 border border-gray-300 hover:border-purple-500 hover:ring-2 hover:ring-purple-200 rounded-lg px-3 py-2 cursor-pointer ${
-          label === "Designation"
-            ? "w-fit"
-            : label === "Sort By"
+        className={`h-[44px] flex items-center gap-2 border border-gray-300 hover:border-purple-500 hover:ring-2 hover:ring-purple-200 rounded-lg px-3 py-2 cursor-pointer ${label === "Designation"
+          ? "w-fit"
+          : label === "Sort By"
             ? "w-fit"
             : label === "Task Type"
-            ? "w-fit" // Fixed incorrect "W-[120px]" to "w-[120px]"
-            : "w-fit"
-        }`}
+              ? "w-fit" // Fixed incorrect "W-[120px]" to "w-[120px]"
+              : "w-fit"
+          }`}
         onClick={dropdownOutsideClick?.handleToggle}
         ref={dropdownOutsideClick?.buttonRef}
       >
@@ -42,9 +41,8 @@ const Dropdown01 = ({ options, selectedValue, onSelect, label, icon }) => {
             {options.map((option) => (
               <li
                 key={option}
-                className={`flex px-4 py-2 hover:bg-gray-100 cursor-pointer text-left ${
-                  selected === option ? "bg-gray-200" : ""
-                }`}
+                className={`flex px-4 py-2 hover:bg-gray-100 cursor-pointer text-left ${selected === option ? "bg-gray-200" : ""
+                  }`}
                 onClick={() => handleOptionSelect(option)}
               >
                 {option}
@@ -69,8 +67,8 @@ export const Dropdown001 = ({ options, selectedValue, onSelect, label, icon }) =
     dropdownOutsideClick.handleToggle(); // Close dropdown after selection
   };
   useEffect(() => {
-          setSelected(selectedValue); // Update state when selectedDate changes
-      }, [selectedValue]);
+    setSelected(selectedValue); // Update state when selectedDate changes
+  }, [selectedValue]);
 
   return (
     <div className="relative" ref={dropdownOutsideClick?.ref}>
@@ -102,9 +100,8 @@ export const Dropdown001 = ({ options, selectedValue, onSelect, label, icon }) =
             {options.map((option) => (
               <li
                 key={option}
-                className={`flex px-4 py-2 hover:bg-gray-100 cursor-pointer text-left ${
-                  selected === option ? "bg-gray-200" : ""
-                }`}
+                className={`flex px-4 py-2 hover:bg-gray-100 cursor-pointer text-left ${selected === option ? "bg-gray-200" : ""
+                  }`}
                 onClick={() => handleOptionSelect(option)}
               >
                 {option}
@@ -118,10 +115,9 @@ export const Dropdown001 = ({ options, selectedValue, onSelect, label, icon }) =
 };
 
 
-
 export const DropdownStatus = ({ selectedValue, onSelect }) => {
   const dropdownOutsideClick = OutsideClick();
-  
+
 
   const [selected, setSelected] = useState(
     statusOptions.find((option) => option.value === selectedValue) || null
@@ -154,9 +150,8 @@ export const DropdownStatus = ({ selectedValue, onSelect }) => {
             {statusOptions?.map((option) => (
               <li
                 key={option.value}
-                className={`flex px-4 py-2 hover:bg-gray-100 cursor-pointer text-left ${
-                  selected?.value === option.value ? "bg-gray-200" : ""
-                }`}
+                className={`flex px-4 py-2 hover:bg-gray-100 cursor-pointer text-left ${selected?.value === option.value ? "bg-gray-200" : ""
+                  }`}
                 onClick={() => handleOptionSelect(option)}
               >
                 {option.label}
