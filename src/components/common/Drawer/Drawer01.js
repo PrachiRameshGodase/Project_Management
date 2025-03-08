@@ -4,9 +4,10 @@ import { motion } from "framer-motion";
 import { X } from "lucide-react";
 import { OtherIcons } from "@/assests/icons";
 import AttachmentPreview from "../Attachments/AttachmentPreview";
+import DropdownStatus01 from "../Dropdown/DropdownStatus01";
 
 const Drawer01 = ({ isOpen, setIsDrawerOpen, details }) => {
-    
+
     if (!isOpen) return null;
     const [isActive, setIsActive] = useState(true)
     return (
@@ -27,11 +28,18 @@ const Drawer01 = ({ isOpen, setIsDrawerOpen, details }) => {
             </div>
             <div className="p-4 overflow-y-auto h-full ">
                 <div className="flex justify-between">
-                    <div className="w-[360px] h-[69px] flex items-center gap-[10px] ">
+                    <div className="w-[360px] h-[69px] flex items-center justify-between gap-[10px] ">
                         <div className="text-xl text-gray-700">
-                            <p className="font-bold">{details?.project_name}</p>
-                            <p className="text-xs text-gray-500">{details?.client_name}</p>
+                            <p className="font-bold">{details?.project_name || '--'}</p>
+                            <p className="text-xs text-gray-500">{details?.client_name || '--'}</p>
                         </div>
+                        <DropdownStatus01
+                            options={["To Do", "In Progress", "Under Review", "Completed"]}
+                            selectedValue="To Do"
+                            onSelect={(value) => console.log("Selected:", value)}
+                            label="Status"
+                            className="w-[150px]"
+                        />
                     </div>
                     {/* <div>
                         <button className="w-[100px] h-[35px] rounded-[4px] py-[4px] bg-black text-white text-[16px] mb-2 p-4 mt-4">
@@ -40,18 +48,7 @@ const Drawer01 = ({ isOpen, setIsDrawerOpen, details }) => {
                     </div> */}
                 </div>
                 <div className="flex justify-between">
-                    <p
-                        className={`font-[400] text-[12px] leading-[16.8px] border rounded flex items-center justify-center mt-2 ${"user.status" === "To Do"
-                            ? "text-[#6C757D] border-[#6C757D]  w-[50px] h-[20px]"
-                            : "user.status" === "In progress"
-                                ? "text-[#CA9700] border-[#CA9700]  w-[90px] h-[20px]"
-                                : "user.status" === "Completed"
-                                    ? "text-[#008053] border-[#008053]  w-[90px] h-[20px]"
-                                    : "text-[#0D4FA7] border-[#0D4FA7]  w-[90px] h-[20px]"
-                            }`}
-                    >
-                        Under Review
-                    </p>
+                   
                     <div>
                         <label className="flex items-center cursor-pointer">
                             <span className="ml-2 text-sm mr-2">{isActive ? "Active" : "Inactive"}</span>
@@ -83,18 +80,16 @@ const Drawer01 = ({ isOpen, setIsDrawerOpen, details }) => {
                                 </div>
                             </div>
                         </label>
-
-
                     </div>
 
                 </div>
                 {/* Project Details Section */}
                 <div className="mb-4 mt-4 ml-[5px]">
-                    <p className="text-xl leading-6">Project Details</p>
+                    <p className="text-xl leading-6">Project  Details</p>
                     <ul className=" h-[22px] mt-[20px] ">
                         <li className="flex mb-2 gap-4">
                             <span className="text-gray-400 w-[120px] text-[14px]">Priority</span><h4>:</h4>
-                            <span className="text-gray-700 w-[200px] text-[14px]">{details?.priority ||""}</span>
+                            <span className="text-gray-700 w-[200px] text-[14px]">{details?.priority || ""}</span>
                         </li>
                         <li className="flex mb-2 gap-4">
                             <span className="text-gray-400 w-[120px] text-[14px]">Project Stage </span><h4>:</h4>
@@ -102,15 +97,15 @@ const Drawer01 = ({ isOpen, setIsDrawerOpen, details }) => {
                         </li>
                         <li className="flex mb-2 gap-4">
                             <span className="text-gray-400 w-[120px] text-[14px]">Starting Date</span><h4>:</h4>
-                            <span className="text-gray-700 w-[200px] text-[14px]">{details?.start_date ||""}</span>
+                            <span className="text-gray-700 w-[200px] text-[14px]">{details?.start_date || ""}</span>
                         </li>
                         <li className="flex mb-2 gap-4">
                             <span className="text-gray-400 w-[120px] text-[14px]">Deadline</span><h4>:</h4>
-                            <span className="text-gray-700 w-[200px] text-[14px]">{details?.due_date ||""}</span>
+                            <span className="text-gray-700 w-[200px] text-[14px]">{details?.due_date || ""}</span>
                         </li>
                         <li className="flex mb-2 gap-4">
                             <span className="text-gray-400 w-[120px] text-[14px]">Project Leader</span><h4>:</h4>
-                            <span className="text-gray-700 w-[200px] text-[14px]">{details?.project_leader_name ||""}</span>
+                            <span className="text-gray-700 w-[200px] text-[14px]">{details?.project_leader_name || ""}</span>
                         </li>
                         <li className="flex mb-2 gap-4">
                             <span className="text-gray-400 w-[120px] text-[14px]">Team</span><h4>:</h4>
@@ -118,13 +113,13 @@ const Drawer01 = ({ isOpen, setIsDrawerOpen, details }) => {
                         </li>
                         <li className="flex mb-2 gap-4">
                             <span className="text-gray-400 w-[120px] text-[14px]">Description</span><h4>:</h4>
-                            <span className="text-gray-700 w-[200px] text-[14px]">{details?.description ||""}</span>
+                            <span className="text-gray-700 w-[200px] text-[14px]">{details?.description || ""}</span>
                         </li>
                         <li className="flex mb-2 gap-4">
                             <span className="text-gray-400 w-[120px] text-[14px]">Attachments</span>
                             <h4>:</h4>
                             <span className="text-gray-700 w-[200px]">
-                               <AttachmentPreview files={details?.attachments}/>
+                                <AttachmentPreview files={details?.attachments} />
                             </span>
                         </li>
                     </ul>
@@ -200,7 +195,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, children }) => {
                             <p className="font-bold">Develop core pages  and create logo</p>
                         </div>
                     </div>
-                    
+
                 </div>
                 <div className="flex justify-between">
                     <p
@@ -246,7 +241,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, children }) => {
                             <span className="text-gray-400 w-[120px] text-[14px]">Link</span><h4>:</h4>
                             <span className="text-gray-700 w-[200px] text-[14px]">Puneet Omar</span>
                         </li>
-                       
+
                         <li className="flex mb-2 gap-4">
                             <span className="text-gray-400 w-[120px] text-[14px]">Description</span><h4>:</h4>
                             <span className="text-gray-700 w-[200px] text-[14px]">Lorem ipsum dolor sit amet consectetur. Ipsum in amet arcu gravida enim dui ipsum. Id id</span>
