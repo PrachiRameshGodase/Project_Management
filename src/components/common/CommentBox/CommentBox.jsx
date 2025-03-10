@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useRef, useEffect } from "react";
 import { Paperclip, Send, Trash2, Heart, Mic, PauseCircle, PlayCircle, MessageSquare } from "lucide-react";
 import { PhotoProvider, PhotoView } from "react-photo-view";
@@ -23,7 +24,7 @@ const ChatBox = () => {
     const [mentionList, setMentionList] = useState([]);
     const [newMessageCount, setNewMessageCount] = useState(0);
     const chatContainerRef = useRef(null);
-
+    const inputRef = useRef(null);
 
     const scrollToTop = () => {
         requestAnimationFrame(() => {
@@ -51,6 +52,15 @@ const ChatBox = () => {
             setMentionList([]);
         }
     };
+    const handleMentionClick = () => {
+        setMessage((prev) => prev + "@"); 
+        inputRef.current?.focus(); 
+
+        const searchText = ""; 
+        setMentionList(users); 
+    };
+
+
 
     // Select Mention
     const handleSelectMention = (user) => {
@@ -176,7 +186,7 @@ const ChatBox = () => {
 
             {/* Chat Box */}
             {/* {isChatOpen && ( */}
-            <div className="w-[360px] p-3  border rounded-lg shadow-lg bg-white  bottom-16 ">
+            <div className="w-full p-2  border rounded-lg shadow-lg bg-white  bottom-16 ">
                 <div className="flex justify-between items-center mb-2">
                     <h2 className="font-semibold">Comment</h2>
                     {/* <button className="text-gray-500 hover:text-black" onClick={() => setIsChatOpen(false)}>
@@ -187,103 +197,111 @@ const ChatBox = () => {
 
 
                 {/* Input Field with File & Audio Preview */}
-
-                <div className="relative border rounded-lg p-1 mb-2 ">
-                    <div className="flex items-center gap">
-                        {/* Attach File */}
-                        <UserAvatar name={user.name} dotcolor='' size={22} image={user.image} isActive={user.isActive} />
-                        <input type="file"  ref={fileInputRef} className="hidden " onChange={handleFileSelect} />
-                        {/* Text Input */}
-                        <input
-                            type="text"
-                            className="flex-1 outline-none pl-1"
-                            placeholder="Type a message..."
-                            value={message}
-                            onChange={handleInputChange}
-                            onKeyDown={(e) => e.key === "Enter" && handleSend()}
-                        />
-
-                        <button className="p-1  text-gray-500 hover:text-black" onClick={() => fileInputRef.current.click()}>
-                            <Paperclip size={20} />
-                        </button>
-                        {/* Mic Button */}
-                        {recording ? (
-                            <button className="p-2 text-red-500" onClick={stopRecording}>
-                                <PauseCircle size={20} />
+                <div className="flex justify-between items-center  ">
+                    <div className="relative border w-full rounded-lg p-1 mb-2 ">
+                        <div className="flex items-center ">
+                            {/* Attach File */}
+                            <UserAvatar name={user.name} dotcolor='' size={24} image={user.image} isActive={user.isActive} />
+                            <input type="file" ref={fileInputRef} className="hidden " onChange={handleFileSelect} />
+                            {/* Text Input */}
+                            <input
+                                ref={inputRef}
+                                type="text"
+                                className="flex-1 outline-none pl-1"
+                                placeholder="Type a message..."
+                                value={message}
+                                onChange={handleInputChange}
+                                onKeyDown={(e) => e.key === "Enter" && handleSend()}
+                            />
+                            <button
+                                onClick={handleMentionClick}
+                                className="p-1 text-[26px] text-gray-500 hover:text-black cursor-pointer">
+                                @
                             </button>
-                        ) : (
-                            <button className="p-2  text-gray-500 hover:text-black" onClick={startRecording}>
-                                <Mic size={20} />
+
+                            <button className={`p-1  text-gray-500 hover:text-black `} onClick={() => fileInputRef.current.click()}>
+                                <Paperclip size={22} />
                             </button>
-                        )}
-
-                        {/* Send Button */}
-                        <button className="p-2 text-gray-500 hover:text-black" onClick={handleSend}>
-                            <Send size={20} />
-                        </button>
-
-                        {/* Mention List Dropdown */}
-                        {mentionList.length > 0 && (
-                            <ul className="absolute -mt-56 max-h-[180px]  overflow-y-auto bg-white border rounded-md shadow-md w-full z-10">
-                                {mentionList.map((user, index) => (
-                                    <li
-                                        key={index}
-                                        className="p-2 hover:bg-gray-100 cursor-pointer"
-                                        onClick={() => handleSelectMention(user)}
-                                    >
-                                        @{user}
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
-                    </div>
-
-                    {/* File & Audio Preview Inside Input Box */}
-                    {selectedFile && (
-                        <div className="mt-2 p-1 bg-gray-100 rounded-md flex items-center gap-2 relative">
-                            {selectedFile.type === "image" ? (
-                                <PhotoProvider>
-                                    <PhotoView src={selectedFile.url}>
-                                        <img src={selectedFile.url} alt="Preview" className="w-fit h-14 rounded-md cursor-pointer" />
-                                    </PhotoView>
-                                </PhotoProvider>
+                            {/* Mic Button */}
+                            {recording ? (
+                                <button className="p-2 text-red-500" onClick={stopRecording}>
+                                    <PauseCircle size={20} />
+                                </button>
                             ) : (
-                                <span className="text-gray-700">{selectedFile.name}</span>
+                                <button className="p-1  text-gray-500 hover:text-black" onClick={startRecording}>
+                                    <Mic size={24} />
+                                </button>
                             )}
 
-                            {/* Delete Button */}
-                            <button
-                                className="absolute top-0 right-0 p-1 text-gray-500 hover:text-red-500"
-                                onClick={() => setSelectedFile(null)}
-                            >
-                                <Trash2 />
-                            </button>
+
+
+                            {/* Mention List Dropdown */}
+                            {mentionList.length > 0 && (
+                                <ul className="absolute -mt-56 max-h-[180px]  overflow-y-auto bg-white border rounded-md shadow-md w-full z-10">
+                                    {mentionList.map((user, index) => (
+                                        <li
+                                            key={index}
+                                            className="p-2 hover:bg-gray-100 cursor-pointer"
+                                            onClick={() => handleSelectMention(user)}
+                                        >
+                                            @{user}
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
                         </div>
-                    )}
+                        {/* Send Button */}
+
+                        {/* File & Audio Preview Inside Input Box */}
+                        {selectedFile && (
+                            <div className="mt-2 p-1 bg-gray-100 rounded-md flex items-center gap-2 relative">
+                                {selectedFile.type === "image" ? (
+                                    <PhotoProvider>
+                                        <PhotoView src={selectedFile.url}>
+                                            <img src={selectedFile.url} alt="Preview" className="w-fit h-14 rounded-md cursor-pointer" />
+                                        </PhotoView>
+                                    </PhotoProvider>
+                                ) : (
+                                    <span className="text-gray-700">{selectedFile.name}</span>
+                                )}
+
+                                {/* Delete Button */}
+                                <button
+                                    className="absolute top-0 right-0 p-1 text-gray-500 hover:text-red-500"
+                                    onClick={() => setSelectedFile(null)}
+                                >
+                                    <Trash2 />
+                                </button>
+                            </div>
+                        )}
 
 
-                    {audioURL && (
-                        <div className="mt-2 p-2  bg-gray-100 rounded-md flex items-center gap-2 relative">
-                            <audio controls>
-                                <source src={audioURL} type="audio/mp3" />
-                                Your browser does not support audio playback.
-                            </audio>
+                        {audioURL && (
+                            <div className="mt-2 p-2  bg-gray-100 rounded-md flex items-center gap-2 relative">
+                                <audio controls>
+                                    <source src={audioURL} type="audio/mp3" />
+                                    Your browser does not support audio playback.
+                                </audio>
 
-                            {/* Delete Button */}
-                            <button
-                                className="absolute top-0 right-0 p-1 text-gray-500 hover:text-red-500"
-                                onClick={() => setAudioURL(null)}
-                            >
-                                <Trash2 />
-                            </button>
+                                {/* Delete Button */}
+                                <button
+                                    className="absolute top-0 right-0 p-1 text-gray-500 hover:text-red-500"
+                                    onClick={() => setAudioURL(null)}
+                                >
+                                    <Trash2 />
+                                </button>
 
-                        </div>
-                    )}
 
+                            </div>
+                        )}
+
+                    </div>
+                    <button className=" text-gray-500 pl-2 hover:text-black" onClick={handleSend}>
+                        <Send size={20} />
+                    </button>
                 </div>
-
                 {/* Messages */}
-                <div className="space-y-3 max-h-64 overflow-y-auto " >
+                <div className="space-y-3 p-2  max-h-64 overflow-y-auto " >
 
                     <PhotoProvider>
                         <div ref={chatStartRef} />

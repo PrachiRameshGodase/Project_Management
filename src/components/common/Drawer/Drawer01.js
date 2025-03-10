@@ -17,7 +17,7 @@ const Drawer01 = ({ isOpen, setIsDrawerOpen, details }) => {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed top-0 right-0 h-full w-96 bg-white shadow-lg z-50 drawer-scrollbar"
+            className="fixed top-0 right-0 h-full w-[456px] bg-white shadow-lg z-50 drawer-scrollbar"
         >
             <div className="p-2 flex justify-end items-center">
                 <button
@@ -125,12 +125,12 @@ const Drawer01 = ({ isOpen, setIsDrawerOpen, details }) => {
                         </li>
                     </ul>.
 
-                  
+
                 </div>
 
                 {/* Comment Section */}
                 <div className="mt-[390px] mb-[20px]">
-                   
+
                     <CommentBox />
                 </div>
 
@@ -153,7 +153,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, children }) => {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed top-0 right-0 h-full w-96 bg-white shadow-lg z-50 drawer-scrollbar"
+            className="fixed top-0 right-0 h-full w-[456px] bg-white shadow-lg z-50 drawer-scrollbar"
         >
             <div className="p-2 flex justify-end items-center">
                 <button
@@ -163,7 +163,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, children }) => {
                     <X size={18} />
                 </button>
             </div>
-            <div className="p-4 overflow-y-auto h-full ">
+            <div className="p-4 overflow-y-auto h-full">
                 <div className="flex justify-between">
                     <div className="w-[360px] flex items-center gap-[10px] ">
                         <div className="text-xl text-gray-700">
@@ -242,7 +242,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, children }) => {
                 </div>
 
                 {/* Comment Section */}
-              
+
                 {/* <div className="mt-[350px] mb-[20px]">
                     <p className="text-md">Comment</p>
                     <div className="flex"> <div className="flex items-center mt-2 border border-gray-300 rounded-md p-2">
