@@ -20,7 +20,7 @@ const AttachmentPreview = ({ files }) => {
       // Cleanup
       return () => {
         urls.forEach((url) => {
-          if (url.startsWith("blob:")) URL.revokeObjectURL(url);
+          if (url?.startsWith("blob:")) URL.revokeObjectURL(url);
         });
       };
     }

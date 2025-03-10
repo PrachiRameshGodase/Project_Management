@@ -1,10 +1,11 @@
 "use client"
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { X } from "lucide-react";
+import { CircleX, X } from "lucide-react";
 import { OtherIcons } from "@/assests/icons";
 import AttachmentPreview from "../Attachments/AttachmentPreview";
 import DropdownStatus01 from "../Dropdown/DropdownStatus01";
+import CommentBox from "../CommentBox/CommentBox";
 
 const Drawer01 = ({ isOpen, setIsDrawerOpen, details }) => {
 
@@ -21,9 +22,9 @@ const Drawer01 = ({ isOpen, setIsDrawerOpen, details }) => {
             <div className="p-2 flex justify-end items-center">
                 <button
                     onClick={() => setIsDrawerOpen(false)}
-                    className="text-gray-500 hover:text-black"
+                    className="text-gray-700 hover:text-black"
                 >
-                    <X size={18} />
+                    <CircleX size={30} strokeWidth={1.5} />
                 </button>
             </div>
             <div className="p-4 overflow-y-auto h-full ">
@@ -48,7 +49,7 @@ const Drawer01 = ({ isOpen, setIsDrawerOpen, details }) => {
                     </div> */}
                 </div>
                 <div className="flex justify-between">
-                   
+
                     <div>
                         <label className="flex items-center cursor-pointer">
                             <span className="ml-2 text-sm mr-2">{isActive ? "Active" : "Inactive"}</span>
@@ -126,7 +127,7 @@ const Drawer01 = ({ isOpen, setIsDrawerOpen, details }) => {
                 </div>
 
                 {/* Comment Section */}
-                <div className="mt-[390px] mb-[20px]">
+                {/* <div className="mt-[390px] mb-[20px]">
                     <p className="text-md">Comment</p>
                     <div className="flex"> <div className="flex items-center mt-2 border border-gray-300 rounded-md p-2">
                         <img
@@ -160,7 +161,8 @@ const Drawer01 = ({ isOpen, setIsDrawerOpen, details }) => {
                         <p className="text-[14px]">Lorem ipsum dolor sit amet, coetur adipiscing elit ut aliquam, purus sit amet </p>
 
                     </div>
-                </div>
+                </div> */}
+                <CommentBox />
             </div>
         </motion.div>
 
@@ -195,6 +197,13 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, children }) => {
                             <p className="font-bold">Develop core pages  and create logo</p>
                         </div>
                     </div>
+                    <DropdownStatus01
+                        options={["To Do", "In Progress", "Under Review", "Completed"]}
+                        selectedValue="To Do"
+                        onSelect={(value) => console.log("Selected:", value)}
+                        label="Status"
+                        className="w-[150px]"
+                    />
 
                 </div>
                 <div className="flex justify-between">
@@ -260,7 +269,8 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, children }) => {
                 </div>
 
                 {/* Comment Section */}
-                <div className="mt-[350px] mb-[20px]">
+                <CommentBox />
+                {/* <div className="mt-[350px] mb-[20px]">
                     <p className="text-md">Comment</p>
                     <div className="flex"> <div className="flex items-center mt-2 border border-gray-300 rounded-md p-2">
                         <img
@@ -294,7 +304,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, children }) => {
                         <p className="text-[14px]">Lorem ipsum dolor sit amet, coetur adipiscing elit ut aliquam, purus sit amet </p>
 
                     </div>
-                </div>
+                </div> */}
             </div>
         </motion.div>
 
