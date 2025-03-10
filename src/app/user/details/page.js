@@ -24,7 +24,7 @@ const UserDetails = () => {
   }, []);
   const userDetailData = useSelector((state) => state?.user?.userDetails?.data);
 
-  const [isActive, setIsActive] = useState(userDetailData?.status);
+  const [isActive, setIsActive] = useState(userDetailData?.status ||"");
 
   const user = {
     name: `${userDetailData?.first_name || ""} ${userDetailData?.last_name || ""
@@ -39,8 +39,9 @@ const UserDetails = () => {
   }, [dispatch, itemId]);
 
   useEffect(() => {
-    // Ensure the state is synced with the API response on component mount/update
-    setIsActive(userDetailData?.status);
+    if (userDetailData?.status !== undefined) {
+      setIsActive(userDetailData.status);
+    }
   }, [userDetailData]);
 
   const handleToggleStatus = async (event) => {

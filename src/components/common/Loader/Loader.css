@@ -25,3 +25,17 @@
     100% { transform: rotate(360deg); }
   }
   
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .rotate_01 {
+    animation: rotate 1s linear infinite;
+    /* Rotate 360 degrees in 1 second infinitely */
+  }

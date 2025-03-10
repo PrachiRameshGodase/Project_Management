@@ -8,12 +8,14 @@ import LayOut from '@/components/LayOut';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Eye, EyeOff } from "lucide-react";
 
 const AddUser = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  
+
   const [itemId, setItemId] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -30,6 +32,7 @@ const AddUser = () => {
     last_name: "",
     employee_id: "",
     email: "",
+    password:"",
     phone_number: "",
     department: "",
     designation: "",
@@ -38,7 +41,7 @@ const AddUser = () => {
     status: 1
   });
 
-  
+
 
   useEffect(() => {
     if (itemId) {
@@ -66,13 +69,14 @@ const AddUser = () => {
     dispatch(addUser({ userData: formData, router }));
   };
 
-  
+
   useEffect(() => {
     if (userDetailData && itemId) {
       setFormData({
         id: userDetailData?.id,
         first_name: userDetailData?.first_name,
         last_name: userDetailData?.last_name,
+        password:userDetailData?.password,
         employee_id: userDetailData?.employee_id,
         email: userDetailData?.email,
         phone_number: userDetailData?.phone_number,
@@ -85,7 +89,7 @@ const AddUser = () => {
     }
   }, [userDetailData, itemId]);
 
-
+  console.log("formData", formData)
   return (
     <LayOut>
       <div className="sm:flex mx-auto sm:mx-0">
@@ -141,7 +145,28 @@ const AddUser = () => {
                 onChange={handleChange}
               />
             </div>
-
+            <div className="sm:flex justify-between items-center relative">
+              <label className="block text-m">
+                Password <span className="text-red-600">*</span>
+              </label>
+              <div className="relative">
+                <input
+                  className="w-[310px] sm:w-[350px] h-10 border border-gray-300 rounded-lg p-2 pr-10 text-m placeholder:text-gray-700"
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="Enter Password"
+                  value={formData?.password}
+                  onChange={handleChange}
+                />
+                <button
+                  type="button"
+                  className="absolute right-3 top-3 text-gray-600"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
+            </div>
             <div className="sm:flex justify-between items-center">
               <label className="block text-m">Phone Number</label>
               <input
@@ -177,7 +202,7 @@ const AddUser = () => {
             <div className="sm:flex justify-between items-center">
               <label className="block text-m">Joining Date</label>
               <CustomDatePicker
-               selectedDate={formData.joining_date}
+                selectedDate={formData.joining_date}
                 onChange={(date) => handleDropdownChange("joining_date", date)}
               />
             </div>

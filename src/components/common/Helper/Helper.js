@@ -1,4 +1,4 @@
-export const status=["Active", "Inactive"]
+export const status=["All", "Active", "Inactive"]
 export const statusProject = ["To Do","In Progress", "Under Review", 'Completed']
 export const designation=["Maneger", "Team Lead", "Tester", "Jr. Developer", "Sr. Developer"]
 export const view=["Card", "List"]
@@ -13,6 +13,8 @@ export const taskVisibility=["Public", "Private"]
 export const Skills =["React", "JavaScript", "HTML", "CSS", "Tailwind CSS", "Bootstarp","Node.js", "Express.js", "SQL", "MongoDB", "Git", "Git-Hub", "Firebase", "Axios"]
 
 export const statusOptions = [
+  { label: "All", value:2 },
+  
     { label: "Active", value: 0 },
     { label: "Inactive", value: 1 },
   ];

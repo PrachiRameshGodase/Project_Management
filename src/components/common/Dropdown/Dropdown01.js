@@ -133,7 +133,7 @@ export const DropdownStatus = ({ selectedValue, onSelect }) => {
     <div className="relative" ref={dropdownOutsideClick?.ref}>
       {/* Dropdown Button */}
       <div
-        className={`h-[44px] flex items-center gap-2 border border-gray-900 hover:ring-purple-300 rounded-lg px-3 py-2 cursor-pointer w-[120px]`}
+        className={`h-[44px] flex items-center gap-2 border border-gray-300 hover:ring-purple-300 rounded-lg px-3 py-2 cursor-pointer w-[120px]`}
         onClick={dropdownOutsideClick?.handleToggle}
         ref={dropdownOutsideClick?.buttonRef}
       >

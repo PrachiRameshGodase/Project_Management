@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { OutsideClick } from "../OutsideClick/OutsideClick";
 
 const DropdownStatus01 = ({
@@ -12,6 +12,11 @@ const DropdownStatus01 = ({
   const dropdownOutsideClick = OutsideClick();
   const [selected, setSelected] = useState(selectedValue);
 
+  // Sync state when selectedValue changes
+  useEffect(() => {
+    setSelected(selectedValue);
+  }, [selectedValue]);
+
   const handleOptionSelect = (value) => {
     setSelected(value);
     if (onSelect) onSelect(value); // Ensure onSelect callback is executed
@@ -19,9 +24,9 @@ const DropdownStatus01 = ({
   };
 
   return (
-    <div className={`relative ${className}`} ref={dropdownOutsideClick?.ref}>
+    <div className={`relative mb-2 ${className}`} ref={dropdownOutsideClick?.ref}>
       <div
-        className={`h-[38px] w-fit flex items-center gap-2 border rounded-lg px-3  cursor-pointer transition-all duration-200
+        className={`h-[34px] w-fit flex items-center gap-2 border rounded-lg px-3  cursor-pointer transition-all duration-200
     ${
       selected === "To Do"
         ? "border-[#6C757D] text-[#6C757D] hover:bg-[#6C757D] hover:text-white"
@@ -35,10 +40,11 @@ const DropdownStatus01 = ({
     }
   `}
         onClick={dropdownOutsideClick?.handleToggle}
-        ref={dropdownOutsideClick?.buttonRef}>
+        ref={dropdownOutsideClick?.buttonRef}
+      >
         {icon}
         <span className={`${!selected ? "text-gray-400" : ""}`}>
-          {selected || label}
+          {selectedValue || label}
         </span>
       </div>
 
@@ -60,7 +66,8 @@ const DropdownStatus01 = ({
     }
     ${selected === option ? "bg-opacity-50" : ""}
   `}
-                onClick={() => handleOptionSelect(option)}>
+                onClick={() => handleOptionSelect(option)}
+              >
                 {option}
               </li>
             ))}

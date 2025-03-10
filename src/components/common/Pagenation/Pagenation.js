@@ -38,7 +38,7 @@ const Pagination = ({
     <div className="flex justify-end items-center mt-4 px-1 sm:px-2 py-2">
       <div className="flex gap-2">
         <button
-          className={`w-[60px] h-[29px] sm:w-[80px] sm:h-[39px] text-[10px] rounded-md border ${
+          className={`w-[60px] h-[29px] sm:w-[80px] sm:h-[39px] text-[16px] rounded-md border ${
             currentPage === 1 ? 'bg-gray-200 text-gray-400' : 'bg-white text-black hover:bg-gray-300'
           }`}
           disabled={currentPage === 1}
@@ -56,7 +56,7 @@ const Pagination = ({
         />
         
         <button
-          className={`w-[60px] h-[29px] sm:w-[80px] sm:h-[39px] text-[10px] rounded-md border ${
+          className={`w-[60px] h-[29px] sm:w-[80px] sm:h-[39px] text-[16px] rounded-md border ${
             currentPage === totalPages ? 'bg-gray-200 text-gray-400' : 'bg-white text-black hover:bg-gray-300'
           }`}
           disabled={currentPage === totalPages}

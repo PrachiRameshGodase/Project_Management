@@ -218,11 +218,11 @@ const TaskList = () => {
                     selectedValue={projectDetailData?.status}
                     onSelect={(value) => handleStatusChange(value)}
                     label="Status"
-                    className="w-[150px]"
+                    className="w-[125px]"
                   />
 
                 </div>
-                <button className="w-[140px] mt-3 sm:mt-0 h-[35px] text-[10px] rounded-[4px] py-[4px] border border-black text-black text-lg mr-[10px] mb-2" onClick={() => setIsDrawerOpen(true)}>
+                <button className="w-[140px] mt-3 sm:mt-0 h-[35px] text-[10px] rounded-[4px] py-[4px] border border-gray-400 text-black text-lg mr-[10px] mb-2 hover:bg-black hover:text-white" onClick={() => setIsDrawerOpen(true)}>
                   See All Details
                 </button>
                 <button onClick={() => router.push(`/project/add?id=${itemId}`)} className="w-[80px] h-[35px] rounded-[4px] py-[4px] bg-black text-white text-lg mr-[10px] mb-2">
@@ -236,18 +236,26 @@ const TaskList = () => {
 
             {/* Left Section (Heading + Count) */}
             <div className="flex">
-              <p className="text-[20px] sm:text-[30px] leading-[32px] tracking-[-1.5px]">All Projects list</p>
+              <p className="text-[20px] sm:text-[30px] leading-[32px] tracking-[-1.5px]">All Tasks list</p>
               <p className="font-bold p-2 rounded-full text-[10.16px] leading-[12.19px] text-[#400F6F] mt-3 ml-2 bg-[#f0e7fa] flex items-center justify-center w-[50px] h-[10px]">
                 {totalCount} total
               </p>
+              <p
+            className={`${projectTaskLoading?.loading && "rotate_01"} mt-[6px] hover:cursor-pointer`}
+            data-tooltip-content="Reload"
+            data-tooltip-place="bottom"
+            data-tooltip-id="my-tooltip"
+            onClick={() => setSearchTrigger(prev => prev + 1)}>
+            {OtherIcons?.refresh_svg}
+          </p>
             </div>
 
             {/* Right Section (Filters & Search) */}
             <div className="hidden min-[950px]:flex gap-6 items-center">
               <Dropdown01 options={taskView} selectedValue={selectedView} onSelect={setSelectedView} label="View" icon={OtherIcons.view_svg} />
               <Dropdown01 options={statusProject} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />
-              <Dropdown01 options={projectSortConstant} selectedValue={selectedSort} onSelect={setSelectedSort} label="Sort By" icon={OtherIcons.sort_by_svg} />
-              <SearchComponent />
+              {/* <Dropdown01 options={projectSortConstant} selectedValue={selectedSort} onSelect={setSelectedSort} label="Sort By" icon={OtherIcons.sort_by_svg} /> */}
+              <SearchComponent onSearch={onSearch} section={searchTrigger}/>
 
               <div className="w-[1px] h-[40px] bg-gray-400 opacity-40" />
 
@@ -256,7 +264,7 @@ const TaskList = () => {
 
             {/* Mobile Filter Button */}
             <div className="flex  gap-2  min-[950px]:hidden ">
-              <SearchComponent />
+              <SearchComponent onSearch={onSearch} section={searchTrigger}/>
               <button
                 className="min-[950px]:hidden w-[44px] h-[44px] bg-gray-100 text-gray-600 rounded-lg flex items-center justify-center text-2xl"
                 onClick={() => setIsFilterOpen(true)}
@@ -294,7 +302,7 @@ const TaskList = () => {
               <div className="mt-16 flex flex-col gap-4 px-4">
                 <Dropdown01 options={taskView} selectedValue={selectedView} onSelect={setSelectedView} label="View" icon={OtherIcons.view_svg} />
                 <Dropdown01 options={statusProject} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />
-                <Dropdown01 options={projectSortConstant} selectedValue={selectedSort} onSelect={setSelectedSort} label="Sort By" icon={OtherIcons.sort_by_svg} />
+                {/* <Dropdown01 options={projectSortConstant} selectedValue={selectedSort} onSelect={setSelectedSort} label="Sort By" icon={OtherIcons.sort_by_svg} /> */}
                 {/* <SearchComponent /> */}
               </div>
             </div>
@@ -311,23 +319,23 @@ const TaskList = () => {
                 <table className="w-full min-w-[1000px] border-collapse border border-gray-100">
                   <thead>
                     <tr className="text-left text-sm font-bold uppercase text-gray-800">
-                      <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100  flex">
+                      <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100  flex border-r">
                         TASK NAME<span className="mt-1 ml-2 flex flex-col gap-1">{OtherIcons.arrow_up_svg}{OtherIcons.arrow_down_svg}</span>
                       </th>
-                      <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100">STATUS</th>
-                      <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100">DUE DATE</th>
-                      <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100">TASK TYPE</th>
+                      <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100 border-r">STATUS</th>
+                      <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100 border-r">DUE DATE</th>
+                      <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100 border-r">TASK TYPE</th>
 
-                      <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100">TEAM</th>
-                      <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100">PRIORITY</th>
+                      <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100 border-r">TEAM</th>
+                      <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100 border-r">PRIORITY</th>
 
                     </tr>
                   </thead>
                   <tbody>
                     {projectTaskListData?.map((item, index) => (
                       <tr key={item?.id} className="hover:bg-gray-50 rounded cursor-pointer">
-                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 rounded " onClick={() => setIsDrawerOpen1((prev) => !prev)}>{item?.task_title || ""}</td>
-                        <td className={`py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  min-w-[150px] border-b border-gray-50 rounded  font-bold`} onClick={() => setIsDrawerOpen1((prev) => !prev)}>
+                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100 rounded border-r" onClick={() => setIsDrawerOpen1((prev) => !prev)}>{item?.task_title || ""}</td>
+                        <td className={`py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  min-w-[150px] border-b border-gray-100 rounded  font-bold border-r`} onClick={() => setIsDrawerOpen1((prev) => !prev)}>
                           <span
                             className={`py-1 px-2 sm:px-2  text-[12px] sm:text-[15px]  border rounded-md ${item?.status === 'To Do'
                               ? 'text-[#6C757D] border-[#6C757D]'
@@ -338,12 +346,12 @@ const TaskList = () => {
                             {item?.status || ""}
                           </span>
                         </td>
-                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 " onClick={() => setIsDrawerOpen1((prev) => !prev)}>{item?.due_date || ""}</td>
-                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 ] " onClick={() => setIsDrawerOpen1((prev) => !prev)}>{item?.task_type || ""}</td>
-                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 " onClick={() => setIsDrawerOpen1((prev) => !prev)}>
+                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100 border-r" onClick={() => setIsDrawerOpen1((prev) => !prev)}>{item?.due_date || ""}</td>
+                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100 border-r" onClick={() => setIsDrawerOpen1((prev) => !prev)}>{item?.task_type || ""}</td>
+                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100 border-r" onClick={() => setIsDrawerOpen1((prev) => !prev)}>
                           <TruncatedTooltipText text={item?.team_names?.join(", ")} maxLength={25} />
                         </td>
-                        <td className={`py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 font-bold`} onClick={() => setIsDrawerOpen1((prev) => !prev)}>
+                        <td className={`py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100 font-bold border-r`} onClick={() => setIsDrawerOpen1((prev) => !prev)}>
                           <span
                             className={`py-1 px-2 sm:px-4  text-[12px] sm:text-[15px]  border rounded-md  ${user.priority === 'High'
                               ? 'text-[#4976F4] border-[#4976F4]' : user.priority === 'Low' ?

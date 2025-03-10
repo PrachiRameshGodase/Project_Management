@@ -25,7 +25,7 @@ export const Dropdown02 = ({ options, selectedValues, onSelect, label, icon }) =
     setSelected(updatedSelection);
     onSelect(updatedSelection);
   };
-console.log("options", options)
+
   // Filter options based on search query
   const filteredOptions = options?.filter((option) =>
     option.toLowerCase().includes(searchQuery.toLowerCase())

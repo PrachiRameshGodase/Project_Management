@@ -12,6 +12,7 @@ import LayOut from '@/components/LayOut';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import "../../../components/common/Loader/Loader.css"
 
 const UserList = () => {
   const router = useRouter();
@@ -54,7 +55,7 @@ const UserList = () => {
   //sortby
 
   // filter
-  const [selectedStatus, setSelectedStatus] = useState('View');
+  const [selectedStatus, setSelectedStatus] = useState('All');
   // filter
 
   useEffect(() => {
@@ -81,14 +82,25 @@ const UserList = () => {
     <LayOut>
       <div>
         {/* Top Section with Filters and Buttons */}
-        <div className="w-full h-[44px] flex justify-between items-center px-4  ">
+        <div className="w-full h-[44px] flex justify-between items-center ">
 
           {/* Left Section (Heading + Count) */}
           <div className="flex">
             <p className="text-[20px] sm:text-[30px]  leading-[32px] tracking-[-1.5px]">All User list</p>
             <p className="font-bold p-2 rounded-full text-[10.16px] leading-[12.19px] text-[#400F6F] mt-3 ml-2 bg-[#f0e7fa] flex items-center justify-center w-[50px] h-[10px]">
-              {totalCount} total
+              {totalCount} total 
+             
+
             </p>
+            <p
+                className={`${usersLoading?.loading && "rotate_01"} mt-[6px] hover:cursor-pointer`}
+                data-tooltip-content="Reload"
+                data-tooltip-place="bottom"
+                data-tooltip-id="my-tooltip"
+                onClick={() => setSearchTrigger(prev => prev + 1)}>
+                {OtherIcons?.refresh_svg}
+              </p>
+           
           </div>
 
           {/* Right Section (Filters & Search) */}
@@ -163,7 +175,7 @@ const UserList = () => {
             <table className="w-full min-w-[600px] border-collapse border border-gray-100">
               <thead>
                 <tr className="text-left text-sm font-bold uppercase text-gray-800">
-                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b ">
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b border-r ">
                     <div className='flex items-center justify-between'>
                       <span> User ID</span>
 
@@ -178,25 +190,25 @@ const UserList = () => {
                       />
                     </div>
                   </th>
-                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b">User Name</th>
-                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b">Email ID</th>
-                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b">Mobile Number</th>
-                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b">Designation</th>
-                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b">Date Of Joining</th>
-                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b">Status</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b border-r">User Name</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b border-r">Email ID</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b border-r">Mobile Number</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b border-r">Designation</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b border-r">Date Of Joining</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b border-r">Status</th>
                 </tr>
               </thead>
               <tbody>
                 {usersList?.map((user, index) => (
-                  <tr key={user?.id} className="hover:bg-gray-100 cursor-pointer">
-                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.id}</td>
-                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.first_name}</td>
-                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.email}</td>
-                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.phone_number}</td>
-                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.designation}</td>
-                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.joining_date}</td>
-                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>
-                      <span className={`w-3 h-3 inline-block rounded-full ${user.status == 0 ? 'bg-green-600' : 'bg-red-600'}`}></span>
+                  <tr key={user?.id} className="hover:bg-gray-100 cursor-pointer border-gray-50">
+                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b border-r" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.id}</td>
+                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b border-r" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.first_name}</td>
+                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b border-r" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.email}</td>
+                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b border-r" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.phone_number}</td>
+                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b border-r" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.designation}</td>
+                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b border-r" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.joining_date}</td>
+                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[1p5x] min-w-[100px] border-b border-r" onClick={() => router.push(`/user/details?id=${user?.id}`)}>
+                      <span className={`w-3 h-3 rounded-full flex justify-center items-center ${user.status == 0 ? 'bg-green-600' : 'bg-red-600'}`}></span>
                     </td>
                   </tr>
                 ))}
