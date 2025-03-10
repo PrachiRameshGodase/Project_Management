@@ -54,7 +54,7 @@ export const fetchProjectDetails = createAsyncThunk("project/fetchDetails", asyn
 // Async thunk to fetch user details by ID
 export const updateProjectStatus = createAsyncThunk("project/updateProjectStatus", async ({ id, status, router }, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.post(`/users_status`, { id, status });
+    const response = await axiosInstance.post(`/project_status`, { id, status });
     if (response?.data?.success === true) {
       toast.success(response?.data?.message);
       router.push("/project/list"); // Navigate on success
@@ -64,6 +64,44 @@ export const updateProjectStatus = createAsyncThunk("project/updateProjectStatus
     return rejectWithValue(error.response?.data || error.message);
   }
 });
+
+
+// Async thunk to add a new task
+export const addProjectTask = createAsyncThunk(
+  "users/addProjectTask",
+  async ({ projectData, router, itemId }, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.post(`/task/create`, projectData);
+      if (response?.data?.success === true) {
+        toast.success(response?.data?.message);
+        router.push(`/project/details?id=${itemId}`); // Navigate on success
+      }
+      return response.data;
+
+
+    } catch (error) {
+      console.error("Add Project API Error:", error);
+      toast.error(response?.payload?.message);
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+// Async thunk to fetch users list
+export const fetchProjectTasks = createAsyncThunk(
+  "projectTask/fetchList",
+  async (filters = {}, { rejectWithValue }) => {
+    try {
+
+      const response = await axiosInstance.post(`/task/list`, filters);
+
+      return response.data;
+    } catch (error) {
+      console.error("API Error:", error);
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
 
 const projectSlice = createSlice({
   name: "project",
@@ -141,8 +179,37 @@ const projectSlice = createSlice({
       .addCase(updateProjectStatus.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      })
 
+      // Add Task
+      .addCase(addProjectTask.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.successMessage = null;
+      })
+      .addCase(addProjectTask.fulfilled, (state, action) => {
+        state.loading = false;
+        state.successMessage = "Task added successfully!";
+        state.list.push(action.payload);
+      })
+      .addCase(addProjectTask.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+        // Fetch Task List
+        .addCase(fetchProjectTasks.pending, (state) => {
+          state.loading = true;
+          state.error = null;
+        })
+        .addCase(fetchProjectTasks.fulfilled, (state, action) => {
+          state.loading = false;
+          state.list = action.payload;
+        })
+        .addCase(fetchProjectTasks.rejected, (state, action) => {
+          state.loading = false;
+          state.error = action.payload;
+        })
 
   },
 });

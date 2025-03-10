@@ -17,7 +17,7 @@ const SortBy = ({
         resetPageIfNeeded();
         setSearchTrigger((prev) => prev + 1);
     };
-    console.log("sortOrder", sortOrder)
+   
     return (
         <span className="ml-2 flex flex-col gap-1">
             <button
