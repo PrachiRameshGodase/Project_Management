@@ -4,6 +4,7 @@ import { PhotoProvider, PhotoView } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
 
 import { format } from "date-fns";
+import UserAvatar from "../UserAvatar/UserAvatar";
 
 const users = ["John", "Alice", "David", "Emma", "Aryan", "Prachi"]; // Dummy Users
 
@@ -18,14 +19,19 @@ const ChatBox = () => {
     const [isChatOpen, setIsChatOpen] = useState(false);
     const fileInputRef = useRef(null);
     const mediaRecorderRef = useRef(null);
-    const chatEndRef = useRef(null); // 🔥 Reference for Auto Scroll
+    const chatStartRef = useRef(null);
     const [mentionList, setMentionList] = useState([]);
+    const [newMessageCount, setNewMessageCount] = useState(0);
+    const chatContainerRef = useRef(null);
 
-    const scrollToBottom = () => {
+
+    const scrollToTop = () => {
         requestAnimationFrame(() => {
-            chatEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+            chatStartRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
         });
     };
+
+
 
     // Handle Input Change
     const handleInputChange = (e) => {
@@ -99,21 +105,18 @@ const ChatBox = () => {
             deleted: false,
         };
 
-        setMessages([...messages, newMsg]);
+        // setMessages([...messages, newMsg]);
+        setMessages([newMsg, ...messages]);
         setMessage("");
         setSelectedFile(null);
         setAudioURL(null);
         setAudioBlob(null);
         setMentionList([]);
+        setNewMessageCount((prev) => prev + 1);
         setTimeout(() => {
-            scrollToBottom(); // 🔥 Auto Scroll
+            scrollToTop();
         }, 100);
-        setTimeout(scrollToBottom, 50); // 
     };
-
-    // useEffect(() => {
-    //     setTimeout(scrollToBottom, 50);
-    // }, [messages]);
 
     // Delete Message
     const handleDelete = (id) => {
@@ -138,180 +141,206 @@ const ChatBox = () => {
         );
     };
 
+    // new sms
+    useEffect(() => {
+        const handleScroll = () => {
+            if (chatContainerRef.current) {
+                const { scrollTop } = chatContainerRef.current;
+                if (scrollTop === 0) {
+                    setNewMessageCount(0); // Reset new message count when scrolled to top
+                }
+            }
+        };
+
+        chatContainerRef.current?.addEventListener("scroll", handleScroll);
+        return () => chatContainerRef.current?.removeEventListener("scroll", handleScroll);
+    }, []);
+
+
+    const user = {
+        name: "S",
+
+        isActive: false,
+        image: "",
+    };
+
     return (
-        <div className="fixed bottom-5 ">
+        <div className=" ">
             {/* Floating Chat Icon */}
-            <button
+            {/* <button
                 className="bg-blue-500 text-white p-3 rounded-full shadow-lg hover:bg-blue-600 transition"
                 onClick={() => setIsChatOpen(!isChatOpen)}
             >
                 <MessageSquare size={24} />
-            </button>
+            </button> */}
 
             {/* Chat Box */}
-            {isChatOpen && (
-                <div className="w-[360px] p-3 -mb-12  border rounded-lg shadow-lg bg-white fixed bottom-16 right-2">
-                    <div className="flex justify-between items-center mb-2">
-                        <h2 className="font-semibold">Chat</h2>
-                        <button className="text-gray-500 hover:text-black" onClick={() => setIsChatOpen(false)}>
-                            ✖
+            {/* {isChatOpen && ( */}
+            <div className="w-[360px] p-3  border rounded-lg shadow-lg bg-white  bottom-16 ">
+                <div className="flex justify-between items-center mb-2">
+                    <h2 className="font-semibold">Comment</h2>
+                    {/* <button className="text-gray-500 hover:text-black" onClick={() => setIsChatOpen(false)}>
+                        ✖
+                    </button> */}
+                </div>
+
+
+
+                {/* Input Field with File & Audio Preview */}
+
+                <div className="relative border rounded-lg p-1 mb-2 ">
+                    <div className="flex items-center gap">
+                        {/* Attach File */}
+                        <UserAvatar name={user.name} dotcolor='' size={22} image={user.image} isActive={user.isActive} />
+                        <input type="file"  ref={fileInputRef} className="hidden " onChange={handleFileSelect} />
+                        {/* Text Input */}
+                        <input
+                            type="text"
+                            className="flex-1 outline-none pl-1"
+                            placeholder="Type a message..."
+                            value={message}
+                            onChange={handleInputChange}
+                            onKeyDown={(e) => e.key === "Enter" && handleSend()}
+                        />
+
+                        <button className="p-1  text-gray-500 hover:text-black" onClick={() => fileInputRef.current.click()}>
+                            <Paperclip size={20} />
                         </button>
+                        {/* Mic Button */}
+                        {recording ? (
+                            <button className="p-2 text-red-500" onClick={stopRecording}>
+                                <PauseCircle size={20} />
+                            </button>
+                        ) : (
+                            <button className="p-2  text-gray-500 hover:text-black" onClick={startRecording}>
+                                <Mic size={20} />
+                            </button>
+                        )}
+
+                        {/* Send Button */}
+                        <button className="p-2 text-gray-500 hover:text-black" onClick={handleSend}>
+                            <Send size={20} />
+                        </button>
+
+                        {/* Mention List Dropdown */}
+                        {mentionList.length > 0 && (
+                            <ul className="absolute -mt-56 max-h-[180px]  overflow-y-auto bg-white border rounded-md shadow-md w-full z-10">
+                                {mentionList.map((user, index) => (
+                                    <li
+                                        key={index}
+                                        className="p-2 hover:bg-gray-100 cursor-pointer"
+                                        onClick={() => handleSelectMention(user)}
+                                    >
+                                        @{user}
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
                     </div>
 
+                    {/* File & Audio Preview Inside Input Box */}
+                    {selectedFile && (
+                        <div className="mt-2 p-1 bg-gray-100 rounded-md flex items-center gap-2 relative">
+                            {selectedFile.type === "image" ? (
+                                <PhotoProvider>
+                                    <PhotoView src={selectedFile.url}>
+                                        <img src={selectedFile.url} alt="Preview" className="w-fit h-14 rounded-md cursor-pointer" />
+                                    </PhotoView>
+                                </PhotoProvider>
+                            ) : (
+                                <span className="text-gray-700">{selectedFile.name}</span>
+                            )}
+
+                            {/* Delete Button */}
+                            <button
+                                className="absolute top-0 right-0 p-1 text-gray-500 hover:text-red-500"
+                                onClick={() => setSelectedFile(null)}
+                            >
+                                <Trash2 />
+                            </button>
+                        </div>
+                    )}
 
 
-                    {/* Messages */}
-                    <div className="space-y-3 max-h-60 overflow-y-auto " >
-                        <PhotoProvider>
-                            {messages.map((msg) => (
-                                <div key={msg.id} className="flex gap-2 items-start group  ">
-                                    <div className="bg-gray-100 p-2 rounded-lg w-fit max-w-[100%] relative">
-                                        <span className="text-xs text-gray-500">{msg.time}</span>
+                    {audioURL && (
+                        <div className="mt-2 p-2  bg-gray-100 rounded-md flex items-center gap-2 relative">
+                            <audio controls>
+                                <source src={audioURL} type="audio/mp3" />
+                                Your browser does not support audio playback.
+                            </audio>
 
-                                        {/* Image Preview */}
-                                        {msg.file && msg.file.type === "image" && !msg.deleted && (
-                                            <PhotoView src={msg.file.url}>
-                                                <img src={msg.file.url} alt="Uploaded" className="w-40 mt-2 rounded-md cursor-pointer" />
-                                            </PhotoView>
-                                        )}
-                                        {/* Audio Player */}
-                                        {msg.audio && !msg.deleted && (
-                                            <audio controls className="mt-2 ">
-                                                <source src={msg.audio.url} type="audio/mp3" />
-                                            </audio>
-                                        )}
-                                        {/* Text Message */}
-                                        {msg.text && <p className={`whitespace-pre-line  ${msg.deleted ? "italic text-gray-500" : ""}`}>{formatMessage(msg.text)}</p>}
+                            {/* Delete Button */}
+                            <button
+                                className="absolute top-0 right-0 p-1 text-gray-500 hover:text-red-500"
+                                onClick={() => setAudioURL(null)}
+                            >
+                                <Trash2 />
+                            </button>
+
+                        </div>
+                    )}
+
+                </div>
+
+                {/* Messages */}
+                <div className="space-y-3 max-h-64 overflow-y-auto " >
+
+                    <PhotoProvider>
+                        <div ref={chatStartRef} />
+
+                        {messages.map((msg) => (
+                            <div key={msg.id} className="flex gap-1 items-start group  ">
+                                <UserAvatar name={user.name} dotcolor='' size={20} image={user.image} isActive={user.isActive} />
+                                <div className="bg-gray-100 p-2 rounded-lg w-fit max-w-[90%] relative">
+
+                                    <span className="text-xs text-gray-500">{msg.time}</span>
+
+                                    {/* Image Preview */}
+                                    {msg.file && msg.file.type === "image" && !msg.deleted && (
+                                        <PhotoView src={msg.file.url}>
+                                            <img src={msg.file.url} alt="Uploaded" className="w-40 mt-2 rounded-md cursor-pointer" />
+                                        </PhotoView>
+                                    )}
+                                    {/* Audio Player */}
+                                    {msg.audio && !msg.deleted && (
+                                        <audio controls className="mt-2 border-2 rounded-md max-w-[99%] ">
+                                            <source src={msg.audio.url} type="audio/mp3" />
+                                        </audio>
+                                    )}
+                                    {/* Text Message */}
+                                    {msg.text && <p className={`whitespace-pre-line  ${msg.deleted ? "italic text-[12px] text-gray-500" : ""}`}>{formatMessage(msg.text)}</p>}
 
 
 
 
-                                        {/* Like & Delete */}
-                                        <div className="absolute  -mt-2 top-2 right-1 hidden group-hover:flex gap-2">
-                                            {!msg.liked && (
+                                    {/* Like & Delete */}
+                                    <div className="absolute  -mt-2 top-2 right-1 hidden group-hover:flex gap-2">
+                                        {/* {!msg.liked && (
                                                 <button className="text-gray-500 hover:text-red-500" onClick={() => handleLike(msg.id)}>
                                                     <Heart size={12} />
                                                 </button>
-                                            )}
-                                            {msg.liked && <span className="text-red-500 text-[12px]">❤️</span>}
-                                            <button className="text-gray-500 hover:text-red-500" onClick={() => handleDelete(msg.id)}>
-                                                <Trash2 size={12} />
-                                            </button>
-                                        </div>
-
-
+                                            )} */}
+                                        {/* {msg.liked && <span className="text-red-500 text-[12px]">❤️</span>} */}
+                                        <button className="text-gray-500 hover:text-red-500" onClick={() => handleDelete(msg.id)}>
+                                            <Trash2 size={12} />
+                                        </button>
                                     </div>
 
+
                                 </div>
-                            ))}
-                        </PhotoProvider>
-
-                        <div ref={chatEndRef} />
-                    </div>
-
-                    {/* Input Field with File & Audio Preview */}
-
-                    <div className="relative border rounded-lg p-1 mt-2 ">
-
-                        <div className="flex items-center gap-2">
-                            {/* Attach File */}
-                            <button className="p-1  text-gray-500 hover:text-black" onClick={() => fileInputRef.current.click()}>
-                                <Paperclip size={20} />
-                            </button>
-                            <input type="file" ref={fileInputRef} className="hidden" onChange={handleFileSelect} />
-
-
-                            {/* Text Input */}
-                            <input
-                                type="text"
-                                className="flex-1 outline-none"
-                                placeholder="Type a message..."
-                                value={message}
-                                onChange={handleInputChange}
-                                onKeyDown={(e) => e.key === "Enter" && handleSend()}
-                            />
-
-
-                            {/* Mic Button */}
-                            {recording ? (
-                                <button className="p-2 text-red-500" onClick={stopRecording}>
-                                    <PauseCircle size={20} />
-                                </button>
-                            ) : (
-                                <button className="p-2  text-gray-500 hover:text-black" onClick={startRecording}>
-                                    <Mic size={20} />
-                                </button>
-                            )}
-
-                            {/* Send Button */}
-                            <button className="p-2 text-gray-500 hover:text-black" onClick={handleSend}>
-                                <Send size={20} />
-                            </button>
-
-                            {/* Mention List Dropdown */}
-                            {mentionList.length > 0 && (
-                                <ul className="absolute -mt-56 max-h-[180px]  overflow-y-auto bg-white border rounded-md shadow-md w-full z-10">
-                                    {mentionList.map((user, index) => (
-                                        <li
-                                            key={index}
-                                            className="p-2 hover:bg-gray-100 cursor-pointer"
-                                            onClick={() => handleSelectMention(user)}
-                                        >
-                                            @{user}
-                                        </li>
-                                    ))}
-                                </ul>
-                            )}
-                        </div>
-
-                        {/* File & Audio Preview Inside Input Box */}
-                        {selectedFile && (
-                            <div className="mt-2 p-1 bg-gray-100 rounded-md flex items-center gap-2 relative">
-                                {selectedFile.type === "image" ? (
-                                    <PhotoProvider>
-                                        <PhotoView src={selectedFile.url}>
-                                            <img src={selectedFile.url} alt="Preview" className="w-12 h-12 rounded-md cursor-pointer" />
-                                        </PhotoView>
-                                    </PhotoProvider>
-                                ) : (
-                                    <span className="text-gray-700">{selectedFile.name}</span>
-                                )}
-
-                                {/* Delete Button */}
-                                <button
-                                    className="absolute top-0 right-0 p-1 text-gray-500 hover:text-red-500"
-                                    onClick={() => setSelectedFile(null)}
-                                >
-                                    <Trash2 />
-                                </button>
-                            </div>
-                        )}
-
-
-                        {audioURL && (
-                            <div className="mt-2 p-2  bg-gray-100 rounded-md flex items-center gap-2 relative">
-                                <audio controls>
-                                    <source src={audioURL} type="audio/mp3" />
-                                    Your browser does not support audio playback.
-                                </audio>
-
-                                {/* Delete Button */}
-                                <button
-                                    className="absolute top-0 right-0 p-1 text-gray-500 hover:text-red-500"
-                                    onClick={() => setAudioURL(null)}
-                                >
-                                    <Trash2 />
-                                </button>
 
                             </div>
-                        )}
+                        ))}
+                    </PhotoProvider>
 
-                    </div>
                 </div>
-            )}
+
+
+
+            </div>
+            {/* )} */}
         </div>
     );
 };
-
 export default ChatBox;
 // 
