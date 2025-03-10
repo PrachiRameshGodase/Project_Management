@@ -160,9 +160,9 @@ const UserList = () => {
           {usersLoading?.loading ? (
             <TableSkeleton rows={7} columns={5} />
           ) : (
-            <table className="w-full min-w-[600px] border-collapse border border-gray-100">
+              <table className="w-full border-spacing-y-1 min-w-[1000px] border-2 border-transparent  ">
               <thead>
-                <tr className="text-left text-sm font-bold uppercase text-gray-800">
+                  <tr className="text-left m-1 text-sm uppercase text-gray-800 shadow-tr-border rounded-md  ">
                   <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b ">
                     <div className='flex items-center justify-between'>
                       <span> User ID</span>
@@ -188,14 +188,14 @@ const UserList = () => {
               </thead>
               <tbody>
                 {usersList?.map((user, index) => (
-                  <tr key={user?.id} className="hover:bg-gray-100 cursor-pointer">
-                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.id}</td>
-                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.first_name}</td>
-                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.email}</td>
-                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.phone_number}</td>
-                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.designation}</td>
-                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.joining_date}</td>
-                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] border-b" onClick={() => router.push(`/user/details?id=${user?.id}`)}>
+                  <tr key={user?.id} className="cursor-pointer   hover:shadow-tr-border   rounded-md  transition-all duration-200">
+                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] " onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.id}</td>
+                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] " onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.first_name}</td>
+                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px]" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.email}</td>
+                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] " onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.phone_number}</td>
+                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px]" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.designation}</td>
+                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] " onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.joining_date}</td>
+                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] " onClick={() => router.push(`/user/details?id=${user?.id}`)}>
                       <span className={`w-3 h-3 inline-block rounded-full ${user.status == 0 ? 'bg-green-600' : 'bg-red-600'}`}></span>
                     </td>
                   </tr>

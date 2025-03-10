@@ -3,7 +3,7 @@ import { PhotoProvider, PhotoView } from "react-photo-view";
 
 const AttachmentPreview = ({ files }) => {
   const [fileURLs, setFileURLs] = useState([]);
-
+  // console.log('fileURLs :::', fileURLs)
   useEffect(() => {
     if (files?.length > 0) {
       const urls = files.map((file) => {
