@@ -19,7 +19,7 @@ export const Dropdown03 = ({ options, selectedValue, onSelect, label, icon }) =>
   useEffect(() => {
     if (selectedValue) {
       // Find the full option object by ID
-      const foundOption = options.find((option) => option.id === selectedValue);
+      const foundOption = options?.find((option) => option.id === selectedValue);
       setSelected(foundOption || null);
     } else {
       setSelected(null);

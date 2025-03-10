@@ -1,10 +1,10 @@
 "use client"
-import { fetchProjectDetails, updateProjectStatus } from '@/app/store/projectSlice';
+import { fetchProjectDetails, fetchProjectTasks, updateProjectStatus } from '@/app/store/projectSlice';
 import { OtherIcons } from '@/assests/icons';
 import Drawer01, { Drawer001 } from '@/components/common/Drawer/Drawer01';
 import Dropdown01 from '@/components/common/Dropdown/Dropdown01';
 import DropdownStatus01 from '@/components/common/Dropdown/DropdownStatus01';
-import { projectSortConstant, statusProject, taskView, view } from '@/components/common/Helper/Helper';
+import { projectSortConstant, status, statusProject, taskView, view } from '@/components/common/Helper/Helper';
 import KanBanView from '@/components/common/KanBanView/KanBanView';
 import Loader from '@/components/common/Loader/Loader';
 import SearchComponent from '@/components/common/SearchComponent/SearchComponent';
@@ -14,28 +14,37 @@ import LayOut from '@/components/LayOut';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
+import Pagenation from '@/components/common/Pagenation/Pagenation';
+import { useDebounceSearch } from '@/components/common/Helper/HelperFunction';
+
 
 const TaskList = () => {
   const router = useRouter()
   const dispatch = useDispatch();
   const [itemId, setItemId] = useState(null);
+
   const projectLoading = useSelector((state) => state.project);
+  const projectDetailData = useSelector((state) => state?.project?.projectDetails?.data);
+  const projectTaskListData = useSelector((state) => state.project?.list?.data);
+  const projectTaskLoading = useSelector((state) => state.project);
+  const totalCount = useSelector((state) => state?.project?.list?.total);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       setItemId(params.get("id"));
     }
-  }, []); // ✅ Keep this effect separate
+  }, []);
 
   useEffect(() => {
     if (itemId) {
       dispatch(fetchProjectDetails(itemId));
     }
-  }, [dispatch, itemId]); // ✅ Separate useEffect to watch itemId
+  }, [dispatch, itemId]);
 
-  const projectDetailData = useSelector((state) => state?.project?.projectDetails?.data);
-  console.log("projectDetailData", projectDetailData);
+
+
 
   const user = {
     name: projectDetailData?.project_name || "",
@@ -44,150 +53,94 @@ const TaskList = () => {
     image: "",
   };
 
-
-  //  const handleToggleStatus = async (event) => {
-  //     const newStatus = !isActive ? 1 : 0; // Toggle logic: Active (0) → Inactive (1), Inactive (1) → Active (0)
-
-  //     const result = await Swal.fire({
-  //       text: `Do you want to ${
-  //         newStatus === 1 ? "Inactive" : "Active"
-  //       } this User?`,
-  //       showCancelButton: true,
-  //       confirmButtonText: "Yes",
-  //       cancelButtonText: "No",
-  //     });
-
-  //     if (result.isConfirmed && itemId) {
-  //       setIsActive(!isActive); // Update local state immediately
-
-  //       // Dispatch updateUserStatus with the new status
-  //       dispatch(updateProjectStatus({ id: itemId, status: newStatus, router }));
-  //     }
-  //   };
-  const users = [
-    {
-      id: 1,
-      userId: 'HRMS Dashboard',
-      dueDate: '2023-08-15',
-      team: 'Satyam Pardeshi, Prachi Jadhav, Sumit yadav, Aryan ',
-      type: 'Bug Fix',
-      designation: 'Manager',
-      dateOfJoining: '2023-08-15',
-      status: 'To Do',
-      priority: 'High'
-    },
-    {
-      id: 2,
-      userId: 'HRMS',
-      firstName: 'Shubham Yadav',
-      email: 'alice@example.com',
-      mobileNumber: '+1987654321',
-      designation: 'Developer',
-      dateOfJoining: '2022-11-20',
-      status: 'To Do',
-      priority: 'Low'
-    },
-    {
-      id: 3,
-      userId: 'HRMS Dashboard',
-      firstName: 'Shubham Yadav',
-      email: 'alice@example.com',
-      mobileNumber: '+1987654321',
-      designation: 'Developer',
-      dateOfJoining: '2022-11-20',
-      status: 'Completed',
-      priority: 'Low'
-    },
-    {
-      id: 4,
-      userId: 'HRMS Dashboard',
-      firstName: 'Shubham Yadav',
-      email: 'alice@example.com',
-      mobileNumber: '+1987654321',
-      designation: 'Developer',
-      dateOfJoining: '2022-11-20',
-      status: 'In progress',
-      priority: 'Medium'
-    },
-    {
-      id: 5,
-      userId: 'HRMS Dashboard',
-      firstName: 'Shubham Yadav',
-      email: 'alice@example.com',
-      mobileNumber: '+1987654321',
-      designation: 'Developer',
-      dateOfJoining: '2022-11-20',
-      status: 'Under Review',
-      priority: 'Low'
-    },
-    {
-      id: 6,
-      userId: 'HRMS Dashboard',
-      firstName: 'Shubham Yadav',
-      email: 'alice@example.com',
-      mobileNumber: '+1987654321',
-      designation: 'Developer',
-      dateOfJoining: '2022-11-20',
-      status: 'Under Review',
-      priority: 'Low'
-    },
-    {
-      id: 7,
-      userId: 'HRMS Dashboard',
-      firstName: 'Shubham Yadav',
-      email: 'alice@example.com',
-      mobileNumber: '+1987654321',
-      designation: 'Developer',
-      dateOfJoining: '2022-11-20',
-      status: 'Under Review',
-      priority: 'Low'
-    },
-    {
-      id: 8,
-      userId: 'HRMS Dashboard',
-      firstName: 'Shubham Yadav',
-      email: 'alice@example.com',
-      mobileNumber: '+1987654321',
-      designation: 'Developer',
-      dateOfJoining: '2022-11-20',
-      status: 'Under Review',
-      priority: 'Low'
-    },
-  ];
   const [selectedStatus, setSelectedStatus] = useState('');
+  const handleStatusChange = async (value) => {
+
+    const result = await Swal.fire({
+      text: `Do you want to update the status of this Project?`,
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+    });
+
+    if (result.isConfirmed && itemId) {
+      setSelectedStatus(value)
+
+      // Dispatch updateUserStatus with the new status
+      dispatch(updateProjectStatus({ id: itemId, status: value, router }));
+    }
+  };
+
+
+
+
   const [selectedView, setSelectedView] = useState("List");
   const [selectedSort, setSelectedSort] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [isDrawerOpen1, setIsDrawerOpen1] = useState(false)
 
-  const [isActive, setIsActive] = useState(false);
-  const statuses = ['To Do', 'In progress', 'Under Review', 'Completed'];
 
-  // Group users by status
-  const groupedUsers = statuses.map(status => ({
-    status,
-    users: users.filter(user => user.status === status)
-  }));
 
 
   const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+  const [searchTrigger, setSearchTrigger] = useState(0);
 
-  const entriesPerPage = 5;
-  const totalEntries = users.length;
-  const totalPages = Math.ceil(totalEntries / entriesPerPage);
+  // reset current page to 1 when any filters are applied
+  const resetPageIfNeeded = () => {
+    if (currentPage > 1) {
+      setCurrentPage(1);
+    }
+  };
 
-  // Filtered Users
-  const filteredUsers = users.filter((user) => {
-    return selectedStatus === "" || user.status === selectedStatus;
-  });
+
+  //Search/////////////////////////////////////////////////////////////
+  const [searchTermFromChild, setSearchTermFromChild] = useState("");
+  // Debounced function to trigger search
+  const debouncedSearch = useDebounceSearch(() => {
+    setSearchTrigger((prev) => prev + 1);
+  }, 800);
+
+  // Handle search term change from child component
+  const onSearch = (term) => {
+    setSearchTermFromChild(term);
+    if (term.length > 0 || term === "") {
+      debouncedSearch();
+    }
+  };
+
+  // sortBy
+  const [selectedSortBy, setSelectedSortBy] = useState("");
+  const [sortOrder, setSortOrder] = useState(1);
+  //sortby
+
+  // // filter
+  // const [selectedStatus, setSelectedStatus] = useState('View');
+  // // filter
+
+  useEffect(() => {
+    const sendData = {
+      limit: itemsPerPage,
+      page: currentPage,
+      ...(searchTermFromChild ? { search: searchTermFromChild } : {}),
+      ...(selectedSortBy && { sort_by: selectedSortBy, sort_order: sortOrder }),
+
+      // ...(selectedStatus !== null && selectedStatus !== undefined
+      //   ? { status: selectedStatus }
+      //   : {}),
+    };
+
+    dispatch(fetchProjectTasks(sendData));
+  }, [searchTrigger, dispatch, selectedStatus]);
+
+
+
+
+
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
 
 
-  // Pagination Logic
-  const startEntry = (currentPage - 1) * entriesPerPage;
-  const endEntry = startEntry + entriesPerPage;
-  const paginatedUsers = filteredUsers.slice(startEntry, endEntry);
 
   return (
     <>{projectLoading?.loading ? <Loader /> : (
@@ -199,8 +152,8 @@ const TaskList = () => {
               <UserAvatar name={user.name} dotcolor='blue' size={66} image={user.image} isActive={user.isActive} />
 
               <div className="text-xl text-gray-700">
-                <p className="font-bold text-[14px] sm:text-[18px]">{projectDetailData?.project_name || "--"}</p>
-                <p className="text-xs text-gray-500">{projectDetailData?.client_name || "--"}</p>
+                <p className="font-bold text-[14px] sm:text-[18px]">{projectDetailData?.project_name || ""}</p>
+                <p className="text-xs text-gray-500">{projectDetailData?.client_name || ""}</p>
               </div>
               {/* <p className={`font-[400] text-[12px] leading-[16.8px] border rounded flex items-center justify-center ${projectDetailData?.status === 'To Do'
                 ? 'text-[#6C757D] border-[#6C757D]  w-[50px] h-[20px]'
@@ -261,9 +214,9 @@ const TaskList = () => {
                     </div>
                   </label> */}
                   <DropdownStatus01
-                    options={["To Do", "In Progress", "Under Review", "Completed"]}
-                    selectedValue="To Do"
-                    onSelect={(value) => console.log("Selected:", value)}
+                    options={statusProject}
+                    selectedValue={projectDetailData?.status}
+                    onSelect={(value) => handleStatusChange(value)}
                     label="Status"
                     className="w-[150px]"
                   />
@@ -272,7 +225,7 @@ const TaskList = () => {
                 <button className="w-[140px] mt-3 sm:mt-0 h-[35px] text-[10px] rounded-[4px] py-[4px] border border-black text-black text-lg mr-[10px] mb-2" onClick={() => setIsDrawerOpen(true)}>
                   See All Details
                 </button>
-                <button onClick={() => router.push('/add-project')} className="w-[80px] h-[35px] rounded-[4px] py-[4px] bg-black text-white text-lg mr-[10px] mb-2">
+                <button onClick={() => router.push(`/project/add?id=${itemId}`)} className="w-[80px] h-[35px] rounded-[4px] py-[4px] bg-black text-white text-lg mr-[10px] mb-2">
                   Edit
                 </button>
               </div>
@@ -285,7 +238,7 @@ const TaskList = () => {
             <div className="flex">
               <p className="text-[20px] sm:text-[30px] leading-[32px] tracking-[-1.5px]">All Projects list</p>
               <p className="font-bold p-2 rounded-full text-[10.16px] leading-[12.19px] text-[#400F6F] mt-3 ml-2 bg-[#f0e7fa] flex items-center justify-center w-[50px] h-[10px]">
-                {users.length} total
+                {totalCount} total
               </p>
             </div>
 
@@ -298,7 +251,7 @@ const TaskList = () => {
 
               <div className="w-[1px] h-[40px] bg-gray-400 opacity-40" />
 
-              <button className="w-[49px] h-[44px] bg-[#048339] text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/project/add')}>+</button>
+              <button className="w-[49px] h-[44px] bg-[#048339] text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push(`/project/add-task?id=${itemId}`)}>+</button>
             </div>
 
             {/* Mobile Filter Button */}
@@ -359,39 +312,36 @@ const TaskList = () => {
                   <thead>
                     <tr className="text-left text-sm font-bold uppercase text-gray-800">
                       <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100  flex">
-                        PROJECT NAME<span className="mt-1 ml-2 flex flex-col gap-1">{OtherIcons.arrow_up_svg}{OtherIcons.arrow_down_svg}</span>
+                        TASK NAME<span className="mt-1 ml-2 flex flex-col gap-1">{OtherIcons.arrow_up_svg}{OtherIcons.arrow_down_svg}</span>
                       </th>
-                      <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100">CLIENT  NAME</th>
                       <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100">STATUS</th>
-                      <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100">STARTING DATE</th>
-                      <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100">DEADLINE</th>
-                      <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100">PROJECT LEADER</th>
+                      <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100">DUE DATE</th>
+                      <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100">TASK TYPE</th>
+
                       <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100">TEAM</th>
                       <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100">PRIORITY</th>
 
                     </tr>
                   </thead>
                   <tbody>
-                    {paginatedUsers.map((user) => (
-                      <tr key={user.id} className="hover:bg-gray-50 rounded cursor-pointer">
-                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 rounded " onClick={() => setIsDrawerOpen1((prev) => !prev)}>{user.userId}</td>
-                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 rounded " onClick={() => setIsDrawerOpen1((prev) => !prev)}>{user.firstName}</td>
+                    {projectTaskListData?.map((item, index) => (
+                      <tr key={item?.id} className="hover:bg-gray-50 rounded cursor-pointer">
+                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 rounded " onClick={() => setIsDrawerOpen1((prev) => !prev)}>{item?.task_title || ""}</td>
                         <td className={`py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  min-w-[150px] border-b border-gray-50 rounded  font-bold`} onClick={() => setIsDrawerOpen1((prev) => !prev)}>
                           <span
-                            className={`py-1 px-2 sm:px-2  text-[12px] sm:text-[15px]  border rounded-md ${user.status === 'To Do'
+                            className={`py-1 px-2 sm:px-2  text-[12px] sm:text-[15px]  border rounded-md ${item?.status === 'To Do'
                               ? 'text-[#6C757D] border-[#6C757D]'
-                              : user.status === 'In progress' ?
-                                'text-[#CA9700] border-[#CA9700]' : user.status === 'Completed' ? 'text-[#008053] border-[#008053]' : 'text-[#0D4FA7] border-[#0D4FA7]'
+                              : item?.status === 'In progress' ?
+                                'text-[#CA9700] border-[#CA9700]' : item?.status === 'Completed' ? 'text-[#008053] border-[#008053]' : 'text-[#0D4FA7] border-[#0D4FA7]'
                               } inline-block`}
                           >
-                            {user.status}
+                            {item?.status || ""}
                           </span>
                         </td>
-                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 " onClick={() => setIsDrawerOpen1((prev) => !prev)}>{user.dateOfJoining}</td>
-                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 ] " onClick={() => setIsDrawerOpen1((prev) => !prev)}>2022-11-20</td>
-                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 " onClick={() => setIsDrawerOpen1((prev) => !prev)}>Vasu Shastri</td>
+                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 " onClick={() => setIsDrawerOpen1((prev) => !prev)}>{item?.due_date || ""}</td>
+                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 ] " onClick={() => setIsDrawerOpen1((prev) => !prev)}>{item?.task_type || ""}</td>
                         <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 " onClick={() => setIsDrawerOpen1((prev) => !prev)}>
-                          <TruncatedTooltipText text="Prachi Godase, Sumit Yadav, Punit Omar, Aryan Singh" maxLength={25} />
+                          <TruncatedTooltipText text={item?.team_names?.join(", ")} maxLength={25} />
                         </td>
                         <td className={`py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 font-bold`} onClick={() => setIsDrawerOpen1((prev) => !prev)}>
                           <span
@@ -400,7 +350,7 @@ const TaskList = () => {
                                 'text-red-400 border-red-400' : 'text-[#954BAF] border-[#954BAF]'
                               } inline-block`}
                           >
-                            {user.priority}
+                            {item?.priority}
                           </span>
                         </td>
                       </tr>
@@ -409,18 +359,19 @@ const TaskList = () => {
                 </table>
               </div>
               {/* Pagination */}
-              <div className="flex justify-between items-center mt-4 px-1 sm:px-2 py-2">
-                <div className='text-gray-700 text-[12px] sm:text-[18px]'>{`Showing   ${startEntry + 1} - ${Math.min(endEntry, filteredUsers.length)} of ${filteredUsers.length} entries`}</div>
-                <div className="flex gap-2">
-                  <button className={`w-[60px] h-[29px]   sm:w-[80px] sm:h-[39px] text-[10px] rounded-md border ${currentPage === 1 ? 'bg-gray-200 text-gray-400' : 'bg-white text-black hover:bg-gray-300'}`} disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>Previous</button>
-                  <button className={`w-[60px] h-[29px]  sm:w-[80px] sm:h-[39px] text-[10px] rounded-md border ${currentPage === totalPages ? 'bg-gray-200 text-gray-400' : 'bg-white text-black hover:bg-gray-300'}`} disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>Next</button>
-                </div>
-              </div>
+              <Pagenation
+                itemList={totalCount}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+                itemsPerPage={itemsPerPage}
+                setItemsPerPage={setItemsPerPage}
+                setSearchCall={setSearchTrigger} />
+
             </>
           )}
 
           {selectedView == 'Kanban' &&
-            <KanBanView groupedUsers={groupedUsers} />
+            <KanBanView groupedUsers={projectTaskListData} />
           }
         </div>
         <Drawer01 isOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} details={projectDetailData} />

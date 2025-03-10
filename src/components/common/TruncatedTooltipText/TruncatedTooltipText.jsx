@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 
 const TruncatedTooltipText = ({ text, maxLength = 22 }) => {
     const router = useRouter();
-    const isTruncated = text.length > maxLength; // Check if text needs truncation
-    const displayText = isTruncated ? text.slice(0, maxLength) + "..." : text;
+    const isTruncated = text?.length > maxLength; // Check if text needs truncation
+    const displayText = isTruncated ? text?.slice(0, maxLength) + "..." : text;
 
     return isTruncated ? (
         <Tooltip title={text} arrow disableInteractive>

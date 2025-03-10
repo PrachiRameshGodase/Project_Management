@@ -186,7 +186,7 @@ const ProjectList = () => {
                 {projectListData?.map((item, index) => (
                   <tr key={item?.id} className="hover:bg-gray-50 rounded cursor-pointer">
                     <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 rounded " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.project_name || ""}</td>
-                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-50 rounded " onClick={(`/project/details?id=${item?.id}`)}>{item?.client_name || ""}</td>
+                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-50 rounded " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.client_name || ""}</td>
                     <td className={`py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]   border-b border-gray-50 rounded  font-bold`} onClick={() => router.push(`/project/details?id=${item?.id}`)}>
                       <span
                         className={`px-3 py-1 border rounded-md ${item.status === 'To Do'

@@ -10,12 +10,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchUsers } from '@/app/store/userSlice';
 import { useRouter } from 'next/navigation';
 import { Dropdown03 } from '@/components/common/Dropdown/Dropdown03';
-import { addProject } from '@/app/store/projectSlice';
+import { addProject, fetchProjectDetails } from '@/app/store/projectSlice';
 
 const AddProject = () => {
     const router = useRouter()
     const dispatch = useDispatch();
     const usersList = useSelector((state) => state.user?.list?.data);
+    const projectDetailData = useSelector((state) => state?.project?.projectDetails?.data);
+
 
     const [itemId, setItemId] = useState(null);
     const [isEditMode, setIsEditMode] = useState(false);
@@ -67,14 +69,40 @@ const AddProject = () => {
             [field]: value
         }));
     };
-
+    useEffect(() => {
+        if (itemId) {
+          dispatch(fetchProjectDetails(itemId));
+        }
+      }, [dispatch, itemId]);
+    useEffect(() => {
+        if (itemId && projectDetailData) {
+            // const formattedAttachments = projectDetailData?.attachments?.map((fileName) => ({
+            //     name: fileName,
+            //     url: `/uploads/${fileName}`, // Adjust this path based on how your files are stored
+            //     type: fileName.endsWith(".pdf") ? "application/pdf" : "image/*", // Basic type guessing
+            // }));
+            setFormData({
+                id: projectDetailData?.id,
+                project_name: projectDetailData?.project_name,
+                client_name: projectDetailData?.client_name,
+                start_date: projectDetailData?.start_date,
+                due_date: projectDetailData?.due_date,
+                priority: projectDetailData?.priority,
+                project_leader: projectDetailData?.project_leader,
+                project_stage: projectDetailData?.project_stage,
+                team: projectDetailData?.team,
+                // attachments:formattedAttachments,
+                description: projectDetailData?.description
+            })
+        }
+    }, [itemId, projectDetailData])
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
         dispatch(addProject({ projectData: formData, router }));
     };
-    console.log("formData", formData)
+    // console.log("projectDetailData", formData)
 
     return (
         <LayOut>
@@ -96,7 +124,7 @@ const AddProject = () => {
                             <label className="block text-m">Starting date</label>
                             {/* <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m ml-7 placeholder:text-gray-700" type='Date' placeholder='Enter Starting date' /> */}
                             <CustomDatePicker
-                                selectedDate={formData?.startingstart_datedate}
+                                selectedDate={formData?.start_date}
                                 onChange={(date) => handleDropdownChange("start_date", date)} />
                         </div>
 
@@ -156,13 +184,14 @@ const AddProject = () => {
                             <FileUpload
 
                                 onFilesChange={(files) => {
-                                    // const fileNames = files.map((file) => file.name);
+                                    const fileNames = files.map((file) => file.name);
                                     setFormData((prev) => ({
                                         ...prev,
-                                        attachments: files,
+                                        attachments: fileNames,
                                     }))
                                 }
-                                } />
+                                
+                                }  initialFiles={formData.attachments}/>
 
                         </div>
                         <div className="sm:flex justify-between">
