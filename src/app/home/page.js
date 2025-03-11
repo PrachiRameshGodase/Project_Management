@@ -1,34 +1,40 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { OtherIcons } from "@/assests/icons";
 import UserAvatar from "@/components/common/UserAvatar/UserAvatar";
+import LogOut from "@/components/logOut";
 
 const cardData = [
-    { id: 1, logo: <OtherIcons.accounts_logo />, title: "Accounting", description: "Manage your finances effectively.", status: "In Progress", task: [1, 2, 3, 4] },
-    { id: 2, logo: <OtherIcons.hrms_logo />, title: "Finance", description: "Track your income and expenses.", status: "In Progress", task: [1, 0, 1, 1] },
-    { id: 3, logo: <OtherIcons.cms_logo />, title: "Invoicing", description: "Create invoices with ease.", status: "In Progress", task: [0, 1, 1, 2] },
-    { id: 4, logo: <OtherIcons.accounts_logo />, title: "Marketing Webapp", description: "Stay tax compliant effortlessly.", status: "In Progress", task: [1, 1, 1, 1] },
-    { id: 5, logo: <OtherIcons.accounts_logo />, title: "Accounting", description: "Manage your finances effectively.", status: "In Progress", task: [1, 1, 8, 1] },
-    { id: 6, logo: <OtherIcons.accounts_logo />, title: "Finance", description: "Track your income and expenses.", status: "In Progress", task: [1, 1, 1, 1] },
-    { id: 7, logo: <OtherIcons.accounts_logo />, title: "Invoicing", description: "Create invoices with ease.", status: "Under Review", task: [1, 1, 1, 1] },
-    { id: 8, logo: <OtherIcons.accounts_logo />, title: "Tax Management", description: "Stay tax compliant effortlessly.", status: "Under Review", task: [3, 1, 4, 1] },
+    { id: 1, title: "Accounting", description: "Manage your finances effectively.", status: "In Progress", task: [1, 2, 3, 4] },
+    { id: 2, title: "Finance", description: "Track your income and expenses.", status: "In Progress", task: [1, 0, 1, 1] },
+    { id: 3,  title: "Invoicing", description: "Create invoices with ease.", status: "In Progress", task: [0, 1, 1, 2] },
+    { id: 4, title: "Marketing Webapp", description: "Stay tax compliant effortlessly.", status: "In Progress", task: [1, 1, 1, 1] },
+    { id: 5, title: "Accounting", description: "Manage your finances effectively.", status: "In Progress", task: [1, 1, 8, 1] },
+    { id: 6,  title: "Finance", description: "Track your income and expenses.", status: "In Progress", task: [1, 1, 1, 1] },
+    { id: 7,  title: "Invoicing", description: "Create invoices with ease.", status: "Under Review", task: [1, 1, 1, 1] },
+    { id: 8, title: "Tax Management", description: "Stay tax compliant effortlessly.", status: "Under Review", task: [3, 1, 4, 1] },
 ];
 
 const HomePage = () => {
     const router = useRouter();
+    const [isOpen2, setIsOpen2] = useState(false);
     const user = {
         name: "Shubham Yadhav",
         isActive: true,
+        email: 'a@gmai.com',
         image: "",
     };
 
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4 sm:p-10 relative ">
             {/* Avatar Section (Top-Right) */}
+            <LogOut isOpen2={isOpen2} user={user} setIsOpen2={setIsOpen2} />
+
             <div className="absolute top-4 right-5 sm:right-14 flex items-center space-x-2">
-                <UserAvatar name={user.name} dotcolor="green" size={36} image={user.image} isActive={user.isActive} />
+                <UserAvatar onClick={() => setIsOpen2(true)} name={user.name} dotcolor="green" size={36} image={user.image} isActive={user.isActive} />
+
                 <span className="cursor-pointer" onClick={() => router.push(`/`)}>
                     {OtherIcons.back_svg}
                 </span>
