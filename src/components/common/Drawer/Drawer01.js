@@ -16,7 +16,6 @@ const Drawer01 = ({ isOpen, setIsDrawerOpen, details, itemId, setSelectedStatus 
     const router = useRouter()
     const dispatch = useDispatch()
 
-    if (!isOpen) return null;
     const [isActive, setIsActive] = useState(details?.project_status || "")
     const [isActive2, setIsActive2] = useState(details?.status || "")
 
@@ -66,6 +65,8 @@ const Drawer01 = ({ isOpen, setIsDrawerOpen, details, itemId, setSelectedStatus 
             dispatch(updateStatus({ id: itemId, project_status: newStatus, router }));
         }
     };
+    
+    if (!isOpen) return null;
     return (
         <motion.div
             initial={{ x: "100%" }}
