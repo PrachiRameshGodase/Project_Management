@@ -68,7 +68,7 @@ const NavBar = () => {
               key={Array.isArray(item.path) ? item.path[0] : item.path}
               onClick={() => router.push(Array.isArray(item.path) ? item.path[0] : item.path)}
               className={`hover:opacity-80 rounded-lg flex items-center gap-1.5 px-2 py-1.5 cursor-pointer 
-                ${isActive ? "border border-gray-300 bg-gray-100" : "opacity-70"} 
+                ${isActive ? "border border-[#A8A9FF]" : "opacity-70"} 
                 ${(item.label === "Projects" || item.label === "Clients") ? "w-[110px] h-[44px]" : "w-[93px] h-[44px]"}`}
             >
               {item.icon}
@@ -77,16 +77,14 @@ const NavBar = () => {
           );
         })}
       </div>
-
       {/* User Avatar */}
-
       <>
         {/* Avatar Button */}
         <div className="absolute   top-4 right-3 sm:right-10 md:right-14 lg:right-20 flex items-center space-x-2">
           <button onClick={() => setIsOpen2(true)}>
             <UserAvatar
               name={user.name}
-              dotcolor="yellow"
+              dotcolor="#E19F1E"
               size={40}
               image={user.image}
               isActive={user.isActive}
@@ -117,7 +115,7 @@ const NavBar = () => {
           {/* User Info */}
           <div className="flex gap-3 items-start mt-10">
             <div className=" top-4 right-[20px] flex items-center space-x-2">
-              <UserAvatar name={user.name} dotcolor='yellow' size={50} image={user.image} isActive={user.isActive} />
+              <UserAvatar name={user.name} dotcolor='#E19F1E' size={50} image={user.image} isActive={user.isActive} />
             </div>
             <div>
               <h2 className="text-lg font-semibold">{user.name}</h2>
@@ -130,7 +128,7 @@ const NavBar = () => {
             onClick={handleLogout}
             className="mt-5 flex items-center justify-center hover:gap-3 gap-1 w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600"
           >
-            Logout 
+            Logout
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#ffffff" fill="none">
               <path d="M11 3L10.3374 3.23384C7.75867 4.144 6.46928 4.59908 5.73464 5.63742C5 6.67576 5 8.0431 5 10.7778V13.2222C5 15.9569 5 17.3242 5.73464 18.3626C6.46928 19.4009 7.75867 19.856 10.3374 20.7662L11 21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
               <path d="M21 12L11 12M21 12C21 11.2998 19.0057 9.99153 18.5 9.5M21 12C21 12.7002 19.0057 14.0085 18.5 14.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

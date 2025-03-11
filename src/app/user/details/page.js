@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchUserDetails, updateUserStatus } from "@/app/store/userSlice";
 import Swal from "sweetalert2";
 import Loader from "@/components/common/Loader/Loader";
+import { Check, X } from "lucide-react";
 
 const UserDetails = () => {
   const router = useRouter();
@@ -24,7 +25,7 @@ const UserDetails = () => {
   }, []);
   const userDetailData = useSelector((state) => state?.user?.userDetails?.data);
 
-  const [isActive, setIsActive] = useState(userDetailData?.status ||"");
+  const [isActive, setIsActive] = useState(userDetailData?.status || "");
 
   const user = {
     name: `${userDetailData?.first_name || ""} ${userDetailData?.last_name || ""
@@ -81,7 +82,7 @@ const UserDetails = () => {
               {/* Toggle Switch */}
               <label className="flex items-center cursor-pointer">
                 <span className="ml-2 text-[15px] mr-2">
-                  {isActive ? "Inactive" : "Active"}
+                  {!isActive ? "Inactive" : "Active"}
                 </span>
 
                 <div className="relative">
@@ -92,16 +93,36 @@ const UserDetails = () => {
                     onChange={handleToggleStatus}
                   />
                   {/* Track */}
-                  <div className="w-16 h-[33px] rounded-full shadow-inner transition duration-300 ease-in-out bg-gray-100"></div>
+                  {/* <div className="w-16 h-[33px] rounded-full shadow-inner transition duration-300 ease-in-out bg-gray-100"></div> */}
 
                   {/* Thumb */}
-                  <div
+                  {/* <div
                     className={`absolute w-[30px] h-[25px] rounded-full shadow-md top-[4px] left-[2px] transition-transform duration-300 ease-in-out 
                 ${isActive ? "translate-x-9 bg-red-400" : "bg-green-400"}`}
                   >
                     <span className="absolute inset-0 flex items-center justify-center text-white text-[10px]">
                       {isActive ? "✘" : "✔"}
                     </span>
+                  </div> */}
+                  <div
+                    className={`w-[70px] h-[40px] rounded-full shadow- transition duration-300 ease-in-out bg-[#ECE4FF]`}
+                  >
+
+                  </div>
+                  <div
+                    className={`absolute w-[33px] h-[33px] rounded-full shadow-md top-[4px] left-[4px] transition-transform duration-300 ease-in-out ${isActive ? 'translate-x-7 bg-[#048339]' : 'bg-[#E23703]'
+                      }`}
+                  >
+                    {isActive && (
+                      <span className="absolute inset-0 flex items-center justify-center text-white text-[10px]">
+                        <Check size={16} />
+                      </span>
+                    )}
+                    {!isActive && (
+                      <span className="absolute inset-0 flex items-center justify-center text-white text-[10px]">
+                        <X size={16} />
+                      </span>
+                    )}
                   </div>
                 </div>
               </label>

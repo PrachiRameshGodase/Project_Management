@@ -42,7 +42,7 @@ const UserAvatar = ({ name, image, isActive, size = 68, dotcolor = "green", onCl
                 anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
                 variant={isActive && dotcolor !== "none" ? "dot" : "standard"}
                 dotcolor={dotcolor}
-                className="border-2 border-[#A448EE] rounded-full p-[2px]"
+                className="border-2 border-[#C8A0FF] rounded-full p-[2px]"
             >
                 <Avatar
                     alt={name}

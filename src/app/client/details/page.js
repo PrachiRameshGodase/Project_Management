@@ -2,6 +2,7 @@
 import { OtherIcons } from '@/assests/icons';
 import UserAvatar from '@/components/common/UserAvatar/UserAvatar';
 import LayOut from '@/components/LayOut';
+import { Check, X } from 'lucide-react';
 import React, { useState } from 'react';
 
 const ClientDetails = () => {
@@ -33,20 +34,22 @@ const ClientDetails = () => {
                                     onChange={() => setIsActive(!isActive)}
                                 />
                                 <div
-                                    className={`w-16 h-[33px] rounded-full shadow-inner transition duration-300 ease-in-out bg-gray-100`}
-                                ></div>
+                                    className={`w-[70px] h-[40px] rounded-full shadow- transition duration-300 ease-in-out bg-[#ECE4FF]`}
+                                >
+
+                                </div>
                                 <div
-                                    className={`absolute w-[30px] h-[25px] rounded-full shadow-md top-[3px] left-[2px] transition-transform duration-300 ease-in-out ${isActive ? 'translate-x-7 bg-green-400' : 'bg-red-400'
+                                    className={`absolute w-[33px] h-[33px] rounded-full shadow-md top-[4px] left-[4px] transition-transform duration-300 ease-in-out ${isActive ? 'translate-x-7 bg-[#048339]' : 'bg-[#E23703]'
                                         }`}
                                 >
                                     {isActive && (
                                         <span className="absolute inset-0 flex items-center justify-center text-white text-[10px]">
-                                            ✔
+                                            <Check size={16} />
                                         </span>
                                     )}
                                     {!isActive && (
                                         <span className="absolute inset-0 flex items-center justify-center text-white text-[10px]">
-                                            ✘
+                                            <X size={16} />
                                         </span>
                                     )}
                                 </div>

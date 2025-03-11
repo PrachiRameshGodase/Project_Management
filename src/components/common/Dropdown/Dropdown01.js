@@ -4,6 +4,7 @@ import { OutsideClick } from "../OutsideClick/OutsideClick";
 import { ChevronUp, ChevronDown } from "lucide-react";
 import { OtherIcons } from "@/assests/icons";
 import { statusOptions } from "../Helper/Helper";
+import { Tooltip } from "@mui/material";
 
 const Dropdown01 = ({ options, selectedValue, onSelect, label, icon }) => {
   const dropdownOutsideClick = OutsideClick();
@@ -17,23 +18,25 @@ const Dropdown01 = ({ options, selectedValue, onSelect, label, icon }) => {
 
   return (
     <div className="relative" ref={dropdownOutsideClick?.ref}>
-      <div
-        className={`h-[44px] flex items-center gap-2 border border-gray-300 hover:border-purple-500 hover:ring-2 hover:ring-purple-200 rounded-lg px-3 py-2 cursor-pointer ${label === "Designation"
-          ? "w-fit"
-          : label === "Sort By"
+      <Tooltip title={selected || label} arrow disableInteractive>
+        <div
+          className={`h-[44px] flex items-center gap-2 border border-gray-300 hover:border-purple-500 hover:ring-2 hover:ring-purple-200 rounded-lg px-3 py-2 cursor-pointer ${label === "Designation"
             ? "w-fit"
-            : label === "Task Type"
-              ? "w-fit" // Fixed incorrect "W-[120px]" to "w-[120px]"
-              : "w-fit"
-          }`}
-        onClick={dropdownOutsideClick?.handleToggle}
-        ref={dropdownOutsideClick?.buttonRef}
-      >
-        {icon}
-        <span className={`text-gray-700 ${!selected ? "text-gray-400" : ""}`}>
-          {selected || label}
-        </span>
-      </div>
+            : label === "Sort By"
+              ? "w-fit"
+              : label === "Task Type"
+                ? "w-fit" // Fixed incorrect "W-[120px]" to "w-[120px]"
+                : "w-fit"
+            }`}
+          onClick={dropdownOutsideClick?.handleToggle}
+          ref={dropdownOutsideClick?.buttonRef}
+        >
+          {icon}
+          <span className={`text-gray-700 ${!selected ? "text-gray-400" : ""}`}>
+            {selected || label}
+          </span>
+        </div>
+      </Tooltip>
 
       {dropdownOutsideClick?.isOpen && (
         <div className="absolute top-[100%] mt-2 bg-white shadow-lg border border-gray-300 rounded-lg w-[150px] z-50">
@@ -132,6 +135,7 @@ export const DropdownStatus = ({ selectedValue, onSelect }) => {
   return (
     <div className="relative" ref={dropdownOutsideClick?.ref}>
       {/* Dropdown Button */}
+      <Tooltip title={selected ? selected.label : "Status"} arrow disableInteractive>
       <div
         className={`h-[44px] flex items-center gap-2 border border-gray-300 hover:ring-purple-300 rounded-lg px-3 py-2 cursor-pointer w-[120px]`}
         onClick={dropdownOutsideClick?.handleToggle}
@@ -142,6 +146,7 @@ export const DropdownStatus = ({ selectedValue, onSelect }) => {
           {selected ? selected.label : "Status"}
         </span>
       </div>
+      </Tooltip>
 
       {/* Dropdown List */}
       {dropdownOutsideClick?.isOpen && (
