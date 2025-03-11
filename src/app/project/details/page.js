@@ -1,10 +1,10 @@
 "use client"
-import { fetchProjectDetails, fetchProjectTasks, updateProjectStatus } from '@/app/store/projectSlice';
+import { fetchProjectDetails, fetchProjectTaskDetails, fetchProjectTasks, updateProjectStatus, updateStatus } from '@/app/store/projectSlice';
 import { OtherIcons } from '@/assests/icons';
 import Drawer01, { Drawer001 } from '@/components/common/Drawer/Drawer01';
 import Dropdown01 from '@/components/common/Dropdown/Dropdown01';
 import DropdownStatus01 from '@/components/common/Dropdown/DropdownStatus01';
-import { projectSortConstant, status, statusProject, taskView, view } from '@/components/common/Helper/Helper';
+import { getStatusDetails, projectSortConstant, status, statusProject, taskView, view } from '@/components/common/Helper/Helper';
 import KanBanView from '@/components/common/KanBanView/KanBanView';
 import Loader from '@/components/common/Loader/Loader';
 import SearchComponent from '@/components/common/SearchComponent/SearchComponent';
@@ -79,7 +79,7 @@ const TaskList = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [isDrawerOpen1, setIsDrawerOpen1] = useState(false)
 
-const [isActive, setIsActive]=useState(false)
+  const [isActive, setIsActive] = useState(projectDetailData?.project_status || "")
 
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -119,29 +119,59 @@ const [isActive, setIsActive]=useState(false)
   // // filter
 
   useEffect(() => {
+    if (!itemId) return; // Ensure itemId is set before dispatching
+
     const sendData = {
+      project_id: itemId,
       limit: itemsPerPage,
       page: currentPage,
       ...(searchTermFromChild ? { search: searchTermFromChild } : {}),
       ...(selectedSortBy && { sort_by: selectedSortBy, sort_order: sortOrder }),
-
-      // ...(selectedStatus !== null && selectedStatus !== undefined
-      //   ? { status: selectedStatus }
-      //   : {}),
     };
 
     dispatch(fetchProjectTasks(sendData));
-  }, [searchTrigger, dispatch, selectedStatus]);
+  }, [searchTrigger, dispatch, selectedStatus, itemId]); // Include all dependencies
 
-
-
-
+  useEffect(() => {
+    if (projectDetailData?.project_status !== undefined) {
+      setIsActive(projectDetailData?.project_status);
+    }
+  }, [projectDetailData]);
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
+  const statusDetails = getStatusDetails(projectDetailData?.status);
+  const handleToggleStatus = async (event) => {
+    const newStatus = !isActive ? 1 : 0; // Toggle logic: Active (0) → Inactive (1), Inactive (1) → Active (0)
 
+    const result = await Swal.fire({
+      text: `Do you want to ${newStatus === 1 ? "Active" : "Inactive"
+        } this Project?`,
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+    });
 
+    if (result.isConfirmed && itemId) {
+      setIsActive(!isActive); // Update local state immediately
 
+      // Dispatch updateUserStatus with the new status
+      dispatch(updateStatus({ id: itemId, project_status: newStatus, router }));
+    }
+  };
+const [itemId2, setItemId2]=useState(null)
+const handleTaskClick=(id)=>{
+setItemId2(id)
+  setIsDrawerOpen1(true)
+}
+
+const taskDetailsData = useSelector((state) => state.project?.projectTaskDetails?.data)
+ useEffect(() => {
+   if (itemId2) {
+     dispatch(fetchProjectTaskDetails(itemId2));
+   }
+ }, [dispatch, itemId2]);
+console.log("taskDetailsData", taskDetailsData)
   return (
     <>{projectLoading?.loading ? <Loader /> : (
       <LayOut>
@@ -163,64 +193,59 @@ const [isActive, setIsActive]=useState(false)
                 {projectDetailData?.status}
               </p> */}
               <DropdownStatus01
-                    options={statusProject}
-                    selectedValue={projectDetailData?.status}
-                    onSelect={(value) => handleStatusChange(value)}
-                    label="Status"
-                    className="w-[150px]"
-                  />
+                options={statusProject}
+                selectedValue={projectDetailData?.status}
+                onSelect={(value) => handleStatusChange(value)}
+                label="Status"
+                className="w-[150px]"
+              />
             </div>
             <div className='flex max-[850px]:flex-col justify-between gap-5 md:gap-10 lg:gap-4 max-[1250px]:mt-4'>
               <div className="w-[260px] h-[69px] border border-gray-150 rounded p-2">
                 <p className="text-[#000000] text-400">Project Completion</p>
-                <div className='flex'>
-                  <div className="relative mt-2" style={{ width: '177.73px', height: '10px' }}>
-                    {/* Remaining part */}
+                <div className="flex">
+                  <div className="relative mt-2" style={{ width: "177.73px", height: "10px" }}>
+                    {/* Background Bar */}
                     <div className="w-full h-full bg-[#EBF0FF] rounded-full"></div>
-                    {/* Completed part */}
+                    {/* Progress Bar */}
                     <div
                       className="absolute top-0 left-0 h-full rounded-full"
-                      style={{ width: '45%', backgroundColor: '#A3B3FF' }} // Use a slightly darker color
+                      style={{ width: `${statusDetails.percentage}%`, backgroundColor: statusDetails.color }}
                     ></div>
                   </div>
-                  <span className="block mt-1 text-sm ml-4">45%</span>
+                  <span className="block mt-1 text-sm ml-4">{statusDetails.percentage}%</span>
                 </div>
-                
               </div>
 
               <div className="sm:flex items-center gap-2">
                 <div className="flex items-center mr-2">
                   <label className="flex items-center cursor-pointer">
-                    <span className="ml-2 text-[15px] mr-2">{isActive ? "Active" : "Inactive"}</span>
+                    <span className="ml-2 text-[15px] mr-2">
+                      {!isActive ? "Inactive" : "Active"}
+                    </span>
 
                     <div className="relative">
                       <input
                         type="checkbox"
                         className="sr-only"
                         checked={isActive}
-                        onChange={() => setIsActive(!isActive)}
+                        onChange={handleToggleStatus}
                       />
+                      {/* Track */}
+                      <div className="w-16 h-[33px] rounded-full shadow-inner transition duration-300 ease-in-out bg-gray-100"></div>
+
+                      {/* Thumb */}
                       <div
-                        className={`w-16 h-[33px] rounded-full shadow-inner transition duration-300 ease-in-out bg-gray-100`}
-                      ></div>
-                      <div
-                        className={`absolute w-8 h-7 rounded-full shadow-md top-[2px] left-[2px] transition-transform duration-300 ease-in-out ${isActive ? 'translate-x-7 bg-green-400' : 'bg-red-400'
-                          }`}
+                        className={`absolute w-[30px] h-[25px] rounded-full shadow-md top-[4px] left-[2px] transition-transform duration-300 ease-in-out 
+                ${!isActive ? "translate-x-9 bg-red-400" : "bg-green-400"}`}
                       >
-                        {isActive && (
-                          <span className="absolute inset-0 flex items-center justify-center text-white text-[10px]">
-                            ✔
-                          </span>
-                        )}
-                        {!isActive && (
-                          <span className="absolute inset-0 flex items-center justify-center text-white text-[10px]">
-                            ✘
-                          </span>
-                        )}
+                        <span className="absolute inset-0 flex items-center justify-center text-white text-[10px]">
+                          {!isActive ? "✘" : "✔"}
+                        </span>
                       </div>
                     </div>
                   </label>
-                 
+
 
                 </div>
                 <button className="w-[140px] mt-3 sm:mt-0 h-[35px] text-[10px] rounded-[4px] py-[4px] border border-gray-400 text-black text-lg mr-[10px] mb-2 hover:bg-black hover:text-white" onClick={() => setIsDrawerOpen(true)}>
@@ -336,8 +361,8 @@ const [isActive, setIsActive]=useState(false)
                   <tbody>
                     {projectTaskListData?.map((item, index) => (
                       <tr key={item?.id} className="cursor-pointer   hover:shadow-tr-border   rounded-md  transition-all duration-200">
-                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]   rounded " onClick={() => setIsDrawerOpen1((prev) => !prev)}>{item?.task_title || ""}</td>
-                        <td className={`py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  min-w-[150px] rounded  font-bold`} onClick={() => setIsDrawerOpen1((prev) => !prev)}>
+                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]   rounded " onClick={() => handleTaskClick(item?.id)}>{item?.task_title || ""}</td>
+                        <td className={`py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  min-w-[150px] rounded  font-bold`} onClick={() => handleTaskClick(item?.id)}>
                           <span
                             className={`py-1 px-2 sm:px-2  text-[12px] sm:text-[15px]  border rounded-md ${item?.status === 'To Do'
                               ? 'text-[#6C757D] border-[#6C757D]'
@@ -348,12 +373,12 @@ const [isActive, setIsActive]=useState(false)
                             {item?.status || ""}
                           </span>
                         </td>
-                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]   " onClick={() => setIsDrawerOpen1((prev) => !prev)}>{item?.due_date || ""}</td>
-                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]   " onClick={() => setIsDrawerOpen1((prev) => !prev)}>{item?.task_type || ""}</td>
-                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  " onClick={() => setIsDrawerOpen1((prev) => !prev)}>
+                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]   " onClick={() => handleTaskClick(item?.id)}>{item?.due_date || ""}</td>
+                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]   " onClick={() => handleTaskClick(item?.id)}>{item?.task_type || ""}</td>
+                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  " onClick={() => handleTaskClick(item?.id)}>
                           <TruncatedTooltipText text={item?.team_names?.join(", ")} maxLength={25} />
                         </td>
-                        <td className={` text-[12px] sm:text-[15px]   font-bold`} onClick={() => setIsDrawerOpen1((prev) => !prev)}>
+                        <td className={` text-[12px] sm:text-[15px]   font-bold`} onClick={() => handleTaskClick(item?.id)}>
                           <span
                             className={`py-1 px-2 sm:px-4  text-[12px] sm:text-[15px]  border rounded-md  ${user.priority === 'High'
                               ? 'text-[#4976F4] border-[#4976F4]' : user.priority === 'Low' ?
@@ -363,7 +388,7 @@ const [isActive, setIsActive]=useState(false)
                             {item?.priority}
                           </span>
                         </td>
-                       
+
                       </tr>
                     ))}
                   </tbody>
@@ -385,8 +410,8 @@ const [isActive, setIsActive]=useState(false)
             <KanBanView groupedUsers={projectTaskListData} />
           }
         </div>
-        <Drawer01 isOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} details={projectDetailData} />
-        <Drawer001 isOpen={isDrawerOpen1} setIsDrawerOpen={setIsDrawerOpen1} />
+        <Drawer01 isOpen={isDrawerOpen} setIsDrawerOpen={setIsDrawerOpen} details={projectDetailData} itemId={itemId} setSelectedStatus={setSelectedStatus}/>
+        <Drawer001 isOpen={isDrawerOpen1} setIsDrawerOpen={setIsDrawerOpen1}  itemId={itemId2} details={taskDetailsData}/>
 
       </LayOut>)}</>
 

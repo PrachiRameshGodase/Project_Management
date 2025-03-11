@@ -37,7 +37,7 @@ const AddProject = () => {
         priority: "",
         project_leader: null,
         project_stage: "",
-        team: [],
+        team: "",
         attachments: [],
         description: "",
 
@@ -50,7 +50,7 @@ const AddProject = () => {
     const [searchTrigger, setSearchTrigger] = useState(0);
 
     useEffect(() => {
-        const sendData = {};
+        const sendData = {is_employee:1};
         dispatch(fetchUsers(sendData));
     }, [searchTrigger, dispatch,]);
 
@@ -99,10 +99,13 @@ const AddProject = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        dispatch(addProject({ projectData: formData, router }));
+        const updatedFormData = {
+            ...formData,
+            team: JSON.stringify(formData?.team), // Convert array of IDs to JSON string
+        };
+        dispatch(addProject({ projectData: updatedFormData, router }));
     };
-    // console.log("projectDetailData", formData)
+    console.log("formData", formData)
 
     return (
         <LayOut>

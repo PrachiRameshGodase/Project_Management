@@ -38,7 +38,8 @@ const AddUser = () => {
     designation: "",
     joining_date: "",
     skill_set: [],
-    status: 1
+    status: 1,
+    // is_e
   });
 
 

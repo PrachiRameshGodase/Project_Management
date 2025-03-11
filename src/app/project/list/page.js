@@ -62,6 +62,7 @@ const ProjectList = () => {
 
   useEffect(() => {
     const sendData = {
+     
       limit: itemsPerPage,
       page: currentPage,
       ...(searchTermFromChild ? { search: searchTermFromChild } : {}),
@@ -210,7 +211,9 @@ const ProjectList = () => {
                       <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 ] " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.due_date}</td>
                       <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.project_leader_name}</td>
                       <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 " onClick={() => router.push(`/project/details?id=${item?.id}`)}>
-                        <TruncatedTooltipText text={item?.team ? JSON.parse(item?.team)?.join(" , ") : ""} maxLength={25} />
+                        <TruncatedTooltipText text={item?.team_leaders?.map((item)=>(
+                          item?.name
+                        ))} maxLength={25} />
                       </td>
                       <td className={`py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-50 font-bold`} onClick={() => router.push(`/project/details?id=${item?.id}`)}>
                         <span
