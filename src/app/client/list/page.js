@@ -182,30 +182,30 @@ const ClientList = () => {
                             {loading ? (
                                 <TableSkeleton rows={7} columns={5} />
                             ) : (
-                                <table className="w-full min-w-[900px] border-collapse border border-gray-100">
+                                <table className="w-full border-spacing-y-1 min-w-[1000px] border-2 border-transparent  ">
                                     <thead>
-                                        <tr className="text-left text-sm font-bold uppercase text-gray-800">
+                                        <tr className="text-left m-1 text-sm uppercase text-gray-800 shadow-tr-border rounded-md  ">
                                             <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] border-b border-gray-100 rounded-t-lg flex">
                                                 Client ID <span className="mt-1 ml-2 flex flex-col gap-1">{OtherIcons.arrow_up_svg}{OtherIcons.arrow_down_svg}</span>
                                             </th>
-                                            <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] border-b border-gray-100 rounded-t-lg">Client Name</th>
-                                            <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] border-b border-gray-100 rounded-t-lg">Email ID</th>
-                                            <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] border-b border-gray-100 rounded-t-lg">CONTACT PERSON NAME</th>
-                                            <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] border-b border-gray-100 rounded-t-lg">MOBILE NUMBER</th>
+                                            <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  rounded-t-lg">Client Name</th>
+                                            <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  rounded-t-lg">Email ID</th>
+                                            <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  rounded-t-lg">CONTACT PERSON NAME</th>
+                                            <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] rounded-t-lg">MOBILE NUMBER</th>
 
-                                            <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] border-b border-gray-100 rounded-t-lg">Status</th>
+                                            <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]rounded-t-lg">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {paginatedUsers.map((user) => (
-                                            <tr key={user.userId} className="hover:bg-gray-100 cursor-pointer">
-                                                <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] border-b border-gray-50" onClick={() => router.push(`/client/details?id=${user.userId}`)}>{user.userId}</td>
-                                                <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] border-b border-gray-50" onClick={() => router.push(`/client/details?id=${user.userId}`)}>{user.firstName}</td>
-                                                <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] border-b border-gray-50" onClick={() => router.push(`/client/details?id=${user.userId}`)}>{user.email}</td>
-                                                <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] border-b border-gray-50" onClick={() => router.push(`/client/details?id=${user.userId}`)}>{user.mobileNumber}</td>
-                                                <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] border-b border-gray-50" onClick={() => router.push(`/client/details?id=${user.userId}`)}>{user.mobileNumber}</td>
+                                            <tr key={user?.id} className="cursor-pointer   hover:shadow-tr-border   rounded-md  transition-all duration-200">
+                                                <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  border-gray-50" onClick={() => router.push(`/client/details?id=${user.userId}`)}>{user.userId}</td>
+                                                <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  border-gray-50" onClick={() => router.push(`/client/details?id=${user.userId}`)}>{user.firstName}</td>
+                                                <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]" onClick={() => router.push(`/client/details?id=${user.userId}`)}>{user.email}</td>
+                                                <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]" onClick={() => router.push(`/client/details?id=${user.userId}`)}>{user.mobileNumber}</td>
+                                                <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] " onClick={() => router.push(`/client/details?id=${user.userId}`)}>{user.mobileNumber}</td>
                                                 <td
-                                                    className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] border-b border-gray-50 font-bold items-center flex align-middle"
+                                                    className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  font-bold items-center flex align-middle"
                                                     onClick={() => router.push(`/client/details?id=${user.userId}`)}
                                                 >
                                                     <span

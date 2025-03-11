@@ -1,11 +1,9 @@
-"use client";
 import React, { useState, useRef, useEffect } from "react";
 import { Paperclip, Send, Trash2, Heart, Mic, PauseCircle, PlayCircle, MessageSquare } from "lucide-react";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
 
 import { format } from "date-fns";
-import UserAvatar from "../UserAvatar/UserAvatar";
 
 const users = ["John", "Alice", "David", "Emma", "Aryan", "Prachi"]; // Dummy Users
 
@@ -17,22 +15,17 @@ const ChatBox = () => {
     const [recording, setRecording] = useState(false);
     const [audioURL, setAudioURL] = useState(null);
     const [audioBlob, setAudioBlob] = useState(null);
-    const [isChatOpen, setIsChatOpen] = useState(false);
+    const [isChatOpen, setIsChatOpen] = useState(true);
     const fileInputRef = useRef(null);
     const mediaRecorderRef = useRef(null);
-    const chatStartRef = useRef(null);
+    const chatEndRef = useRef(null); // 🔥 Reference for Auto Scroll
     const [mentionList, setMentionList] = useState([]);
-    const [newMessageCount, setNewMessageCount] = useState(0);
-    const chatContainerRef = useRef(null);
-    const inputRef = useRef(null);
 
-    const scrollToTop = () => {
+    const scrollToBottom = () => {
         requestAnimationFrame(() => {
-            chatStartRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+            chatEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
         });
     };
-
-
 
     // Handle Input Change
     const handleInputChange = (e) => {
@@ -52,15 +45,6 @@ const ChatBox = () => {
             setMentionList([]);
         }
     };
-    const handleMentionClick = () => {
-        setMessage((prev) => prev + "@"); 
-        inputRef.current?.focus(); 
-
-        const searchText = ""; 
-        setMentionList(users); 
-    };
-
-
 
     // Select Mention
     const handleSelectMention = (user) => {
@@ -115,18 +99,21 @@ const ChatBox = () => {
             deleted: false,
         };
 
-        // setMessages([...messages, newMsg]);
-        setMessages([newMsg, ...messages]);
+        setMessages([...messages, newMsg]);
         setMessage("");
         setSelectedFile(null);
         setAudioURL(null);
         setAudioBlob(null);
         setMentionList([]);
-        setNewMessageCount((prev) => prev + 1);
         setTimeout(() => {
-            scrollToTop();
+            scrollToBottom(); // 🔥 Auto Scroll
         }, 100);
+        setTimeout(scrollToBottom, 50); // 
     };
+
+    // useEffect(() => {
+    //     setTimeout(scrollToBottom, 50);
+    // }, [messages]);
 
     // Delete Message
     const handleDelete = (id) => {
@@ -151,89 +138,115 @@ const ChatBox = () => {
         );
     };
 
-    // new sms
-    useEffect(() => {
-        const handleScroll = () => {
-            if (chatContainerRef.current) {
-                const { scrollTop } = chatContainerRef.current;
-                if (scrollTop === 0) {
-                    setNewMessageCount(0); // Reset new message count when scrolled to top
-                }
-            }
-        };
-
-        chatContainerRef.current?.addEventListener("scroll", handleScroll);
-        return () => chatContainerRef.current?.removeEventListener("scroll", handleScroll);
-    }, []);
-
-
-    const user = {
-        name: "S",
-
-        isActive: false,
-        image: "",
-    };
-
     return (
-        <div className=" ">
+        <div className="fixed bottom-5 ">
             {/* Floating Chat Icon */}
-            {/* <button
+            <button
                 className="bg-blue-500 text-white p-3 rounded-full shadow-lg hover:bg-blue-600 transition"
                 onClick={() => setIsChatOpen(!isChatOpen)}
             >
                 <MessageSquare size={24} />
-            </button> */}
+            </button>
 
             {/* Chat Box */}
-            {/* {isChatOpen && ( */}
-            <div className="w-full p-2  border rounded-lg shadow-lg bg-white  bottom-16 ">
-                <div className="flex justify-between items-center mb-2">
-                    <h2 className="font-semibold">Comment</h2>
-                    {/* <button className="text-gray-500 hover:text-black" onClick={() => setIsChatOpen(false)}>
-                        ✖
-                    </button> */}
-                </div>
+            {isChatOpen && (
+                <div className="w-[360px] p-3 -mb-12  border rounded-lg shadow-lg bg-white fixed bottom-16 right-2">
+                    <div className="flex justify-between items-center mb-2">
+                        <h2 className="font-semibold">Comment</h2>
+                        <button className="text-gray-500 hover:text-black" onClick={() => setIsChatOpen(false)}>
+                            ✖
+                        </button>
+                    </div>
 
 
 
-                {/* Input Field with File & Audio Preview */}
-                <div className="flex justify-between items-center  ">
-                    <div className="relative border w-full rounded-lg p-1 mb-2 ">
-                        <div className="flex items-center ">
+                    {/* Messages */}
+                    <div className="space-y-3 max-h-60 overflow-y-auto " >
+                        <PhotoProvider>
+                            {messages.map((msg) => (
+                                <div key={msg.id} className="flex gap-2 items-start group  ">
+                                    <div className="bg-gray-100 p-2 rounded-lg w-fit max-w-[100%] relative">
+                                        <span className="text-xs text-gray-500">{msg.time}</span>
+
+                                        {/* Image Preview */}
+                                        {msg.file && msg.file.type === "image" && !msg.deleted && (
+                                            <PhotoView src={msg.file.url}>
+                                                <img src={msg.file.url} alt="Uploaded" className="w-40 mt-2 rounded-md cursor-pointer" />
+                                            </PhotoView>
+                                        )}
+                                        {/* Audio Player */}
+                                        {msg.audio && !msg.deleted && (
+                                            <audio controls className="mt-2 ">
+                                                <source src={msg.audio.url} type="audio/mp3" />
+                                            </audio>
+                                        )}
+                                        {/* Text Message */}
+                                        {msg.text && <p className={`whitespace-pre-line  ${msg.deleted ? "italic text-gray-500" : ""}`}>{formatMessage(msg.text)}</p>}
+
+
+
+
+                                        {/* Like & Delete */}
+                                        <div className="absolute  -mt-2 top-2 right-1 hidden group-hover:flex gap-2">
+                                            {!msg.liked && (
+                                                <button className="text-gray-500 hover:text-red-500" onClick={() => handleLike(msg.id)}>
+                                                    <Heart size={12} />
+                                                </button>
+                                            )}
+                                            {msg.liked && <span className="text-red-500 text-[12px]">❤️</span>}
+                                            <button className="text-gray-500 hover:text-red-500" onClick={() => handleDelete(msg.id)}>
+                                                <Trash2 size={12} />
+                                            </button>
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+                            ))}
+                        </PhotoProvider>
+
+                        <div ref={chatEndRef} />
+                    </div>
+
+                    {/* Input Field with File & Audio Preview */}
+
+                    <div className="relative border rounded-lg p-1 mt-2 ">
+
+                        <div className="flex items-center gap-2">
                             {/* Attach File */}
-                            <UserAvatar name={user.name} dotcolor='' size={24} image={user.image} isActive={user.isActive} />
-                            <input type="file" ref={fileInputRef} className="hidden " onChange={handleFileSelect} />
+                            <button className="p-1  text-gray-500 hover:text-black" onClick={() => fileInputRef.current.click()}>
+                                <Paperclip size={20} />
+                            </button>
+                            <input type="file" ref={fileInputRef} className="hidden" onChange={handleFileSelect} />
+
+
                             {/* Text Input */}
                             <input
-                                ref={inputRef}
                                 type="text"
-                                className="flex-1 outline-none pl-1"
+                                className="flex-1 outline-none"
                                 placeholder="Type a message..."
                                 value={message}
                                 onChange={handleInputChange}
                                 onKeyDown={(e) => e.key === "Enter" && handleSend()}
                             />
-                            <button
-                                onClick={handleMentionClick}
-                                className="p-1 text-[26px] text-gray-500 hover:text-black cursor-pointer">
-                                @
-                            </button>
 
-                            <button className={`p-1  text-gray-500 hover:text-black `} onClick={() => fileInputRef.current.click()}>
-                                <Paperclip size={22} />
-                            </button>
+
                             {/* Mic Button */}
                             {recording ? (
                                 <button className="p-2 text-red-500" onClick={stopRecording}>
                                     <PauseCircle size={20} />
                                 </button>
                             ) : (
-                                <button className="p-1  text-gray-500 hover:text-black" onClick={startRecording}>
-                                    <Mic size={24} />
+                                <button className="p-2  text-gray-500 hover:text-black" onClick={startRecording}>
+                                    <Mic size={20} />
                                 </button>
                             )}
 
-
+                            {/* Send Button */}
+                            <button className="p-2 text-gray-500 hover:text-black" onClick={handleSend}>
+                                <Send size={20} />
+                            </button>
 
                             {/* Mention List Dropdown */}
                             {mentionList.length > 0 && (
@@ -250,7 +263,6 @@ const ChatBox = () => {
                                 </ul>
                             )}
                         </div>
-                        {/* Send Button */}
 
                         {/* File & Audio Preview Inside Input Box */}
                         {selectedFile && (
@@ -258,7 +270,7 @@ const ChatBox = () => {
                                 {selectedFile.type === "image" ? (
                                     <PhotoProvider>
                                         <PhotoView src={selectedFile.url}>
-                                            <img src={selectedFile.url} alt="Preview" className="w-fit h-14 rounded-md cursor-pointer" />
+                                            <img src={selectedFile.url} alt="Preview" className="w-12 h-12 rounded-md cursor-pointer" />
                                         </PhotoView>
                                     </PhotoProvider>
                                 ) : (
@@ -291,72 +303,12 @@ const ChatBox = () => {
                                     <Trash2 />
                                 </button>
 
-
                             </div>
                         )}
 
                     </div>
-                    <button className=" text-gray-500 pl-2 hover:text-black" onClick={handleSend}>
-                        <Send size={20} />
-                    </button>
                 </div>
-                {/* Messages */}
-                <div className="space-y-3 p-2  max-h-64 overflow-y-auto " >
-
-                    <PhotoProvider>
-                        <div ref={chatStartRef} />
-
-                        {messages.map((msg) => (
-                            <div key={msg.id} className="flex gap-1 items-start group  ">
-                                <UserAvatar name={user.name} dotcolor='' size={20} image={user.image} isActive={user.isActive} />
-                                <div className="bg-gray-100 p-2 rounded-lg w-fit max-w-[90%] relative">
-
-                                    <span className="text-xs text-gray-500">{msg.time}</span>
-
-                                    {/* Image Preview */}
-                                    {msg.file && msg.file.type === "image" && !msg.deleted && (
-                                        <PhotoView src={msg.file.url}>
-                                            <img src={msg.file.url} alt="Uploaded" className="w-40 mt-2 rounded-md cursor-pointer" />
-                                        </PhotoView>
-                                    )}
-                                    {/* Audio Player */}
-                                    {msg.audio && !msg.deleted && (
-                                        <audio controls className="mt-2 border-2 rounded-md max-w-[99%] ">
-                                            <source src={msg.audio.url} type="audio/mp3" />
-                                        </audio>
-                                    )}
-                                    {/* Text Message */}
-                                    {msg.text && <p className={`whitespace-pre-line  ${msg.deleted ? "italic text-[12px] text-gray-500" : ""}`}>{formatMessage(msg.text)}</p>}
-
-
-
-
-                                    {/* Like & Delete */}
-                                    <div className="absolute  -mt-2 top-2 right-1 hidden group-hover:flex gap-2">
-                                        {/* {!msg.liked && (
-                                                <button className="text-gray-500 hover:text-red-500" onClick={() => handleLike(msg.id)}>
-                                                    <Heart size={12} />
-                                                </button>
-                                            )} */}
-                                        {/* {msg.liked && <span className="text-red-500 text-[12px]">❤️</span>} */}
-                                        <button className="text-gray-500 hover:text-red-500" onClick={() => handleDelete(msg.id)}>
-                                            <Trash2 size={12} />
-                                        </button>
-                                    </div>
-
-
-                                </div>
-
-                            </div>
-                        ))}
-                    </PhotoProvider>
-
-                </div>
-
-
-
-            </div>
-            {/* )} */}
+            )}
         </div>
     );
 };

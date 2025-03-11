@@ -5,7 +5,7 @@ import 'react-photo-view/dist/react-photo-view.css';
 
 const FileUpload = ({ onFilesChange, initialFiles }) => {
     const [files, setFiles] = useState([]);
-
+    console.log('files upload', files)
 
     
     

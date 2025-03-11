@@ -17,7 +17,7 @@ const Drawer01 = ({ isOpen, setIsDrawerOpen, details }) => {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed top-0 right-0 h-full w-96 bg-white shadow-lg z-50 drawer-scrollbar"
+            className="fixed top-0 right-0 h-full w-[456px] bg-white shadow-lg z-50 drawer-scrollbar"
         >
             <div className="p-2 flex justify-end items-center">
                 <button
@@ -49,7 +49,6 @@ const Drawer01 = ({ isOpen, setIsDrawerOpen, details }) => {
                     </div> */}
                 </div>
                 <div className="flex justify-between">
-
                     <div>
                         <label className="flex items-center cursor-pointer">
                             <span className="ml-2 text-sm mr-2">{isActive ? "Active" : "Inactive"}</span>
@@ -87,6 +86,7 @@ const Drawer01 = ({ isOpen, setIsDrawerOpen, details }) => {
                 {/* Project Details Section */}
                 <div className="mb-4 mt-4 ml-[5px]">
                     <p className="text-xl leading-6">Project  Details</p>
+
                     <ul className=" h-[22px] mt-[20px] ">
                         <li className="flex mb-2 gap-4">
                             <span className="text-gray-400 w-[120px] text-[14px]">Priority</span><h4>:</h4>
@@ -123,47 +123,20 @@ const Drawer01 = ({ isOpen, setIsDrawerOpen, details }) => {
                                 <AttachmentPreview files={details?.attachments} />
                             </span>
                         </li>
-                    </ul>
+                    </ul>.
+
+
                 </div>
 
                 {/* Comment Section */}
-                {/* <div className="mt-[390px] mb-[20px]">
-                    <p className="text-md">Comment</p>
-                    <div className="flex"> <div className="flex items-center mt-2 border border-gray-300 rounded-md p-2">
-                        <img
-                            src="https://randomuser.me/api/portraits/men/10.jpg"
-                            alt="avatar"
-                            className="w-[30px] h-[30px] rounded-full mr-2"
-                        />
-                        <input
-                            type="text"
-                            placeholder="Add Comment..."
-                            className="flex-1 border-none outline-none p-2 w-[139px]"
-                        />
-                        <p className="flex space-x-2 ml-2 mr-2">
-                            <span>{OtherIcons.special_svg}</span>
-                            <span>{OtherIcons.attachment_svg}</span>
-                            <span>{OtherIcons.speak_svg}</span>
-                        </p>
-                    </div>
-                        <p className="mt-6 ml-4">{OtherIcons.send_comment_svg}</p></div>
+                <div className="mt-[390px] mb-[20px]">
 
+                    <CommentBox />
                 </div>
 
-                <div className="flex mb-[60px]">
-                    <img
-                        src="https://randomuser.me/api/portraits/men/10.jpg"
-                        alt="avatar"
-                        className="w-[30px] h-[30px] rounded-full mr-2"
-                    />
-                    <div className="w-[340px] h-[80px] bg-gray-100 rounded-sm flex flex-col p-2">
-                        <div className="flex justify-between"> <p className="text-gray-400 text-[12px]">2 min</p><p>{OtherIcons.dotted_svg}</p></div>
-                        <p className="text-[14px]">Lorem ipsum dolor sit amet, coetur adipiscing elit ut aliquam, purus sit amet </p>
 
-                    </div>
-                </div> */}
-                <CommentBox />
             </div>
+
         </motion.div>
 
     );
@@ -180,7 +153,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, children }) => {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed top-0 right-0 h-full w-96 bg-white shadow-lg z-50 drawer-scrollbar"
+            className="fixed top-0 right-0 h-full w-[456px] bg-white shadow-lg z-50 drawer-scrollbar"
         >
             <div className="p-2 flex justify-end items-center">
                 <button
@@ -190,7 +163,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, children }) => {
                     <X size={18} />
                 </button>
             </div>
-            <div className="p-4 overflow-y-auto h-full ">
+            <div className="p-4 overflow-y-auto h-full">
                 <div className="flex justify-between">
                     <div className="w-[360px] flex items-center gap-[10px] ">
                         <div className="text-xl text-gray-700">
@@ -269,7 +242,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, children }) => {
                 </div>
 
                 {/* Comment Section */}
-                <CommentBox />
+
                 {/* <div className="mt-[350px] mb-[20px]">
                     <p className="text-md">Comment</p>
                     <div className="flex"> <div className="flex items-center mt-2 border border-gray-300 rounded-md p-2">
@@ -305,6 +278,10 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, children }) => {
 
                     </div>
                 </div> */}
+                <div className="mt-[390px] mb-[20px]">
+
+                    <CommentBox />
+                </div>
             </div>
         </motion.div>
 

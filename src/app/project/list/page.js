@@ -174,28 +174,28 @@ const ProjectList = () => {
             {projectLoading?.loading ? (
               <TableSkeleton rows={7} columns={5} />
             ) : (
-              <table className="w-full min-w-[1000px] border-collapse border border-gray-100">
+              <table className="w-full border-spacing-y-1 min-w-[1000px] border-2 border-transparent  ">
                 <thead>
-                  <tr className="text-left text-sm font-bold uppercase text-gray-800">
-                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b border-gray-100  flex ">
+                    <tr className="text-left m-1 text-sm uppercase text-gray-800 shadow-tr-border rounded-md  ">
+                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px]   flex">
                       <div className='flex items-center justify-between'>
                         <span>PROJECT NAME</span><SortBy setSearchTrigger={setSearchTrigger} selectedSortBy={selectedSortBy} setSelectedSortBy={setSelectedSortBy} sortOrder={sortOrder} setSortOrder={setSortOrder} sortOptions="project_name" resetPageIfNeeded={resetPageIfNeeded} /> </div></th>
-                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b border-gray-100">CLIENT  NAME</th>
-                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] w-[118px] sm:w-[160px] border-b border-gray-100">STATUS</th>
-                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b border-gray-100">STARTING DATE</th>
-                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b border-gray-100">DEADLINE</th>
-                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b border-gray-100">PROJECT LEADER</th>
-                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b border-gray-100">TEAM</th>
-                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] border-b border-gray-100">PRIORITY</th>
+                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px]">CLIENT  NAME</th>
+                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] w-[118px] sm:w-[160px]">STATUS</th>
+                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] ">STARTING DATE</th>
+                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px]">DEADLINE</th>
+                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px]">PROJECT LEADER</th>
+                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] ">TEAM</th>
+                    <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] ">PRIORITY</th>
 
                   </tr>
                 </thead>
                 <tbody>
                   {projectListData?.map((item, index) => (
-                    <tr key={item?.id} className="hover:bg-gray-50 rounded cursor-pointer">
-                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100 rounded" onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.project_name || ""}</td>
-                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-100 rounded" onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.client_name || ""}</td>
-                      <td className={`py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]   border-b border-gray-100 rounded  font-bold `} onClick={() => router.push(`/project/details?id=${item?.id}`)}>
+                    <tr key={item?.id} className="cursor-pointer   hover:shadow-tr-border   rounded-md  transition-all duration-200">
+                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 rounded " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.project_name || ""}</td>
+                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-50 rounded " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.client_name || ""}</td>
+                      <td className={`py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]   border-b border-gray-50 rounded  font-bold`} onClick={() => router.push(`/project/details?id=${item?.id}`)}>
                         <span
                           className={`px-3 py-1 border rounded-md ${item.status === 'To Do'
                             ? 'text-[#6C757D] border-[#6C757D]'
@@ -206,13 +206,13 @@ const ProjectList = () => {
                           {item.status}
                         </span>
                       </td>
-                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-100" onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.start_date}</td>
-                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100" onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.due_date}</td>
-                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100 " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.project_leader_name}</td>
-                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-100 " onClick={() => router.push(`/project/details?id=${item?.id}`)}>
+                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-50 " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.start_date}</td>
+                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 ] " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.due_date}</td>
+                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.project_leader_name}</td>
+                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  border-b border-gray-50 " onClick={() => router.push(`/project/details?id=${item?.id}`)}>
                         <TruncatedTooltipText text={item?.team ? JSON.parse(item?.team)?.join(" , ") : ""} maxLength={25} />
                       </td>
-                      <td className={`py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-100 font-bold`} onClick={() => router.push(`/project/details?id=${item?.id}`)}>
+                      <td className={`py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] border-b border-gray-50 font-bold`} onClick={() => router.push(`/project/details?id=${item?.id}`)}>
                         <span
                           className={`py-1 sm:py-1 px-2 sm:px-4  text-[12px] sm:text-[15px] border rounded-md  ${item?.priority === 'High'
                             ? 'text-[#4976F4] border-[#4976F4]' : item?.priority === 'Low' ?
