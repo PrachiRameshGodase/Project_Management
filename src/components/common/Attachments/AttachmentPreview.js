@@ -56,12 +56,12 @@ const AttachmentPreview = ({ files }) => {
                       <div className="border-2 rounded-md border-gray-300 p-[5px] w-[85px] h-[90px]">
                         <div className=" flex justify-between">
                           <img src='/pdf.png' alt=""
-                         
+
                             className=" w-[40px] bg-gray-50  rounded-sm" />
-                            <EllipsisVertical className="cursor-pointer" onClick={() => setHovered(!hovered)} />
+                          <EllipsisVertical className="cursor-pointer" onClick={() => setHovered(!hovered)} />
                         </div>
                         <p className="text-[12px]">Prepaid</p>
-                          <span className="text-[12px] text-gray-500">12.6 MB</span>
+                        <span className="text-[12px] text-gray-500">12.6 MB</span>
                       </div>
 
                       {hovered &&

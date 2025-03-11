@@ -1,3 +1,4 @@
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 
 const Pagination = ({
@@ -38,12 +39,13 @@ const Pagination = ({
     <div className="flex justify-end items-center mt-4 px-1 sm:px-2 py-2">
       <div className="flex gap-2">
         <button
-          className={`w-[60px] h-[29px] sm:w-[80px] sm:h-[39px] text-[16px] rounded-md border ${
+          className={`w-[60px] flex items-center justify-center h-[29px] sm:w-[80px] sm:h-[39px] text-[14px] rounded-md border ${
             currentPage === 1 ? 'bg-gray-200 text-gray-400' : 'bg-white text-black hover:bg-gray-300'
           }`}
           disabled={currentPage === 1}
           onClick={() => handlePageChange(currentPage - 1)}
         >
+          <ChevronLeft size={16} />
           Previous
         </button>
         
@@ -56,13 +58,13 @@ const Pagination = ({
         />
         
         <button
-          className={`w-[60px] h-[29px] sm:w-[80px] sm:h-[39px] text-[16px] rounded-md border ${
+          className={`w-[60px] flex items-center justify-center h-[29px] sm:w-[80px] sm:h-[39px] text-[14px] rounded-md border ${
             currentPage === totalPages ? 'bg-gray-200 text-gray-400' : 'bg-white text-black hover:bg-gray-300'
           }`}
           disabled={currentPage === totalPages}
           onClick={() => handlePageChange(currentPage + 1)}
         >
-          Next
+          Next<ChevronRight size={16} />
         </button>
       </div>
     </div>

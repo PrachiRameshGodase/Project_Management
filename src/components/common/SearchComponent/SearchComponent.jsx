@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { OtherIcons } from "@/assests/icons";
+import { Tooltip } from "@mui/material";
 
 const SearchComponent = ({ onSearch, section }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -46,24 +47,25 @@ const SearchComponent = ({ onSearch, section }) => {
   return (
     <div className="relative">
       {/* Search Icon Button */}
-      <div
-        className={`${isOpen ? 'top-0 absolute sm:relative' : ''}  z-[999] bg-white w-[44px] h-[44px] flex items-center justify-center border border-gray-300 hover:ring-2 hover:ring-purple-200  hover:border-purple-500   rounded-lg p-3 cursor-pointer`}
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        {!isOpen &&
-          <>
-            {OtherIcons.search_svg}
-          </>
-        }
-        {isOpen &&
-          <span onClick={toggleSearch}>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#000000" fill="none">
-              <path d="M18 6L12 12M12 12L6 18M12 12L18 18M12 12L6 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </span>
-        }
-      </div>
-
+      <Tooltip title='Search' arrow disableInteractive>
+        <div
+          className={`${isOpen ? 'top-0 absolute sm:relative' : ''}  z-[999] bg-white w-[44px] h-[44px] flex items-center justify-center border border-gray-300 hover:ring-2 hover:ring-purple-200  hover:border-purple-500   rounded-lg p-3 cursor-pointer`}
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          {!isOpen &&
+            <>
+              {OtherIcons.search_svg}
+            </>
+          }
+          {isOpen &&
+            <span onClick={toggleSearch}>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#000000" fill="none">
+                <path d="M18 6L12 12M12 12L6 18M12 12L18 18M12 12L6 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </span>
+          }
+        </div>
+      </Tooltip>
       {/* Search Box Popup */}
       {isOpen && (
         <div className="absolute left-[-250px]  sm:left-[-450px] top-0 w-[240px] sm:w-[440px]  bg-white shadow-lg border border-purple-300 rounded-lg">
