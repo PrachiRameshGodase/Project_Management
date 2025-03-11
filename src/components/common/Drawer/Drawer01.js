@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { CircleX, X } from "lucide-react";
+import { Check, CircleX, X } from "lucide-react";
 import { OtherIcons } from "@/assests/icons";
 import AttachmentPreview from "../Attachments/AttachmentPreview";
 import DropdownStatus01 from "../Dropdown/DropdownStatus01";
@@ -61,20 +61,22 @@ const Drawer01 = ({ isOpen, setIsDrawerOpen, details }) => {
                                     onChange={() => setIsActive(!isActive)}
                                 />
                                 <div
-                                    className={`w-14 h-7 rounded-full shadow-inner transition duration-300 ease-in-out bg-gray-100`}
-                                ></div>
+                                    className={`w-[70px] h-[36px] rounded-full shadow- transition duration-300 ease-in-out bg-[#ECE4FF]`}
+                                >
+
+                                </div>
                                 <div
-                                    className={`absolute w-6 h-6 rounded-full shadow-md top-[2px] left-[2px] transition-transform duration-300 ease-in-out ${isActive ? 'translate-x-7 bg-green-400' : 'bg-red-400'
+                                    className={`absolute w-[30px] h-[30px] rounded-full shadow-md top-[3px] left-[4px] transition-transform duration-300 ease-in-out ${isActive ? 'translate-x-7 bg-[#048339]' : 'bg-[#E23703]'
                                         }`}
                                 >
                                     {isActive && (
                                         <span className="absolute inset-0 flex items-center justify-center text-white text-[10px]">
-                                            ✔
+                                            <Check size={16} />
                                         </span>
                                     )}
                                     {!isActive && (
                                         <span className="absolute inset-0 flex items-center justify-center text-white text-[10px]">
-                                            ✘
+                                            <X size={16} />
                                         </span>
                                     )}
                                 </div>
@@ -124,7 +126,6 @@ const Drawer01 = ({ isOpen, setIsDrawerOpen, details }) => {
                             </span>
                         </li>
                     </ul>.
-
 
                 </div>
 

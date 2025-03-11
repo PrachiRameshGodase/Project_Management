@@ -24,25 +24,28 @@ const DropdownStatus01 = ({
     dropdownOutsideClick.handleToggle();
   };
 
+  // Dynamically set color based on selected status
+  const getStatusColor = (status) => {
+    switch (status) {
+      case "To Do":
+        return "#6C757D"; // Gray
+      case "In Progress":
+        return "#CA9700"; // Yellow
+      case "Completed":
+        return "#008053"; // Green
+      case "Under Review":
+        return "#0D4FA7"; // Blue
+      default:
+        return "gray"; // Default color
+    }
+  };
+
   return (
-    <div
-      className={`relative mb-2 ${className}`}
-      ref={dropdownOutsideClick?.ref}
-    >
+    <div className={`relative mb-2 ${className}`} ref={dropdownOutsideClick?.ref}>
       <div
         className={`h-[34px] w-fit flex items-center justify-between gap-2 border rounded-lg px-3 cursor-pointer transition-all duration-200
-    ${
-      selected === "To Do"
-        ? "border-[#6C757D] text-[#6C757D] hover:bg-[#6C757D] hover:text-white"
-        : selected === "In Progress"
-        ? "border-[#CA9700] text-[#CA9700] hover:bg-[#CA9700] hover:text-white"
-        : selected === "Completed"
-        ? "border-[#008053] text-[#008053] hover:bg-[#008053] hover:text-white"
-        : selected === "Under Review"
-        ? "border-[#0D4FA7] text-[#0D4FA7] hover:bg-[#0D4FA7] hover:text-white"
-        : "border-gray-300 text-gray-700 hover:border-purple-500 hover:ring-2 hover:ring-purple-200"
-    }
-  `}
+          ${selected ? `border-[${getStatusColor(selected)}] text-[${getStatusColor(selected)}]  border border-gray-300 hover:border-purple-500 hover:ring-2 hover:ring-purple-200 `
+            : "border-gray-300 text-gray-700 hover:border-purple-500 hover:ring-2 hover:ring-purple-200"}`}
         onClick={dropdownOutsideClick?.handleToggle}
         ref={dropdownOutsideClick?.buttonRef}
       >
@@ -51,12 +54,12 @@ const DropdownStatus01 = ({
           {selectedValue || label}
         </span>
 
-        {/* Up & Down arrow toggle button */}
+        {/* Up & Down arrow toggle button with dynamic color */}
         <button type="button" onClick={dropdownOutsideClick?.handleToggle}>
           {dropdownOutsideClick?.isOpen ? (
-            <ChevronUp size={16} className="text-gray-500" />
+            <ChevronUp size={16} className={`text-[${getStatusColor(selected)}] `} />
           ) : (
-            <ChevronDown size={16} className="text-gray-500" />
+            <ChevronDown size={16} className={`text-[${getStatusColor(selected)}]`} />
           )}
         </button>
       </div>
@@ -68,17 +71,8 @@ const DropdownStatus01 = ({
               <li
                 key={index}
                 className={`font-[400] text-[14px] leading-[16.8px] rounded flex items-center justify-start pl-2 cursor-pointer transition-all duration-200
-    ${
-      option === "To Do"
-        ? `text-[#6C757D]  h-[35px] hover:bg-[#6C757D] hover:text-white`
-        : option === "In Progress"
-        ? `text-[#CA9700]  h-[35px] hover:bg-[#CA9700] hover:text-white`
-        : option === "Completed"
-        ? `text-[#008053]  h-[35px] hover:bg-[#008053] hover:text-white`
-        : `text-[#0D4FA7]  h-[35px] hover:bg-[#0D4FA7] hover:text-white`
-    }
-    ${selected === option ? "bg-opacity-50" : ""}
-  `}
+                  ${`text-[${getStatusColor(option)}] h-[35px] hover:bg-[${getStatusColor(option)}] hover:text-white`}
+                  ${selected === option ? "bg-opacity-50" : ""}`}
                 onClick={() => handleOptionSelect(option)}
               >
                 {option}
