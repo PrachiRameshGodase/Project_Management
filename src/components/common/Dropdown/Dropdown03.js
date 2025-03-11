@@ -37,7 +37,7 @@ export const Dropdown03 = ({ options, selectedValue, onSelect, label, icon }) =>
       >
         <div className="flex items-center gap-2">
           {icon}
-          <span className={`text-gray-700 ${!selected ? "text-gray-400" : ""}`}>
+          <span className={`text-gray-400 ${selected ? "text-gray-700" : ""}`}>
             {selected ? `${selected?.first_name} ${selected?.last_name}` : label}
           </span>
         </div>

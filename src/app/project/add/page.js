@@ -107,18 +107,18 @@ const AddProject = () => {
     return (
         <LayOut>
             <div className="mx-auto sm:mx-0 sm:flex sm:text-center pb-14 ">
-                <div className="text-2xl tracking-tight   sm:ml-[70px]">Add New Project</div>
+                <div className="text-2xl tracking-tight   sm:ml-[7px]">Add New Project</div>
 
                 <div className="sm:flex justify-center items-center h-screen mx-auto">
-                    <form className="w-full sm:w-[600px] mb-4 h-[656px] bg-white p-3 sm:p-8 rounded-lg space-y-5">
+                    <form className="w-full sm:w-[600px] mb-4 h-[656px] bg-white p-8 rounded-lg space-y-5">
                         <div className="sm:flex justify-between">
                             <label className="block text-m ">Project Name</label>
-                            <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m sm:ml-7 placeholder:text-gray-700" type='text' placeholder='Enter Project Name ' value={formData?.project_name} onChange={handleChange} name='project_name' />
+                            <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m sm:ml-7 placeholder:text-gray-400" type='text' placeholder='Enter Project Name ' value={formData?.project_name} onChange={handleChange} name='project_name' />
                         </div>
 
                         <div className="sm:flex justify-between">
                             <label className="block text-m ">Client Name</label>
-                            <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m sm:ml-7 placeholder:text-gray-700" type='text' placeholder='Enter Client Name ' value={formData?.client_name} onChange={handleChange} name='client_name' />
+                            <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m sm:ml-7 placeholder:text-gray-400" type='text' placeholder='Enter Client Name ' value={formData?.client_name} onChange={handleChange} name='client_name' />
                         </div>
                         <div className="sm:flex justify-between">
                             <label className="block text-m">Starting date</label>
@@ -196,7 +196,7 @@ const AddProject = () => {
                         </div>
                         <div className="sm:flex justify-between">
                             <label className="block text-m">Description</label>
-                            <textarea className="w-[350px] h-40 border border-gray-300 rounded-lg p-2 text-m sm:ml-[35px] placeholder:text-gray-700" type='text' placeholder='Enter Description....' value={formData?.description} onChange={handleChange} name='description' />
+                            <textarea className="w-[350px] h-40 border border-gray-300 rounded-lg p-2 text-m sm:ml-[35px] placeholder:text-gray-400" type='text' placeholder='Enter Description....' value={formData?.description} onChange={handleChange} name='description' />
                         </div>
 
                         <div className=" sm:flex justify-end">

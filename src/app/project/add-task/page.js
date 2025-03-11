@@ -74,13 +74,13 @@ console.log("formData", formData)
     return (
         <LayOut>
             <div className="flex text-center">
-                <div className="text-2xl tracking-tight  ml-[70px]">Add New Task</div>
+                <div className="text-2xl tracking-tight  ml-[7px]">Add New Task</div>
 
                 <div className="flex justify-center items-center h-screen mx-auto">
-                    <form className="w-[600px] h-[656px] bg-white p-8 rounded-lg space-y-5 mb-12">
+                    <form className="w-[600px] h-[656px] bg-white p-6 rounded-lg space-y-5 mb-12">
                         <div className="flex justify-between">
                             <label className="block text-m ">Task Title*</label>
-                            <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m ml-7 placeholder:text-gray-700" type='text' placeholder='Enter Task Title' value={formData?.task_title} onChange={handleChange} name='task_title' />
+                            <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m ml-7 placeholder:text-gray-400" type='text' placeholder='Enter Task Title' value={formData?.task_title} onChange={handleChange} name='task_title' />
                         </div>
 
                         <div className="flex justify-between">
@@ -133,7 +133,7 @@ console.log("formData", formData)
 
                         <div className="flex justify-between">
                             <label className="block text-m">Link</label>
-                            <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m ml-[78px] placeholder:text-gray-700" type='text' placeholder='Enter Link' value={formData?.link} name='link' onChange={handleChange}/>
+                            <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m ml-[78px] placeholder:text-gray-400" type='text' placeholder='Enter Link' value={formData?.link} name='link' onChange={handleChange}/>
                         </div>
 
                         <div className="flex justify-between">
@@ -163,7 +163,7 @@ console.log("formData", formData)
                         </div>
                         <div className="flex justify-between">
                             <label className="block text-m">Description..</label>
-                            <textarea className="w-[350px] h-40 border border-gray-300 rounded-lg p-2 text-m ml-[35px] placeholder:text-gray-700" type='text' placeholder='Enter Description' value={formData?.description} name='description' onChange={handleChange}/>
+                            <textarea className="w-[350px] h-40 border border-gray-300 rounded-lg p-2 text-m ml-[35px] placeholder:text-gray-400" type='text' placeholder='Enter Description' value={formData?.description} name='description' onChange={handleChange}/>
                         </div>
 
                         <div className="flex justify-end w-full ">

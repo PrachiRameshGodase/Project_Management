@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { OutsideClick } from "../OutsideClick/OutsideClick";
+import { ChevronDown, ChevronUp } from "lucide-react"; // Import arrow icons
 
 const DropdownStatus01 = ({
   options = [],
@@ -24,9 +25,12 @@ const DropdownStatus01 = ({
   };
 
   return (
-    <div className={`relative mb-2 ${className}`} ref={dropdownOutsideClick?.ref}>
+    <div
+      className={`relative mb-2 ${className}`}
+      ref={dropdownOutsideClick?.ref}
+    >
       <div
-        className={`h-[34px] w-fit flex items-center gap-2 border rounded-lg px-3  cursor-pointer transition-all duration-200
+        className={`h-[34px] w-fit flex items-center justify-between gap-2 border rounded-lg px-3 cursor-pointer transition-all duration-200
     ${
       selected === "To Do"
         ? "border-[#6C757D] text-[#6C757D] hover:bg-[#6C757D] hover:text-white"
@@ -46,15 +50,24 @@ const DropdownStatus01 = ({
         <span className={`${!selected ? "text-gray-400" : ""}`}>
           {selectedValue || label}
         </span>
+
+        {/* Up & Down arrow toggle button */}
+        <button type="button" onClick={dropdownOutsideClick?.handleToggle}>
+          {dropdownOutsideClick?.isOpen ? (
+            <ChevronUp size={16} className="text-gray-500" />
+          ) : (
+            <ChevronDown size={16} className="text-gray-500" />
+          )}
+        </button>
       </div>
 
       {dropdownOutsideClick?.isOpen && (
-        <div className="absolute top-[100%] mt-1 bg-white shadow-lg border border-gray-300 rounded-lg min-w-[110px] w-auto z-50">
+        <div className="absolute top-[100%] mt-1 bg-white shadow-lg border border-gray-300 rounded-lg min-w-[110px] w-[150px] z-50">
           <ul>
             {options.map((option, index) => (
               <li
                 key={index}
-                className={`font-[400] text-[14px] leading-[16.8px]  rounded flex items-center justify-start pl-2 cursor-pointer transition-all duration-200
+                className={`font-[400] text-[14px] leading-[16.8px] rounded flex items-center justify-start pl-2 cursor-pointer transition-all duration-200
     ${
       option === "To Do"
         ? `text-[#6C757D]  h-[35px] hover:bg-[#6C757D] hover:text-white`
