@@ -172,8 +172,6 @@ const ProjectList = () => {
       {/* Table Section */}
       {selectedView == "List" && (
         <>
-
-
           <div className="max-w-full overflow-x-auto mt-6 ">
             {projectLoading?.loading ? (
               <TableSkeleton rows={7} columns={5} />
@@ -191,7 +189,6 @@ const ProjectList = () => {
                     <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px]">PROJECT LEADER</th>
                     <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] ">TEAM</th>
                     <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] ">PRIORITY</th>
-
                   </tr>
                 </thead>
                 <tbody>

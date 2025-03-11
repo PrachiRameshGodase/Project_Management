@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { CircleX, X } from "lucide-react";
+import { Check, CircleX, X } from "lucide-react";
 import { OtherIcons } from "@/assests/icons";
 import AttachmentPreview from "../Attachments/AttachmentPreview";
 import DropdownStatus01 from "../Dropdown/DropdownStatus01";
@@ -177,7 +177,6 @@ const Drawer01 = ({ isOpen, setIsDrawerOpen, details, itemId, setSelectedStatus 
                             </span>
                         </li>
                     </ul>.
-
 
                 </div>
 
