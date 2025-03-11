@@ -39,7 +39,7 @@ const AddUser = () => {
     joining_date: "",
     skill_set: [],
     status: 1,
-    // is_e
+    is_employee:1,
   });
 
 
