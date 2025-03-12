@@ -33,7 +33,7 @@ const LogOut = ({ isOpen2, user, setIsOpen2 }) => {
 
             {/* Sidebar Content */}
             <div
-                className={`fixed top-0 right-0 w-64 h-full bg-white shadow-lg p-5 transition-transform duration-300 z-50 ${isOpen2 ? "translate-x-0" : "translate-x-full"
+                className={`fixed border-2 border-red-800 top-[80px] right-0 w-64 h-fit bg-white shadow-lg p-5 transition-transform duration-300 z-50 ${isOpen2 ? "translate-x-0" : "translate-x-full"
                     }`}
             >
                 <button
@@ -44,7 +44,7 @@ const LogOut = ({ isOpen2, user, setIsOpen2 }) => {
                 </button>
 
                 {/* User Info */}
-                <div className="flex gap-3 items-start mt-10">
+                {/* <div className="flex gap-3 items-start mt-10">
                     <div className="top-4 right-[20px] flex items-center space-x-2">
                         <UserAvatar
                             name={user?.name}
@@ -58,12 +58,12 @@ const LogOut = ({ isOpen2, user, setIsOpen2 }) => {
                         <h2 className="text-lg font-semibold">{user?.name || "Guest"}</h2>
                         <p className="text-sm text-gray-500">{user?.email || "No email"}</p>
                     </div>
-                </div>
+                </div> */}
 
                 {/* Logout Button */}
                 <button
                     onClick={handleLogout}
-                    className="mt-5 flex items-center justify-center hover:gap-3 gap-1 w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600"
+                    className="mt-5 flex items-center justify-center hover:gap-2 gap-1 w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600"
                 >
                     Logout
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#ffffff" fill="none">
