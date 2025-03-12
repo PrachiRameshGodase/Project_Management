@@ -193,10 +193,10 @@ const ProjectList = () => {
                 </thead>
                 <tbody>
                   {projectListData?.map((item, index) => (
-                    <tr key={item?.id} className="cursor-pointer   hover:shadow-tr-border   rounded-md  transition-all duration-200">
-                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[13px] sm:text-[16px]  rounded " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.project_name || ""}</td>
-                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[13px] sm:text-[16px] rounded " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.client_name || ""}</td>
-                      <td className={`py-2 sm:py-3 px-2 sm:px-4  text-[13px] sm:text-[16px]   rounded  font-bold`} onClick={() => router.push(`/project/details?id=${item?.id}`)}>
+                    <tr key={item?.id} className="cursor-pointer hover:bg-gray-100   hover:shadow-tr-border   rounded-md  transition-all duration-200">
+                      <td className="py-2 sm:py-3 px-2 sm:px-4   text-[13px]  sm:text-[17px]  rounded " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.project_name || ""}</td>
+                      <td className="py-2 sm:py-3 px-2 sm:px-4   text-[13px]  sm:text-[17px] rounded " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.client_name || ""}</td>
+                      <td className={`py-2 sm:py-3 px-2 sm:px-4   text-[13px]  sm:text-[17px]   rounded  font-bold`} onClick={() => router.push(`/project/details?id=${item?.id}`)}>
                         <span
                           className={`px-3 py-1 border rounded-md ${item.status === 'To Do'
                             ? 'text-[#6C757D] border-[#6C757D]'
@@ -207,15 +207,15 @@ const ProjectList = () => {
                           {item.status}
                         </span>
                       </td>
-                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[13px] sm:text-[16px]  " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.start_date}</td>
-                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[13px] sm:text-[16px]  " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.due_date}</td>
-                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[13px] sm:text-[16px]   " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.project_leader_name}</td>
-                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[13px] sm:text-[16px]   " onClick={() => router.push(`/project/details?id=${item?.id}`)}>
+                      <td className="py-2 sm:py-3 px-2 sm:px-4   text-[13px]  sm:text-[17px]  " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.start_date}</td>
+                      <td className="py-2 sm:py-3 px-2 sm:px-4   text-[13px]  sm:text-[17px]  " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.due_date}</td>
+                      <td className="py-2 sm:py-3 px-2 sm:px-4   text-[13px]  sm:text-[17px]   " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.project_leader_name}</td>
+                      <td className="py-2 sm:py-3 px-2 sm:px-4   text-[13px]  sm:text-[17px]   " onClick={() => router.push(`/project/details?id=${item?.id}`)}>
                         <TruncatedTooltipText text={item?.team_leaders?.map((item)=>item?.first_name + " " + item?.last_name).join(",")} maxLength={25} />
                       </td>
-                      <td className={`py-2 sm:py-3 px-2 sm:px-4  text-[13px] sm:text-[16px] font-bold`} onClick={() => router.push(`/project/details?id=${item?.id}`)}>
+                      <td className={`py-2 sm:py-3 px-2 sm:px-4   text-[13px]  sm:text-[17px] font-bold`} onClick={() => router.push(`/project/details?id=${item?.id}`)}>
                         <span
-                          className={`py-1 sm:py-1 px-2 sm:px-4  text-[13px] sm:text-[16px] border rounded-md  ${item?.priority === 'High'
+                          className={`py-1 sm:py-1 px-2 sm:px-4   text-[13px]  sm:text-[17px] border rounded-md  ${item?.priority === 'High'
                             ? 'text-[#4976F4] border-[#4976F4]' : item?.priority === 'Low' ?
                               'text-red-400 border-red-400' : 'text-[#954BAF] border-[#954BAF]'
                             } inline-block`}
