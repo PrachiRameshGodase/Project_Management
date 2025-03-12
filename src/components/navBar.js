@@ -43,7 +43,7 @@ const NavBar = () => {
   };
 
   return (
-    <div className="w-full z-50 h-[80px] fixed  flex items-center  border-b border-gray-50 bg-white shadow-sm">
+    <div className="w-full z-50 h-[80px] fixed  flex items-center shadow-nav-Shadow  border-b border-gray-50 bg-white ">
       <Toaster
         position="top-center"
         reverseOrder={false}
@@ -74,7 +74,7 @@ const NavBar = () => {
                 ${(item.label === "Projects" || item.label === "Clients") ? "w-[110px] h-[44px]" : "w-[93px] h-[44px]"}`}
             >
               {item.icon}
-              <span className="text-[18px] mt-1">{item.label}</span>
+              <span className={`text-[18px] mt-1 ${isActive && 'text-[#0E004B]'}`}>{item.label}</span>
             </div>
           );
         })}
@@ -94,7 +94,11 @@ const NavBar = () => {
           </button>
         </div>
 
-        <LogOut isOpen2={isOpen2} user={user} setIsOpen2={setIsOpen2} />
+        <LogOut
+          isOpen2={isOpen2}
+          user={user}
+          setIsOpen2={setIsOpen2}
+        />
 
 
       </>

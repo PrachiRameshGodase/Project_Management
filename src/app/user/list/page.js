@@ -160,7 +160,7 @@ const UserList = () => {
             {/* Filter Options */}
             <div className="mt-16 flex flex-col gap-4 px-4">
               <Tooltip title='Add User' arrow disableInteractive>
-              <button className="w-[49px] h-[44px] bg-[#048339] text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/user/add')}>+</button>
+                <button className="w-[49px] h-[44px] bg-[#048339] text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/user/add')}>+</button>
               </Tooltip>
               <Dropdown01 options={status} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />
               <Dropdown01 options={designation} selectedValue={selectedDesignation} onSelect={setSelectedDesignation} label="View" icon={OtherIcons.view_svg} />
@@ -178,7 +178,7 @@ const UserList = () => {
             <table className="w-full border-spacing-y-1 min-w-[1000px] border-2 border-transparent  ">
               <thead>
                 <tr className="text-left m-1 text-sm uppercase text-black opacity-80 shadow-tr-border rounded-md  ">
-                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] ">
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[14px] min-w-[100px] ">
                     <div className='flex items-center justify-between'>
                       <span> User ID</span>
 
@@ -193,12 +193,12 @@ const UserList = () => {
                       />
                     </div>
                   </th>
-                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px]">User Name</th>
-                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px]  ">Email ID</th>
-                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] ">Mobile Number</th>
-                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] ">Designation</th>
-                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] ">Date Of Joining</th>
-                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px]  flex justify-center items-center">Status</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[14px] min-w-[100px]">User Name</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[14px] in-w-[100px]  ">Email ID</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[14px] min-w-[100px] ">Mobile Number</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[14px] min-w-[100px] ">Designation</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[14px] min-w-[100px] ">Date Of Joining</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[14px] min w-full flex justify-center items-center">Status</th>
                 </tr>
               </thead>
               <tbody>

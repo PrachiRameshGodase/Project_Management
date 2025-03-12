@@ -97,16 +97,16 @@ const sendData={
   console.log("formData", formData)
   return (
     <LayOut>
-      <div className="sm:flex mx-auto sm:mx-0">
-        <div className="text-2xl tracking-tight sm:ml-[7px]">Add User</div>
+      <div className="sm:flex mx-auto sm:mx-0  flex-col items-center justify-center">
+        <div className="text-2xl tracking-tight sm:ml-[7px] text-[32px]  w-full">Add New User</div>
 
-        <div className="sm:flex justify-between items-center h-screen mx-auto">
-          <form className="sm:w-[600px] h-[100%] bg-white p-2 sm:p-8 rounded-lg space-y-5" onSubmit={handleSubmit}>
+        <div className="sm:flex justify-between items-center h-screen mx-auto b">
+          <form className="sm:w-[650px] h-[100%] bg-white p-2 sm:p-8 rounded-lg space-y-6" onSubmit={handleSubmit}>
 
             <div className="sm:flex justify-between items-center">
-              <label className="block text-m">First Name <span className='text-red-600'>*</span></label>
+              <label className="block text-[20px]">First Name <span className='text-red-600'>*</span></label>
               <input
-                className="w-[310px] sm:w-[350px]  h-10 border border-gray-300 rounded-lg p-2 text-m placeholder:text-gray-400"
+                className="w-[310px] sm:w-[350px] md:w-[400px]  h-10 border border-[#0000004D] rounded-lg p-2 text-m placeholder:text-gray-600"
                 type="text"
                 name="first_name"
                 placeholder="Enter First Name"
@@ -116,9 +116,9 @@ const sendData={
             </div>
 
             <div className="sm:flex justify-between items-center">
-              <label className="block text-m">Last Name</label>
+              <label className="block text-[20px]">Last Name</label>
               <input
-                className="w-[310px] sm:w-[350px]  h-10 border border-gray-300 rounded-lg p-2 text-m placeholder:text-gray-400"
+                className="w-[310px] sm:w-[350px] md:w-[400px]  h-10 border border-[#0000004D] rounded-lg p-2 text-m placeholder:text-gray-600"
                 type="text"
                 name="last_name"
                 placeholder="Enter Last Name"
@@ -130,7 +130,7 @@ const sendData={
             {/* <div className="sm:flex justify-between items-center">
               <label className="block text-m">User ID <span className='text-red-600'>*</span></label>
               <input
-                className="w-[310px] sm:w-[350px]  h-10 border border-gray-300 rounded-lg p-2 text-m placeholder:text-gray-400"
+                className="w-[310px] sm:w-[350px] md:w-[400px]  h-10 border border-[#0000004D] rounded-lg p-2 text-m placeholder:text-gray-600"
                 type="text"
                 name="employee_id"
                 placeholder="Enter User ID"
@@ -140,9 +140,9 @@ const sendData={
             </div> */}
 
             <div className="sm:flex justify-between items-center">
-              <label className="block text-m">Email <span className='text-red-600'>*</span></label>
+              <label className="block text-[20px]">Email <span className='text-red-600'>*</span></label>
               <input
-                className="w-[310px] sm:w-[350px]  h-10 border border-gray-300 rounded-lg p-2 text-m placeholder:text-gray-400"
+                className="w-[310px] sm:w-[350px] md:w-[400px]  h-10 border border-[#0000004D] rounded-lg p-2 text-m placeholder:text-gray-600"
                 type="email"
                 name="email"
                 placeholder="Enter Email"
@@ -151,12 +151,12 @@ const sendData={
               />
             </div>
             <div className="sm:flex justify-between items-center relative">
-              <label className="block text-m">
+              <label className="block text-[20px]">
                 Password <span className="text-red-600">*</span>
               </label>
               <div className="relative">
                 <input
-                  className="w-[310px] sm:w-[350px] h-10 border border-gray-300 rounded-lg p-2 pr-10 text-m placeholder:text-gray-400"
+                  className="w-[310px] sm:w-[350px]  md:w-[400px] h-10 border border-[#0000004D] rounded-lg p-2 pr-10 text-m placeholder:text-gray-600"
                   type={showPassword ? "text" : "password"}
                   name="password"
                   placeholder="Enter Password"
@@ -173,9 +173,9 @@ const sendData={
               </div>
             </div>
             <div className="sm:flex justify-between items-center">
-              <label className="block text-m">Phone Number</label>
+              <label className="block text-[20px]">Phone Number</label>
               <input
-                className="w-[310px] sm:w-[350px]  h-10 border border-gray-300 rounded-lg p-2 text-m placeholder:text-gray-400"
+                className="w-[310px] sm:w-[350px] md:w-[400px]  h-10 border border-[#0000004D] rounded-lg p-2 text-m placeholder:text-gray-600"
                 type="text"
                 name="phone_number"
                 placeholder="Enter Phone Number"
@@ -185,7 +185,7 @@ const sendData={
             </div>
 
             <div className="sm:flex justify-between items-center">
-              <label className="block text-m">Department</label>
+              <label className="block text-[20px]">Department</label>
               <Dropdown001
                 options={departmentOptions}
                 selectedValue={formData.department}
@@ -195,7 +195,7 @@ const sendData={
             </div>
 
             <div className="sm:flex justify-between items-center">
-              <label className="block text-m">Designation</label>
+              <label className="block text-[20px]">Designation</label>
               <Dropdown001
                 options={designation}
                 selectedValue={formData.designation}
@@ -205,7 +205,7 @@ const sendData={
             </div>
 
             <div className="sm:flex justify-between items-center">
-              <label className="block text-m">Joining Date</label>
+              <label className="block text-[20px]">Joining Date</label>
               <CustomDatePicker
                 selectedDate={formData.joining_date}
                 onChange={(date) => handleDropdownChange("joining_date", date)}
@@ -213,7 +213,7 @@ const sendData={
             </div>
 
             <div className="sm:flex justify-between items-center">
-              <label className="block text-m">Skill Set</label>
+              <label className="block text-[20px]">Skill Set</label>
               <Dropdown02
                 options={Skills}
                 selectedValues={Array.isArray(formData.skill_set) ? formData.skill_set : []}
@@ -225,7 +225,7 @@ const sendData={
             <div className='sm:flex w-full justify-end'>
               <button
                 type="submit"
-                className="w-[310px] sm:w-[350px]  h-10 border border-gray-300 rounded-lg p-2 text-m bg-black text-gray-100"
+                className="w-[310px] sm:w-[350px]  md:w-[400px]  h-10 border border-[#0000004D] rounded-lg p-2 text-m bg-black text-gray-100"
               >
                 Submit
               </button>

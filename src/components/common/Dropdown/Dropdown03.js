@@ -28,16 +28,16 @@ export const Dropdown03 = ({ options, selectedValue, onSelect, label, icon }) =>
 
  
   return (
-    <div className="relative w-[350px]" ref={dropdownOutsideClick?.ref}>
+    <div className="relative w-[310px] sm:w-[350px] md:w-[400px]" ref={dropdownOutsideClick?.ref}>
       {/* Dropdown Header */}
       <div
-        className="h-10 flex items-center justify-between gap-2 border border-gray-300 rounded-lg px-3 py-2 cursor-pointer w-full"
+        className="h-10 flex items-center justify-between gap-2 border border-[#0000004D] rounded-lg px-3 py-2 cursor-pointer w-full"
         onClick={dropdownOutsideClick?.handleToggle}
         ref={dropdownOutsideClick?.buttonRef}
       >
         <div className="flex items-center gap-2">
           {icon}
-          <span className={`text-gray-400 ${selected ? "text-gray-700" : ""}`}>
+          <span className={`text-gray-600 ${selected ? "text-gray-700" : ""}`}>
             {selected ? `${selected?.first_name} ${selected?.last_name}` : label}
           </span>
         </div>
@@ -54,9 +54,9 @@ export const Dropdown03 = ({ options, selectedValue, onSelect, label, icon }) =>
 
       {/* Dropdown Menu */}
       {dropdownOutsideClick?.isOpen && (
-        <div className="absolute top-[100%] mt-2 bg-white shadow-lg border border-gray-300 rounded-lg w-full z-50">
+        <div className="absolute top-[100%] mt-2 bg-white shadow-lg border border-[#0000004D] rounded-lg w-full z-50">
           {/* Search Input */}
-          <div className="flex items-center border-b border-gray-300 px-3 py-2">
+          <div className="flex items-center border-b border-[#0000004D] px-3 py-2">
             <Search className="w-4 h-4 text-gray-500 mr-2" />
             <input
               type="text"

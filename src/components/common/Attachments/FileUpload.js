@@ -29,7 +29,7 @@ const FileUpload = ({ onFilesChange, initialFiles }) => {
     };
 
     return (
-        <div className="w-[310px] sm:w-[350px]  relative border-2 border-dashed border-gray-400 rounded-lg flex flex-col items-center justify-center group p-0">
+        <div className="w-[310px] sm:w-[350px]  md:w-[400px] relative border-2 border-dashed border-[#0000004D] rounded-lg flex flex-col items-center justify-center group p-0">
             <label className="h-10 w-full text-[12px] flex items-center justify-center text-center gap-2 cursor-pointer hover:bg-gray-100 transition rounded-lg">
                 <input type="file" className="hidden" multiple accept="image/*,application/pdf" onChange={handleFileChange} />
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#000000" fill="none">
