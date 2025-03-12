@@ -76,11 +76,7 @@ const AddProject = () => {
       }, [dispatch, itemId]);
     useEffect(() => {
         if (itemId && projectDetailData) {
-            // const formattedAttachments = projectDetailData?.attachments?.map((fileName) => ({
-            //     name: fileName,
-            //     url: `/uploads/${fileName}`, // Adjust this path based on how your files are stored
-            //     type: fileName.endsWith(".pdf") ? "application/pdf" : "image/*", // Basic type guessing
-            // }));
+           
             setFormData({
                 id: projectDetailData?.id,
                 project_name: projectDetailData?.project_name,
@@ -88,9 +84,9 @@ const AddProject = () => {
                 start_date: projectDetailData?.start_date,
                 due_date: projectDetailData?.due_date,
                 priority: projectDetailData?.priority,
-                project_leader: projectDetailData?.project_leader,
+                project_leader: projectDetailData?.project_leader?.id,
                 project_stage: projectDetailData?.project_stage,
-                team: projectDetailData?.team,
+                team: (projectDetailData?.team_leaders.map((item) => item?.id)),
                 // attachments:formattedAttachments,
                 description: projectDetailData?.description
             })
@@ -105,7 +101,7 @@ const AddProject = () => {
         };
         dispatch(addProject({ projectData: updatedFormData, router }));
     };
-    console.log("formData", formData)
+    console.log("formData", formData?.team)
 
     return (
         <LayOut>
@@ -174,9 +170,10 @@ const AddProject = () => {
 
                         <div className="sm:flex justify-between">
                             <label className="block text-m mr-20">Team</label>
+                         
                             <Dropdown002
                                 options={usersList}
-                                selectedValue={formData?.team}
+                                selectedValue={formData.team}
                                 onSelect={(value) => handleDropdownChange("team", value)}
                                 label="Select Team"
                             />

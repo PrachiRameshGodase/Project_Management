@@ -13,10 +13,7 @@ const DropdownStatus01 = ({
   const dropdownOutsideClick = OutsideClick();
   const [selected, setSelected] = useState(selectedValue);
 
-  // Sync state when selectedValue changes
-  useEffect(() => {
-    setSelected(selectedValue);
-  }, [selectedValue]);
+
 
   const handleOptionSelect = (value) => {
     setSelected(value);
@@ -40,10 +37,15 @@ const DropdownStatus01 = ({
     }
   };
 
+    // Sync state when selectedValue changes
+    useEffect(() => {
+      setSelected(selectedValue);
+    }, [selectedValue]);
+console.log("selectedValue", selectedValue)
   return (
     <div className={`relative mb-2 ${className}`} ref={dropdownOutsideClick?.ref}>
       <div
-        className={`h-[34px] w-fit flex items-center justify-between gap-2 border rounded-lg px-3 cursor-pointer transition-all duration-200
+        className={`h-[34px] w-full flex items-center justify-between gap-2 border rounded-lg px-3 cursor-pointer transition-all duration-200
           ${selected ? `border-[${getStatusColor(selected)}] text-[${getStatusColor(selected)}]  border border-gray-300 hover:border-purple-500 hover:ring-2 hover:ring-purple-200 `
             : "border-gray-300 text-gray-700 hover:border-purple-500 hover:ring-2 hover:ring-purple-200"}`}
         onClick={dropdownOutsideClick?.handleToggle}
@@ -51,7 +53,7 @@ const DropdownStatus01 = ({
       >
         {icon}
         <span className={`${!selected ? "text-gray-400" : ""}`}>
-          {selectedValue || label}
+          {selected || selectedValue}
         </span>
 
         {/* Up & Down arrow toggle button with dynamic color */}

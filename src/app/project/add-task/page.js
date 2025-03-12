@@ -1,5 +1,5 @@
 "use client"
-import { addProjectTask } from '@/app/store/projectSlice'
+import { addProjectTask, fetchProjectTaskDetails } from '@/app/store/projectSlice'
 import { fetchUsers } from '@/app/store/userSlice'
 import FileUpload from '@/components/common/Attachments/FileUpload'
 import CustomDatePicker from '@/components/common/DatePicker/CustomDatePicker'
@@ -19,11 +19,20 @@ const AddTask = () => {
 
     const [itemId, setItemId] = useState(null);
     const [isEditMode, setIsEditMode] = useState(false);
+
+    const taskDetailsData = useSelector(
+        (state) => state.project?.projectTaskDetails?.data
+    );
+    useEffect(() => {
+        if (itemId) {
+            dispatch(fetchProjectTaskDetails(itemId));
+        }
+    }, [dispatch, itemId]);
     useEffect(() => {
         if (typeof window !== "undefined") {
             const params = new URLSearchParams(window.location.search);
             setItemId(params.get("id"));
-           
+
         }
     }, []);
     const [searchTrigger, setSearchTrigger] = useState(0);
@@ -32,7 +41,7 @@ const AddTask = () => {
         const sendData = {};
         dispatch(fetchUsers(sendData));
     }, [searchTrigger, dispatch,]);
-console.log("itemId", itemId)
+
     const [formData, setFormData] = useState({
         project_id: "",
         task_title: "",
@@ -45,7 +54,7 @@ console.log("itemId", itemId)
         visibility: "",
         description: ""
     })
-console.log("formData", formData)
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevState => ({
@@ -68,8 +77,28 @@ console.log("formData", formData)
     }, [itemId]);
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(addProjectTask({ projectData: formData, router ,itemId}));
+        dispatch(addProjectTask({ projectData: formData, router, itemId }));
     };
+
+
+
+    useEffect(() => {
+        if (taskDetailsData && itemId) {
+            setFormData({
+                id: taskDetailsData?.id,
+                project_id: taskDetailsData?.project_id,
+                task_title: taskDetailsData?.task_title,
+                task_type: taskDetailsData?.task_type,
+                due_date: taskDetailsData?.due_date,
+                priority: taskDetailsData?.priority,
+                department: taskDetailsData?.department,
+                link: taskDetailsData?.link,
+                visibility: taskDetailsData?.visibility,
+                description: taskDetailsData?.description,
+                // team: taskDetailsData?.team_leaders?.map((item) => item?.id)
+            });
+        }
+    }, [taskDetailsData, itemId]);
 
     return (
         <LayOut>
@@ -133,7 +162,7 @@ console.log("formData", formData)
 
                         <div className="flex justify-between">
                             <label className="block text-m">Link</label>
-                            <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m ml-[78px] placeholder:text-gray-400" type='text' placeholder='Enter Link' value={formData?.link} name='link' onChange={handleChange}/>
+                            <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m ml-[78px] placeholder:text-gray-400" type='text' placeholder='Enter Link' value={formData?.link} name='link' onChange={handleChange} />
                         </div>
 
                         <div className="flex justify-between">
@@ -163,7 +192,7 @@ console.log("formData", formData)
                         </div>
                         <div className="flex justify-between">
                             <label className="block text-m">Description..</label>
-                            <textarea className="w-[350px] h-40 border border-gray-300 rounded-lg p-2 text-m ml-[35px] placeholder:text-gray-400" type='text' placeholder='Enter Description' value={formData?.description} name='description' onChange={handleChange}/>
+                            <textarea className="w-[350px] h-40 border border-gray-300 rounded-lg p-2 text-m ml-[35px] placeholder:text-gray-400" type='text' placeholder='Enter Description' value={formData?.description} name='description' onChange={handleChange} />
                         </div>
 
                         <div className="flex justify-end w-full ">

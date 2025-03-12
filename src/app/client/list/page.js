@@ -1,106 +1,88 @@
 "use client"
+import { fetchUsers } from '@/app/store/userSlice';
 import { OtherIcons } from '@/assests/icons';
-import Dropdown01 from '@/components/common/Dropdown/Dropdown01';
+import Dropdown01, { DropdownStatus } from '@/components/common/Dropdown/Dropdown01';
 import { designation, projectSortConstant, status, view } from '@/components/common/Helper/Helper';
+import { useDebounceSearch } from '@/components/common/Helper/HelperFunction';
 import SearchComponent from '@/components/common/SearchComponent/SearchComponent';
 import TableSkeleton from '@/components/common/TableSkeleton/TableSkeleton';
 import LayOut from '@/components/LayOut';
 import { Tooltip } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Pagenation from '@/components/common/Pagenation/Pagenation';
 
 const ClientList = () => {
     const router = useRouter()
-    const users = [
-        {
-            userId: 'U001',
-            firstName: 'John',
-            email: 'john@example.com',
-            mobileNumber: '+1234567890',
-            designation: 'Manager',
-            dateOfJoining: '2023-08-15',
-            status: 'Active'
-        },
-        {
-            userId: 'U002',
-            firstName: 'Alice',
-            email: 'alice@example.com',
-            mobileNumber: '+1987654321',
-            designation: 'Developer',
-            dateOfJoining: '2022-11-20',
-            status: 'Inactive'
-        },
-        {
-            userId: 'U003',
-            firstName: 'Alice',
-            email: 'alice@example.com',
-            mobileNumber: '+1987654321',
-            designation: 'Developer',
-            dateOfJoining: '2022-11-20',
-            status: 'Inactive'
-        },
-        {
-            userId: 'U004',
-            firstName: 'Alice',
-            email: 'alice@example.com',
-            mobileNumber: '+1987654321',
-            designation: 'Developer',
-            dateOfJoining: '2022-11-20',
-            status: 'Inactive'
-        },
-        {
-            userId: 'U005',
-            firstName: 'Alice',
-            email: 'alice@example.com',
-            mobileNumber: '+1987654321',
-            designation: 'Developer',
-            dateOfJoining: '2022-11-20',
-            status: 'Inactive'
-        },
-        {
-            userId: 'U006',
-            firstName: 'Alice',
-            email: 'alice@example.com',
-            mobileNumber: '+1987654321',
-            designation: 'Developer',
-            dateOfJoining: '2022-11-20',
-            status: 'Inactive'
-        },
-        {
-            userId: 'U007',
-            firstName: 'Alice',
-            email: 'alice@example.com',
-            mobileNumber: '+1987654321',
-            designation: 'Developer',
-            dateOfJoining: '2022-11-20',
-            status: 'Inactive'
-        },
-    ];
+    const dispatch = useDispatch();
+    const usersList = useSelector((state) => state.user?.list?.data);
+    const usersLoading = useSelector((state) => state.user);
+    const totalCount = useSelector((state) => state?.user?.list?.total);
 
-    const [selectedStatus, setSelectedStatus] = useState('');
+
+
     const [selectedView, setSelectedView] = useState("List");
     const [selectedSort, setSelectedSort] = useState('');
     const [loading, setLoading] = useState(false);
 
     const [currentPage, setCurrentPage] = useState(1);
-    const entriesPerPage = 5;
-    const totalEntries = users.length;
-    const totalPages = Math.ceil(totalEntries / entriesPerPage);
+    const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [searchTrigger, setSearchTrigger] = useState(0);
 
-    // Filtered Users
-    const filteredUsers = users.filter((user) => {
-        return (
-            (selectedStatus === '' || user.status === selectedStatus) &&
-            (selectedSort === '' || user.designation === selectedSort)
-        );
-    });
+    // reset current page to 1 when any filters are applied
+    const resetPageIfNeeded = () => {
+        if (currentPage > 1) {
+            setCurrentPage(1);
+        }
+    };
 
-    // Pagination Logic
-    const startEntry = (currentPage - 1) * entriesPerPage;
-    const endEntry = startEntry + entriesPerPage;
-    const paginatedUsers = filteredUsers.slice(startEntry, endEntry);
 
+    //Search/////////////////////////////////////////////////////////////
+    const [searchTermFromChild, setSearchTermFromChild] = useState("");
+    // Debounced function to trigger search
+    const debouncedSearch = useDebounceSearch(() => {
+        setSearchTrigger((prev) => prev + 1);
+    }, 800);
+
+    // Handle search term change from child component
+    const onSearch = (term) => {
+        setSearchTermFromChild(term);
+        if (term.length > 0 || term === "") {
+            debouncedSearch();
+        }
+    };
+
+    // sortBy
+    const [selectedSortBy, setSelectedSortBy] = useState("");
+    const [sortOrder, setSortOrder] = useState(1);
+    //sortby
+
+    // filter
+    const [selectedStatus, setSelectedStatus] = useState('All');
+    // filter
+
+    useEffect(() => {
+        const sendData = {
+            limit: itemsPerPage,
+            page: currentPage,
+            is_client:1,
+            ...(searchTermFromChild ? { search: searchTermFromChild } : {}),
+            ...(selectedSortBy && { sort_by: selectedSortBy, sort_order: sortOrder }),
+            // ...(selectedDesignation && { designation: selectedDesignation }),
+
+            ...(selectedStatus !== null && selectedStatus !== undefined
+                ? { status: selectedStatus }
+                : {}),
+        };
+
+        dispatch(fetchUsers(sendData));
+    }, [searchTrigger, dispatch, selectedStatus]);
+
+
+    // filter short-list
     const [isFilterOpen, setIsFilterOpen] = useState(false);
+
 
     return (
         <LayOut>
@@ -112,15 +94,26 @@ const ClientList = () => {
                     <div className="flex">
                         <p className="text-[20px] sm:text-[30px] leading-[32px] tracking-[-1.5px]">All Client list</p>
                         <p className="font-bold p-2 rounded-full text-[10.16px] leading-[12.19px] text-[#400F6F] mt-3 ml-2 bg-[#f0e7fa] flex items-center justify-center w-[50px] h-[10px]">
-                            {users.length} total
+                            {totalCount} total
+                        </p>
+                        <p
+                            className={`${usersLoading?.loading && "rotate_01"} mt-[6px] hover:cursor-pointer`}
+                            data-tooltip-content="Reload"
+                            data-tooltip-place="bottom"
+                            data-tooltip-id="my-tooltip"
+                            onClick={() => setSearchTrigger(prev => prev + 1)}>
+                            {OtherIcons?.refresh_svg}
                         </p>
                     </div>
                     {/* Right Section (Filters & Search) */}
                     <div className="hidden md:flex gap-6 items-center">
-                        <Dropdown01 options={view} selectedValue={selectedView} onSelect={setSelectedView} label="View" icon={OtherIcons.view_svg} />
-                        <Dropdown01 options={designation} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />
-                        <Dropdown01 options={projectSortConstant} selectedValue={selectedSort} onSelect={setSelectedSort} label="Sort By" icon={OtherIcons.sort_by_svg} />
-                        <SearchComponent />
+                        <DropdownStatus
+                            selectedValue={selectedStatus}
+                            onSelect={setSelectedStatus}
+                        />
+                        {/* <Dropdown01 options={designation} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />
+                        <Dropdown01 options={projectSortConstant} selectedValue={selectedSort} onSelect={setSelectedSort} label="Sort By" icon={OtherIcons.sort_by_svg} /> */}
+                        <SearchComponent onSearch={onSearch} section={searchTrigger} />
 
                         <div className="w-[1px] h-[40px] bg-gray-400 opacity-40" />
                         <Tooltip title='Add Client' arrow disableInteractive>
@@ -131,7 +124,7 @@ const ClientList = () => {
                     {/* Mobile Filter Button */}
                     <div className='flex gap-2 md:hidden'>
 
-                        <SearchComponent />
+                        <SearchComponent onSearch={onSearch} section={searchTrigger} />
                         <Tooltip title='Filter' arrow disableInteractive>
                             <button
                                 className="md:hidden  w-[44px] h-[44px] bg-gray-100 text-gray-600  border border-gray-300 hover:ring-2 hover:ring-purple-200  hover:border-purple-500 rounded-lg flex items-center justify-center text-2xl"
@@ -170,7 +163,7 @@ const ClientList = () => {
                         <div className="mt-16 flex flex-col gap-4 px-4">
                             <Tooltip title='Add Client' arrow disableInteractive>
 
-                            <button className="w-[49px] h-[44px] bg-[#048339] text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/client/add')}>+</button>
+                                <button className="w-[49px] h-[44px] bg-[#048339] text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/client/add')}>+</button>
                             </Tooltip>
 
                             <Dropdown01 options={view} selectedValue={selectedView} onSelect={setSelectedView} label="View" icon={OtherIcons.view_svg} />
@@ -182,61 +175,60 @@ const ClientList = () => {
                 </div>
 
                 {/* Table Section */}
-                {selectedView == "List" &&
-                    <>
+                {/* {selectedView == "List" && */}
+                <>
 
-                        <div className="max-w-full overflow-x-auto mt-6">
-                            {loading ? (
-                                <TableSkeleton rows={7} columns={5} />
-                            ) : (
-                                <table className="w-full border-spacing-y-1 min-w-[1000px] border-2 border-transparent  ">
-                                    <thead>
-                                        <tr className="text-left m-1 text-sm uppercase text-black opacity-80 shadow-tr-border rounded-md  ">
-                                            <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] border-b border-gray-100 rounded-t-lg flex">
-                                                Client ID <span className="mt-1 ml-2 flex flex-col gap-1">{OtherIcons.arrow_up_svg}{OtherIcons.arrow_down_svg}</span>
-                                            </th>
-                                            <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  rounded-t-lg">Client Name</th>
-                                            <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  rounded-t-lg">Email ID</th>
-                                            <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  rounded-t-lg">CONTACT PERSON NAME</th>
-                                            <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] rounded-t-lg">MOBILE NUMBER</th>
+                    <div className="max-w-full overflow-x-auto mt-6">
+                        {usersLoading?.loading ? (
+                            <TableSkeleton rows={7} columns={5} />
+                        ) : (
+                            <table className="w-full border-spacing-y-1 min-w-[1000px] border-2 border-transparent  ">
+                                <thead>
+                                    <tr className="text-left m-1 text-sm uppercase text-black opacity-80 shadow-tr-border rounded-md  ">
+                                        <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] border-b border-gray-100 rounded-t-lg flex">
+                                            Client ID <span className="mt-1 ml-2 flex flex-col gap-1">{OtherIcons.arrow_up_svg}{OtherIcons.arrow_down_svg}</span>
+                                        </th>
+                                        <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  rounded-t-lg">Client Name</th>
+                                        <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  rounded-t-lg">Email ID</th>
+                                        <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  rounded-t-lg">CONTACT PERSON NAME</th>
+                                        {/* <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] rounded-t-lg">MOBILE NUMBER</th> */}
 
-                                            <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] rounded-t-lg">Status</th>
+                                        <th className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] rounded-t-lg">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {usersList?.map((user, index) => (
+                                        <tr key={user?.id} className="cursor-pointer   hover:shadow-tr-border   rounded-md  transition-all duration-200">
+                                            <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  border-gray-50" onClick={() => router.push(`/client/details?id=${user?.id}`)}>{user?.employee_id}</td>
+                                            <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  border-gray-50" onClick={() => router.push(`/client/details?id=${user?.id}`)}>{user?.name}</td>
+                                            <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]" onClick={() => router.push(`/client/details?id=${user?.id}`)}>{user?.email}</td>
+                                            {/* <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]" onClick={() => router.push(`/client/details?id=${user.userId}`)}>{user.mobileNumber}</td> */}
+                                            <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] " onClick={() => router.push(`/client/details?id=${user?.id}`)}>{user?.contact_name}</td>
+                                            <td
+                                                className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  font-bold items-center flex align-middle"
+                                                onClick={() => router.push(`/client/details?id=${user?.id}`)}
+                                            >
+                                                <span
+                                                    className={`w-3 h-3 inline-block rounded-full ${user?.status == '0' ? 'bg-green-600' : 'bg-red-600'} ml-4`}
+                                                ></span>
+                                            </td>
+
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        {paginatedUsers.map((user) => (
-                                            <tr key={user?.id} className="cursor-pointer   hover:shadow-tr-border   rounded-md  transition-all duration-200">
-                                                <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  border-gray-50" onClick={() => router.push(`/client/details?id=${user.userId}`)}>{user.userId}</td>
-                                                <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  border-gray-50" onClick={() => router.push(`/client/details?id=${user.userId}`)}>{user.firstName}</td>
-                                                <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]" onClick={() => router.push(`/client/details?id=${user.userId}`)}>{user.email}</td>
-                                                <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]" onClick={() => router.push(`/client/details?id=${user.userId}`)}>{user.mobileNumber}</td>
-                                                <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] " onClick={() => router.push(`/client/details?id=${user.userId}`)}>{user.mobileNumber}</td>
-                                                <td
-                                                    className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px]  font-bold items-center flex align-middle"
-                                                    onClick={() => router.push(`/client/details?id=${user.userId}`)}
-                                                >
-                                                    <span
-                                                        className={`w-3 h-3 inline-block rounded-full ${user.status === 'Active' ? 'bg-green-600' : 'bg-red-600'} ml-4`}
-                                                    ></span>
-                                                </td>
+                                    ))}
+                                </tbody>
+                            </table>
+                        )}
+                    </div>
+                    <Pagenation itemList={totalCount}
+                        currentPage={currentPage}
+                        setCurrentPage={setCurrentPage}
+                        itemsPerPage={itemsPerPage}
+                        setItemsPerPage={setItemsPerPage}
+                        setSearchCall={setSearchTrigger} />
+                </>
 
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            )}
-                        </div>
-                        <div className="flex justify-between items-center mt-4 px-1 sm:px-2 py-2">
-                            <div className='text-gray-700 text-[12px] sm:text-[18px]'>{`Showing   ${startEntry + 1} - ${Math.min(endEntry, filteredUsers.length)} of ${filteredUsers.length} entries`}</div>
-                            <div className="flex gap-2">
-                                <button className={`w-[60px] h-[29px]   sm:w-[80px] sm:h-[39px] text-[10px] rounded-md border ${currentPage === 1 ? 'bg-gray-200 text-gray-400' : 'bg-white text-black hover:bg-gray-300'}`} disabled={currentPage === 1} onClick={() => setCurrentPage(currentPage - 1)}>Previous</button>
-                                <button className={`w-[60px] h-[29px]  sm:w-[80px] sm:h-[39px] text-[10px] rounded-md border ${currentPage === totalPages ? 'bg-gray-200 text-gray-400' : 'bg-white text-black hover:bg-gray-300'}`} disabled={currentPage === totalPages} onClick={() => setCurrentPage(currentPage + 1)}>Next</button>
-                            </div>
-                        </div>
-                    </>
-
-                }
-                {selectedView == "Card" && (
+                {/* } */}
+                {/* {selectedView == "Card" && (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mx-auto mt-[50px]">
                         {users.map((user) => (
                             <div key={user.id} className="w-[315px] h-[220px] border border-gray-100 rounded-xl p-4 shadow-md">
@@ -282,7 +274,7 @@ const ClientList = () => {
                                 </div>
                             </div>
                         ))}
-                    </div>)}
+                    </div>)} */}
             </div>
         </LayOut>
 

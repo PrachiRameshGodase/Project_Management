@@ -116,10 +116,19 @@ export const Dropdown02 = ({ options, selectedValues, onSelect, label, icon }) =
   );
 };
 
-export const Dropdown002 = ({ options, selectedValues = [], onSelect, label, icon }) => {
+export const Dropdown002 = ({ options, selectedValue, onSelect, label }) => {
+ 
   const dropdownOutsideClick = OutsideClick();
-  const [selected, setSelected] = useState(selectedValues || []); // Store selected IDs
+  const [selected, setSelected] = useState(selectedValue ||[]); // Store selected IDs
   const [searchQuery, setSearchQuery] = useState("");
+  useEffect(() => {
+ 
+    if (selectedValue) {
+      setSelected(selectedValue);
+    }
+  }, [selectedValue]);
+  
+  
 
   // Handle select/deselect option
   const handleOptionSelect = (option) => {
@@ -143,8 +152,12 @@ export const Dropdown002 = ({ options, selectedValues = [], onSelect, label, ico
     onSelect(updatedSelection);
   };
 
+  
+
   // Convert selected IDs to full option objects for display
-  const selectedOptions = options?.filter((option) => selected.includes(option.id));
+  // const selectedOptions = options?.filter((option) => selected?.includes(option.id));
+  const selectedOptions = options?.filter((option) => selected?.includes(option?.id) ?? false);
+
 
   return (
     <div className="relative w-[350px]" ref={dropdownOutsideClick?.ref}>
@@ -155,7 +168,7 @@ export const Dropdown002 = ({ options, selectedValues = [], onSelect, label, ico
         onClick={dropdownOutsideClick?.handleToggle}
       >
         <div className="flex items-center gap-2 flex-wrap">
-          {icon}
+       
           {/* Show selected items as pills */}
           {selectedOptions?.length > 0 ? (
             selectedOptions?.map((item) => (
@@ -218,11 +231,11 @@ export const Dropdown002 = ({ options, selectedValues = [], onSelect, label, ico
                   <li
                     key={option.id}
                     className={`flex px-4 py-2 hover:bg-gray-100 cursor-pointer text-left ${
-                      selected.includes(option.id) ? "bg-gray-200" : ""
+                      selected?.includes(option.id) ? "bg-gray-200" : ""
                     }`}
                     onClick={() => handleOptionSelect(option)}
                   >
-                    {`${option.first_name} ${option.last_name}`}
+                    {`${option?.first_name} ${option?.last_name}`}
                   </li>
                 ))
             ) : (

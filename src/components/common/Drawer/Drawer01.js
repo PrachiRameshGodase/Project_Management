@@ -10,6 +10,7 @@ import { statusProject } from "../Helper/Helper";
 import {
   fetchProjectTaskDetails,
   updateProjectStatus,
+  updateProjectTaskStatus,
   updateStatus,
   updateTaskStatus,
 } from "@/app/store/projectSlice";
@@ -241,8 +242,9 @@ export default Drawer01;
 
 export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId, details }) => {
   const dispatch = useDispatch();
+  const router=useRouter()
   const [selectedStatus, setSelectedStatus] = useState("");
-  const [isActive, setIsActive] = useState(details?.project_status || "");
+  const [isActive, setIsActive] = useState(details?.task_status || "");
 
   const [isActive2, setIsActive2] = useState(details?.status || "");
 
@@ -250,17 +252,17 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId, details }) => {
     if (details?.task_status !== undefined) {
       setIsActive(details?.task_status);
     }
-  }, [details]);
+  }, [details, setIsActive]);
 
   useEffect(() => {
     if (details?.status !== undefined) {
       setIsActive2(details?.status);
     }
-  }, [details]);
+  }, [details, setIsActive2]);
 
   const handleStatusChange = async (value) => {
     const result = await Swal.fire({
-      text: `Do you want to update the status of this Project?`,
+      text: `Do you want to update the status of this Task?`,
       showCancelButton: true,
       confirmButtonText: "Yes",
       cancelButtonText: "No",
@@ -270,7 +272,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId, details }) => {
       setSelectedStatus(value);
 
       // Dispatch updateUserStatus with the new status
-      dispatch(updateProjectStatus({ id: itemId, status: value, router }));
+      dispatch(updateProjectTaskStatus({ id: itemId, status: value }));
     }
   };
   const handleToggleStatus = async (event) => {
@@ -290,11 +292,15 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId, details }) => {
 
       // Dispatch updateUserStatus with the new status
       dispatch(
-        updateTaskStatus({ id: itemId, project_status: newStatus, router })
+        updateTaskStatus({ id: itemId, task_status: newStatus,  })
       );
     }
   };
+ 
   if (!isOpen) return null;
+  const handleEditUser = () => {
+    router.push(`/project/add-task?id=${itemId}&edit=true`);
+};
   return (
     <motion.div
       initial={{ x: "100%" }}
@@ -318,7 +324,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId, details }) => {
           </div>
 
           <div>
-            <button className="w-[100px] h-[35px] rounded-[4px] py-[4px] bg-black text-white text-[16px] mb-2 p-4 mt-4">
+            <button className="w-[100px] h-[35px] rounded-[4px] py-[4px] bg-black text-white text-[16px] mb-2 p-4 mt-4" onClick={handleEditUser}>
               Edit
             </button>
           </div>
@@ -336,15 +342,15 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId, details }) => {
                     >
                         Under Review
                     </p> */}
-          <DropdownStatus01
+          {/* <DropdownStatus01
             options={statusProject}
             selectedValue={details?.status}
             onSelect={(value) => handleStatusChange(value)}
             label="Status"
             className="w-[150px]"
-          />
+          /> */}
           <div className="flex items-center mr-2">
-            <label className="flex items-center cursor-pointer">
+            {/* <label className="flex items-center cursor-pointer">
               <span className="ml-2 text-[15px] mr-2">
                 {!isActive ? "Inactive" : "Active"}
               </span>
@@ -356,7 +362,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId, details }) => {
                   checked={isActive}
                   onChange={handleToggleStatus}
                 />
-                {/* Track */}
+                
                 <div
                   className={`w-[70px] h-[40px] rounded-full shadow- transition duration-300 ease-in-out bg-[#ECE4FF]`}></div>
                 <div
@@ -375,7 +381,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId, details }) => {
                   )}
                 </div>
               </div>
-            </label>
+            </label> */}
           </div>
         </div>
         {/* Project Details Section */}

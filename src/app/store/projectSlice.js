@@ -142,7 +142,7 @@ export const updateProjectTaskStatus = createAsyncThunk("task/updateProjectTaskS
 
 
 // Async thunk to fetch user details by ID
-export const updateTaskStatus = createAsyncThunk("task/updateTaskStatus", async ({ id, task_status, router }, { rejectWithValue }) => {
+export const updateTaskStatus = createAsyncThunk("task/updateTaskStatus", async ({ id, task_status }, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.post(`/task/status`, { id, task_status });
     if (response?.data?.success === true) {

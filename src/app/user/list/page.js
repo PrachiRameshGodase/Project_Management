@@ -63,6 +63,7 @@ const UserList = () => {
     const sendData = {
       limit: itemsPerPage,
       page: currentPage,
+      is_employee:1,
       ...(searchTermFromChild ? { search: searchTermFromChild } : {}),
       ...(selectedSortBy && { sort_by: selectedSortBy, sort_order: sortOrder }),
       ...(selectedDesignation && { designation: selectedDesignation }),
@@ -203,8 +204,8 @@ const UserList = () => {
               <tbody>
                 {usersList?.map((user, index) => (
                   <tr key={user?.id} className="cursor-pointer   hover:shadow-tr-border   rounded-md  transition-all duration-200">
-                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] " onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.id}</td>
-                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] " onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.first_name}</td>
+                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] " onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.employee_id}</td>
+                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] " onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.name}</td>
                     <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px]" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.email}</td>
                     <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px] " onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.phone_number}</td>
                     <td className="py-2 sm:py-3 px-2 sm:px-4  text-[10px] sm:text-[14px] min-w-[100px]" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.designation}</td>

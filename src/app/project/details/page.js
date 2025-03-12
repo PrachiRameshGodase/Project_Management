@@ -183,7 +183,6 @@ const TaskList = () => {
       dispatch(fetchProjectTaskDetails(itemId2));
     }
   }, [dispatch, itemId2]);
-  console.log("taskDetailsData", taskDetailsData);
   return (
     <>
       {projectLoading?.loading ? (

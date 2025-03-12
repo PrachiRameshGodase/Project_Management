@@ -67,8 +67,11 @@ const AddUser = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    dispatch(addUser({ userData: formData, router }));
+const sendData={
+  ...formData,
+  name:formData?.first_name + formData?.last_name
+}
+    dispatch(addUser({ userData:sendData, router }));
   };
 
 
@@ -78,7 +81,7 @@ const AddUser = () => {
         id: userDetailData?.id,
         first_name: userDetailData?.first_name,
         last_name: userDetailData?.last_name,
-        password: userDetailData?.password,
+        password: userDetailData?.c_password,
         // employee_id: userDetailData?.employee_id,
         email: userDetailData?.email,
         phone_number: userDetailData?.phone_number,
@@ -124,7 +127,7 @@ const AddUser = () => {
               />
             </div>
 
-            <div className="sm:flex justify-between items-center">
+            {/* <div className="sm:flex justify-between items-center">
               <label className="block text-m">User ID <span className='text-red-600'>*</span></label>
               <input
                 className="w-[310px] sm:w-[350px]  h-10 border border-gray-300 rounded-lg p-2 text-m placeholder:text-gray-400"
@@ -134,7 +137,7 @@ const AddUser = () => {
                 value={formData.employee_id}
                 onChange={handleChange}
               />
-            </div>
+            </div> */}
 
             <div className="sm:flex justify-between items-center">
               <label className="block text-m">Email <span className='text-red-600'>*</span></label>

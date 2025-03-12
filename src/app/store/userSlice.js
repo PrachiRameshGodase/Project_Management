@@ -6,12 +6,17 @@ import toast from "react-hot-toast";
 // Async thunk to add a new user
 export const addUser = createAsyncThunk(
   "users/addUser",
-  async ({ userData, router }, { rejectWithValue }) => {
+  async ({ userData, router, section }, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post(`/users/create/update`, userData);
       if (response?.data?.success === true) {
         toast.success(response?.data?.message);
-        router.push("/user/list"); // Navigate on success
+        if(section=="client"){
+        router.push("/client/list"); 
+          
+        }else{
+        router.push("/user/list"); 
+        }
       }
       return response.data;
 
@@ -52,12 +57,16 @@ export const fetchUserDetails = createAsyncThunk("users/fetchDetails", async (us
 });
 
 // Async thunk to fetch user details by ID
-export const updateUserStatus = createAsyncThunk("users/updateUserStatus", async ({ id, status, router }, { rejectWithValue }) => {
+export const updateUserStatus = createAsyncThunk("users/updateUserStatus", async ({ id, status, router, section }, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.post(`/users_status`, { id, status });
     if (response?.data?.success === true) {
       toast.success(response?.data?.message);
-      router.push("/user/list"); // Navigate on success
+      if(section=="client"){
+        router.push("/client/list");
+      }else{
+      router.push("/user/list");
+      }
     }
     return response.data;
   } catch (error) {

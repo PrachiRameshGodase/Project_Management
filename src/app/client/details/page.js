@@ -1,20 +1,75 @@
 "use client";
+import { fetchUserDetails, updateUserStatus } from '@/app/store/userSlice';
 import { OtherIcons } from '@/assests/icons';
+import Loader from '@/components/common/Loader/Loader';
 import UserAvatar from '@/components/common/UserAvatar/UserAvatar';
 import LayOut from '@/components/LayOut';
 import { Check, X } from 'lucide-react';
-import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
 
 const ClientDetails = () => {
-    const [isActive, setIsActive] = useState(false);
+    const router = useRouter();
+    const dispatch = useDispatch();
+    const [itemId, setItemId] = useState(null);
+    const usersLoading = useSelector((state) => state.user);
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const params = new URLSearchParams(window.location.search);
+            setItemId(params.get("id"));
+        }
+    }, []);
+
+    const userDetailData = useSelector((state) => state?.user?.userDetails?.data);
+    const [isActive, setIsActive] = useState(userDetailData?.status || "");
+
     const user = {
-        name: "Abhilash Singh",
+        name: `${userDetailData?.first_name || ""} ${userDetailData?.last_name || ""
+            }`.trim(),
 
         isActive: true,
         image: "",
     };
+
+    useEffect(() => {
+        if (itemId) dispatch(fetchUserDetails(itemId));
+    }, [dispatch, itemId]);
+
+    useEffect(() => {
+        if (userDetailData?.status !== undefined) {
+            setIsActive(userDetailData.status);
+        }
+    }, [userDetailData?.status]);
+
+    const handleToggleStatus = async (event) => {
+        const newStatus = !isActive ? 1 : 0; // Toggle logic: Active (0) → Inactive (1), Inactive (1) → Active (0)
+
+        const result = await Swal.fire({
+            text: `Do you want to ${newStatus === 1 ? "Inactive" : "Active"
+                } this Client?`,
+            showCancelButton: true,
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+        });
+
+        if (result.isConfirmed && itemId) {
+            setIsActive(!isActive); // Update local state immediately
+
+            // Dispatch updateUserStatus with the new status
+            dispatch(updateUserStatus({ id: itemId, status: newStatus, router,section:"client" }));
+        }
+    };
+
+    
+
+    const handleEditUser = () => {
+        router.push(`/client/add?id=${itemId}&edit=true`);
+    };
     return (
-        <LayOut>
+        <>{usersLoading?.loading ? (<Loader />) : <LayOut>
             <div className="w-full  h-full  left-[80px] rounded-[10.17px] sm:border border-[#F4EAEA] bg-white p-6 sm:shadow-lg">
                 <div className="w-full  h-[40px] relative top-[6px] sm:flex items-center justify-between px-2 border-b border-gray-100 ">
                     <p className="text-[26px] mb-[20px]">
@@ -24,30 +79,31 @@ const ClientDetails = () => {
                     <div className="flex items-center space-x-3 mb-[20px]">
                         {/* Toggle Switch */}
                         <label className="flex items-center cursor-pointer">
-                            <span className="ml-2 text-[15px] mr-2">{isActive ? "Active" : "Inactive"}</span>
+                            <span className="ml-2 text-[15px] mr-2">
+                                {isActive ? "Inactive" : "Active"}
+                            </span>
 
                             <div className="relative">
                                 <input
                                     type="checkbox"
                                     className="sr-only"
                                     checked={isActive}
-                                    onChange={() => setIsActive(!isActive)}
+                                    onChange={handleToggleStatus}
                                 />
+                                {/* Track */}
                                 <div
-                                    className={`w-[70px] h-[40px] rounded-full shadow- transition duration-300 ease-in-out bg-[#ECE4FF]`}
-                                >
-
-                                </div>
+                                    className={`w-[70px] h-[40px] rounded-full shadow- transition duration-300 ease-in-out bg-[#ECE4FF]`}></div>
                                 <div
-                                    className={`absolute w-[33px] h-[33px] rounded-full shadow-md top-[4px] left-[4px] transition-transform duration-300 ease-in-out ${isActive ? 'translate-x-7 bg-[#048339]' : 'bg-[#E23703]'
-                                        }`}
-                                >
-                                    {isActive && (
+                                    className={`absolute w-[33px] h-[33px] rounded-full shadow-md top-[4px] left-[4px] transition-transform duration-300 ease-in-out ${!isActive
+                                            ? "translate-x-7 bg-[#048339]"
+                                            : "bg-[#E23703]"
+                                        }`}>
+                                    {isActive=="0" && (
                                         <span className="absolute inset-0 flex items-center justify-center text-white text-[10px]">
                                             <Check size={16} />
                                         </span>
                                     )}
-                                    {!isActive && (
+                                    {isActive=="1" && (
                                         <span className="absolute inset-0 flex items-center justify-center text-white text-[10px]">
                                             <X size={16} />
                                         </span>
@@ -57,7 +113,8 @@ const ClientDetails = () => {
                         </label>
 
                         {/* Edit Button */}
-                        <button className="w-[90px] h-[33px] rounded-[4px] py-[4px] bg-black text-white text-lg mr-[10px] mb-2">
+
+                        <button className="w-[90px] h-[33px] rounded-[4px] py-[4px] bg-black text-white text-lg mr-[10px] mb-2" onClick={handleEditUser}>
                             Edit
                         </button>
                     </div>
@@ -67,8 +124,8 @@ const ClientDetails = () => {
                     <div className="  sm:w-[260px] h-[69px] flex items-center gap-[12.21px] ">
                         <UserAvatar name={user.name} dotcolor='purple' size={66} image={user.image} isActive={user.isActive} />
                         <div className=" text-xl text-gray-700">
-                            <p className="font-medium flex w-full ">Abhilash Singh</p>
-                            <p className="text-xs text-gray-500">abhisingh@gmail.com</p>
+                            <p className="font-medium flex w-full ">{userDetailData?.name || ""}</p>
+                            <p className="text-xs text-gray-500">{userDetailData?.email || ""}</p>
                         </div>
                     </div>
 
@@ -78,13 +135,13 @@ const ClientDetails = () => {
                             <li className=" w-fit sm:w-[367px] h-[24px] flex items-center">
                                 <span className=" h-[24px] opacity-90 text-[20px]">Contact Person</span>
                             </li>
-                            <li className="w-fit sm:w-[367px] h-[24px] flex items-center">
+                            {/* <li className="w-fit sm:w-[367px] h-[24px] flex items-center">
                                 <span className="sm:w-[130px] h-[24px] opacity-50">Name:</span>
-                                <span className="sm:w-[183px] h-[23px] ml-[35px]">Akash Singh</span>
-                            </li>
+                                <span className="sm:w-[183px] h-[23px] ml-[35px]">{userDetailData?.name || ""}</span>
+                            </li> */}
                             <li className="sm:w-[367px] h-[24px] flex items-center">
-                                <span className="sm:w-[130px] h-[24px] opacity-50">Mobile Number:</span>
-                                <span className="sm:w-[183px] h-[23px] ml-[35px]">Tech</span>
+                                <span className="sm:w-[130px] h-[24px] opacity-50">Contact Person Name:</span>
+                                <span className="sm:w-[183px] h-[23px] ml-[35px]">{userDetailData?.contact_name}</span>
                             </li>
 
                         </ul>
@@ -94,12 +151,12 @@ const ClientDetails = () => {
 
                             </li>
                             <li className="sm:w-[367px] h-[24px] flex items-center">
-                                <span className="sm:w-[114px] h-[24px] opacity-70">Username:</span>
-                                <span className="sm:w-[183px] h-[23px] ml-[35px]">user@gmail.com</span>
+                                <span className="sm:w-[114px] h-[24px] opacity-70">Email:</span>
+                                <span className="sm:w-[183px] h-[23px] ml-[35px]">{userDetailData?.email || ""}</span>
                             </li>
                             <li className="sm:w-[367px] h-[24px] flex items-center">
                                 <span className="sm:w-[114px] h-[24px] opacity-70">Client ID:</span>
-                                <span className="sm:w-[183px] h-[23px] ml-[35px]">CL-001</span>
+                                <span className="sm:w-[183px] h-[23px] ml-[35px]">{userDetailData?.employee_id || ""}</span>
                             </li>
 
                         </ul>
@@ -162,7 +219,8 @@ const ClientDetails = () => {
                         View More
                     </button>
                 </div>
-            </div></LayOut>
+            </div></LayOut>}</>
+
 
     );
 };

@@ -82,7 +82,7 @@ const UserDetails = () => {
               {/* Toggle Switch */}
               <label className="flex items-center cursor-pointer">
                 <span className="ml-2 text-[15px] mr-2">
-                  {!isActive ? "Inactive" : "Active"}
+                  {isActive ? "Inactive" : "Active"}
                 </span>
 
                 <div className="relative">
@@ -110,15 +110,15 @@ const UserDetails = () => {
 
                   </div>
                   <div
-                    className={`absolute w-[33px] h-[33px] rounded-full shadow-md top-[4px] left-[4px] transition-transform duration-300 ease-in-out ${isActive ? 'translate-x-7 bg-[#048339]' : 'bg-[#E23703]'
+                    className={`absolute w-[33px] h-[33px] rounded-full shadow-md top-[4px] left-[4px] transition-transform duration-300 ease-in-out ${isActive=="0" ? 'translate-x-7 bg-[#048339]' : 'bg-[#E23703]'
                       }`}
                   >
-                    {isActive && (
+                    {isActive=="0" && (
                       <span className="absolute inset-0 flex items-center justify-center text-white text-[10px]">
                         <Check size={16} />
                       </span>
                     )}
-                    {!isActive && (
+                    {isActive=="1" && (
                       <span className="absolute inset-0 flex items-center justify-center text-white text-[10px]">
                         <X size={16} />
                       </span>
