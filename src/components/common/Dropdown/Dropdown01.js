@@ -136,16 +136,16 @@ export const DropdownStatus = ({ selectedValue, onSelect }) => {
     <div className="relative" ref={dropdownOutsideClick?.ref}>
       {/* Dropdown Button */}
       <Tooltip title={selected ? selected.label : "Status"} arrow disableInteractive>
-      <div
-        className={`h-[44px] flex items-center gap-2 border border-[#0000004D] hover:ring-purple-300 rounded-lg px-3 py-2 cursor-pointer w-[120px]`}
-        onClick={dropdownOutsideClick?.handleToggle}
-        ref={dropdownOutsideClick?.buttonRef}
-      >
-        {OtherIcons.user_svg}
-        <span className={`text-gray-700 ${!selected ? "text-gray-400" : ""}`}>
-          {selected ? selected.label : "Status"}
-        </span>
-      </div>
+        <div
+          className={`h-[44px] flex items-center gap-2  border border-[#0000004D] hover:border-purple-500 hover:ring-2 hover:ring-purple-200  rounded-lg px-3 py-2 cursor-pointer w-[120px]`}
+          onClick={dropdownOutsideClick?.handleToggle}
+          ref={dropdownOutsideClick?.buttonRef}
+        >
+          {OtherIcons.user_svg}
+          <span className={`text-gray-700 ${!selected ? "text-gray-400" : ""}`}>
+            {selected ? selected.label : "Status"}
+          </span>
+        </div>
       </Tooltip>
 
       {/* Dropdown List */}
