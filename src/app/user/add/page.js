@@ -30,16 +30,16 @@ const AddUser = () => {
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
-    employee_id: "",
+    // employee_id: "",
     email: "",
-    password:"",
+    password: "",
     phone_number: "",
     department: "",
     designation: "",
     joining_date: "",
     skill_set: [],
     status: 1,
-    is_employee:1,
+    is_employee: 1,
   });
 
 
@@ -67,6 +67,7 @@ const AddUser = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     dispatch(addUser({ userData: formData, router }));
   };
 
@@ -77,8 +78,8 @@ const AddUser = () => {
         id: userDetailData?.id,
         first_name: userDetailData?.first_name,
         last_name: userDetailData?.last_name,
-        password:userDetailData?.password,
-        employee_id: userDetailData?.employee_id,
+        password: userDetailData?.password,
+        // employee_id: userDetailData?.employee_id,
         email: userDetailData?.email,
         phone_number: userDetailData?.phone_number,
         department: userDetailData?.department || "",  // Ensure default value
@@ -124,12 +125,12 @@ const AddUser = () => {
             </div>
 
             <div className="sm:flex justify-between items-center">
-              <label className="block text-m">Employee ID <span className='text-red-600'>*</span></label>
+              <label className="block text-m">User ID <span className='text-red-600'>*</span></label>
               <input
                 className="w-[310px] sm:w-[350px]  h-10 border border-gray-300 rounded-lg p-2 text-m placeholder:text-gray-400"
                 type="text"
                 name="employee_id"
-                placeholder="Enter Employee ID"
+                placeholder="Enter User ID"
                 value={formData.employee_id}
                 onChange={handleChange}
               />

@@ -262,7 +262,7 @@ const projectSlice = createSlice({
       .addCase(addProjectTask.fulfilled, (state, action) => {
         state.loading = false;
         state.successMessage = "Task added successfully!";
-        state.list.push(action.payload);
+        state.taskList.push(action.payload);
       })
       .addCase(addProjectTask.rejected, (state, action) => {
         state.loading = false;

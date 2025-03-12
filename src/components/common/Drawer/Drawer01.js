@@ -160,11 +160,11 @@ const Drawer01 = ({ isOpen, setIsDrawerOpen, details, itemId, setSelectedStatus 
                         </li>
                         <li className="flex mb-2 gap-4">
                             <span className="text-gray-400 w-[120px] text-[14px]">Project Leader</span><h4>:</h4>
-                            <span className="text-gray-700 w-[200px] text-[14px]">{details?.project_leader_name || ""}</span>
+                            <span className="text-gray-700 w-[200px] text-[14px]">{details?.project_leader?.name || ""}</span>
                         </li>
                         <li className="flex mb-2 gap-4">
                             <span className="text-gray-400 w-[120px] text-[14px]">Team</span><h4>:</h4>
-                            <span className="text-gray-700 w-[200px] text-[14px]">{details?.team?.join(", ") || ""}</span>
+                            {/* <span className="text-gray-700 w-[200px] text-[14px]">{details?.team?.join(", ") || ""}</span> */}
                         </li>
                         <li className="flex mb-2 gap-4">
                             <span className="text-gray-400 w-[120px] text-[14px]">Description</span><h4>:</h4>
@@ -174,7 +174,7 @@ const Drawer01 = ({ isOpen, setIsDrawerOpen, details, itemId, setSelectedStatus 
                             <span className="text-gray-400 w-[120px] text-[14px]">Attachments</span>
                             <h4>:</h4>
                             <span className="text-gray-700 w-[200px]">
-                                <AttachmentPreview files={details?.attachments} />
+                                {/* <AttachmentPreview files={details?.attachments} /> */}
                             </span>
                         </li>
                     </ul>.
