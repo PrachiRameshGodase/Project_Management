@@ -26,25 +26,24 @@ const LogOut = ({ isOpen2, user, setIsOpen2 }) => {
             {/* Sidebar Overlay */}
             {isOpen2 && (
                 <div
-                    className="fixed inset-0 bg-black bg-opacity-50 z-40"
+                    className="fixed inset-0  bg-opacity-50 z-40"
                     onClick={() => setIsOpen2(false)}
                 ></div>
             )}
 
             {/* Sidebar Content */}
             <div
-                className={`fixed border-2 border-red-800 top-[80px] right-0 w-64 h-fit bg-white shadow-lg p-5 transition-transform duration-300 z-50 ${isOpen2 ? "translate-x-0" : "translate-x-full"
+                className={`fixed top-[75px] right-0 w-64 h-[80px] bg-white shadow-lg p-5 rounded-md transition-transform duration-300 z-50 ${isOpen2 ? "translate-x-0" : "translate-x-full"
                     }`}
             >
-                <button
+                {/* <button
                     className="absolute top-4 right-4 text-gray-500"
                     onClick={() => setIsOpen2(false)}
                 >
                     ✖
                 </button>
 
-                {/* User Info */}
-                {/* <div className="flex gap-3 items-start mt-10">
+                <div className="flex gap-3 items-start mt-10">
                     <div className="top-4 right-[20px] flex items-center space-x-2">
                         <UserAvatar
                             name={user?.name}
@@ -63,7 +62,7 @@ const LogOut = ({ isOpen2, user, setIsOpen2 }) => {
                 {/* Logout Button */}
                 <button
                     onClick={handleLogout}
-                    className="mt-5 flex items-center justify-center hover:gap-2 gap-1 w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600"
+                    className=" flex items-center justify-center hover:gap-2 gap-1 w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600"
                 >
                     Logout
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#ffffff" fill="none">

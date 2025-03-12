@@ -8,7 +8,7 @@ export const addUser = createAsyncThunk(
   "users/addUser",
   async ({ userData, router }, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post(`/users/create`, userData);
+      const response = await axiosInstance.post(`/users/create/update`, userData);
       if (response?.data?.success === true) {
         toast.success(response?.data?.message);
         router.push("/user/list"); // Navigate on success

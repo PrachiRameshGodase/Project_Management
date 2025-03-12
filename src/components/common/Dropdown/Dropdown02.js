@@ -36,10 +36,10 @@ export const Dropdown02 = ({ options, selectedValues, onSelect, label, icon }) =
   
   
   return (
-    <div className="relative w-[310px] sm:w-[350px] " ref={dropdownOutsideClick?.ref}>
+    <div className="relative w-[310px] sm:w-[350px] md:w-[400px]  " ref={dropdownOutsideClick?.ref}>
       {/* Dropdown Header */}
       <div
-        className="h-auto min-h-10 flex items-center gap-2 border border-gray-300 rounded-lg px-3 py-2 cursor-pointer w-full flex-wrap"
+        className="h-auto min-h-10 flex items-center gap-2 border border-[#0000004D] rounded-lg px-3 py-2 cursor-pointer w-full flex-wrap"
         ref={dropdownOutsideClick?.buttonRef}
         onClick={dropdownOutsideClick?.handleToggle}
       >
@@ -63,7 +63,7 @@ export const Dropdown02 = ({ options, selectedValues, onSelect, label, icon }) =
               </div>
             ))
           ) : (
-            <span className="text-gray-400">{label}</span>
+            <span className="text-gray-600">{label}</span>
           )}
         </div>
 
@@ -81,7 +81,7 @@ export const Dropdown02 = ({ options, selectedValues, onSelect, label, icon }) =
       {dropdownOutsideClick?.isOpen && (
         <div className="absolute top-[100%] mt-1 bg-white shadow-lg border border-gray-200 rounded-lg w-full z-50 mb-4">
           {/* Search Bar */}
-          <div className="flex items-center border-b border-gray-300 px-3 py-2">
+          <div className="flex items-center border-b border-[#0000004D] px-3 py-2">
             <Search className="w-4 h-4 text-gray-500 mr-2" />
             <input
               type="text"
@@ -147,10 +147,10 @@ export const Dropdown002 = ({ options, selectedValues = [], onSelect, label, ico
   const selectedOptions = options?.filter((option) => selected.includes(option.id));
 
   return (
-    <div className="relative w-[350px]" ref={dropdownOutsideClick?.ref}>
+    <div className="relative w-[310px] sm:w-[350px] md:w-[400px] " ref={dropdownOutsideClick?.ref}>
       {/* Dropdown Header */}
       <div
-        className="h-auto min-h-10 flex items-center gap-2 border border-gray-300 rounded-lg px-3 py-2 cursor-pointer w-full flex-wrap"
+        className="h-auto min-h-10 flex items-center gap-2 border border-[#0000004D] rounded-lg px-3 py-2 cursor-pointer w-full flex-wrap"
         ref={dropdownOutsideClick?.buttonRef}
         onClick={dropdownOutsideClick?.handleToggle}
       >
@@ -161,7 +161,7 @@ export const Dropdown002 = ({ options, selectedValues = [], onSelect, label, ico
             selectedOptions?.map((item) => (
               <div
                 key={item.id}
-                className={`flex items-center bg-gray-200 text-gray-400 rounded-md px-2 py-1 text-sm ${selected ?"text-gray-700":""}`}
+                className={`flex items-center bg-gray-200 text-gray-600 rounded-md px-2 py-1 text-m ${selected ?"text-gray-700":""}`}
               >
                 {`${item.first_name} ${item.last_name}`}
                 <span
@@ -176,7 +176,7 @@ export const Dropdown002 = ({ options, selectedValues = [], onSelect, label, ico
               </div>
             ))
           ) : (
-            <span className="text-gray-400">{label}</span>
+            <span className="text-gray-600">{label}</span>
           )}
         </div>
 
@@ -194,7 +194,7 @@ export const Dropdown002 = ({ options, selectedValues = [], onSelect, label, ico
       {dropdownOutsideClick?.isOpen && (
         <div className="absolute top-[100%] mt-1 bg-white shadow-lg border border-gray-200 rounded-lg w-full z-50 mb-4">
           {/* Search Bar */}
-          <div className="flex items-center border-b border-gray-300 px-3 py-2">
+          <div className="flex items-center border-b border-[#0000004D] px-3 py-2">
             <Search className="w-4 h-4 text-gray-500 mr-2" />
             <input
               type="text"

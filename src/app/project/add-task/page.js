@@ -23,7 +23,7 @@ const AddTask = () => {
         if (typeof window !== "undefined") {
             const params = new URLSearchParams(window.location.search);
             setItemId(params.get("id"));
-           
+
         }
     }, []);
     const [searchTrigger, setSearchTrigger] = useState(0);
@@ -32,7 +32,7 @@ const AddTask = () => {
         const sendData = {};
         dispatch(fetchUsers(sendData));
     }, [searchTrigger, dispatch,]);
-console.log("itemId", itemId)
+    console.log("itemId", itemId)
     const [formData, setFormData] = useState({
         project_id: "",
         task_title: "",
@@ -45,7 +45,7 @@ console.log("itemId", itemId)
         visibility: "",
         description: ""
     })
-console.log("formData", formData)
+    console.log("formData", formData)
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prevState => ({
@@ -68,23 +68,23 @@ console.log("formData", formData)
     }, [itemId]);
     const handleSubmit = (e) => {
         e.preventDefault();
-        dispatch(addProjectTask({ projectData: formData, router ,itemId}));
+        dispatch(addProjectTask({ projectData: formData, router, itemId }));
     };
 
     return (
         <LayOut>
-            <div className="flex text-center">
-                <div className="text-2xl tracking-tight  ml-[7px]">Add New Task</div>
+            <div className="sm:flex mx-auto sm:mx-0  flex-col items-center justify-center">
+                <div className="text-2xl tracking-tight ml-4 sm:ml-[7px] text-[32px]  w-full ">Add New Task</div>
 
-                <div className="flex justify-center items-center h-screen mx-auto">
-                    <form className="w-[600px] h-[656px] bg-white p-6 rounded-lg space-y-5 mb-12">
-                        <div className="flex justify-between">
-                            <label className="block text-m ">Task Title*</label>
-                            <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m ml-7 placeholder:text-gray-400" type='text' placeholder='Enter Task Title' value={formData?.task_title} onChange={handleChange} name='task_title' />
+                <div className="sm:flex justify-center items-center h-screen mx-auto">
+                    <form className="w-full sm:w-[650px] mb-4 h-[656px] bg-white p-8 rounded-lg space-y-6">
+                        <div className="sm:flex justify-between">
+                            <label className="block text-[20px] ">Task Title  <span className="text-red-600">*</span></label>
+                            <input className="w-[310px] sm:w-[350px] md:w-[400px] h-10 border border-[#0000004D] rounded-lg p-2 text-m sm:ml-7 placeholder:text-gray-600" type='text' placeholder='Enter Task Title' value={formData?.task_title} onChange={handleChange} name='task_title' />
                         </div>
 
-                        <div className="flex justify-between">
-                            <label className="block text-m">Task Type</label>
+                        <div className="sm:flex justify-between">
+                            <label className="block text-[20px]">Task Type</label>
                             <Dropdown001
                                 options={taskType}
                                 selectedValue={formData?.task_type}
@@ -94,15 +94,15 @@ console.log("formData", formData)
                             />
                         </div>
 
-                        <div className="flex justify-between">
-                            <label className="block text-m">Due date</label>
+                        <div className="sm:flex justify-between">
+                            <label className="block text-[20px]">Due date</label>
                             <CustomDatePicker
                                 selectedDate={formData?.due_date}
                                 onChange={(date) => handleDropdownChange("due_date", date)} />
                         </div>
 
-                        <div className="flex justify-between">
-                            <label className="block text-m">Priority</label>
+                        <div className="sm:flex justify-between">
+                            <label className="block text-[20px]">Priority</label>
                             <Dropdown001
                                 options={projectPriority}
                                 selectedValue={formData?.priority}
@@ -111,8 +111,8 @@ console.log("formData", formData)
                             />
                         </div>
 
-                        <div className="flex justify-between">
-                            <label className="block text-m ">Department</label>
+                        <div className="sm:flex justify-between">
+                            <label className="block text-[20px]">Department</label>
                             <Dropdown001
                                 options={departmentOptions}
                                 selectedValue={formData?.department}
@@ -121,8 +121,8 @@ console.log("formData", formData)
                             />
                         </div>
 
-                        <div className="flex justify-between">
-                            <label className="block text-m">Team</label>
+                        <div className="sm:flex justify-between">
+                            <label className="block text-[20px]">Team</label>
                             <Dropdown002
                                 options={usersList}
                                 selectedValue={formData?.team}
@@ -131,13 +131,13 @@ console.log("formData", formData)
                             />
                         </div>
 
-                        <div className="flex justify-between">
-                            <label className="block text-m">Link</label>
-                            <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m ml-[78px] placeholder:text-gray-400" type='text' placeholder='Enter Link' value={formData?.link} name='link' onChange={handleChange}/>
+                        <div className="sm:flex justify-between">
+                            <label className="block text-[20px]">Link</label>
+                            <input className="w-[310px] sm:w-[350px] md:w-[400px] h-10 border border-[#0000004D] rounded-lg p-2 text-m sm:ml-7  placeholder:text-gray-600" type='text' placeholder='Enter Link' value={formData?.link} name='link' onChange={handleChange} />
                         </div>
 
-                        <div className="flex justify-between">
-                            <label className="block text-m">Visibility</label>
+                        <div className="sm:flex justify-between">
+                            <label className="block text-[20px]">Visibility</label>
                             <Dropdown001
                                 options={taskVisibility}
                                 selectedValue={formData?.visibility}
@@ -146,8 +146,8 @@ console.log("formData", formData)
                             />
                         </div>
 
-                        <div className="flex justify-between">
-                            <label className="block text-m">Attachments</label>
+                        <div className="sm:flex justify-between">
+                            <label className="block text-[20px]">Attachments</label>
                             <FileUpload
 
                                 onFilesChange={(files) => {
@@ -161,13 +161,13 @@ console.log("formData", formData)
                                 } initialFiles={formData.attachments} />
 
                         </div>
-                        <div className="flex justify-between">
-                            <label className="block text-m">Description..</label>
-                            <textarea className="w-[350px] h-40 border border-gray-300 rounded-lg p-2 text-m ml-[35px] placeholder:text-gray-400" type='text' placeholder='Enter Description' value={formData?.description} name='description' onChange={handleChange}/>
+                        <div className="sm:flex justify-between">
+                            <label className="block text-[20px]">Description</label>
+                            <textarea className="w-[310px] sm:w-[350px] md:w-[400px] h-40 border border-[#0000004D] rounded-lg p-2 text-m sm:ml-7 placeholder:text-gray-600" type='text' placeholder='Enter Description' value={formData?.description} name='description' onChange={handleChange} />
                         </div>
 
-                        <div className="flex justify-end w-full ">
-                            <button className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m  bg-black text-gray-100 " onClick={handleSubmit}>Submit</button>
+                        <div className="sm:flex justify-between ">
+                            <button className="w-[310px] sm:w-[350px] md:w-[400px] h-10 border border-[#0000004D] rounded-lg p-2 text-m  bg-black text-gray-100 " onClick={handleSubmit}>Submit</button>
                         </div>
                     </form>
                 </div>

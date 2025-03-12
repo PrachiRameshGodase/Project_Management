@@ -14,6 +14,7 @@ export default {
       },
       boxShadow: {
         'tr-border': '0px 0px 0px 1px rgba(000, 0, 0, 0.1)',
+        'nav-Shadow': '4px 0px 10px 0.1px rgba(0, 0, 0, 0.1)',
       },
     },
   },

@@ -2,16 +2,16 @@
   position: relative;
   display: flex;
   align-items: center;
-  width: 350px;
-  border: 1px solid #ccc;
+  /* width: 350px; */
+  border: 1px solid #afaeae;
   border-radius: 8px;
   /* padding: 10px; */
   font-family: Arial, sans-serif;
-  background-color: white;
+  /* background-color: white; */
 }
 @media only screen and (max-width: 640px) {
   .date-picker {
-    width: 310px;
+    /* width: 310px; */
   }
 }
 
@@ -21,7 +21,7 @@
   border: none;
   outline: none;
   background: transparent;
-  font-size: 16px;
+  /* font-size: 16px; */
   color: #333;
   cursor: pointer;
 }
@@ -47,8 +47,8 @@
   left: 5px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 14px;
-  color: #888;
+  /* font-size: 14px; */
+  /* color: #45464b; */
   pointer-events: none;
   transition: all 0.3s ease;
 }
