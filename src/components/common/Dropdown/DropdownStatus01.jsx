@@ -70,8 +70,9 @@ const DropdownStatus01 = ({
             {options.map((option, index) => (
               <li
                 key={index}
+                
                 className={`font-[400] text-[14px] leading-[16.8px] rounded flex items-center justify-start pl-2 cursor-pointer transition-all duration-200
-                  ${`text-[${getStatusColor(option)}] h-[35px] hover:bg-[${getStatusColor(option)}] hover:text-white`}
+                  ${`text-[${getStatusColor(option)}] h-[35px] hover:shadow-md`}
                   ${selected === option ? "bg-opacity-50" : ""}`}
                 onClick={() => handleOptionSelect(option)}
               >
