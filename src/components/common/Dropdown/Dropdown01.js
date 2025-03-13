@@ -20,7 +20,7 @@ const Dropdown01 = ({ options, selectedValue, onSelect, label, icon }) => {
     <div className="relative" ref={dropdownOutsideClick?.ref}>
       <Tooltip title={selected || label} arrow disableInteractive>
         <div
-          className={`h-[44px] flex items-center gap-2 border border-[#0000004D] hover:border-purple-500 hover:ring-2 hover:ring-purple-200 rounded-lg px-3 py-2 cursor-pointer ${label === "Designation"
+          className={`h-[44px] flex items-center gap-2 border border-[#D8D8D8] hover:border-purple-500 hover:ring-2 hover:ring-purple-200 rounded-lg px-3 py-2 cursor-pointer ${label === "Designation"
             ? "w-fit"
             : label === "Sort By"
               ? "w-fit"
@@ -39,7 +39,7 @@ const Dropdown01 = ({ options, selectedValue, onSelect, label, icon }) => {
       </Tooltip>
 
       {dropdownOutsideClick?.isOpen && (
-        <div className="absolute top-[100%] mt-2 bg-white shadow-lg border border-[#0000004D] rounded-lg w-[150px] z-50">
+        <div className="absolute top-[100%] mt-2 bg-white shadow-lg border border-[#D8D8D8] rounded-lg w-[150px] z-50">
           <ul>
             {options.map((option) => (
               <li
@@ -137,7 +137,7 @@ export const DropdownStatus = ({ selectedValue, onSelect }) => {
       {/* Dropdown Button */}
       <Tooltip title={selected ? selected.label : "Status"} arrow disableInteractive>
         <div
-          className={`h-[44px] flex items-center gap-2  border border-[#0000004D] hover:border-purple-500 hover:ring-2 hover:ring-purple-200  rounded-lg px-3 py-2 cursor-pointer w-[120px]`}
+          className={`h-[44px] flex items-center gap-2  border border-[#D8D8D8] hover:border-purple-500 hover:ring-2 hover:ring-purple-200  rounded-lg px-3 py-2 cursor-pointer w-[120px]`}
           onClick={dropdownOutsideClick?.handleToggle}
           ref={dropdownOutsideClick?.buttonRef}
         >
@@ -150,7 +150,7 @@ export const DropdownStatus = ({ selectedValue, onSelect }) => {
 
       {/* Dropdown List */}
       {dropdownOutsideClick?.isOpen && (
-        <div className="absolute top-[100%] mt-2 bg-white shadow-lg border border-[#0000004D] rounded-lg w-[150px] z-50">
+        <div className="absolute top-[100%] mt-2 bg-white shadow-lg border border-[#D8D8D8] rounded-lg w-[150px] z-50">
           <ul>
             {statusOptions?.map((option) => (
               <li

@@ -37,17 +37,17 @@ const DropdownStatus01 = ({
     }
   };
 
-    // Sync state when selectedValue changes
-    useEffect(() => {
-      setSelected(selectedValue);
-    }, [selectedValue]);
-console.log("selectedValue", selectedValue)
+  // Sync state when selectedValue changes
+  useEffect(() => {
+    setSelected(selectedValue);
+  }, [selectedValue]);
+  console.log("selectedValue", selectedValue)
   return (
     <div className={`relative mb-2 ${className}`} ref={dropdownOutsideClick?.ref}>
       <div
         className={`h-[34px] w-full flex items-center justify-between gap-2 border rounded-lg px-3 cursor-pointer transition-all duration-200
-          ${selected ? `border-[${getStatusColor(selected)}] text-[${getStatusColor(selected)}]  border border-gray-300 hover:border-purple-500 hover:ring-2 hover:ring-purple-200 `
-            : "border-gray-300 text-gray-700 hover:border-purple-500 hover:ring-2 hover:ring-purple-200"}`}
+          ${selected ? `border-[${getStatusColor(selected)}] text-[${getStatusColor(selected)}]  border border-[#D8D8D8] hover:border-purple-500 hover:ring-2 hover:ring-purple-200 `
+            : "border-[#D8D8D8] text-gray-700 hover:border-purple-500 hover:ring-2 hover:ring-purple-200"}`}
         onClick={dropdownOutsideClick?.handleToggle}
         ref={dropdownOutsideClick?.buttonRef}
       >
@@ -72,7 +72,7 @@ console.log("selectedValue", selectedValue)
             {options.map((option, index) => (
               <li
                 key={index}
-                
+
                 className={`font-[400] text-[14px] leading-[16.8px] rounded flex items-center justify-start pl-2 cursor-pointer transition-all duration-200
                   ${`text-[${getStatusColor(option)}] h-[35px] hover:shadow-md`}
                   ${selected === option ? "bg-opacity-50" : ""}`}

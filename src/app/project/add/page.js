@@ -103,10 +103,10 @@ const AddProject = () => {
     return (
         <LayOut>
             <div className="sm:flex mx-auto sm:mx-0  flex-col items-center justify-center ">
-                <div className="text-2xl tracking-tight   sm:ml-[7px] text-[32px] w-full">Add New Project</div>
+                <div className="text-2xl tracking-tight ml:20  sm:ml-[7px] text-[32px] w-full">Add New Project</div>
 
-                <div className="sm:flex justify-center items-center h-screen mx-auto">
-                    <form className="w-full sm:w-[650px] mb-4 h-[656px] bg-white p-8 rounded-lg space-y-6">
+                <div className="sm:flex justify-center items-center h-screen mx-auto sm:-mt-10 xl:-mt-28">
+                    <form className="w-full sm:w-[650px] mb-4 h-[656px] bg-white sm:p-8 rounded-lg space-y-6">
                         <div className="sm:flex justify-between">
                             <label className="block text-[20px]">Project Name</label>
                             <input className="w-[310px] sm:w-[350px] md:w-[400px]   h-10 border border-[#0000004D] rounded-lg p-2 text-m sm:ml-7 placeholder:text-gray-600" type='text' placeholder='Enter Project Name ' value={formData?.project_name} onChange={handleChange} name='project_name' />

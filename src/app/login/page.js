@@ -4,11 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../store/authSlice";
 import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast"; // Import react-hot-toast
+import { Eye, EyeOff } from "lucide-react";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { loading, error } = useSelector((state) => state.auth);
+  const [showPassword, setShowPassword] = useState(false);
 
   const [formData, setFormData] = useState({
     email: "",
@@ -53,7 +55,7 @@ const LoginPage = () => {
 
         <div className="mt-4">
           <label className="block text-[16px] text-[#2A2A2A] p-1 rounded-md">
-            User Name or Email Address*
+            User Name or Email Address<span className="text-red-600">*</span>
           </label>
           <input
             type="email"
@@ -65,9 +67,9 @@ const LoginPage = () => {
           />
         </div>
 
-        <div className="mt-4">
+        {/* <div className="mt-4">
           <label className="block text-[16px] text-[#2A2A2A] p-1 rounded-md">
-            Password*
+            Password<span className="text-red-600">*</span>
           </label>
           <input
             type="password"
@@ -77,6 +79,28 @@ const LoginPage = () => {
             value={formData.password}
             onChange={handleChange}
           />
+        </div> */}
+        <div className="mt-4 relative">
+          <label className="block text-[16px] text-[#2A2A2A] p-1 rounded-md">
+            Password<span className="text-red-600">*</span>
+          </label>
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Enter Password"
+              className="w-full h-[54px] rounded-[10px] p-3 mt-2 bg-[#EBE7EE99] focus:outline-none pr-10"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute top-[55%] right-3 transform -translate-y-1/2 text-gray-500"
+            >
+              {showPassword ? <EyeOff size={26} /> : <Eye size={26} />}
+            </button>
+          </div>
         </div>
 
         <button

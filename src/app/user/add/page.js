@@ -67,11 +67,11 @@ const AddUser = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-const sendData={
-  ...formData,
-  name:formData?.first_name + formData?.last_name
-}
-    dispatch(addUser({ userData:sendData, router }));
+    const sendData = {
+      ...formData,
+      name: formData?.first_name + formData?.last_name
+    }
+    dispatch(addUser({ userData: sendData, router }));
   };
 
 
@@ -100,7 +100,7 @@ const sendData={
       <div className="sm:flex mx-auto sm:mx-0  flex-col items-center justify-center">
         <div className="text-2xl tracking-tight sm:ml-[7px] text-[32px]  w-full">Add New User</div>
 
-        <div className="sm:flex justify-between items-center h-screen mx-auto b">
+        <div className="sm:flex justify-between items-center h-screen mx-auto xl:lg:-mt-16">
           <form className="sm:w-[650px] h-[100%] bg-white p-2 sm:p-8 rounded-lg space-y-6" onSubmit={handleSubmit}>
 
             <div className="sm:flex justify-between items-center">
