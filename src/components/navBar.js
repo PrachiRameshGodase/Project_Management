@@ -6,12 +6,17 @@ import UserAvatar from "./common/UserAvatar/UserAvatar";
 import toast, { Toaster } from "react-hot-toast";
 import LogOut from "./LogOut";
 
+import { Bell, LogOutIcon } from "lucide-react";
+// import { FiMenu } from "react-icons/fi"; // Hamburger Icon
+// import { IoClose } from "react-icons/io5"; // Close Icon
+import { Tooltip } from "@mui/material";
 
 const NavBar = () => {
   const router = useRouter();
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false); // State for mobile menu
   const [isOpen2, setIsOpen2] = useState(false); // State for mobile menu
+  const [hasNotification, setHasNotification] = useState(false);
 
   const navItems = [
     { path: "/home", icon: OtherIcons.home_svg, label: "Home" },
@@ -43,6 +48,20 @@ const NavBar = () => {
 
   const userData=JSON.parse(localStorage.getItem("UserData"))
  
+
+
+
+
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+
+      setHasNotification((prev) => !prev);
+    }, 1000); // Har 1 second me blink karega
+
+    return () => clearInterval(interval);
+  }, []);
+
 
   return (
     <div className="w-full z-50 h-[80px] fixed  flex items-center shadow-nav-Shadow  border-b border-gray-50 bg-white ">
@@ -84,7 +103,18 @@ const NavBar = () => {
       {/* User Avatar */}
       <>
         {/* Avatar Button */}
-        <div className="absolute   top-4 right-3 sm:right-10 md:right-14 lg:right-20 flex items-center space-x-2">
+        <div className="absolute gap-3  top-4 right-3 sm:right-10 md:right-14 lg:right-20 flex items-center space-x-2">
+          <div className="relative w-10 h-10 flex items-center justify-center">
+            <Tooltip title='Notification' arrow disableInteractive>
+              <Bell className="w-6 h-6 text-gray-700 cursor-pointer" />
+            </Tooltip>
+            <span className="absolute bottom-3 right-1 w-2 h-2 bg-green-500 rounded-full" />
+            {hasNotification && (
+              <>
+                <span className="absolute bottom-[10px] right-[2px] w-3 h-3 bg-green-400 rounded-full animate-ping" />
+              </>
+            )}
+          </div>
           <button onClick={() => setIsOpen2(true)}>
             <UserAvatar
               name={userData?.name}
@@ -94,13 +124,17 @@ const NavBar = () => {
               // isActive={user.isActive}
             />
           </button>
-        </div>
-
-        <LogOut
+          <Tooltip title='Logout' arrow disableInteractive>
+            <LogOutIcon className="cursor-pointer hover:text-red-600" onClick={handleLogout} />
+          </Tooltip>
+          {/* <LogOut
           isOpen2={isOpen2}
           user={user}
           setIsOpen2={setIsOpen2}
-        />
+        /> */}
+
+        </div>
+
 
 
       </>

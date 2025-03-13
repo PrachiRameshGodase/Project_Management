@@ -52,7 +52,7 @@ console.log("dashboardList", dashboardList?.projects.recent_projects)
     return (
         <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4 sm:p-10 relative ">
             {/* Avatar Section (Top-Right) */}
-            <LogOut isOpen2={isOpen2} user={user} setIsOpen2={setIsOpen2} />
+            {/* <LogOut isOpen2={isOpen2} user={user} setIsOpen2={setIsOpen2} /> */}
 
             <div className="absolute top-4 right-5 sm:right-14 flex items-center space-x-2">
                 {/* <UserAvatar onClick={() => setIsOpen2(true)} name={user.name} dotcolor="green" size={36} image={user.image} isActive={user.isActive} /> */}
