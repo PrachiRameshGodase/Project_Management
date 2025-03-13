@@ -9,13 +9,13 @@ import FileUpload from '@/components/common/Attachments/FileUpload';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUsers } from '@/app/store/userSlice';
 import { useRouter } from 'next/navigation';
-import { Dropdown03 } from '@/components/common/Dropdown/Dropdown03';
+import { Dropdown003, Dropdown03 } from '@/components/common/Dropdown/Dropdown03';
 import { addProject, fetchProjectDetails } from '@/app/store/projectSlice';
 
 const AddProject = () => {
     const router = useRouter()
     const dispatch = useDispatch();
-    const usersList = useSelector((state) => state.user?.list?.data);
+    const usersList = useSelector((state) => state.user?.employeeList?.data);
     const projectDetailData = useSelector((state) => state?.project?.projectDetails?.data);
 
 
@@ -31,7 +31,7 @@ const AddProject = () => {
 
     const [formData, setFormData] = useState({
         project_name: "",
-        client_name: "",
+        client_id: null,
         start_date: "",
         due_date: "",
         priority: "",
@@ -43,10 +43,7 @@ const AddProject = () => {
 
     });
 
-    const [selectedPriority, setSelectedPriority] = useState(false)
-    const [selectedLeader, setSelectedLeader] = useState(false)
-    const [selectedStage, setSelectedStage] = useState(false)
-    const [selectedTeam, setSelectedTeam] = useState(false)
+   console.log("formData", formData)
     const [searchTrigger, setSearchTrigger] = useState(0);
 
     useEffect(() => {
@@ -80,7 +77,7 @@ const AddProject = () => {
             setFormData({
                 id: projectDetailData?.id,
                 project_name: projectDetailData?.project_name,
-                client_name: projectDetailData?.client_name,
+                client_id: projectDetailData?.client_name,
                 start_date: projectDetailData?.start_date,
                 due_date: projectDetailData?.due_date,
                 priority: projectDetailData?.priority,
@@ -101,7 +98,7 @@ const AddProject = () => {
         };
         dispatch(addProject({ projectData: updatedFormData, router }));
     };
-    console.log("formData", formData?.team)
+    console.log("formData", formData)
 
     return (
         <LayOut>
@@ -117,7 +114,13 @@ const AddProject = () => {
 
                         <div className="sm:flex justify-between">
                             <label className="block text-[20px] ">Client Name</label>
-                            <input className="w-[310px] sm:w-[350px] md:w-[400px]  h-10 border border-[#0000004D] rounded-lg p-2 text-m sm:ml-7 placeholder:text-gray-600" type='text' placeholder='Enter Client Name ' value={formData?.client_name} onChange={handleChange} name='client_name' />
+                            <Dropdown003
+                                // options={usersList}
+                                selectedValue={formData?.client_id}
+                                onSelect={(value) => handleDropdownChange("client_id", value)}
+                                label="Select Client"
+                                type="client"
+                            />
                         </div>
                         <div className="sm:flex justify-between">
                             <label className="block text-[20px]">Starting date</label>

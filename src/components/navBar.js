@@ -46,8 +46,16 @@ const NavBar = () => {
     router.push("/login");
   };
 
-  const userData=JSON.parse(localStorage.getItem("UserData"))
- 
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const storedData = localStorage.getItem("UserData");
+    if (storedData) {
+      setUserData(JSON.parse(storedData));
+    }
+  }, []);
+
+
 
 
 
@@ -120,8 +128,8 @@ const NavBar = () => {
               name={userData?.name}
               dotcolor="#E19F1E"
               size={40}
-            
-              // isActive={user.isActive}
+
+            // isActive={user.isActive}
             />
           </button>
           <Tooltip title='Logout' arrow disableInteractive>

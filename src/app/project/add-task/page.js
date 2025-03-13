@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux'
 const AddTask = () => {
     const router = useRouter()
     const dispatch = useDispatch();
-    const usersList = useSelector((state) => state.user?.list?.data);
+    const usersList = useSelector((state) => state.user?.employeeList?.data);
 
 
     const [itemId, setItemId] = useState(null);
@@ -28,6 +28,7 @@ const AddTask = () => {
             dispatch(fetchProjectTaskDetails(itemId));
         }
     }, [dispatch, itemId]);
+    
     useEffect(() => {
         if (typeof window !== "undefined") {
             const params = new URLSearchParams(window.location.search);
@@ -38,7 +39,7 @@ const AddTask = () => {
     const [searchTrigger, setSearchTrigger] = useState(0);
 
     useEffect(() => {
-        const sendData = {};
+        const sendData = {is_employee: 1,};
         dispatch(fetchUsers(sendData));
     }, [searchTrigger, dispatch,]);
     const [formData, setFormData] = useState({
@@ -60,14 +61,14 @@ const AddTask = () => {
             [name]: value
         }))
     }
-
+console.log("fromData", formData)
     const handleDropdownChange = (field, value) => {
         setFormData(prevState => ({
             ...prevState,
             [field]: value
         }))
     }
-
+console.log("itemId", itemId)
     useEffect(() => {
         if (itemId) {
             setFormData(prev => ({ ...prev, project_id: itemId }));
@@ -80,23 +81,23 @@ const AddTask = () => {
 
 
 
-    useEffect(() => {
-        if (taskDetailsData && itemId) {
-            setFormData({
-                id: taskDetailsData?.id,
-                project_id: taskDetailsData?.project_id,
-                task_title: taskDetailsData?.task_title,
-                task_type: taskDetailsData?.task_type,
-                due_date: taskDetailsData?.due_date,
-                priority: taskDetailsData?.priority,
-                department: taskDetailsData?.department,
-                link: taskDetailsData?.link,
-                visibility: taskDetailsData?.visibility,
-                description: taskDetailsData?.description,
-                // team: taskDetailsData?.team_leaders?.map((item) => item?.id)
-            });
-        }
-    }, [taskDetailsData, itemId]);
+    // useEffect(() => {
+    //     if (taskDetailsData && itemId) {
+    //         setFormData({
+    //             id: taskDetailsData?.id,
+    //             project_id: taskDetailsData?.project_id,
+    //             task_title: taskDetailsData?.task_title,
+    //             task_type: taskDetailsData?.task_type,
+    //             due_date: taskDetailsData?.due_date,
+    //             priority: taskDetailsData?.priority,
+    //             department: taskDetailsData?.department,
+    //             link: taskDetailsData?.link,
+    //             visibility: taskDetailsData?.visibility,
+    //             description: taskDetailsData?.description,
+    //             team: taskDetailsData?.team?.map((item) => item?.id)
+    //         });
+    //     }
+    // }, [taskDetailsData, itemId]);
 
     return (
         <LayOut>

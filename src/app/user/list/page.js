@@ -18,9 +18,9 @@ import { Tooltip } from '@mui/material';
 const UserList = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const usersList = useSelector((state) => state.user?.list?.data);
+  const usersList = useSelector((state) => state.user?.employeeList?.data);
   const usersLoading = useSelector((state) => state.user);
-  const totalCount = useSelector((state) => state?.user?.list?.total);
+  const totalCount = useSelector((state) => state?.user?.employeeList?.total);
 
   const [selectedDesignation, setSelectedDesignation] = useState('');
   const [currentPage, setCurrentPage] = useState(1);

@@ -127,9 +127,9 @@ export const fetchProjectTaskDetails = createAsyncThunk("task/fetchTaskDetails",
 });
 
 // Async thunk to fetch user details by ID
-export const updateProjectTaskStatus = createAsyncThunk("task/updateProjectTaskStatus", async ({ id, status, dispatch }, { rejectWithValue }) => {
+export const updateProjectTaskStatus = createAsyncThunk("task/updateProjectTaskStatus", async ({ id, task_status, dispatch }, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.post(`/task_status`, { id, status });
+    const response = await axiosInstance.post(`/task_status`, { id, task_status });
     if (response?.data?.success === true) {
       toast.success(response?.data?.message);
       // router.push("/project/list"); // Navigate on success
@@ -144,9 +144,9 @@ export const updateProjectTaskStatus = createAsyncThunk("task/updateProjectTaskS
 
 
 // Async thunk to fetch user details by ID
-export const updateTaskStatus = createAsyncThunk("task/updateTaskStatus", async ({ id, task_status, dispatch }, { rejectWithValue }) => {
+export const updateTaskStatus = createAsyncThunk("task/updateTaskStatus", async ({ id, status, dispatch }, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.post(`/task/status`, { id, task_status });
+    const response = await axiosInstance.post(`/task/status`, { id, status });
     if (response?.data?.success === true) {
       toast.success(response?.data?.message);
       // router.push("/project/list"); // Navigate on success

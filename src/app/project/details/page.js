@@ -39,9 +39,7 @@ const TaskList = () => {
   const [itemId, setItemId] = useState(null);
 
   const projectLoading = useSelector((state) => state.project);
-  const projectDetailData = useSelector(
-    (state) => state?.project?.projectDetails?.data
-  );
+  const projectDetailData = useSelector((state) => state?.project?.projectDetails?.data);
   const projectTaskListData = useSelector((state) => state.project?.list?.data);
   const projectTaskLoading = useSelector((state) => state.project);
   const totalCount = useSelector((state) => state?.project?.list?.total);
@@ -58,12 +56,11 @@ const TaskList = () => {
       dispatch(fetchProjectDetails(itemId));
     }
   }, [dispatch, itemId]);
-
+ 
   const user = {
     name: projectDetailData?.project_name || "",
-
     isActive: true,
-    image: "",
+    // image: "",
   };
 
   const [selectedStatus, setSelectedStatus] = useState("");
@@ -197,7 +194,7 @@ const TaskList = () => {
                   name={user.name}
                   dotcolor="blue"
                   size={66}
-                  image={user.image}
+                  // image={user.image}
                   isActive={user.isActive}
                 />
 
@@ -206,7 +203,7 @@ const TaskList = () => {
                     {projectDetailData?.project_name || ""}
                   </p>
                   <p className="text-xs text-gray-500">
-                    {projectDetailData?.client_name || ""}
+                    {projectDetailData?.client?.name || ""}
                   </p>
                 </div>
                 {/* <p className={`font-[400] text-[12px] leading-[16.8px] border rounded flex items-center justify-center ${projectDetailData?.status === 'To Do'

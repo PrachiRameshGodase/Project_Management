@@ -27,7 +27,8 @@ const Drawer01 = ({
 }) => {
   const router = useRouter();
   const dispatch = useDispatch();
-
+  const documents=details?.attachments ? JSON.parse(details?.attachments):[]
+  console.log("documents", documents)
   const [isActive, setIsActive] = useState(details?.project_status || "");
   const [isActive2, setIsActive2] = useState(details?.status || "");
 
@@ -99,7 +100,7 @@ const Drawer01 = ({
             <div className="text-xl text-gray-700 ">
               <p className="font-bold">{details?.project_name || "--"}</p>
               <p className="text-xs text-gray-500">
-                {details?.client_name || "--"}
+                {details?.client?.name || "--"}
               </p>
             </div>
             <DropdownStatus01
@@ -199,13 +200,13 @@ const Drawer01 = ({
               </span>
               <h4>:</h4>
               <span className="text-gray-700 w-[200px] text-[14px]">
-                {details?.project_leader_name || ""}
+                {details?.project_leader?.name || ""}
               </span>
             </li>
             <li className="flex mb-2 gap-4">
               <span className="text-gray-400 w-[120px] text-[14px]">Team</span>
               <h4>:</h4>
-              {/* <span className="text-gray-700 w-[200px] text-[14px]">{details?.team?.join(", ") || ""}</span> */}
+              <span className="text-gray-700 w-[200px] text-[14px]">{details?.team_leaders?.map((item)=>item?.first_name + " " + item?.last_name).join(", ") || ""}</span>
             </li>
             <li className="flex mb-2 gap-4">
               <span className="text-gray-400 w-[120px] text-[14px]">
@@ -222,7 +223,7 @@ const Drawer01 = ({
               </span>
               <h4>:</h4>
               <span className="text-gray-700 w-[200px]">
-                {/* <AttachmentPreview files={details?.attachments} /> */}
+                <AttachmentPreview files={documents} />
               </span>
             </li>
           </ul>
@@ -272,7 +273,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId, details }) => {
       setSelectedStatus(value);
 
       // Dispatch updateUserStatus with the new status
-      dispatch(updateProjectTaskStatus({ id: itemId, status: value, dispatch }));
+      dispatch(updateTaskStatus({ id: itemId, status: value, dispatch }));
     }
   };
   const handleToggleStatus = async (event) => {
@@ -292,7 +293,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId, details }) => {
 
       // Dispatch updateUserStatus with the new status
       dispatch(
-        updateTaskStatus({ id: itemId, task_status: newStatus, dispatch  })
+        updateProjectTaskStatus({ id: itemId, task_status: newStatus, dispatch  })
       );
     }
   };
@@ -408,7 +409,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId, details }) => {
               <span className="text-gray-400 w-[120px] text-[14px]">Team</span>
               <h4>:</h4>
               <span className="text-gray-700 w-[200px] text-[14px]">
-                {/* {details?.team || ""}{" "} */}
+                {details?.team?.map((item)=>item?.first_name + " " + item?.last_name).join(", ") || ""}{" "}
               </span>
             </li>
             <li className="flex mb-2 gap-4">
@@ -443,7 +444,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId, details }) => {
               </span>
               <h4>:</h4>
               <span className="text-gray-700 w-[200px]">
-                {/* <AttachmentPreview files={details?.attachments} /> */}
+                {/* <AttachmentPreview files={documents} /> */}
               </span>
             </li>
           </ul>

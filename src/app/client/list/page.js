@@ -16,9 +16,9 @@ import Pagenation from '@/components/common/Pagenation/Pagenation';
 const ClientList = () => {
     const router = useRouter()
     const dispatch = useDispatch();
-    const usersList = useSelector((state) => state.user?.list?.data);
+    const usersList = useSelector((state) => state.user?.clientList?.data);
     const usersLoading = useSelector((state) => state.user);
-    const totalCount = useSelector((state) => state?.user?.list?.total);
+    const totalCount = useSelector((state) => state?.user?.clientList?.total);
 
 
 
