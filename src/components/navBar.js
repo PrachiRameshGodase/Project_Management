@@ -122,7 +122,7 @@ const NavBar = () => {
             />
           </button>
           <Tooltip title='Logout' arrow disableInteractive>
-            <LogOutIcon className="cursor-pointer" onClick={handleLogout} />
+            <LogOutIcon className="cursor-pointer hover:text-red-600" onClick={handleLogout} />
           </Tooltip>
           {/* <LogOut
           isOpen2={isOpen2}
