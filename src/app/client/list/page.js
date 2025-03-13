@@ -199,7 +199,7 @@ const ClientList = () => {
                                 <tbody>
                                     {usersList?.map((user, index) => (
                                         <tr key={user?.id} className="cursor-pointer   hover:shadow-tr-border hover:bg-gray-100   rounded-md  transition-all duration-200">
-                                            <td className="py-2 sm:py-3 px-2 sm:px-4    text-[13px]  sm:text-[17px]  border-gray-50" onClick={() => router.push(`/client/details?id=${user?.id}`)}>{user?.employee_id}</td>
+                                            <td className="py-2 sm:py-3 px-2 sm:px-4    text-[13px]  sm:text-[17px]  border-gray-50" onClick={() => router.push(`/client/details?id=${user?.id}`)}>{user?.client_id}</td>
                                             <td className="py-2 sm:py-3 px-2 sm:px-4    text-[13px]  sm:text-[17px]  border-gray-50" onClick={() => router.push(`/client/details?id=${user?.id}`)}>{user?.name}</td>
                                             <td className="py-2 sm:py-3 px-2 sm:px-4    text-[13px]  sm:text-[17px]" onClick={() => router.push(`/client/details?id=${user?.id}`)}>{user?.email}</td>
                                             {/* <td className="py-2 sm:py-3 px-2 sm:px-4    text-[13px]  sm:text-[17px]" onClick={() => router.push(`/client/details?id=${user.userId}`)}>{user.mobileNumber}</td> */}

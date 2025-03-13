@@ -272,7 +272,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId, details }) => {
       setSelectedStatus(value);
 
       // Dispatch updateUserStatus with the new status
-      dispatch(updateProjectTaskStatus({ id: itemId, status: value }));
+      dispatch(updateProjectTaskStatus({ id: itemId, status: value, dispatch }));
     }
   };
   const handleToggleStatus = async (event) => {
@@ -280,7 +280,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId, details }) => {
 
     const result = await Swal.fire({
       text: `Do you want to ${
-        newStatus === 1 ? "Active" : "Inactive"
+        newStatus === 0 ? "Active" : "Inactive"
       } this Project?`,
       showCancelButton: true,
       confirmButtonText: "Yes",
@@ -292,7 +292,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId, details }) => {
 
       // Dispatch updateUserStatus with the new status
       dispatch(
-        updateTaskStatus({ id: itemId, task_status: newStatus,  })
+        updateTaskStatus({ id: itemId, task_status: newStatus, dispatch  })
       );
     }
   };
@@ -342,17 +342,17 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId, details }) => {
                     >
                         Under Review
                     </p> */}
-          {/* <DropdownStatus01
+          <DropdownStatus01
             options={statusProject}
             selectedValue={details?.status}
             onSelect={(value) => handleStatusChange(value)}
             label="Status"
             className="w-[150px]"
-          /> */}
+          />
           <div className="flex items-center mr-2">
-            {/* <label className="flex items-center cursor-pointer">
+            <label className="flex items-center cursor-pointer">
               <span className="ml-2 text-[15px] mr-2">
-                {!isActive ? "Inactive" : "Active"}
+                {isActive ? "Inactive" : "Active"}
               </span>
 
               <div className="relative">
@@ -367,21 +367,21 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId, details }) => {
                   className={`w-[70px] h-[40px] rounded-full shadow- transition duration-300 ease-in-out bg-[#ECE4FF]`}></div>
                 <div
                   className={`absolute w-[33px] h-[33px] rounded-full shadow-md top-[4px] left-[4px] transition-transform duration-300 ease-in-out ${
-                    isActive ? "translate-x-7 bg-[#048339]" : "bg-[#E23703]"
+                    isActive=="0" ? "translate-x-7 bg-[#048339]" : "bg-[#E23703]"
                   }`}>
-                  {isActive && (
+                  {isActive=="0" && (
                     <span className="absolute inset-0 flex items-center justify-center text-white text-[10px]">
                       <Check size={16} />
                     </span>
                   )}
-                  {!isActive && (
+                  {isActive=="1" && (
                     <span className="absolute inset-0 flex items-center justify-center text-white text-[10px]">
                       <X size={16} />
                     </span>
                   )}
                 </div>
               </div>
-            </label> */}
+            </label>
           </div>
         </div>
         {/* Project Details Section */}
@@ -408,7 +408,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId, details }) => {
               <span className="text-gray-400 w-[120px] text-[14px]">Team</span>
               <h4>:</h4>
               <span className="text-gray-700 w-[200px] text-[14px]">
-                {details?.team || ""}{" "}
+                {/* {details?.team || ""}{" "} */}
               </span>
             </li>
             <li className="flex mb-2 gap-4">

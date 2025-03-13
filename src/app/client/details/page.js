@@ -156,7 +156,7 @@ const ClientDetails = () => {
                             </li>
                             <li className="sm:w-[367px] h-[24px] flex items-center">
                                 <span className="sm:w-[114px] h-[24px] opacity-70">Client ID:</span>
-                                <span className="sm:w-[183px] h-[23px] ml-[35px]">{userDetailData?.employee_id || ""}</span>
+                                <span className="sm:w-[183px] h-[23px] ml-[35px]">{userDetailData?.client_id || ""}</span>
                             </li>
 
                         </ul>

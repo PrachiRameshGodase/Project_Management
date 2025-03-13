@@ -4,9 +4,8 @@ import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import UserAvatar from "./common/UserAvatar/UserAvatar";
 import toast, { Toaster } from "react-hot-toast";
-import LogOut from "./logOut";
-// import { FiMenu } from "react-icons/fi"; // Hamburger Icon
-// import { IoClose } from "react-icons/io5"; // Close Icon
+import LogOut from "./LogOut";
+
 
 const NavBar = () => {
   const router = useRouter();
@@ -42,6 +41,9 @@ const NavBar = () => {
     router.push("/login");
   };
 
+  const userData=JSON.parse(localStorage.getItem("UserData"))
+ 
+
   return (
     <div className="w-full z-50 h-[80px] fixed  flex items-center shadow-nav-Shadow  border-b border-gray-50 bg-white ">
       <Toaster
@@ -70,11 +72,11 @@ const NavBar = () => {
               key={Array.isArray(item.path) ? item.path[0] : item.path}
               onClick={() => router.push(Array.isArray(item.path) ? item.path[0] : item.path)}
               className={`hover:opacity-80 rounded-lg flex items-center gap-1.5 px-2 py-1.5 cursor-pointer 
-                ${isActive ? "border border-[#A8A9FF]" : "opacity-70"} 
+                ${isActive ? "border border-gray-200 bg-gray-100" : "opacity-70"} 
                 ${(item.label === "Projects" || item.label === "Clients") ? "w-[110px] h-[44px]" : "w-[93px] h-[44px]"}`}
             >
               {item.icon}
-              <span className={`text-[18px] mt-1 ${isActive && 'text-[#0E004B]'}`}>{item.label}</span>
+              <span className={`text-[18px] mt-1 ${isActive && 'text-[#0E004B] '}`}>{item.label}</span>
             </div>
           );
         })}
@@ -85,11 +87,11 @@ const NavBar = () => {
         <div className="absolute   top-4 right-3 sm:right-10 md:right-14 lg:right-20 flex items-center space-x-2">
           <button onClick={() => setIsOpen2(true)}>
             <UserAvatar
-              name={user.name}
+              name={userData?.name}
               dotcolor="#E19F1E"
               size={40}
-              image={user.image}
-              isActive={user.isActive}
+            
+              // isActive={user.isActive}
             />
           </button>
         </div>
