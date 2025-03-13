@@ -43,7 +43,7 @@ const AddProject = () => {
 
     });
 
-   console.log("formData", formData)
+    console.log("formData 🫦🌄", formData.attachments)
     const [searchTrigger, setSearchTrigger] = useState(0);
 
     useEffect(() => {
@@ -73,7 +73,7 @@ const AddProject = () => {
     }, [dispatch, itemId]);
     useEffect(() => {
         if (itemId && projectDetailData) {
-           
+
             setFormData({
                 id: projectDetailData?.id,
                 project_name: projectDetailData?.project_name,
@@ -98,7 +98,6 @@ const AddProject = () => {
         };
         dispatch(addProject({ projectData: updatedFormData, router }));
     };
-    console.log("formData", formData)
 
     return (
         <LayOut>
@@ -184,16 +183,19 @@ const AddProject = () => {
                         <div className="sm:flex justify-between">
                             <label className="block text-black text-[20px] font-medium">Attachments</label>
                             <FileUpload
-
                                 onFilesChange={(files) => {
                                     const fileNames = files.map((file) => file.name);
+                                    const url = files.map((file) => file.url);
                                     setFormData((prev) => ({
                                         ...prev,
                                         attachments: fileNames,
+                                        attachments: url,
                                     }))
                                 }
 
                                 } initialFiles={formData.attachments} />
+                            
+
 
                         </div>
                         <div className="sm:flex justify-between">
