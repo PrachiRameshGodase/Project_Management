@@ -4,10 +4,9 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { OtherIcons } from "@/assests/icons";
 import UserAvatar from "@/components/common/UserAvatar/UserAvatar";
-import LogOut from "@/components/LogOut";
+import LogOut from "@/components/logOut";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDashboard } from "../store/dashboardSlice";
-import { fetchLoggedInUser } from "../store/authSlice";
 
 const cardData = [
     { id: 1, title: "Accounting", description: "Manage your finances effectively.", status: "In Progress", task: [1, 2, 3, 4] },
@@ -25,14 +24,13 @@ const HomePage = () => {
     const dispatch=useDispatch()
     const dashboardList = useSelector((state) => state.dashboard?.list?.data);
     const dashboardLoading = useSelector((state) => state.dashboard);
-    const { user, token } = useSelector((state) => state.auth);
     const [isOpen2, setIsOpen2] = useState(false);
-    // const user = {
-    //     name: "Shubham Yadhav",
-    //     isActive: true,
-    //     email: 'a@gmai.com',
-    //     image: "",
-    // };
+    const user = {
+        name: "Shubham Yadhav",
+        isActive: true,
+        email: 'a@gmai.com',
+        image: "",
+    };
 console.log("dashboardList", dashboardList?.projects.recent_projects)
 
     useEffect(() => {
@@ -40,30 +38,21 @@ console.log("dashboardList", dashboardList?.projects.recent_projects)
         dispatch(fetchDashboard());
 
     }, [dispatch]);
-   
-    useEffect(() => {
-        if (!token) {
-          router.push("/login"); 
-        } else {
-          dispatch(fetchLoggedInUser());
-        }
-      }, [token, dispatch, router]);
-    console.log("user", user)
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-100 p-4 sm:p-10 relative ">
+        <div className="flex justify-center items-start min-h-screen bg-gray-100 p-4 sm:p-10 relative ">
             {/* Avatar Section (Top-Right) */}
             {/* <LogOut isOpen2={isOpen2} user={user} setIsOpen2={setIsOpen2} /> */}
 
             <div className="absolute top-4 right-5 sm:right-14 flex items-center space-x-2">
-                {/* <UserAvatar onClick={() => setIsOpen2(true)} name={user.name} dotcolor="green" size={36} image={user.image} isActive={user.isActive} /> */}
+                <UserAvatar onClick={() => setIsOpen2(true)} name={user.name} dotcolor="green" size={36} image={user.image} isActive={user.isActive} />
 
                 <span className="cursor-pointer" onClick={() => router.push(`/`)}>
                     {OtherIcons.back_svg}
                 </span>
             </div>
 
-            <div className="flex flex-col w-full mt-[10px]  ">
-                <h1 className="text-3xl  font-semibold text-gray-800 sm:text-center ">All Projects</h1>
+            <div className="flex flex-col w-full mt-[20px]  ">
+                <h1 className="text-3xl text-[32px] font-semibold text-gray-800 sm:text-center ">All Projects</h1>
 
                 {/* Projects Grid */}
                 <div className="grid  grid-cols-1  md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mx-auto mt-[30px]">

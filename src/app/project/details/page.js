@@ -189,7 +189,7 @@ const TaskList = () => {
         <Loader />
       ) : (
         <LayOut>
-          <div className="w-full  h-full mx-auto px-1  sm:px-4  ml-[5px] sm:border sm:border-gray-200 sm:shadow-md">
+            <div className="w-full  h-full mx-auto px-1  sm:px-4  ml-[5px] sm:border sm:shadow-tr-border rounded-[10px]  ">
             <div className=" min-[1250px]:flex   justify-between mt-[10px] sm:p-4 w-full">
               {/* Avatar Section */}
               <div className="  sm:w-[360px] h-[69px] flex items-center gap-[12.21px] ">
@@ -225,7 +225,7 @@ const TaskList = () => {
                 />
               </div>
               <div className="flex max-[850px]:flex-col justify-between gap-5 md:gap-10 lg:gap-4 max-[1250px]:mt-4">
-                <div className="w-[260px] h-[69px] border border-gray-150 rounded p-2">
+                  <div className="w-[260px] h-[69px] border border-[#D8D8D8] rounded p-2">
                   <p className="text-[#000000] text-400">Project Completion</p>
                   <div className="flex">
                     <div
@@ -496,20 +496,20 @@ const TaskList = () => {
                             {OtherIcons.arrow_down_svg}
                           </span>
                         </th>
-                        <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[14px] ">
+                        <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] ">
                           STATUS
                         </th>
-                        <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[14px]  ">
+                        <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px]  ">
                           DUE DATE
                         </th>
-                        <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[14px]  ">
+                        <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px]  ">
                           TASK TYPE
                         </th>
 
-                        <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[14px] ">
+                        <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] ">
                           TEAM
                         </th>
-                        <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[14px] ">
+                        <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] ">
                           PRIORITY
                         </th>
                       </tr>
@@ -520,15 +520,15 @@ const TaskList = () => {
                           key={item?.id}
                           className="cursor-pointer  hover:bg-gray-100   hover:shadow-tr-border   rounded-md  transition-all duration-200">
                           <td
-                            className="py-2 sm:py-3 px-2 sm:px-4   text-[13px]  sm:text-[17px]   rounded "
+                            className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px]   rounded "
                             onClick={() => handleTaskClick(item?.id)}>
                             {item?.task_title || ""}
                           </td>
                           <td
-                            className={`py-2 sm:py-3 px-2 sm:px-4   text-[13px]  sm:text-[17px]  min-w-[150px] rounded  font-bold`}
+                            className={`py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px]  min-w-[150px] rounded  font-bold`}
                             onClick={() => handleTaskClick(item?.id)}>
                             <span
-                              className={`py-1 px-2 sm:px-2   text-[13px]  sm:text-[17px]  border rounded-md ${
+                              className={`py-1 px-2 sm:px-2   text-[12px] sm:text-[15px]  border rounded-md ${
                                 item?.status === "To Do"
                                   ? "text-[#6C757D] border-[#6C757D]"
                                   : item?.status === "In progress"
@@ -541,17 +541,17 @@ const TaskList = () => {
                             </span>
                           </td>
                           <td
-                            className="py-2 sm:py-3 px-2 sm:px-4   text-[13px]  sm:text-[17px]   "
+                            className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px]   "
                             onClick={() => handleTaskClick(item?.id)}>
                             {item?.due_date || ""}
                           </td>
                           <td
-                            className="py-2 sm:py-3 px-2 sm:px-4   text-[13px]  sm:text-[17px]   "
+                            className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px]   "
                             onClick={() => handleTaskClick(item?.id)}>
                             {item?.task_type || ""}
                           </td>
                           <td
-                            className="py-2 sm:py-3 px-2 sm:px-4   text-[13px]  sm:text-[17px]  "
+                            className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px]  "
                             onClick={() => handleTaskClick(item?.id)}>
                             <TruncatedTooltipText
                               text={item?.team_names?.join(", ")}
@@ -562,7 +562,7 @@ const TaskList = () => {
                             className={` text-[12px] sm:text-[15px]   font-bold`}
                             onClick={() => handleTaskClick(item?.id)}>
                             <span
-                              className={`py-1 px-2 sm:px-4   text-[13px]  sm:text-[17px]  border rounded-md  ${
+                              className={`py-1 px-2 sm:px-4   text-[12px] sm:text-[15px]  border rounded-md  ${
                                 user.priority === "High"
                                   ? "text-[#4976F4] border-[#4976F4]"
                                   : user.priority === "Low"

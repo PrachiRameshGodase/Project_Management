@@ -26,7 +26,7 @@ const AddClient = () => {
         email: "",
         contact_name: "",
         password: "",
-       
+
         is_client: 1,
     });
 
@@ -70,7 +70,7 @@ const AddClient = () => {
                 email: userDetailData?.email,
                 contact_name: userDetailData?.contact_name,
                 password: userDetailData?.c_password,
-                name:userDetailData?.name
+                name: userDetailData?.name
             });
         }
     }, [userDetailData, itemId]);
@@ -80,7 +80,7 @@ const AddClient = () => {
         <LayOut> <div className="sm:flex mx-auto sm:mx-0  flex-col items-center justify-center">
             <div className="text-2xl tracking-tight sm:ml-[7px] text-[32px]  w-full">Add New Client</div>
 
-            <div className="sm:flex   justify-between items-center h-screen mx-auto">
+            <div className="sm:flex   justify-between items-center h-screen mx-auto sm:-mt-16  xl:lg:-mt-32">
                 <form className="sm:w-[690px] h-[656px] bg-white p-3 sm:p-8 rounded-lg space-y-8">
                     <div className="sm:flex  justify-between items-center">
                         <label className="block text-m ">Client Name*</label>

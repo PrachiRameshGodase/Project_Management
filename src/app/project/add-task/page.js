@@ -103,7 +103,7 @@ const AddTask = () => {
             <div className="sm:flex mx-auto sm:mx-0  flex-col items-center justify-center">
                 <div className="text-2xl tracking-tight ml-4 sm:ml-[7px] text-[32px]  w-full ">Add New Task</div>
 
-                <div className="sm:flex justify-center items-center h-screen mx-auto">
+                <div className="sm:flex justify-center items-center h-screen mx-auto sm:-mt-16 xl:lg:-mt-28">
                     <form className="w-full sm:w-[650px] mb-4 h-[656px] bg-white p-8 rounded-lg space-y-6">
                         <div className="sm:flex justify-between">
                             <label className="block text-[20px] ">Task Title  <span className="text-red-600">*</span></label>
@@ -159,8 +159,8 @@ const AddTask = () => {
                         </div>
 
                         <div className="flex justify-between">
-                            <label className="block text-m">Link</label>
-                            <input className="w-[350px] h-10 border border-gray-300 rounded-lg p-2 text-m ml-[78px] placeholder:text-gray-400" type='text' placeholder='Enter Link' value={formData?.link} name='link' onChange={handleChange} />
+                            <label className="block text-[20px]">Link</label>
+                            <input className="w-[310px] sm:w-[350px] md:w-[400px] h-10 border border-gray-300 rounded-lg p-2 text-m ml-[78px] placeholder:text-gray-400" type='text' placeholder='Enter Link' value={formData?.link} name='link' onChange={handleChange} />
                         </div>
 
                         <div className="sm:flex justify-between">
@@ -189,8 +189,8 @@ const AddTask = () => {
 
                         </div>
                         <div className="flex justify-between">
-                            <label className="block text-m">Description..</label>
-                            <textarea className="w-[350px] h-40 border border-gray-300 rounded-lg p-2 text-m ml-[35px] placeholder:text-gray-400" type='text' placeholder='Enter Description' value={formData?.description} name='description' onChange={handleChange} />
+                            <label className="block text-[20px]">Description..</label>
+                            <textarea className="w-[310px] sm:w-[350px] md:w-[400px] h-40 border border-gray-300 rounded-lg p-2 text-m ml-[35px] placeholder:text-gray-400" type='text' placeholder='Enter Description' value={formData?.description} name='description' onChange={handleChange} />
                         </div>
 
                         <div className="sm:flex justify-between ">
