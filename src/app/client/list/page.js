@@ -97,7 +97,7 @@ const ClientList = () => {
                             {totalCount} total
                         </p>
                         <p
-                            className={`${usersLoading?.loading && "rotate_01"} mt-[6px] hover:cursor-pointer`}
+                            className={`${usersLoading?.listLoading && "rotate_01"} mt-[6px] hover:cursor-pointer`}
                             data-tooltip-content="Reload"
                             data-tooltip-place="bottom"
                             data-tooltip-id="my-tooltip"
@@ -179,7 +179,7 @@ const ClientList = () => {
                 <>
 
                     <div className="max-w-full overflow-x-auto mt-6">
-                        {usersLoading?.loading ? (
+                        {usersLoading?.listLoading ? (
                             <TableSkeleton rows={7} columns={5} />
                         ) : (
                             <table className="w-full border-spacing-y-1 min-w-[1000px] border-2 border-transparent  ">

@@ -127,13 +127,13 @@ export const fetchProjectTaskDetails = createAsyncThunk("task/fetchTaskDetails",
 });
 
 // Async thunk to fetch user details by ID
-export const updateProjectTaskStatus = createAsyncThunk("task/updateProjectTaskStatus", async ({ id, task_status, dispatch }, { rejectWithValue }) => {
+export const updateProjectTaskStatus = createAsyncThunk("task/updateProjectTaskStatus", async ({ id, task_status, dispatch, project_id }, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.post(`/task_status`, { id, task_status });
+    const response = await axiosInstance.post(`/task_status`, { id, task_status, project_id });
     if (response?.data?.success === true) {
       toast.success(response?.data?.message);
       // router.push("/project/list"); // Navigate on success
-      dispatch(fetchProjectTasks())
+      dispatch(fetchProjectTasks({ project_id: project_id,}))
       dispatch(fetchProjectTaskDetails(id))
     }
     return response.data;
@@ -144,13 +144,13 @@ export const updateProjectTaskStatus = createAsyncThunk("task/updateProjectTaskS
 
 
 // Async thunk to fetch user details by ID
-export const updateTaskStatus = createAsyncThunk("task/updateTaskStatus", async ({ id, status, dispatch }, { rejectWithValue }) => {
+export const updateTaskStatus = createAsyncThunk("task/updateTaskStatus", async ({ id, status, dispatch, project_id }, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.post(`/task/status`, { id, status });
+    const response = await axiosInstance.post(`/task/status`, { id, status, project_id });
     if (response?.data?.success === true) {
       toast.success(response?.data?.message);
       // router.push("/project/list"); // Navigate on success
-      dispatch(fetchProjectTasks())
+      dispatch(fetchProjectTasks({ project_id: project_id,}))
       dispatch(fetchProjectTaskDetails(id))
 
 
@@ -160,6 +160,8 @@ export const updateTaskStatus = createAsyncThunk("task/updateTaskStatus", async 
     return rejectWithValue(error.response?.data || error.message);
   }
 });
+
+
 const projectSlice = createSlice({
   name: "project",
   initialState: {
@@ -167,7 +169,6 @@ const projectSlice = createSlice({
     projectDetails: null,
     taskList:[],
     projectTaskDetails: null,
-    
     loading: false,
     error: null,
   },

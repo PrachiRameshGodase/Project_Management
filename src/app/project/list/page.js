@@ -84,7 +84,7 @@ const ProjectList = () => {
   return (
     <LayOut> <div>
       {/* Top Section with Filters and Buttons */}
-      <div className="w-full h-[44px] flex justify-between items-center px-4  ">
+      <div className="w-full h-[44px] flex justify-between items-center  ">
 
         {/* Left Section (Heading + Count) */}
         <div className="flex">
@@ -178,7 +178,7 @@ const ProjectList = () => {
             ) : (
               <table className="w-full border-spacing-y-1 min-w-[1000px] border-2 border-transparent  ">
                 <thead>
-                  <tr className="text-left m-1 text-sm uppercase text-black opacity-80 shadow-tr-border rounded-md  ">
+                  <tr className="text-left m-1 text-sm uppercase text-gray-900 shadow-tr-border rounded-md  ">
                     <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] min-w-[100px]   flex">
                       <div className='flex items-center justify-between'>
                         <span>PROJECT NAME</span><SortBy setSearchTrigger={setSearchTrigger} selectedSortBy={selectedSortBy} setSelectedSortBy={setSelectedSortBy} sortOrder={sortOrder} setSortOrder={setSortOrder} sortOptions="project_name" resetPageIfNeeded={resetPageIfNeeded} /> </div></th>
@@ -194,9 +194,9 @@ const ProjectList = () => {
                 <tbody>
                   {projectListData?.map((item, index) => (
                     <tr key={item?.id} className="cursor-pointer hover:bg-gray-100   hover:shadow-tr-border   rounded-md  transition-all duration-200">
-                      <td className="py-2 sm:py-3 px-2 sm:px-4   text-[13px]  sm:text-[17px]  rounded " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.project_name || ""}</td>
-                      <td className="py-2 sm:py-3 px-2 sm:px-4   text-[13px]  sm:text-[17px] rounded " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.client?.name ||""}</td>
-                      <td className={`py-2 sm:py-3 px-2 sm:px-4   text-[13px]  sm:text-[17px]   rounded  font-bold`} onClick={() => router.push(`/project/details?id=${item?.id}`)}>
+                      <td className="py-2 sm:py-3 px-2 sm:px-4   text-[12px]  sm:text-[15px]  rounded " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.project_name || ""}</td>
+                      <td className="py-2 sm:py-3 px-2 sm:px-4   text-[12px]  sm:text-[15px] rounded " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.client?.name ||""}</td>
+                      <td className={`py-2 sm:py-3 px-2 sm:px-4   text-[12px]  sm:text-[14px]   rounded `} onClick={() => router.push(`/project/details?id=${item?.id}`)}>
                         <span
                           className={`px-3 py-1 border rounded-md ${item.status === 'To Do'
                             ? 'text-[#6C757D] border-[#6C757D]'
@@ -213,7 +213,7 @@ const ProjectList = () => {
                       <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  " onClick={() => router.push(`/project/details?id=${item?.id}`)}>
                         <TruncatedTooltipText text={item?.team_leaders?.map((item)=>item?.first_name + " " + item?.last_name).join(",")} maxLength={25} />
                       </td>
-                      <td className={`py-2 sm:py-3 px-2 sm:px-4 text-[12px] sm:text-[15px] font-bold`} onClick={() => router.push(`/project/details?id=${item?.id}`)}>
+                      <td className={`py-2 sm:py-3 px-2 sm:px-4 text-[12px] sm:text-[15px]`} onClick={() => router.push(`/project/details?id=${item?.id}`)}>
                         <span
                           className={`py-1 sm:py-1 px-2 sm:px-4  text-[12px] sm:text-[15px] border rounded-md  ${item?.priority === 'High'
                             ? 'text-[#4976F4] border-[#4976F4]' : item?.priority === 'Low' ?

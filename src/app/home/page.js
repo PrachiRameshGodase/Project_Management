@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { OtherIcons } from "@/assests/icons";
 import UserAvatar from "@/components/common/UserAvatar/UserAvatar";
-import LogOut from "@/components/logOut";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDashboard } from "../store/dashboardSlice";
 
@@ -75,8 +74,10 @@ console.log("dashboardList", dashboardList?.projects.recent_projects)
                                                 ? "text-[#CA9700] border-[#CA9700]"
                                                 : card.status === "Under Review"
                                                     ? "text-[#0D4FA7] border-[#0D4FA7]"
+                                                    :card.status === "Completed"
+                                                    ? "text-[#538d4b] border-[#538d4b]"
                                                     : ""
-                                                } h-[24px] w-fit px-2 py-1 flex items-center text-[12px]`}
+                                                } h-[24px] w-fit px-2 py-1 flex items-center text-[12px] text-[#202730] border-[#7a8ba0]`}
                                         >
                                             {card?.status ||""}
                                         </span>
@@ -88,7 +89,7 @@ console.log("dashboardList", dashboardList?.projects.recent_projects)
                                             {OtherIcons.dateTime_svg}
                                         </div>
                                         <div className="flex flex-col">
-                                            <p className="text-gray-800 text-[14px]">1 Jan, 2025</p>
+                                            <p className="text-gray-800 text-[14px]">{card?.due_date ||""}</p>
                                             <p className="text-[#320b5775] text-[12px]">Deadline Date</p>
                                         </div>
                                     </div>
@@ -100,7 +101,7 @@ console.log("dashboardList", dashboardList?.projects.recent_projects)
                                         </div>
                                         <div className="flex flex-col text-left">
                                             <p className="text-gray-800 text-[14px]">
-                                                Prachi Godase, Anurag, Punit, Sumit, Aryan
+                                                {card?.team_leaders?.map((item)=>item?.first_name + " " + item?.last_name)?.join(", ")}
                                             </p>
                                             <p className="text-[#320b5775] text-[12px]">Team</p>
                                         </div>
@@ -114,7 +115,7 @@ console.log("dashboardList", dashboardList?.projects.recent_projects)
                                                     {OtherIcons.task_svg}
                                                 </div>
                                                 <p className="font-normal text-[14px] leading-[17.28px]">
-                                                    Tasks {/* 🔹 Har Card ka apna total sum */}
+                                                    Tasks ({card?.tasks_count || 0})
                                                 </p>
                                             </div>
                                         </div>
@@ -132,16 +133,16 @@ console.log("dashboardList", dashboardList?.projects.recent_projects)
                                                 <tbody>
                                                     <tr className="">
                                                         <td className="font-300 text-gray-700 text-[14px] text-center">
-                                                            {toDo}
+                                                            {card?.to_do_tasks_count ||0}
                                                         </td>
                                                         <td className="font-300 text-gray-700 text-[14px] text-center">
-                                                            {inProgress}
+                                                            {card?.in_progress_tasks_count ||0}
                                                         </td>
                                                         <td className="font-300 text-gray-700 text-[14px] text-center">
-                                                            {underReview}
+                                                            {card?.under_review_tasks_count ||0}
                                                         </td>
                                                         <td className="font-300 text-gray-700 text-[14px] text-center">
-                                                            {completed}
+                                                            {card?.completed_tasks_count ||0}
                                                         </td>
                                                     </tr>
                                                 </tbody>
