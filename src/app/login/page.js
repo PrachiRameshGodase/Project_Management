@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../store/authSlice";
+import { fetchLoggedInUser, loginUser } from "../store/authSlice";
 import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast"; // Import react-hot-toast
 import { Eye, EyeOff } from "lucide-react";
@@ -37,6 +37,7 @@ const LoginPage = () => {
     dispatch(loginUser(formData)).then((res) => {
       if (res?.payload?.success) {
         toast.success("Login Successful!");
+        dispatch(fetchLoggedInUser())
         router.push("/home");
       } else {
         toast.error(res?.payload?.message || "Login Failed!");

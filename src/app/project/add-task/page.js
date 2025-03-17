@@ -19,7 +19,15 @@ const AddTask = () => {
     const dispatch = useDispatch();
     const usersList = useSelector((state) => state.user?.employeeList?.data);
     const addTaskLoading = useSelector((state) => state.project);
-    const itemId2 = localStorage.getItem("itemId")
+
+    const [itemId2, setStoredValue] = useState(null);
+
+     useEffect(() => {
+    if (typeof window !== "undefined") {
+      setStoredValue(localStorage.getItem("itemId"));
+    }
+    }, []);
+   
 
     const [itemId, setItemId] = useState(null);
     const [isEditMode, setIsEditMode] = useState(false);

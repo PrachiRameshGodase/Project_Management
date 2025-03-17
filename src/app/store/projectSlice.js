@@ -162,25 +162,6 @@ export const updateTaskStatus = createAsyncThunk("task/updateTaskStatus", async 
   }
 });
 
-export const addTaskComment = createAsyncThunk(
-  "task/addTaskComment",
-  async ({ projectData, }, { rejectWithValue }) => {
-    try {
-      const response = await axiosInstance.post(`/comment/create`, projectData);
-      if (response?.data?.success === true) {
-        toast.success(response?.data?.message);
-      }
-      return response.data;
-
-
-    } catch (error) {
-      console.error("Add Project API Error:", error);
-      toast.error(response?.payload?.message);
-      return rejectWithValue(error.response?.data || error.message);
-    }
-  }
-);
-
 export const fetchTaskComment = createAsyncThunk(
   "task/fetchTaskComment",
   async (filters = {}, { rejectWithValue }) => {
@@ -196,13 +177,34 @@ export const fetchTaskComment = createAsyncThunk(
   }
 );
 
-export const deleteTaskComment = createAsyncThunk("task/deleteTaskComment", async ({ id, project_id, task_id}, { rejectWithValue }) => {
+export const addTaskComment = createAsyncThunk(
+  "task/addTaskComment",
+  async ({formData, project_id, task_id, dispatch}, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.post(`/comment/create`, formData);
+      if (response?.data?.success === true) {
+        toast.success(response?.data?.message);
+        dispatch(fetchTaskComment({ project_id: project_id, task_id}))
+      }
+      return response.data;
+
+
+    } catch (error) {
+      console.error("Add Project API Error:", error);
+      toast.error(response?.payload?.message);
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+
+
+export const deleteTaskComment = createAsyncThunk("task/deleteTaskComment", async ({ id, project_id, task_id, dispatch}, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.post(`/comment/destroy`, { id });
     if (response?.data?.success === true) {
       toast.success(response?.data?.message);
-      fetchTaskComment({project_id, task_id})
-
+      dispatch(fetchTaskComment({project_id, task_id}))
     }
     return response.data;
   } catch (error) {
@@ -212,6 +214,7 @@ export const deleteTaskComment = createAsyncThunk("task/deleteTaskComment", asyn
 const projectSlice = createSlice({
   name: "project",
   initialState: {
+    taskCommentList: [],
     list: [],
     projectDetails: null,
     taskList: [],
@@ -220,7 +223,7 @@ const projectSlice = createSlice({
     taskDetailsLoading: false,
     loading: false,
     commentLoading:false,
-    taskCommentList: [],
+   
     error: null,
   },
   reducers: {
@@ -319,7 +322,6 @@ const projectSlice = createSlice({
       })
       .addCase(addProjectTask.fulfilled, (state, action) => {
         state.loading = false;
-        state.successMessage = "Task added successfully!";
         state.taskList.push(action.payload);
       })
       .addCase(addProjectTask.rejected, (state, action) => {
@@ -401,8 +403,7 @@ const projectSlice = createSlice({
       })
       .addCase(addTaskComment.fulfilled, (state, action) => {
         state.commentLoading = false;
-        // state.successMessage = "Comment added successfully!";
-        state.taskCommentList.push(action.payload);
+        state.taskCommentList = [...state.taskCommentList, action.payload];
       })
       .addCase(addTaskComment.rejected, (state, action) => {
         state.commentLoading = false;
