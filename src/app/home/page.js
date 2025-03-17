@@ -7,16 +7,7 @@ import UserAvatar from "@/components/common/UserAvatar/UserAvatar";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDashboard } from "../store/dashboardSlice";
 
-const cardData = [
-    { id: 1, title: "Accounting", description: "Manage your finances effectively.", status: "In Progress", task: [1, 2, 3, 4] },
-    { id: 2, title: "Finance", description: "Track your income and expenses.", status: "In Progress", task: [1, 0, 1, 1] },
-    { id: 3, title: "Invoicing", description: "Create invoices with ease.", status: "In Progress", task: [0, 1, 1, 2] },
-    { id: 4, title: "Marketing Webapp", description: "Stay tax compliant effortlessly.", status: "In Progress", task: [1, 1, 1, 1] },
-    { id: 5, title: "Accounting", description: "Manage your finances effectively.", status: "In Progress", task: [1, 1, 8, 1] },
-    { id: 6, title: "Finance", description: "Track your income and expenses.", status: "In Progress", task: [1, 1, 1, 1] },
-    { id: 7, title: "Invoicing", description: "Create invoices with ease.", status: "Under Review", task: [1, 1, 1, 1] },
-    { id: 8, title: "Tax Management", description: "Stay tax compliant effortlessly.", status: "Under Review", task: [3, 1, 4, 1] },
-];
+
 
 const HomePage = () => {
     const router = useRouter();
@@ -30,7 +21,7 @@ const HomePage = () => {
         email: 'a@gmai.com',
         image: "",
     };
-console.log("dashboardList", dashboardList?.projects.recent_projects)
+
 
     useEffect(() => {
 

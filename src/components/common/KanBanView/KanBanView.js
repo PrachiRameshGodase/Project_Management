@@ -12,31 +12,38 @@ const DraggableCard = ({ user, index, status, moveUser, moveCard }) => {
     <div
       draggable
       onDragStart={handleDragStart}
-      className="w-[300px] h-[240px] mt-4 bg-white p-4 gap-4 shadow-md rounded cursor-pointer"
+      className="w-[300px] h-full mt-4 bg-white p-4 gap-4 shadow-md rounded cursor-pointer"
     >
       <p
-        className={`px-3 py-1 border rounded-md text-[15px] inline-block ${user.priority === "High"
-          ? "text-[#4976F4] border-[#4976F4]"
-          : user.priority === "Low"
+        className={`px-3 py-1 border rounded-md text-[15px] inline-block ${
+          user.priority === "High"
+            ? "text-[#4976F4] border-[#4976F4]"
+            : user.priority === "Low"
             ? "text-red-400 border-red-400"
             : "text-[#954BAF] border-[#954BAF]"
-          }`}
+        }`}
       >
         {user.priority}
       </p>
-      <p className="text-[18px] mt-2">{user.userId}</p>
+      <p className="text-[18px] mt-2">{user?.task_title || ""}</p>
       <ul>
-        <li className="flex">
-          <p className="text-[15px] text-gray-400 w-[120px] mt-2">Due Date</p>
-          <span className="text-[15px] mt-2">{user.dueDate}</span>
+        <li className="flex items-center gap-2">
+          <p className="text-[15px] text-gray-400 w-[120px]">Due Date</p>
+          <span className="text-[15px] text-gray-700 w-[150px]">
+            {user?.due_date || ""}
+          </span>
         </li>
-        <li className="flex">
-          <p className="text-[15px] text-gray-400 w-[280px] mt-2">Team</p>
-          <span className="text-[15px] mt-2">{user.team}</span>
+        <li className="flex items-center gap-2">
+          <p className="text-[15px] text-gray-400 w-[120px] z">Team</p>
+          <span className="text-[15px] text-gray-700 w-[150px]">
+            {user?.team_names?.join(", ") || "-"}
+          </span>
         </li>
-        <li className="flex">
-          <p className="text-[15px] text-gray-400 w-[120px] mt-2">Type</p>
-          <span className="text-[15px] mt-2">{user.type}</span>
+        <li className="flex items-center gap-2">
+          <p className="text-[15px] text-gray-400 w-[120px]">Type</p>
+          <span className="text-[15px] text-gray-700 w-[150px]">
+            {user?.task_type || "-"}
+          </span>
         </li>
       </ul>
     </div>
@@ -71,14 +78,15 @@ const DroppableColumn = ({ status, users, moveUser, moveCard }) => {
     >
       <div className="w-full h-[40px] bg-[#F0E7FA] flex items-center px-4">
         <p
-          className={`w-[13px] h-[13px] rounded-full ${status === "To Do"
-            ? "bg-[#6C757D]"
-            : status === "In progress"
+          className={`w-[13px] h-[13px] rounded-full ${
+            status === "To Do"
+              ? "bg-[#6C757D]"
+              : status === "In Progress"
               ? "bg-[#CA9700]"
               : status === "Under Review"
-                ? "bg-[#0D4FA7]"
-                : "bg-[#048339]"
-            }`}
+              ? "bg-[#0D4FA7]"
+              : "bg-[#048339]"
+          }`}
         ></p>
         <p className="text-[15px] ml-2">{status}</p>
         <p className="text-[14px] ml-4">{users.length}</p>
@@ -106,9 +114,20 @@ const DroppableColumn = ({ status, users, moveUser, moveCard }) => {
   );
 };
 
-
 const KanBanView = ({ groupedUsers }) => {
-  const [columns, setColumns] = useState(groupedUsers);
+  console.log("groupedUsers", groupedUsers);
+  // Define the required statuses
+  const statuses = ["To Do", "In Progress", "Under Review", "Completed"];
+
+  // Transform initial groupedUsers data while ensuring all statuses exist
+  const groupedByStatus = statuses.map((status) => ({
+    status,
+    users: groupedUsers?.filter((task) => task.status === status),
+  }));
+
+  const [columns, setColumns] = useState(groupedByStatus);
+
+  console.log("columns", columns);
 
   const moveUser = (userId, fromStatus, toStatus) => {
     if (fromStatus === toStatus) return;
