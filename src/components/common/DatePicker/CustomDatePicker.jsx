@@ -19,11 +19,11 @@ const CustomDatePicker = ({selectedDate, label = "Select Date", onChange }) => {
         <div className="date-picker w-[310px] sm:w-[350px] md:w-[400px] border-[#0000004D]">
             <input
                 type="date"
-                value={date}
+                value={date || ""}
                 onChange={handleDateChange}
                 className="date-input w-[310px] sm:w-[350px] md:w-[400px] text-m "
             />
-            <span className={`date-label text-gray-600 ${date ? "hidden" : ""}`}>
+            <span className={`date-label text-gray-400 ${date ? "hidden" : ""}`}>
                 {label}
             </span>
             <span className="icon">{OtherIcons.calender_svg}</span>

@@ -13,6 +13,7 @@ import { Dropdown003, Dropdown03 } from '@/components/common/Dropdown/Dropdown03
 import { addProject, fetchProjectDetails } from '@/app/store/projectSlice';
 import Swal from 'sweetalert2';
 import { OtherIcons } from '@/assests/icons';
+import { CircleX } from 'lucide-react';
 
 const AddProject = () => {
     const router = useRouter()
@@ -91,19 +92,19 @@ const AddProject = () => {
             setFormData({
                 id: projectDetailData?.id,
                 project_name: projectDetailData?.project_name,
-                client_id: projectDetailData?.client_name,
+                client_id: projectDetailData?.client_id,
                 start_date: projectDetailData?.start_date,
                 due_date: projectDetailData?.due_date,
                 priority: projectDetailData?.priority,
                 project_leader: projectDetailData?.project_leader?.id,
                 project_stage: projectDetailData?.project_stage,
                 team: (projectDetailData?.team_leaders.map((item) => item?.id)),
-                // attachments:formattedAttachments,
+                attachments: projectDetailData?.attachments ? JSON.parse(projectDetailData?.attachments) : [],
                 description: projectDetailData?.description
             })
         }
     }, [itemId, projectDetailData])
-
+    console.log("formData", formData)
     const handleSubmit = async (e) => {
         e.preventDefault();
         let newErrors = {
@@ -132,11 +133,14 @@ const AddProject = () => {
             }
         }
     };
-
+    const handleClose=()=>{
+        router.push("/project/list")
+        localStorage.removeItem("itemId", itemId)
+    }
     return (
         <LayOut>
             <div className="sm:flex mx-auto sm:mx-0  flex-col items-center justify-center ">
-                <div className="text-2xl tracking-tight ml:20  sm:ml-[7px] text-[32px] w-full">Add New Project</div>
+                <div className="text-2xl tracking-tight ml:20  sm:ml-[7px] text-[32px] w-full">{itemId ? "Update Project" :"Add New Project"}</div>
 
                 <div className="sm:flex justify-center items-center h-screen mx-auto sm:-mt-10 xl:-mt-[70px] ">
                     <form className="w-full sm:w-[650px] mb-4 h-[656px] bg-white sm:p-8 rounded-lg space-y-6" onSubmit={handleSubmit}>
@@ -144,7 +148,7 @@ const AddProject = () => {
                             <label className="block text-[20px]">Project Name<span className='text-red-600'>*</span></label>
                             <div className="flex flex-col">
                                 <input
-                                    className="w-[310px] sm:w-[350px] md:w-[400px] h-10 border border-[#0000004D] rounded-lg p-2 text-m sm:ml-7 placeholder:text-gray-600"
+                                    className="w-[310px] sm:w-[350px] md:w-[400px] h-10 border border-[#0000004D] rounded-lg p-2 text-m sm:ml-7 placeholder:text-gray-400"
                                     type='text'
                                     placeholder='Enter Project Name'
                                     value={formData?.project_name}
@@ -239,16 +243,16 @@ const AddProject = () => {
                             <label className="block text-black text-[20px] font-medium">Attachments</label>
                             <FileUpload
                                 onFilesChange={(files) => {
-                                    const fileNames = files.map((file) => file.name);
-                                    const url = files.map((file) => file.url);
+                                  
                                     setFormData((prev) => ({
                                         ...prev,
-                                        attachments: fileNames,
-                                        attachments: url,
+                                        attachments: files,
+
                                     }))
                                 }
 
-                                } initialFiles={formData.attachments} />
+                                }
+                                initialFiles={formData.attachments} />
 
 
 
@@ -267,13 +271,22 @@ const AddProject = () => {
                                 {projectLoading?.loading ? (
                                     <div className="w-5 h-5 border-2 border-gray-100 border-t-transparent rounded-full animate-spin"></div>
                                 ) : (
-                                    "Submit"
+                                    itemId ? "Update" : "Submit"
                                 )}
                             </button>
                         </div>
                     </form>
                 </div>
+                <div className=" flex justify-end ">
+                    <button
+                        onClick={handleClose}
+                        className="text-gray-700 hover:text-black">
+                        <CircleX size={30} strokeWidth={1.5} />
+                    </button>
+                </div>
+               
             </div>
+            
         </LayOut>
     );
 }

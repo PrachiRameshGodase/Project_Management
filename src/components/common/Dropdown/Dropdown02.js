@@ -63,7 +63,7 @@ export const Dropdown02 = ({ options, selectedValues, onSelect, label, icon }) =
               </div>
             ))
           ) : (
-            <span className="text-gray-600">{label}</span>
+            <span className="text-gray-400">{label}</span>
           )}
         </div>
 
@@ -174,7 +174,7 @@ export const Dropdown002 = ({ options, selectedValue, onSelect, label }) => {
             selectedOptions?.map((item) => (
               <div
                 key={item.id}
-                className={`flex items-center bg-gray-200 text-gray-600 rounded-md px-2 py-1 text-m ${selected ?"text-gray-700":""}`}
+                className={`flex items-center bg-gray-200 text-gray-400 rounded-md px-2 py-1 text-m ${selected ?"text-gray-700":""}`}
               >
                 {`${item.name} `}
                 <span
@@ -189,7 +189,7 @@ export const Dropdown002 = ({ options, selectedValue, onSelect, label }) => {
               </div>
             ))
           ) : (
-            <span className="text-gray-600">{label}</span>
+            <span className="text-gray-400">{label}</span>
           )}
         </div>
 
