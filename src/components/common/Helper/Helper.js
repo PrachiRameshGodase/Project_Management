@@ -33,3 +33,13 @@ export const statusOptions = [
         return { percentage: 0, color: "#EBF0FF" }
     }
   };
+
+  export const formatTime = (timestamp) => {
+    if (!timestamp) return ""; // Handle cases where timestamp is null/undefined
+    return new Date(timestamp).toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true, // AM/PM format
+    });
+  };
+  

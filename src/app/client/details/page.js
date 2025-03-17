@@ -27,10 +27,8 @@ const ClientDetails = () => {
     const [isActive, setIsActive] = useState(userDetailData?.status || "");
 
     const user = {
-        name: `${userDetailData?.first_name || ""} ${userDetailData?.last_name || ""
-            }`.trim(),
-
-        isActive: true,
+        name: `${userDetailData?.name || ""}`,
+        isActive: isActive == "0" ? true : false,
         image: "",
     };
 
@@ -59,11 +57,11 @@ const ClientDetails = () => {
             setIsActive(!isActive); // Update local state immediately
 
             // Dispatch updateUserStatus with the new status
-            dispatch(updateUserStatus({ id: itemId, status: newStatus, router,section:"client" }));
+            dispatch(updateUserStatus({ id: itemId, status: newStatus, router, section: "client" }));
         }
     };
 
-    
+
 
     const handleEditUser = () => {
         router.push(`/client/add?id=${itemId}&edit=true`);
@@ -95,15 +93,15 @@ const ClientDetails = () => {
                                     className={`w-[70px] h-[40px] rounded-full shadow- transition duration-300 ease-in-out bg-[#ECE4FF]`}></div>
                                 <div
                                     className={`absolute w-[33px] h-[33px] rounded-full shadow-md top-[4px] left-[4px] transition-transform duration-300 ease-in-out ${!isActive
-                                            ? "translate-x-7 bg-[#048339]"
-                                            : "bg-[#E23703]"
+                                        ? "translate-x-7 bg-[#048339]"
+                                        : "bg-[#E23703]"
                                         }`}>
-                                    {isActive=="0" && (
+                                    {isActive == "0" && (
                                         <span className="absolute inset-0 flex items-center justify-center text-white text-[10px]">
                                             <Check size={16} />
                                         </span>
                                     )}
-                                    {isActive=="1" && (
+                                    {isActive == "1" && (
                                         <span className="absolute inset-0 flex items-center justify-center text-white text-[10px]">
                                             <X size={16} />
                                         </span>

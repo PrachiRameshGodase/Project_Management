@@ -28,7 +28,6 @@ const Drawer01 = ({
   const router = useRouter();
   const dispatch = useDispatch();
   const documents=details?.attachments ? JSON.parse(details?.attachments):[]
-  console.log("documents", documents)
   const [isActive, setIsActive] = useState(details?.project_status || "");
   const [isActive2, setIsActive2] = useState(details?.status || "");
 
@@ -232,7 +231,7 @@ const Drawer01 = ({
 
         {/* Comment Section */}
         <div className="mt-[390px] mb-[20px]">
-          <CommentBox />
+          <CommentBox projectId={itemId} taskId=""/>
         </div>
       </div>
     </motion.div>
@@ -244,6 +243,7 @@ export default Drawer01;
 export const Drawer001 = ({ isOpen, setIsDrawerOpen,itemId2, itemId, details }) => {
   const dispatch = useDispatch();
   const router=useRouter()
+  const documents=details?.attachments ? JSON.parse(details?.attachments):[]
   const [selectedStatus, setSelectedStatus] = useState("");
   const [isActive, setIsActive] = useState(details?.task_status || "");
 
@@ -444,7 +444,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen,itemId2, itemId, details }) 
               </span>
               <h4>:</h4>
               <span className="text-gray-700 w-[200px]">
-                {/* <AttachmentPreview files={documents} /> */}
+                <AttachmentPreview files={documents} />
               </span>
             </li>
           </ul>
@@ -488,7 +488,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen,itemId2, itemId, details }) 
                     </div>
                 </div> */}
         <div className="mt-[390px] mb-[20px]">
-          <CommentBox />
+          <CommentBox projectId={itemId2} taskId={itemId}/>
         </div>
       </div>
     </motion.div>

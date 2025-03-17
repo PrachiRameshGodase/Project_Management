@@ -17,12 +17,13 @@ import { format } from "date-fns";
 import UserAvatar from "../UserAvatar/UserAvatar";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUsers } from "@/app/store/userSlice";
+import { addTaskComment, deleteTaskComment, fetchTaskComment } from "@/app/store/projectSlice";
+import { formatTime } from "../Helper/Helper";
 
-const users = ["John", "Alice", "David", "Emma", "Aryan", "Prachi"]; // Dummy Users
-
-const ChatBox = () => {
+const ChatBox = ({ projectId, taskId }) => {
   const dispatch = useDispatch();
   const usersList = useSelector((state) => state.user?.employeeList?.data);
+  const CommentListData = useSelector((state) => state.project?.taskCommentList?.data);
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
@@ -37,14 +38,25 @@ const ChatBox = () => {
   const [newMessageCount, setNewMessageCount] = useState(0);
   const chatContainerRef = useRef(null);
   const inputRef = useRef(null);
+  const [searchTrigger, setSearchTrigger] = useState(0);
+
+
+  const [formData, setFormData] = useState({
+    project_id: "",
+    task_id: "",
+    documents: [],
+    audio_recording: "",
+    assigned_ids: [],
+    comments: "",
+  });
 
   useEffect(() => {
-    const sendData = {
-      is_employee: 1,
-    };
-
-    dispatch(fetchUsers(sendData));
-  }, [dispatch]);
+    setFormData((prev) => ({
+      ...prev,
+      project_id: projectId,
+      task_id: taskId,
+    }));
+  }, [projectId, taskId]);
 
   const scrollToTop = () => {
     requestAnimationFrame(() => {
@@ -58,23 +70,27 @@ const ChatBox = () => {
   // Handle Input Change
   const handleInputChange = (e) => {
     const value = e.target.value;
-    setMessage(e.target.value);
-    setMessage(value);
+
+    setFormData((prev) => ({
+      ...prev,
+      comments: value, // ✅ Update formData.comments
+    }));
 
     // Detect @mention
     if (value.includes("@")) {
       const searchText = value.split("@").pop().trim().toLowerCase();
       setMentionList(
         searchText
-        ? usersList.filter((user) =>
-            user.name.toLowerCase().startsWith(searchText.toLowerCase())
-          )
-        : usersList
+          ? usersList.filter((user) =>
+              user.name.toLowerCase().startsWith(searchText)
+            )
+          : usersList
       );
     } else {
       setMentionList([]);
     }
   };
+
   const handleMentionClick = () => {
     setMessage((prev) => prev + "@");
     inputRef.current?.focus();
@@ -85,20 +101,32 @@ const ChatBox = () => {
 
   // Select Mention
   const handleSelectMention = (user) => {
-    setMessage(message.replace(/@\S*$/, `@${user?.name} `));
+    setFormData((prev) => ({
+      ...prev,
+      assigned_ids: [...prev.assigned_ids, user.id], // ✅ Add selected user ID
+    }));
     setMentionList([]);
   };
 
   // File Select
+
   const handleFileSelect = (event) => {
     const file = event.target.files[0];
-    if (file) {
-      setSelectedFile({
-        name: file.name,
-        url: URL.createObjectURL(file),
-        type: file.type.startsWith("image/") ? "image" : "document",
-      });
-    }
+    if (!file) return;
+
+    const newFile = {
+      name: file.name,
+      url: URL.createObjectURL(file),
+      type: file.type.startsWith("image/") ? "image" : "document",
+    };
+
+    // ✅ Update formData with the new file
+    setFormData((prevData) => ({
+      ...prevData,
+      documents: newFile, // Store the file inside `documents`
+    }));
+
+    setSelectedFile(newFile); // Optional, if you need it elsewhere
   };
 
   // Start Recording
@@ -112,8 +140,16 @@ const ChatBox = () => {
     mediaRecorder.ondataavailable = (e) => chunks.push(e.data);
     mediaRecorder.onstop = () => {
       const audioBlob = new Blob(chunks, { type: "audio/mp3" });
+      const audioURL = URL.createObjectURL(audioBlob);
+
       setAudioBlob(audioBlob);
-      setAudioURL(URL.createObjectURL(audioBlob));
+      setAudioURL(audioURL);
+
+      // ✅ Store recording in `formData.audio_recording`
+      setFormData((prevData) => ({
+        ...prevData,
+        audio_recording: audioBlob, // Storing the Blob
+      }));
     };
 
     mediaRecorder.start();
@@ -127,47 +163,15 @@ const ChatBox = () => {
 
   // Send Message
   const handleSend = () => {
-    if (message.trim() === "" && !selectedFile && !audioBlob) return;
-
-    const newMsg = {
-      id: messages.length + 1,
-      user: "You",
-      text: message,
-      file: selectedFile,
-      audio: audioBlob ? { url: audioURL, blob: audioBlob } : null,
-      time: format(new Date(), "h:mm a"), // 🕒 Format time like WhatsApp
-      liked: false,
-      deleted: false,
-    };
-
-    // setMessages([...messages, newMsg]);
-    setMessages([newMsg, ...messages]);
-    setMessage("");
-    setSelectedFile(null);
-    setAudioURL(null);
-    setAudioBlob(null);
-    setMentionList([]);
-    setNewMessageCount((prev) => prev + 1);
+    dispatch(addTaskComment({ projectData: formData }));
     setTimeout(() => {
       scrollToTop();
     }, 100);
   };
-
+ 
   // Delete Message
   const handleDelete = (id) => {
-    setMessages(
-      messages.map((msg) =>
-        msg.id === id
-          ? {
-              ...msg,
-              text: "🗑️ Deleted by You",
-              file: null,
-              audio: null,
-              deleted: true,
-            }
-          : msg
-      )
-    );
+    dispatch(deleteTaskComment({id, project_id:projectId, task_id:taskId}))
   };
 
   // Like Message
@@ -208,12 +212,32 @@ const ChatBox = () => {
       chatContainerRef.current?.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const user = {
-    name: "S",
-
-    isActive: false,
-    image: "",
+ const user=JSON.parse(localStorage.getItem("UserData"))
+ const handleRemoveMention = (id) => {
+    setFormData((prev) => ({
+      ...prev,
+      assigned_ids: prev.assigned_ids.filter((assignedId) => assignedId !== id),
+    }));
   };
+
+    useEffect(() => {
+      const sendData = {
+        project_id:projectId,
+        task_id:taskId
+      }
+  
+      dispatch(fetchTaskComment(sendData));
+    }, [dispatch]);
+
+    useEffect(() => {
+      const sendData = {
+        is_employee: 1,
+      };
+  
+      dispatch(fetchUsers(sendData));
+    }, [dispatch]);
+    
+    console.log("formDatat", formData)
 
   return (
     <div className=" ">
@@ -244,25 +268,29 @@ const ChatBox = () => {
                 name={user.name}
                 dotcolor=""
                 size={24}
-                image={user.image}
+                image={"https://via.placeholder.com/24?text=💬"}
                 isActive={user.isActive}
               />
               <input
                 type="file"
                 ref={fileInputRef}
-                className="hidden "
-                onChange={handleFileSelect}
+                className="hidden"
+                name="documents"
+                onChange={handleFileSelect} // No "value" needed
               />
+
               {/* Text Input */}
               <input
                 ref={inputRef}
                 type="text"
+                name="comments"
                 className="flex-1 outline-none pl-1"
                 placeholder="Type a message..."
-                value={message}
+                value={formData?.comments}
                 onChange={handleInputChange}
                 onKeyDown={(e) => e.key === "Enter" && handleSend()}
               />
+
               <button
                 onClick={handleMentionClick}
                 className="p-1 text-[26px] text-gray-500 hover:text-black cursor-pointer"
@@ -299,7 +327,7 @@ const ChatBox = () => {
                       className="p-2 hover:bg-gray-100 cursor-pointer"
                       onClick={() => handleSelectMention(user)}
                     >
-                     @{user?.name}
+                      @ {user?.name}
                     </li>
                   ))}
                 </ul>
@@ -350,6 +378,29 @@ const ChatBox = () => {
                 </button>
               </div>
             )}
+            {formData.assigned_ids.length > 0 && (
+              <div className="flex flex-wrap mt-2">
+                {formData.assigned_ids.map((id) => {
+                  const user = usersList.find((u) => u.id === id);
+                  return (
+                    user && (
+                      <span
+                        key={id}
+                        className="bg-blue-50 text-blue-400 px-2 py-1 rounded-lg m-1 text-sm flex items-center"
+                      >
+                        @ {user.name}
+                        <button
+                          onClick={() => handleRemoveMention(id)}
+                          className="ml-1 text-red-700 text-xs"
+                        >
+                          <Trash2 size={12} />
+                        </button>
+                      </span>
+                    )
+                  );
+                })}
+              </div>
+            )}
           </div>
           <button
             className=" text-gray-500 pl-2 hover:text-black"
@@ -358,71 +409,80 @@ const ChatBox = () => {
             <Send size={20} />
           </button>
         </div>
+
+        {/* Display Mentioned Users Below Input */}
+        {/* Display Mentioned Users Below Input */}
+
         {/* Messages */}
         <div className="space-y-3 p-2  max-h-64 overflow-y-auto ">
           <PhotoProvider>
             <div ref={chatStartRef} />
 
-            {messages.map((msg) => (
-              <div key={msg.id} className="flex gap-1 items-start group  ">
-                <UserAvatar
-                  name={user.name}
-                  dotcolor=""
-                  size={20}
-                  image={user.image}
-                  isActive={user.isActive}
-                />
-                <div className="bg-gray-100 p-2 rounded-lg w-fit max-w-[90%] relative">
-                  <span className="text-xs text-gray-500">{msg.time}</span>
+            {CommentListData?.map((msg) => {
+  let file = null;
+  try {
+    file = msg?.documents ? JSON.parse(msg.documents) : null;
+  } catch (error) {
+    console.error("Invalid JSON in msg.documents:", error);
+  }
 
-                  {/* Image Preview */}
-                  {msg.file && msg.file.type === "image" && !msg.deleted && (
-                    <PhotoView src={msg.file.url}>
-                      <img
-                        src={msg.file.url}
-                        alt="Uploaded"
-                        className="w-40 mt-2 rounded-md cursor-pointer"
-                      />
-                    </PhotoView>
-                  )}
-                  {/* Audio Player */}
-                  {msg.audio && !msg.deleted && (
-                    <audio
-                      controls
-                      className="mt-2 border-2 rounded-md max-w-[99%] "
-                    >
-                      <source src={msg.audio.url} type="audio/mp3" />
-                    </audio>
-                  )}
-                  {/* Text Message */}
-                  {msg.text && (
-                    <p
-                      className={`whitespace-pre-line  ${
-                        msg.deleted ? "italic text-[12px] text-gray-500" : ""
-                      }`}
-                    >
-                      {formatMessage(msg.text)}
-                    </p>
-                  )}
+  console.log("file", file);
 
-                  {/* Like & Delete */}
-                  <div className="absolute  -mt-2 top-2 right-1 hidden group-hover:flex gap-2">
-                    {/* {!msg.liked && (
-                                                <button className="text-gray-500 hover:text-red-500" onClick={() => handleLike(msg.id)}>
-                                                    <Heart size={12} />
-                                                </button>
-                                            )} */}
-                    {/* {msg.liked && <span className="text-red-500 text-[12px]">❤️</span>} */}
-                    <button
-                      className="text-gray-500 hover:text-red-500"
-                      onClick={() => handleDelete(msg.id)}
-                    >
-                      <Trash2 size={12} />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
+  return (
+    <div key={msg.id} className="flex gap-1 items-start group">
+      <UserAvatar
+        name={user.name}
+        dotcolor=""
+        size={20}
+        image={user.image}
+        isActive={user.isActive}
+      />
+      <div className="bg-gray-100 p-2 rounded-lg w-fit max-w-[90%] relative">
+        <span className="text-xs text-gray-500">{formatTime(msg.created_at)}</span>
+
+        {/* Image Preview */}
+        {file && file.type === "image" && !msg.deleted && (
+          <PhotoView src={file.url}>
+            <img
+              src={file.url}
+              alt="Uploaded"
+              className="w-40 mt-2 rounded-md cursor-pointer"
+            />
+          </PhotoView>
+        )}
+
+        {/* Audio Player */}
+        {msg.audio && !msg.deleted && (
+          <audio controls className="mt-2 border-2 rounded-md max-w-[99%]">
+            <source src={msg.audio.url} type="audio/mp3" />
+          </audio>
+        )}
+
+        {/* Text Message */}
+        {msg?.comments && (
+          <p
+            className={`whitespace-pre-line ${
+              msg.deleted ? "italic text-[12px] text-gray-500" : ""
+            }`}
+          >
+            {msg?.comments || ""}
+          </p>
+        )}
+
+        {/* Like & Delete */}
+        <div className="absolute -mt-2 top-2 right-1 hidden group-hover:flex gap-2">
+          <button
+            className="text-gray-500 hover:text-red-500"
+            onClick={() => handleDelete(msg.id)}
+          >
+            <Trash2 size={12} />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+})}
+
           </PhotoProvider>
         </div>
       </div>

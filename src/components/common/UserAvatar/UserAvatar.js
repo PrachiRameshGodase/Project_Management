@@ -40,9 +40,9 @@ const UserAvatar = ({ name, image, isActive, size = 68, dotcolor = "green", onCl
             <StyledBadge
                 overlap="circular"
                 anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                variant={isActive && dotcolor !== "none" ? "dot" : "standard"}
+                variant={isActive && dotcolor !== "none" ? "dot" : "stanard"}
                 dotcolor={dotcolor}
-                className="border-2 border-[#C8A0FF] rounded-full p-[2px]"
+                className="border-2 border-[#4c9949] rounded-full p-[2px]"
             >
                 <Avatar
                     alt={name}
@@ -57,7 +57,13 @@ const UserAvatar = ({ name, image, isActive, size = 68, dotcolor = "green", onCl
                         fontFamily: 'Supreme-Medium',
                     }}
                 >
-                    {name ? name.split(" ").map((n) => n[0]).join("") : "U"}
+                    {/* {name ? name.split(" ").map((n) => n[0]).join("") : "U"} */}
+                    {
+                        name ? (() => {
+                            const words = name.trim().split(" ");
+                            return words.length > 1 ? words[0][0] + words[words.length - 1][0] : words[0][0];
+                        })() : "U"
+                    }
                 </Avatar>
             </StyledBadge>
         </Box>

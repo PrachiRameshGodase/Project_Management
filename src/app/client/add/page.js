@@ -111,7 +111,7 @@ const AddClient = () => {
 
     return (
         <LayOut> <div className="sm:flex mx-auto sm:mx-0  flex-col items-center justify-center">
-            <div className="text-2xl tracking-tight sm:ml-[7px] text-[32px]  w-full">Add New Client</div>
+            <div className="text-2xl tracking-tight sm:ml-[7px] text-[32px]  w-full">{!itemId ? "Add New Client": "Update Client"}</div>
 
             <div className="sm:flex   justify-between items-center h-screen mx-auto sm:-mt-16  xl:lg:-mt-18">
                 <form className="sm:w-[690px] h-[656px] bg-white p-3 sm:p-8 rounded-lg space-y-8" onSubmit={handleSubmit}>
@@ -121,7 +121,7 @@ const AddClient = () => {
                         </label>
                         <div className="flex flex-col w-[310px] sm:w-[350px] md:w-[400px]">
                             <input
-                                className="h-10 border border-[#0000004D] rounded-lg p-2 text-m placeholder:text-gray-600"
+                                className="h-10 border border-[#0000004D] rounded-lg p-2 text-m placeholder:text-gray-400"
                                 type="text"
                                 name="name"
                                 placeholder="Enter Client Name"
@@ -142,7 +142,7 @@ const AddClient = () => {
                         </label>
                         <div className="flex flex-col w-[310px] sm:w-[350px] md:w-[400px]">
                             <input
-                                className="h-10 border border-[#0000004D] rounded-lg p-2 text-m placeholder:text-gray-600"
+                                className="h-10 border border-[#0000004D] rounded-lg p-2 text-m placeholder:text-gray-400"
                                 type="email"
                                 name="email"
                                 placeholder="Enter Email"
@@ -162,7 +162,7 @@ const AddClient = () => {
                         </label>
                         <div className="relative w-[310px] sm:w-[350px] md:w-[400px]">
                             <input
-                                className="w-full h-10 border border-[#0000004D] rounded-lg p-2 pr-10 text-m placeholder:text-gray-600"
+                                className="w-full h-10 border border-[#0000004D] rounded-lg p-2 pr-10 text-m placeholder:text-gray-400"
                                 type={showPassword ? "text" : "password"}
                                 name="password"
                                 placeholder="Enter Password"
@@ -196,8 +196,8 @@ const AddClient = () => {
                     </div> */}
 
                     <div className="sm:flex  justify-between items-center">
-                        <label className="block text-m">Contact Person Name</label>
-                        <input className="w-[310px] sm:w-[400px]  h-10 border border-gray-300 rounded-lg p-2 text-m sm:ml-3 placeholder:text-gray-400" type='text' placeholder='Enter Name' value={formData.contact_name} name='contact_name'
+                        <label className="block text-[20px]">Contact Person Name</label>
+                        <input className="w-[310px] sm:w-[400px]  h-10 border border-[#0000004D] rounded-lg p-2 text-m sm:ml-3 placeholder:text-gray-400" type='text' placeholder='Enter Name' value={formData.contact_name} name='contact_name'
                             onChange={handleChange} />
                     </div>
 
@@ -221,7 +221,7 @@ const AddClient = () => {
                             {usersLoading?.loading ? (
                                 <div className="w-5 h-5 border-2 border-gray-100 border-t-transparent rounded-full animate-spin"></div>
                             ) : (
-                                "Submit"
+                               itemId? "Update": "Submit"
                             )}
                         </button>
                     </div>

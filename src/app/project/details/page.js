@@ -12,26 +12,24 @@ import Dropdown01 from "@/components/common/Dropdown/Dropdown01";
 import DropdownStatus01 from "@/components/common/Dropdown/DropdownStatus01";
 import {
   getStatusDetails,
-  projectSortConstant,
-  status,
   statusProject,
-  taskView,
-  view,
+  taskView
 } from "@/components/common/Helper/Helper";
+import { useDebounceSearch } from "@/components/common/Helper/HelperFunction";
 import KanBanView from "@/components/common/KanBanView/KanBanView";
 import Loader from "@/components/common/Loader/Loader";
+import Pagenation from "@/components/common/Pagenation/Pagenation";
 import SearchComponent from "@/components/common/SearchComponent/SearchComponent";
+import TableSkeleton from "@/components/common/TableSkeleton/TableSkeleton";
 import TruncatedTooltipText from "@/components/common/TruncatedTooltipText/TruncatedTooltipText";
 import UserAvatar from "@/components/common/UserAvatar/UserAvatar";
 import LayOut from "@/components/LayOut";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import Swal from "sweetalert2";
-import Pagenation from "@/components/common/Pagenation/Pagenation";
-import { useDebounceSearch } from "@/components/common/Helper/HelperFunction";
 import { Tooltip } from "@mui/material";
 import { Check, X } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
 
 const TaskList = () => {
   const router = useRouter();
@@ -180,22 +178,23 @@ const TaskList = () => {
     }
   }, [dispatch, itemId2]);
 
-                     
-  const handleAddTask=()=>{
+
+  const handleAddTask = () => {
     localStorage.setItem("itemId", itemId)
     router.push(`/project/add-task`)
 
   }
+  console.log("itemId", itemId2)
   return (
     <>
       {projectLoading?.loading ? (
         <Loader />
       ) : (
         <LayOut>
-          <div className="w-full  h-full mx-auto px-1  sm:px-4  ml-[5px] sm:border sm:shadow-tr-border rounded-[10px]  ">
+          <div className="w-full  h-full mx-auto px-1  sm:px-4  ml-[5px] sm:border border-gray-100 rounded-[10px]  ">
             <div className=" min-[1250px]:flex   justify-between mt-[10px] sm:p-4 w-full">
               {/* Avatar Section */}
-              <div className="  sm:w-[360px] h-[69px] flex items-center gap-[12.21px] ">
+              <div className="  sm:w-full h-[69px] flex items-center gap-[12.21px] ">
                 <UserAvatar
                   name={user.name}
                   dotcolor="blue"
@@ -224,7 +223,7 @@ const TaskList = () => {
                   selectedValue={projectDetailData?.status}
                   onSelect={(value) => handleStatusChange(value)}
                   label="Status"
-                  className="w-[210px]"
+                  className="w-[150px]"
                 />
               </div>
               <div className="flex max-[850px]:flex-col justify-between gap-5 md:gap-10 lg:gap-4 max-[1250px]:mt-4">
@@ -269,8 +268,8 @@ const TaskList = () => {
                           className={`w-[70px] h-[40px] rounded-full shadow- transition duration-300 ease-in-out bg-[#ECE4FF]`}></div>
                         <div
                           className={`absolute w-[33px] h-[33px] rounded-full shadow-md top-[4px] left-[4px] transition-transform duration-300 ease-in-out ${isActive
-                              ? "translate-x-7 bg-[#048339]"
-                              : "bg-[#E23703]"
+                            ? "translate-x-7 bg-[#048339]"
+                            : "bg-[#E23703]"
                             }`}>
                           {isActive && (
                             <span className="absolute inset-0 flex items-center justify-center text-white text-[10px]">
@@ -486,94 +485,98 @@ const TaskList = () => {
             {selectedView == "List" && (
               <>
                 <div className="max-w-full  overflow-x-auto mt-6 ">
-                  <table className="w-full border-spacing-y-1 min-w-[1000px] border-2 border-transparent  ">
-                    <thead className=" ">
-                      <tr className="text-left m-1 text-sm uppercase text-gray-800 shadow-tr-border rounded-md  ">
-                        <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]   flex ">
-                          TASK TITLE
-                          <span className="mt-1 pl-10 flex flex-col gap-1">
-                            {OtherIcons.arrow_up_svg}
-                            {OtherIcons.arrow_down_svg}
-                          </span>
-                        </th>
-                        <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] ">
-                          STATUS
-                        </th>
-                        <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px]  ">
-                          DUE DATE
-                        </th>
-                        <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px]  ">
-                          TASK TYPE
-                        </th>
+                  {projectLoading?.taskListLoading ? (
+                    <TableSkeleton rows={7} columns={5} />
+                  ) : (
+                    <table className="w-full border-spacing-y-1 min-w-[1000px] border-2 border-transparent  ">
+                      <thead className=" ">
+                        <tr className="text-left m-1 text-sm uppercase text-gray-800 shadow-tr-border rounded-md  ">
+                          <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]   flex ">
+                            TASK TITLE
+                            <span className="mt-1 pl-10 flex flex-col gap-1">
+                              {OtherIcons.arrow_up_svg}
+                              {OtherIcons.arrow_down_svg}
+                            </span>
+                          </th>
+                          <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] ">
+                            STATUS
+                          </th>
+                          <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px]  ">
+                            DUE DATE
+                          </th>
+                          <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px]  ">
+                            TASK TYPE
+                          </th>
 
-                        <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] ">
-                          TEAM
-                        </th>
-                        <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] ">
-                          PRIORITY
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {projectTaskListData?.map((item, index) => (
-                        <tr
-                          key={item?.id}
-                          className="cursor-pointer  hover:bg-gray-100   hover:shadow-tr-border   rounded-md  transition-all duration-200">
-                          <td
-                            className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px]   rounded "
-                            onClick={() => handleTaskClick(item?.id)}>
-                            {item?.task_title || ""}
-                          </td>
-                          <td
-                            className={`py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[14px]  min-w-[150px] rounded `}
-                            onClick={() => handleTaskClick(item?.id)}>
-                            <span
-                              className={`py-1 px-2 sm:px-2   text-[12px] sm:text-[14px]  border rounded-md ${item?.status === "To Do"
+                          <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] ">
+                            TEAM
+                          </th>
+                          <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] ">
+                            PRIORITY
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {projectTaskListData?.map((item, index) => (
+                          <tr
+                            key={item?.id}
+                            className="cursor-pointer  hover:bg-gray-100   hover:shadow-tr-border   rounded-md  transition-all duration-200">
+                            <td
+                              className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px]   rounded "
+                              onClick={() => handleTaskClick(item?.id)}>
+                              {item?.task_title || ""}
+                            </td>
+                            <td
+                              className={`py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[14px]  min-w-[150px] rounded `}
+                              onClick={() => handleTaskClick(item?.id)}>
+                              <span
+                                className={`py-1 px-2 sm:px-2   text-[12px] sm:text-[14px]  border rounded-md ${item?.status === "To Do"
                                   ? "text-[#6C757D] border-[#6C757D]"
                                   : item?.status === "In progress"
                                     ? "text-[#CA9700] border-[#CA9700]"
                                     : item?.status === "Completed"
                                       ? "text-[#008053] border-[#008053]"
                                       : "text-[#0D4FA7] border-[#0D4FA7]"
-                                } inline-block`}>
-                              {item?.status || ""}
-                            </span>
-                          </td>
-                          <td
-                            className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px]   "
-                            onClick={() => handleTaskClick(item?.id)}>
-                            {item?.due_date || ""}
-                          </td>
-                          <td
-                            className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px]   "
-                            onClick={() => handleTaskClick(item?.id)}>
-                            {item?.task_type || ""}
-                          </td>
-                          <td
-                            className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px]  "
-                            onClick={() => handleTaskClick(item?.id)}>
-                            <TruncatedTooltipText
-                              text={item?.team_names?.join(", ")}
-                              maxLength={25}
-                            />
-                          </td>
-                          <td
-                            className={` text-[12px] sm:text-[14px] `}
-                            onClick={() => handleTaskClick(item?.id)}>
-                            <span
-                              className={`py-1 px-2 sm:px-4   text-[12px] sm:text-[14px]  border rounded-md ml-4  ${user.priority === "High"
+                                  } inline-block`}>
+                                {item?.status || ""}
+                              </span>
+                            </td>
+                            <td
+                              className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px]   "
+                              onClick={() => handleTaskClick(item?.id)}>
+                              {item?.due_date || ""}
+                            </td>
+                            <td
+                              className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px]   "
+                              onClick={() => handleTaskClick(item?.id)}>
+                              {item?.task_type || ""}
+                            </td>
+                            <td
+                              className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px]  "
+                              onClick={() => handleTaskClick(item?.id)}>
+                              <TruncatedTooltipText
+                                text={item?.team_names?.join(", ")}
+                                maxLength={25}
+                              />
+                            </td>
+                            <td
+                              className={` text-[12px] sm:text-[14px] `}
+                              onClick={() => handleTaskClick(item?.id)}>
+                              <span
+                                className={`py-1 px-2 sm:px-4   text-[12px] sm:text-[14px]  border rounded-md ml-4  ${user.priority === "High"
                                   ? "text-[#4976F4] border-[#4976F4]"
                                   : user.priority === "Low"
                                     ? "text-red-400 border-red-400"
                                     : "text-[#954BAF] border-[#954BAF]"
-                                } inline-block`}>
-                              {item?.priority}
-                            </span>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                                  } inline-block`}>
+                                {item?.priority}
+                              </span>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )}
                 </div>
                 {/* Pagination */}
                 <Pagenation

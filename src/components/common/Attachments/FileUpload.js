@@ -1,13 +1,19 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PhotoProvider, PhotoView } from 'react-photo-view';
 import 'react-photo-view/dist/react-photo-view.css';
 import { storage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from '../../../configs/firebase';
 
-const FileUpload = ({ onFilesChange }) => {
+const FileUpload = ({ onFilesChange ,initialFiles}) => {
     const [files, setFiles] = useState([]);
     const [uploading, setUploading] = useState(false);
     const [progress, setProgress] = useState(0);
+
+    useEffect(() => {
+        if (initialFiles) {
+            setFiles(initialFiles);
+        }
+    }, [initialFiles]);
 
     const handleFileChange = async (e) => {
         const selectedFiles = Array.from(e.target.files);
@@ -79,9 +85,9 @@ const FileUpload = ({ onFilesChange }) => {
             {files.length > 0 && (
                 <PhotoProvider>
                     <div className="flex flex-wrap justify-center gap-2 my-2">
-                        {files.map((file, index) => (
-                            <div key={file.name} className="relative w-20 h-20">
-                                {file.type.startsWith("image/") ? (
+                        {files?.map((file, index) => (
+                            <div key={file?.name} className="relative w-20 h-20">
+                                {file?.type?.startsWith("image/") ? (
                                     <PhotoView src={file.url}>
                                         <img src={file.url} alt={`Preview ${index + 1}`} className="w-full h-full object-cover rounded-lg cursor-pointer" />
                                     </PhotoView>
