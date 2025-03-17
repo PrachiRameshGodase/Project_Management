@@ -12,18 +12,24 @@ import {
 } from "lucide-react";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
-
-import { format } from "date-fns";
 import UserAvatar from "../UserAvatar/UserAvatar";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUsers } from "@/app/store/userSlice";
-import { addTaskComment, deleteTaskComment, fetchTaskComment } from "@/app/store/projectSlice";
+import {
+  addTaskComment,
+  deleteTaskComment,
+  fetchTaskComment,
+} from "@/app/store/projectSlice";
 import { formatTime } from "../Helper/Helper";
+import TableSkeleton from "../TableSkeleton/TableSkeleton";
 
 const ChatBox = ({ projectId, taskId }) => {
   const dispatch = useDispatch();
   const usersList = useSelector((state) => state.user?.employeeList?.data);
   const CommentListData = useSelector((state) => state.project?.taskCommentList?.data);
+  console.log("CommentListData", CommentListData)
+  const CommentListLoading = useSelector((state) => state.project);
+
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
@@ -39,7 +45,6 @@ const ChatBox = ({ projectId, taskId }) => {
   const chatContainerRef = useRef(null);
   const inputRef = useRef(null);
   const [searchTrigger, setSearchTrigger] = useState(0);
-
 
   const [formData, setFormData] = useState({
     project_id: "",
@@ -163,15 +168,22 @@ const ChatBox = ({ projectId, taskId }) => {
 
   // Send Message
   const handleSend = () => {
-    dispatch(addTaskComment({ projectData: formData }));
+    
+
+   
+
+    
+
+    dispatch(addTaskComment({formData, project_id:projectId, task_id:taskId, dispatch}));
+
     setTimeout(() => {
       scrollToTop();
     }, 100);
   };
- 
+
   // Delete Message
   const handleDelete = (id) => {
-    dispatch(deleteTaskComment({id, project_id:projectId, task_id:taskId}))
+    dispatch(deleteTaskComment({ id, project_id: projectId, task_id: taskId, dispatch }));
   };
 
   // Like Message
@@ -212,32 +224,32 @@ const ChatBox = ({ projectId, taskId }) => {
       chatContainerRef.current?.removeEventListener("scroll", handleScroll);
   }, []);
 
- const user=JSON.parse(localStorage.getItem("UserData"))
- const handleRemoveMention = (id) => {
+  const user = JSON.parse(localStorage.getItem("UserData"));
+  const handleRemoveMention = (id) => {
     setFormData((prev) => ({
       ...prev,
       assigned_ids: prev.assigned_ids.filter((assignedId) => assignedId !== id),
     }));
   };
 
-    useEffect(() => {
-      const sendData = {
-        project_id:projectId,
-        task_id:taskId
-      }
-  
-      dispatch(fetchTaskComment(sendData));
-    }, [dispatch]);
+  useEffect(() => {
+    const sendData = {
+      project_id: projectId,
+      task_id: taskId,
+    };
 
-    useEffect(() => {
-      const sendData = {
-        is_employee: 1,
-      };
-  
-      dispatch(fetchUsers(sendData));
-    }, [dispatch]);
-    
-    console.log("formDatat", formData)
+    dispatch(fetchTaskComment(sendData));
+  }, [dispatch]);
+
+  useEffect(() => {
+    const sendData = {
+      is_employee: 1,
+    };
+
+    dispatch(fetchUsers(sendData));
+  }, [dispatch]);
+
+  console.log("formDatat", formData);
 
   return (
     <div className=" ">
@@ -418,71 +430,79 @@ const ChatBox = ({ projectId, taskId }) => {
           <PhotoProvider>
             <div ref={chatStartRef} />
 
-            {CommentListData?.map((msg) => {
-  let file = null;
-  try {
-    file = msg?.documents ? JSON.parse(msg.documents) : null;
-  } catch (error) {
-    console.error("Invalid JSON in msg.documents:", error);
-  }
+            {CommentListLoading?.commentLoading ? (
+              <TableSkeleton />
+            ) : (
+              CommentListData?.map((msg) => {
+                let file = null;
+                try {
+                  file = msg?.documents ? JSON.parse(msg.documents) : null;
+                } catch (error) {
+                  console.error("Invalid JSON in msg.documents:", error);
+                }
 
-  console.log("file", file);
+                return (
+                  <div key={msg.id} className="flex gap-1 items-start group">
+                    <UserAvatar
+                      name={user.name}
+                      dotcolor=""
+                      size={20}
+                      image={user.image}
+                      isActive={user.isActive}
+                    />
+                    <div className="bg-gray-100 p-2 rounded-lg w-fit max-w-[90%] relative">
+                      <span className="text-xs text-gray-500">
+                        {formatTime(msg.created_at)}
+                      </span>
 
-  return (
-    <div key={msg.id} className="flex gap-1 items-start group">
-      <UserAvatar
-        name={user.name}
-        dotcolor=""
-        size={20}
-        image={user.image}
-        isActive={user.isActive}
-      />
-      <div className="bg-gray-100 p-2 rounded-lg w-fit max-w-[90%] relative">
-        <span className="text-xs text-gray-500">{formatTime(msg.created_at)}</span>
+                      {/* Image Preview */}
+                      {file && file.type === "image" && !msg.deleted && (
+                        <PhotoView src={file.url}>
+                          <img
+                            src={file.url}
+                            alt="Uploaded"
+                            className="w-40 mt-2 rounded-md cursor-pointer"
+                          />
+                        </PhotoView>
+                      )}
 
-        {/* Image Preview */}
-        {file && file.type === "image" && !msg.deleted && (
-          <PhotoView src={file.url}>
-            <img
-              src={file.url}
-              alt="Uploaded"
-              className="w-40 mt-2 rounded-md cursor-pointer"
-            />
-          </PhotoView>
-        )}
+                      {/* Audio Player */}
+                      {msg.audio && !msg.deleted && (
+                        <audio
+                          controls
+                          className="mt-2 border-2 rounded-md max-w-[99%]"
+                        >
+                          <source src={msg.audio.url} type="audio/mp3" />
+                        </audio>
+                      )}
 
-        {/* Audio Player */}
-        {msg.audio && !msg.deleted && (
-          <audio controls className="mt-2 border-2 rounded-md max-w-[99%]">
-            <source src={msg.audio.url} type="audio/mp3" />
-          </audio>
-        )}
+                      {/* Text Message */}
+                      {msg?.comments && (
+                        <p
+                          className={`whitespace-pre-line ${
+                            msg.deleted
+                              ? "italic text-[12px] text-gray-500"
+                              : ""
+                          }`}
+                        >
+                          {msg?.comments || ""}
+                        </p>
+                      )}
 
-        {/* Text Message */}
-        {msg?.comments && (
-          <p
-            className={`whitespace-pre-line ${
-              msg.deleted ? "italic text-[12px] text-gray-500" : ""
-            }`}
-          >
-            {msg?.comments || ""}
-          </p>
-        )}
-
-        {/* Like & Delete */}
-        <div className="absolute -mt-2 top-2 right-1 hidden group-hover:flex gap-2">
-          <button
-            className="text-gray-500 hover:text-red-500"
-            onClick={() => handleDelete(msg.id)}
-          >
-            <Trash2 size={12} />
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-})}
-
+                      {/* Like & Delete */}
+                      <div className="absolute -mt-2 top-2 right-1 hidden group-hover:flex gap-2">
+                        <button
+                          className="text-gray-500 hover:text-red-500"
+                          onClick={() => handleDelete(msg.id)}
+                        >
+                          <Trash2 size={12} />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+            )}
           </PhotoProvider>
         </div>
       </div>
