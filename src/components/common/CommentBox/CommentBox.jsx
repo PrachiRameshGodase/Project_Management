@@ -277,11 +277,11 @@ const ChatBox = ({ projectId, taskId }) => {
             <div className="flex items-center ">
               {/* Attach File */}
               <UserAvatar
-                name={user.name}
+                name={user?.name}
                 dotcolor=""
                 size={24}
                 image={"https://via.placeholder.com/24?text=💬"}
-                isActive={user.isActive}
+                isActive={user?.isActive}
               />
               <input
                 type="file"
@@ -444,11 +444,11 @@ const ChatBox = ({ projectId, taskId }) => {
                 return (
                   <div key={msg.id} className="flex gap-1 items-start group">
                     <UserAvatar
-                      name={user.name}
+                      name={user?.name}
                       dotcolor=""
                       size={20}
-                      image={user.image}
-                      isActive={user.isActive}
+                      image={user?.image}
+                      isActive={user?.isActive}
                     />
                     <div className="bg-gray-100 p-2 rounded-lg w-fit max-w-[90%] relative">
                       <span className="text-xs text-gray-500">

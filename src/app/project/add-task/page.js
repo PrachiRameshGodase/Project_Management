@@ -22,12 +22,12 @@ const AddTask = () => {
 
     const [itemId2, setStoredValue] = useState(null);
 
-  useEffect(() => {
+     useEffect(() => {
     if (typeof window !== "undefined") {
       setStoredValue(localStorage.getItem("itemId"));
     }
-  }, []);
-    // const itemId2 = localStorage.getItem("itemId")
+    }, []);
+   
 
     const [itemId, setItemId] = useState(null);
     const [isEditMode, setIsEditMode] = useState(false);
