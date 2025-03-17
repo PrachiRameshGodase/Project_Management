@@ -243,17 +243,17 @@ const ChatBox = ({ projectId, taskId }) => {
 
   // Send Message
   const handleSend = () => {
-    
-
-   
-
-    
-
-    dispatch(addTaskComment({formData, project_id:projectId, task_id:taskId, dispatch}));
+    dispatch(addTaskComment({ formData, project_id: projectId, task_id: taskId, dispatch }));
 
     setTimeout(() => {
       scrollToTop();
     }, 100);
+    setMessages([])
+    setMessage("");
+    setSelectedFile(null);
+    setAudioURL(null);
+    setAudioBlob(null);
+    setMentionList([]);
   };
 
   // Delete Message
@@ -324,10 +324,293 @@ const ChatBox = ({ projectId, taskId }) => {
     dispatch(fetchUsers(sendData));
   }, [dispatch]);
 
-  console.log("formDatat", formData);
+  // console.log("formDatat", formData);
 
   return (
-   <></>
+    <div className=" ">
+      {/* Floating Chat Icon */}
+      {/* <button
+                className="bg-blue-500 text-white p-3 rounded-full shadow-lg hover:bg-blue-600 transition"
+                onClick={() => setIsChatOpen(!isChatOpen)}
+            >
+                <MessageSquare size={24} />
+            </button> */}
+
+      {/* Chat Box */}
+      {/* {isChatOpen && ( */}
+      <div className="w-full p-2  border rounded-lg shadow-lg bg-white  bottom-16 ">
+        <div className="flex justify-between items-center mb-2">
+          <h2 className="font-semibold">Comment</h2>
+          {/* <button className="text-gray-500 hover:text-black" onClick={() => setIsChatOpen(false)}>
+                        ✖
+                    </button> */}
+        </div>
+
+        {/* Input Field with File & Audio Preview */}
+        <div className="flex justify-between items-center  ">
+          <div className="relative border w-full rounded-lg p-1 mb-2 ">
+            <div className="flex items-center ">
+              {/* Attach File */}
+              <UserAvatar
+                name={user?.name}
+                dotcolor=""
+                size={24}
+                image={"https://via.placeholder.com/24?text=💬"}
+                isActive={user?.isActive}
+              />
+              <input
+                type="file"
+                ref={fileInputRef}
+                className="hidden"
+                name="documents"
+                onChange={handleFileSelect} // No "value" needed
+              />
+
+              {/* Text Input */}
+              <input
+                ref={inputRef}
+                type="text"
+                name="comments"
+                className="flex-1 outline-none pl-1"
+                placeholder="Type a message..."
+                value={formData?.comments}
+                onChange={handleInputChange}
+                onKeyDown={(e) => e.key === "Enter" && handleSend()}
+              />
+
+              <button
+                onClick={handleMentionClick}
+                className="p-1 text-[26px] text-gray-500 hover:text-black cursor-pointer"
+              >
+                @
+              </button>
+
+              <button
+                className={`p-1  text-gray-500 hover:text-black `}
+                onClick={() => fileInputRef.current.click()}
+              >
+                <Paperclip size={22} />
+              </button>
+              {/* Mic Button */}
+              {recording ? (
+                <button className="p-2 text-red-500" onClick={stopRecording}>
+                  <PauseCircle size={20} />
+                </button>
+              ) : (
+                <button
+                  className="p-1  text-gray-500 hover:text-black"
+                  onClick={startRecording}
+                >
+                  <Mic size={24} />
+                </button>
+              )}
+
+              {/* Mention List Dropdown */}
+              {mentionList.length > 0 && (
+                <ul className="absolute -mt-56 max-h-[180px]  overflow-y-auto bg-white border rounded-md shadow-md w-full z-10">
+                  {mentionList.map((user, index) => (
+                    <li
+                      key={index}
+                      className="p-2 hover:bg-gray-100 cursor-pointer"
+                      onClick={() => handleSelectMention(user)}
+                    >
+                      @ {user?.name}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+            {/* Send Button */}
+
+            {/* File & Audio Preview Inside Input Box */}
+            {selectedFile && (
+              <div className="mt-2 p-1 bg-gray-100 rounded-md flex items-center gap-2 relative">
+                {selectedFile.type === "image" ? (
+                  <PhotoProvider>
+                    <PhotoView src={selectedFile.url}>
+                      <img
+                        src={selectedFile.url}
+                        alt="Preview"
+                        className="w-fit h-14 rounded-md cursor-pointer"
+                      />
+                    </PhotoView>
+                  </PhotoProvider>
+                ) : (
+                  <div className="text-gray-700 flex gap-1">
+                    <FileText size={20} color="#292929" />
+                    {selectedFile.name}
+                  </div>
+                )}
+
+                {/* Delete Button */}
+                <button
+                  className="absolute top-0 right-0 p-1 text-gray-500 hover:text-red-500"
+                  onClick={() => setSelectedFile(null)}
+                >
+                  <Trash2 />
+                </button>
+              </div>
+            )}
+
+            {audioURL && (
+              <div className="mt-2 p-2  bg-gray-100 rounded-md flex items-center gap-2 relative">
+                <audio controls>
+                  <source src={audioURL} type="audio/mp3" />
+                  Your browser does not support audio playback.
+                </audio>
+
+                {/* Delete Button */}
+                <button
+                  className="absolute top-0 right-0 p-1 text-gray-500 hover:text-red-500"
+                  onClick={() => setAudioURL(null)}
+                >
+                  <Trash2 />
+                </button>
+              </div>
+            )}
+            {formData.assigned_ids.length > 0 && (
+              <div className="flex flex-wrap mt-2">
+                {formData.assigned_ids.map((id) => {
+                  const user = usersList.find((u) => u.id === id);
+                  return (
+                    user && (
+                      <span
+                        key={id}
+                        className="bg-blue-50 text-blue-400 px-2 py-1 rounded-lg m-1 text-sm flex items-center"
+                      >
+                        @ {user.name}
+                        <button
+                          onClick={() => handleRemoveMention(id)}
+                          className="ml-1 text-red-700 text-xs"
+                        >
+                          <Trash2 size={12} />
+                        </button>
+                      </span>
+                    )
+                  );
+                })}
+              </div>
+            )}
+          </div>
+          <button
+            className=" text-gray-500 pl-2 hover:text-black"
+            onClick={handleSend}
+          >
+            <Send size={20} />
+          </button>
+        </div>
+
+        {/* Display Mentioned Users Below Input */}
+        {/* Display Mentioned Users Below Input */}
+
+        {/* Messages */}
+        <div className="space-y-3 p-2  max-h-64 overflow-y-auto ">
+          <PhotoProvider>
+            <div ref={chatStartRef} />
+
+            {CommentListData?.map((msg) => {
+              let fileData = null;
+              let parsedDocs;
+
+              try {
+                parsedDocs = typeof msg?.documents === "string" ? JSON.parse(msg.documents) : msg.documents;
+              } catch (error) {
+                console.error("Error parsing documents:", error);
+                parsedDocs = null;
+              }
+
+              if (Array.isArray(parsedDocs) && parsedDocs.length > 0) {
+                fileData = parsedDocs[0];
+              }
+
+              console.log("fileData: 🧘😁❌", fileData);
+              {/* try {
+                if (msg.documents) {
+                  const parsedDocs = typeof msg.documents === "string" ? JSON.parse(msg.documents) : msg.documents;
+
+                  if (Array.isArray(parsedDocs) && parsedDocs.length > 0) {
+                    fileData = parsedDocs.find(doc => doc.type === "image" || doc.type === "document") || parsedDocs[0];
+                  }
+                }
+              } catch (error) {
+                console.error("Error parsing documents JSON:", error);
+              } */}
+
+              return (
+                <div key={msg.id} className="flex gap-1 items-start group">
+                  <UserAvatar
+                    name={user?.name}
+                    dotcolor=""
+                    size={20}
+                    image={user?.image}
+                    isActive={user?.isActive}
+                  />
+                  <div className="bg-gray-100 p-2 rounded-lg w-fit max-w-[90%] relative">
+                    <span className="text-xs text-gray-500">{formatTime(msg.created_at)}</span>
+
+
+                    {fileData?.type?.startsWith("image") && (
+                      <PhotoProvider>
+                        <PhotoView src={fileData.url}>
+                          <img
+                            src={fileData.url}
+                            alt={fileData.name}
+                            className="w-40 mt-2 rounded-md cursor-pointer"
+                          />
+                        </PhotoView>
+                      </PhotoProvider>
+                    )}
+
+                    {fileData?.type === "application/pdf" && (
+                      <div>
+                        <a
+                          href={fileData.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:underline"
+                        >
+                          {fileData.name}
+                        </a>
+                      </div>
+                    )}
+
+
+                    {msg.audio_recording && !msg.deleted && (
+                      <audio controls className="mt-2 border-2 rounded-md max-w-[99%]">
+                        <source src={msg.audio_recording} type="audio/mp3" />
+                      </audio>
+                    )}
+
+
+                    {/* Text Message */}
+                    {msg?.comments && (
+                      <p
+                        className={`whitespace-pre-line ${msg.deleted ? "italic text-[12px] text-gray-500" : ""
+                          }`}
+                      >
+                        {msg?.comments || ""}
+                      </p>
+                    )}
+
+                    {/* Like & Delete */}
+                    <div className="absolute -mt-2 top-2 right-1 hidden group-hover:flex gap-2">
+                      <button
+                        className="text-gray-500 hover:text-red-500"
+                        onClick={() => handleDelete(msg.id)}
+                      >
+                        <Trash2 size={12} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+
+          </PhotoProvider>
+        </div>
+      </div>
+      {/* )} */}
+    </div>
   );
 };
 export default ChatBox;

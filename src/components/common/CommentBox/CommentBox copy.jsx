@@ -147,7 +147,6 @@ const ChatBox = () => {
             >
                 <MessageSquare size={24} />
             </button>
-
             {/* Chat Box */}
             {isChatOpen && (
                 <div className="w-[360px] p-3 -mb-12  border rounded-lg shadow-lg bg-white fixed bottom-16 right-2">
@@ -157,8 +156,6 @@ const ChatBox = () => {
                             ✖
                         </button>
                     </div>
-
-
 
                     {/* Messages */}
                     <div className="space-y-3 max-h-60 overflow-y-auto " >
@@ -171,20 +168,26 @@ const ChatBox = () => {
                                         {/* Image Preview */}
                                         {msg.file && msg.file.type === "image" && !msg.deleted && (
                                             <PhotoView src={msg.file.url}>
-                                                <img src={msg.file.url} alt="Uploaded" className="w-40 mt-2 rounded-md cursor-pointer" />
+                                                <img src={msg.file.url} alt="Uploaded"
+                                                    className="w-40 mt-2 rounded-md cursor-pointer"
+                                                />
                                             </PhotoView>
                                         )}
                                         {/* Audio Player */}
-                                        {msg.audio && !msg.deleted && (
+                                        {/* {msg.audio && !msg.deleted && (
                                             <audio controls className="mt-2 ">
                                                 <source src={msg.audio.url} type="audio/mp3" />
                                             </audio>
+                                        )} */}
+                                        {/* Audio Player */}
+                                        {msg.audio && msg.audio.url && !msg.deleted && (
+                                            <audio controls className="mt-2">
+                                                <source src={msg.audio.url} type="audio/mp3" />
+                                            </audio>
                                         )}
+
                                         {/* Text Message */}
                                         {msg.text && <p className={`whitespace-pre-line  ${msg.deleted ? "italic text-gray-500" : ""}`}>{formatMessage(msg.text)}</p>}
-
-
-
 
                                         {/* Like & Delete */}
                                         <div className="absolute  -mt-2 top-2 right-1 hidden group-hover:flex gap-2">
@@ -205,14 +208,12 @@ const ChatBox = () => {
                                 </div>
                             ))}
                         </PhotoProvider>
-
                         <div ref={chatEndRef} />
                     </div>
 
                     {/* Input Field with File & Audio Preview */}
 
                     <div className="relative border rounded-lg p-1 mt-2 ">
-
                         <div className="flex items-center gap-2">
                             {/* Attach File */}
                             <button className="p-1  text-gray-500 hover:text-black" onClick={() => fileInputRef.current.click()}>
