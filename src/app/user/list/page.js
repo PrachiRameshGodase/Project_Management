@@ -172,7 +172,7 @@ const UserList = () => {
 
         {/* Table Section */}
         <div className="max-w-full overflow-x-auto mt-6 ">
-          {usersLoading?.loading ? (
+          {usersLoading?.listLoading ? (
             <TableSkeleton rows={7} columns={5} />
           ) : (
             <table className="w-full border-spacing-y-1 min-w-[1000px] border-2 border-transparent  ">
@@ -193,7 +193,7 @@ const UserList = () => {
                       />
                     </div>
                   </th>
-                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[13px] sm:text-[16px] min-w-[100px]">User Name</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[13px] sm:text-[16px] min-w-[100px]">Name</th>
                   <th className="py-2 sm:py-3 px-2 sm:px-4  text-[13px] sm:text-[16px] in-w-[100px]  ">Email ID</th>
                   <th className="py-2 sm:py-3 px-2 sm:px-4  text-[13px] sm:text-[16px] min-w-[100px] ">Mobile Number</th>
                   <th className="py-2 sm:py-3 px-2 sm:px-4  text-[13px] sm:text-[16px] min-w-[100px] ">Designation</th>

@@ -176,7 +176,7 @@ export const Dropdown002 = ({ options, selectedValue, onSelect, label }) => {
                 key={item.id}
                 className={`flex items-center bg-gray-200 text-gray-600 rounded-md px-2 py-1 text-m ${selected ?"text-gray-700":""}`}
               >
-                {`${item.first_name} ${item.last_name}`}
+                {`${item.name} `}
                 <span
                   className="w-4 h-4 ml-2 cursor-pointer text-gray-500 hover:text-gray-700"
                   onClick={(e) => {
@@ -223,7 +223,7 @@ export const Dropdown002 = ({ options, selectedValue, onSelect, label }) => {
             {options?.length > 0 ? (
               options
                 .filter((option) =>
-                  `${option.first_name} ${option.last_name}`
+                  `${option.name}`
                     .toLowerCase()
                     .includes(searchQuery.toLowerCase())
                 )
@@ -235,7 +235,7 @@ export const Dropdown002 = ({ options, selectedValue, onSelect, label }) => {
                     }`}
                     onClick={() => handleOptionSelect(option)}
                   >
-                    {`${option?.first_name} ${option?.last_name}`}
+                    {`${option?.name}`}
                   </li>
                 ))
             ) : (

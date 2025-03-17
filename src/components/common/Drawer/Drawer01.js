@@ -241,7 +241,7 @@ const Drawer01 = ({
 
 export default Drawer01;
 
-export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId, details }) => {
+export const Drawer001 = ({ isOpen, setIsDrawerOpen,itemId2, itemId, details }) => {
   const dispatch = useDispatch();
   const router=useRouter()
   const [selectedStatus, setSelectedStatus] = useState("");
@@ -273,7 +273,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId, details }) => {
       setSelectedStatus(value);
 
       // Dispatch updateUserStatus with the new status
-      dispatch(updateTaskStatus({ id: itemId, status: value, dispatch }));
+      dispatch(updateTaskStatus({ id: itemId, status: value, dispatch , project_id:itemId2}));
     }
   };
   const handleToggleStatus = async (event) => {
@@ -293,7 +293,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId, details }) => {
 
       // Dispatch updateUserStatus with the new status
       dispatch(
-        updateProjectTaskStatus({ id: itemId, task_status: newStatus, dispatch  })
+        updateProjectTaskStatus({ id: itemId, task_status: newStatus, dispatch, project_id:itemId2 })
       );
     }
   };

@@ -56,7 +56,7 @@ const TaskList = () => {
       dispatch(fetchProjectDetails(itemId));
     }
   }, [dispatch, itemId]);
- 
+
   const user = {
     name: projectDetailData?.project_name || "",
     isActive: true,
@@ -151,9 +151,8 @@ const TaskList = () => {
     const newStatus = !isActive ? 1 : 0; // Toggle logic: Active (0) → Inactive (1), Inactive (1) → Active (0)
 
     const result = await Swal.fire({
-      text: `Do you want to ${
-        newStatus === 1 ? "Active" : "Inactive"
-      } this Project?`,
+      text: `Do you want to ${newStatus === 1 ? "Active" : "Inactive"
+        } this Project?`,
       showCancelButton: true,
       confirmButtonText: "Yes",
       cancelButtonText: "No",
@@ -180,13 +179,20 @@ const TaskList = () => {
       dispatch(fetchProjectTaskDetails(itemId2));
     }
   }, [dispatch, itemId2]);
+
+                     
+  const handleAddTask=()=>{
+    localStorage.setItem("itemId", itemId)
+    router.push(`/project/add-task`)
+
+  }
   return (
     <>
       {projectLoading?.loading ? (
         <Loader />
       ) : (
         <LayOut>
-            <div className="w-full  h-full mx-auto px-1  sm:px-4  ml-[5px] sm:border sm:shadow-tr-border rounded-[10px]  ">
+          <div className="w-full  h-full mx-auto px-1  sm:px-4  ml-[5px] sm:border sm:shadow-tr-border rounded-[10px]  ">
             <div className=" min-[1250px]:flex   justify-between mt-[10px] sm:p-4 w-full">
               {/* Avatar Section */}
               <div className="  sm:w-[360px] h-[69px] flex items-center gap-[12.21px] ">
@@ -218,11 +224,11 @@ const TaskList = () => {
                   selectedValue={projectDetailData?.status}
                   onSelect={(value) => handleStatusChange(value)}
                   label="Status"
-                  className="w-[150px]"
+                  className="w-[210px]"
                 />
               </div>
               <div className="flex max-[850px]:flex-col justify-between gap-5 md:gap-10 lg:gap-4 max-[1250px]:mt-4">
-                  <div className="w-[260px] h-[69px] border border-[#D8D8D8] rounded p-2">
+                <div className="w-[260px] h-[69px] border border-[#D8D8D8] rounded p-2">
                   <p className="text-[#000000] text-400">Project Completion</p>
                   <div className="flex">
                     <div
@@ -262,11 +268,10 @@ const TaskList = () => {
                         <div
                           className={`w-[70px] h-[40px] rounded-full shadow- transition duration-300 ease-in-out bg-[#ECE4FF]`}></div>
                         <div
-                          className={`absolute w-[33px] h-[33px] rounded-full shadow-md top-[4px] left-[4px] transition-transform duration-300 ease-in-out ${
-                            isActive
+                          className={`absolute w-[33px] h-[33px] rounded-full shadow-md top-[4px] left-[4px] transition-transform duration-300 ease-in-out ${isActive
                               ? "translate-x-7 bg-[#048339]"
                               : "bg-[#E23703]"
-                          }`}>
+                            }`}>
                           {isActive && (
                             <span className="absolute inset-0 flex items-center justify-center text-white text-[10px]">
                               <Check size={16} />
@@ -305,9 +310,8 @@ const TaskList = () => {
                   {totalCount} total
                 </p>
                 <p
-                  className={`${
-                    projectTaskLoading?.loading && "rotate_01"
-                  } mt-[6px] hover:cursor-pointer`}
+                  className={`${projectTaskLoading?.loading && "rotate_01"
+                    } mt-[6px] hover:cursor-pointer`}
                   data-tooltip-content="Reload"
                   data-tooltip-place="bottom"
                   data-tooltip-id="my-tooltip"
@@ -339,8 +343,8 @@ const TaskList = () => {
                 <Tooltip title="Add Task" arrow disableInteractive>
                   <button
                     className="w-[49px] h-[44px] bg-[#048339] text-white rounded-lg flex items-center justify-center text-2xl"
-                    onClick={() =>
-                      router.push(`/project/add-task?id=${itemId}`)
+                    onClick={
+                      handleAddTask
                     }>
                     +
                   </button>
@@ -432,9 +436,8 @@ const TaskList = () => {
               {/* Mobile Filter Panel */}
               <div
                 className={`fixed mt-20 top-0 right-0 w-[250px] h-full bg-white shadow-lg transform 
-          ${
-            isFilterOpen ? "translate-x-0" : "translate-x-full"
-          } transition-transform duration-300 ease-in-out md:hidden`}>
+          ${isFilterOpen ? "translate-x-0" : "translate-x-full"
+                  } transition-transform duration-300 ease-in-out md:hidden`}>
                 {/* Close Button */}
                 <button
                   className="absolute top-4 right-4 text-2xl"
@@ -522,18 +525,17 @@ const TaskList = () => {
                             {item?.task_title || ""}
                           </td>
                           <td
-                            className={`py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px]  min-w-[150px] rounded  font-bold`}
+                            className={`py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[14px]  min-w-[150px] rounded `}
                             onClick={() => handleTaskClick(item?.id)}>
                             <span
-                              className={`py-1 px-2 sm:px-2   text-[12px] sm:text-[15px]  border rounded-md ${
-                                item?.status === "To Do"
+                              className={`py-1 px-2 sm:px-2   text-[12px] sm:text-[14px]  border rounded-md ${item?.status === "To Do"
                                   ? "text-[#6C757D] border-[#6C757D]"
                                   : item?.status === "In progress"
-                                  ? "text-[#CA9700] border-[#CA9700]"
-                                  : item?.status === "Completed"
-                                  ? "text-[#008053] border-[#008053]"
-                                  : "text-[#0D4FA7] border-[#0D4FA7]"
-                              } inline-block`}>
+                                    ? "text-[#CA9700] border-[#CA9700]"
+                                    : item?.status === "Completed"
+                                      ? "text-[#008053] border-[#008053]"
+                                      : "text-[#0D4FA7] border-[#0D4FA7]"
+                                } inline-block`}>
                               {item?.status || ""}
                             </span>
                           </td>
@@ -556,16 +558,15 @@ const TaskList = () => {
                             />
                           </td>
                           <td
-                            className={` text-[12px] sm:text-[15px]   font-bold`}
+                            className={` text-[12px] sm:text-[14px] `}
                             onClick={() => handleTaskClick(item?.id)}>
                             <span
-                              className={`py-1 px-2 sm:px-4   text-[12px] sm:text-[15px]  border rounded-md  ${
-                                user.priority === "High"
+                              className={`py-1 px-2 sm:px-4   text-[12px] sm:text-[14px]  border rounded-md ml-4  ${user.priority === "High"
                                   ? "text-[#4976F4] border-[#4976F4]"
                                   : user.priority === "Low"
-                                  ? "text-red-400 border-red-400"
-                                  : "text-[#954BAF] border-[#954BAF]"
-                              } inline-block`}>
+                                    ? "text-red-400 border-red-400"
+                                    : "text-[#954BAF] border-[#954BAF]"
+                                } inline-block`}>
                               {item?.priority}
                             </span>
                           </td>
@@ -600,6 +601,7 @@ const TaskList = () => {
           <Drawer001
             isOpen={isDrawerOpen1}
             setIsDrawerOpen={setIsDrawerOpen1}
+            itemId2={itemId}
             itemId={itemId2}
             details={taskDetailsData}
           />
