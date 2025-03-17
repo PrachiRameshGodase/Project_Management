@@ -9,7 +9,6 @@ import {
   PauseCircle,
   PlayCircle,
   MessageSquare,
-  FileText,
 } from "lucide-react";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
@@ -20,7 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchUsers } from "@/app/store/userSlice";
 import { addTaskComment, deleteTaskComment, fetchTaskComment } from "@/app/store/projectSlice";
 import { formatTime } from "../Helper/Helper";
-import { storage, ref, uploadBytes, uploadBytesResumable, getDownloadURL } from "../../../configs/firebase";
+
 
 
 const ChatBox = ({ projectId, taskId }) => {
@@ -43,7 +42,6 @@ const ChatBox = ({ projectId, taskId }) => {
   const inputRef = useRef(null);
   const [searchTrigger, setSearchTrigger] = useState(0);
 
-  const [uploading, setUploading] = useState(false);
 
   const [formData, setFormData] = useState({
     project_id: "",
@@ -114,26 +112,7 @@ const ChatBox = ({ projectId, taskId }) => {
 
   // File Select
 
-  // const handleFileSelect = (event) => {
-  //   const file = event.target.files[0];
-  //   if (!file) return;
-
-  //   const newFile = {
-  //     name: file.name,
-  //     url: URL.createObjectURL(file),
-  //     type: file.type.startsWith("image/") ? "image" : "document",
-  //   };
-
-  //   // ✅ Update formData with the new file
-  //   setFormData((prevData) => ({
-  //     ...prevData,
-  //     documents: newFile, // Store the file inside `documents`
-  //   }));
-
-  //   setSelectedFile(newFile); // Optional, if you need it elsewhere
-  // };
-
-  const handleFileSelect = async (event) => {
+  const handleFileSelect =  (event) => {
     const file = event.target.files[0];
     if (!file) return;
 
@@ -142,61 +121,19 @@ const ChatBox = ({ projectId, taskId }) => {
       url: URL.createObjectURL(file),
       type: file.type.startsWith("image/") ? "image" : "document",
     };
+
+   
+
+    // ✅ Update formData with the new file
+    setFormData((prevData) => ({
+      ...prevData,
+      documents: newFile, // Store the file inside `documents`
+    }));
+
     setSelectedFile(newFile); // Optional, if you need it elsewhere
-
-    setUploading(true);
-
-    const storageRef = ref(storage, `uploads/${file.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, file);
-
-    uploadTask.on(
-      "state_changed",
-      null,
-      (error) => {
-        console.error("Upload Error: ", error);
-        setUploading(false);
-      },
-      async () => {
-        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-
-        // ✅ Firebase URL formData.documents me store karo
-        setFormData((prevData) => ({
-          ...prevData,
-          documents: [...prevData.documents, { name: file.name, url: downloadURL, type: file.type }],
-        }));
-
-        setUploading(false);
-      }
-    );
   };
-  console.log("form Data", formData)
 
   // Start Recording
-  // const startRecording = async () => {
-  //   setRecording(true);
-  //   const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-  //   const mediaRecorder = new MediaRecorder(stream);
-  //   mediaRecorderRef.current = mediaRecorder;
-
-  //   const chunks = [];
-  //   mediaRecorder.ondataavailable = (e) => chunks.push(e.data);
-  //   mediaRecorder.onstop = () => {
-  //     const audioBlob = new Blob(chunks, { type: "audio/mp3" });
-  //     const audioURL = URL.createObjectURL(audioBlob);
-
-  //     setAudioBlob(audioBlob);
-  //     setAudioURL(audioURL);
-
-  //     // ✅ Store recording in `formData.audio_recording`
-  //     setFormData((prevData) => ({
-  //       ...prevData,
-  //       audio_recording: audioBlob, // Storing the Blob
-  //     }));
-  //   };
-
-  //   mediaRecorder.start();
-  // };
-
   const startRecording = async () => {
     setRecording(true);
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -205,24 +142,17 @@ const ChatBox = ({ projectId, taskId }) => {
 
     const chunks = [];
     mediaRecorder.ondataavailable = (e) => chunks.push(e.data);
-
-    mediaRecorder.onstop = async () => {
+    mediaRecorder.onstop = () => {
       const audioBlob = new Blob(chunks, { type: "audio/mp3" });
-
-      // 🔥 Upload to Firebase
-      const storageRef = ref(storage, `recordings/audio-${Date.now()}.mp3`);
-      const snapshot = await uploadBytes(storageRef, audioBlob);
-
-      // ✅ Get URL from Firebase
-      const audioURL = await getDownloadURL(snapshot.ref);
+      const audioURL = URL.createObjectURL(audioBlob);
 
       setAudioBlob(audioBlob);
       setAudioURL(audioURL);
 
-      // ✅ Store Firebase URL in `formData.audio_recording`
+      // ✅ Store recording in `formData.audio_recording`
       setFormData((prevData) => ({
         ...prevData,
-        audio_recording: audioURL, // Storing Firebase URL
+        audio_recording: audioBlob, // Storing the Blob
       }));
     };
 
@@ -311,6 +241,7 @@ const ChatBox = ({ projectId, taskId }) => {
     dispatch(fetchUsers(sendData));
   }, [dispatch]);
 
+  console.log("formDatat", formData)
 
   return (
     <div className=" ">
@@ -422,10 +353,7 @@ const ChatBox = ({ projectId, taskId }) => {
                     </PhotoView>
                   </PhotoProvider>
                 ) : (
-                    <div className="text-gray-700 flex gap-1">
-                      <FileText size={20} color="#292929" />
-                      {selectedFile.name}
-                    </div>
+                  <span className="text-gray-700">{selectedFile.name}</span>
                 )}
 
                 {/* Delete Button */}
@@ -501,7 +429,7 @@ const ChatBox = ({ projectId, taskId }) => {
               } catch (error) {
                 console.error("Invalid JSON in msg.documents:", error);
               }
-              {/* console.log("file", file); */ }
+              console.log("file", file);
 
               return (
                 <div key={msg.id} className="flex gap-1 items-start group">

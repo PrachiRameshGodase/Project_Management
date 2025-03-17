@@ -196,7 +196,7 @@ const TaskList = () => {
               {/* Avatar Section */}
               <div className="  sm:w-full h-[69px] flex items-center gap-[12.21px] ">
                 <UserAvatar
-                  name={user.name}
+                  name={user?.name || 'a'}
                   dotcolor="blue"
                   size={66}
                   // image={user.image}
