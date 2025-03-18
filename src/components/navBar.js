@@ -25,13 +25,13 @@ const NavBar = () => {
   const notificationListLoading = useSelector((state) => state.notification);
 
   const isEmployee = userData?.is_employee == 0
-
+console.log("isEmployee", isEmployee)
   const navItems = [
     { path: "/home", icon: OtherIcons.home_svg, label: "Home" },
     { path: ["/user/list", "/user/add", "/user/details"], icon: OtherIcons.user_svg, label: "User" },
     { path: ["/project/list", "/project/add", "/project/details", "/project/add-task"], icon: OtherIcons.projects_svg, label: "Projects" },
-    !isEmployee ? { path: ["/client/list", "/client/add", "/client/details"], icon: OtherIcons.clients_svg, label: "Clients" } : null,
-  ].filter(Boolean); // Removes null or false values
+    !isEmployee && { path: ["/client/list", "/client/add", "/client/details"], icon: OtherIcons.clients_svg, label: "Clients" },
+  ]
 
   // console.log("notificationListData", notificationListData)
 

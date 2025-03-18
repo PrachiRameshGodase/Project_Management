@@ -23,9 +23,12 @@ const AddTask = () => {
     const [itemId2, setStoredValue] = useState(null);
 
     useEffect(() => {
-    if (typeof window !== "undefined") {
-      setStoredValue(localStorage.getItem("itemId"));
-    }
+        if (typeof window !== "undefined") {
+            const storedId = localStorage.getItem("itemId");
+            if (storedId) {
+                setStoredValue(storedId); // Update itemId2
+            }
+        }
     }, []);
    
    console.log("itemId2", itemId2)
@@ -53,7 +56,7 @@ const AddTask = () => {
     }, [searchTrigger, dispatch,]);
 
     const [formData, setFormData] = useState({
-        project_id: itemId2,
+        project_id: "",
         task_title: "",
         task_type: "",
         due_date: "",
