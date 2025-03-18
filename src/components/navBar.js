@@ -24,13 +24,14 @@ const NavBar = () => {
   const notificationListData = useSelector((state) => state.notification?.list?.data);
   const notificationListLoading = useSelector((state) => state.notification);
 
+  const isEmployee = userData?.is_employee == 0
 
   const navItems = [
     { path: "/home", icon: OtherIcons.home_svg, label: "Home" },
     { path: ["/user/list", "/user/add", "/user/details"], icon: OtherIcons.user_svg, label: "User" },
     { path: ["/project/list", "/project/add", "/project/details", "/project/add-task"], icon: OtherIcons.projects_svg, label: "Projects" },
-    { path: ["/client/list", "/client/add", "/client/details"], icon: OtherIcons.clients_svg, label: "Clients" },
-  ];
+    !isEmployee ? { path: ["/client/list", "/client/add", "/client/details"], icon: OtherIcons.clients_svg, label: "Clients" } : null,
+  ].filter(Boolean); // Removes null or false values
 
   // console.log("notificationListData", notificationListData)
 
@@ -126,11 +127,11 @@ const NavBar = () => {
 
       {/* Desktop Navbar */}
       <div className="hidden  lg:flex w-[441px] h-[44px] absolute top-[20.5px] left-2 sm:left-10 md:left-14  lg:left-20 gap-2">
-        {navItems.map((item) => {
+        {navItems.map((item, index) => {
           const isActive = Array.isArray(item.path) ? item.path.includes(pathname) : pathname === item.path;
           return (
             <div
-              key={Array.isArray(item.path) ? item.path[0] : item.path}
+              key={index}
               onClick={() => router.push(Array.isArray(item.path) ? item.path[0] : item.path)}
               className={`hover:opacity-80 rounded-lg flex items-center gap-1.5 px-2 py-1.5 cursor-pointer 
                 ${isActive ? "border border-gray-200 bg-gray-100" : "opacity-70"} 
@@ -188,7 +189,7 @@ const NavBar = () => {
 
 
                 {/* Notifications List */}
-                {notificationListData?.loading ? (<TableSkeleton />) :
+                {notificationListLoading?.loading ? (<TableSkeleton />) :
                   notificationListData?.length > 0 ? (
                     notificationListData?.map((notification, index) => (
                       <div key={notification.id} className="py-2">

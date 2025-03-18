@@ -5,6 +5,7 @@ import LayOut from '@/components/LayOut';
 import Dropdown01 from '@/components/common/Dropdown/Dropdown01';
 import { view } from '@/components/common/Helper/Helper';
 import { useDebounceSearch } from '@/components/common/Helper/HelperFunction';
+import useUserData from '@/components/common/Helper/useUserData';
 import Pagenation from '@/components/common/Pagenation/Pagenation';
 import SearchComponent from '@/components/common/SearchComponent/SearchComponent';
 import SortBy from '@/components/common/Sort/SortBy';
@@ -18,6 +19,7 @@ import { useDispatch, useSelector } from 'react-redux';
 const ProjectList = () => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const userData = useUserData()
 
   const projectListData = useSelector((state) => state.project?.list?.data);
   const projectLoading = useSelector((state) => state.project);
@@ -157,9 +159,9 @@ const ProjectList = () => {
 
           {/* Filter Options */}
           <div className="mt-16 flex flex-col gap-4 px-4">
-            <Tooltip title='Add Project' arrow disableInteractive>
+          {userData?.is_client == 0 &&  <Tooltip title='Add Project' arrow disableInteractive>
               <button className="w-[49px] h-[44px] bg-[#048339] text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/project/add')}>+</button>
-            </Tooltip>
+            </Tooltip>}
             <Dropdown01 options={view} selectedValue={selectedView} onSelect={setSelectedView} label="View" icon={OtherIcons.view_svg} />
             {/* <Dropdown01 options={statusProject} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />
             <Dropdown01 options={projectSortConstant} selectedValue={selectedSort} onSelect={setSelectedSort} label="Sort By" icon={OtherIcons.sort_by_svg} /> */}

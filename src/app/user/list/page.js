@@ -115,9 +115,9 @@ const UserList = () => {
             <SearchComponent onSearch={onSearch} section={searchTrigger} />
 
             <div className="w-[1px] h-[40px] bg-gray-400 opacity-40" />
-            <Tooltip title='Add User' arrow disableInteractive>
+            {userData?.is_admin == 1 && <Tooltip title='Add User' arrow disableInteractive>
               <button className="w-[49px] h-[44px] bg-[#048339] text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/user/add')}>+</button>
-            </Tooltip>
+            </Tooltip>}
           </div>
 
           {/* Mobile Filter Button */}

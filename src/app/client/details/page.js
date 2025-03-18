@@ -90,7 +90,7 @@ const ClientDetails = () => {
                                 <input
                                     type="checkbox"
                                     className="sr-only"
-                                    checked={isActive}
+                                    defaultChecked={isActive}
                                     onChange={handleToggleStatus}
                                 />
                                 {/* Track */}

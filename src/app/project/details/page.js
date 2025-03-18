@@ -16,6 +16,7 @@ import {
   taskView
 } from "@/components/common/Helper/Helper";
 import { useDebounceSearch } from "@/components/common/Helper/HelperFunction";
+import useUserData from "@/components/common/Helper/useUserData";
 import KanBanView from "@/components/common/KanBanView/KanBanView";
 import Loader from "@/components/common/Loader/Loader";
 import Pagenation from "@/components/common/Pagenation/Pagenation";
@@ -34,6 +35,7 @@ import Swal from "sweetalert2";
 const TaskList = () => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const userData=useUserData()
   const [itemId, setItemId] = useState(null);
 
   const projectLoading = useSelector((state) => state.project);
@@ -255,8 +257,8 @@ const TaskList = () => {
                         <input
                           type="checkbox"
                           className="sr-only"
-                          checked={isActive}
-                          onChange={handleToggleStatus}
+                          defaultChecked={isActive} 
+                          onChange={userData?.is_client === 0 ? handleToggleStatus : undefined}
                         />
                         {/* Track */}
                         <div
