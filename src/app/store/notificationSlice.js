@@ -19,33 +19,34 @@ export const fetchNotification = createAsyncThunk(
 // Delete a notification
 export const deleteNotification = createAsyncThunk(
   "notification/deleteNotification",
-  async ({user_id}, { rejectWithValue, dispatch }) => {
+  async ({ user_id }, { rejectWithValue, dispatch }) => {
     try {
-      const response = await axiosInstance.post(`/notification/delete`, {});
+      const response = await axiosInstance.post(`/notification/delete`, { user_id }); // Pass user_id in the request body
       if (response?.data?.success) {
         toast.success(response?.data?.message);
-        dispatch(fetchNotification({user_id})); // Refetch updated notifications
+        dispatch(fetchNotification({ user_id })); // Refetch updated notifications
       }
       return response.data;
     } catch (error) {
+      console.error("Error deleting notifications:", error);
       return rejectWithValue(error.response?.data || error.message);
     }
   }
 );
 
-
 // Mark a notification as read
 export const markAsReadNotification = createAsyncThunk(
   "notification/markAsRead",
-  async ({user_id}, { rejectWithValue, dispatch }) => {
+  async ({ user_id }, { rejectWithValue, dispatch }) => {
     try {
-      const response = await axiosInstance.post(`/notification/read`, {});
+      const response = await axiosInstance.post(`/notification/read`, { user_id }); // Include user_id in request
       if (response?.data?.success) {
         toast.success(response?.data?.message);
-        dispatch(fetchNotification({user_id})); // Refetch updated notifications
+        dispatch(fetchNotification({ user_id })); // Refetch updated notifications
       }
       return response.data;
     } catch (error) {
+      console.error("Error marking notification as read:", error);
       return rejectWithValue(error.response?.data || error.message);
     }
   }

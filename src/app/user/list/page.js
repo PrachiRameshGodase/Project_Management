@@ -14,10 +14,12 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import "../../../components/common/Loader/Loader.css"
 import { Tooltip } from '@mui/material';
+import useUserData from '@/components/common/Helper/useUserData';
 
 const UserList = () => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const userData = useUserData()
   const usersList = useSelector((state) => state.user?.employeeList?.data);
   const usersLoading = useSelector((state) => state.user);
   const totalCount = useSelector((state) => state?.user?.employeeList?.total);

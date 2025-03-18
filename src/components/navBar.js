@@ -91,15 +91,17 @@ const NavBar = () => {
   }, [hasNotification]); // Depend on hasNotification
 
 
-  useEffect(() => {
-    if (isOpen) {
-      dispatch(markAsReadNotification({ user_id: userData?.id }));
-    }
-  }, [isOpen, dispatch]);
-
-  const handleClearNotifications = () => {
-    dispatch(deleteNotification({ user_id: userData?.id }));
+useEffect(() => {
+  if (isOpen && userData?.id) {
+    dispatch(markAsReadNotification({ user_id: userData.id }));
   }
+}, [isOpen, userData?.id, dispatch])
+
+const handleClearNotifications = () => {
+  if (userData?.id) {
+    dispatch(deleteNotification({ user_id: userData.id }));
+  }
+};
   return (
     <div className="w-full z-50 h-[80px] fixed  flex items-center shadow-nav-Shadow  border-b border-gray-50 bg-white ">
       <Toaster
