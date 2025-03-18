@@ -23,10 +23,10 @@ const UserDetails = () => {
       setItemId(params.get("id"));
     }
   }, []);
-  const userDetailData = useSelector((state) => state?.user?.userDetails?.data);
-  const userDetail = useSelector((state) => state?.user?.userDetails?.projects);
-  
+  const userDetailData = useSelector((state) => state?.user?.userDetails?.data?.user);
+  const userDetail = useSelector((state) => state?.user?.userDetails?.data?.projects);
 
+  console.log("userDetail", userDetail)
   const [isActive, setIsActive] = useState(userDetailData?.status || "");
 
   const user = {
@@ -72,7 +72,7 @@ const UserDetails = () => {
     router.push(`/user/add?id=${itemId}&edit=true`);
   };
 
-console.log("userDetailData?.projects", userDetail)
+  console.log("userDetailData?.projects", userDetail)
   return (
     <>
       {usersLoading?.loading ? (<Loader />) : (<LayOut>
@@ -112,15 +112,15 @@ console.log("userDetailData?.projects", userDetail)
 
                   </div>
                   <div
-                    className={`absolute w-[33px] h-[33px] rounded-full shadow-md top-[4px] left-[4px] transition-transform duration-300 ease-in-out ${isActive=="0" ? 'translate-x-7 bg-[#048339]' : 'bg-[#E23703]'
+                    className={`absolute w-[33px] h-[33px] rounded-full shadow-md top-[4px] left-[4px] transition-transform duration-300 ease-in-out ${isActive == "0" ? 'translate-x-7 bg-[#048339]' : 'bg-[#E23703]'
                       }`}
                   >
-                    {isActive=="0" && (
+                    {isActive == "0" && (
                       <span className="absolute inset-0 flex items-center justify-center text-white text-[10px]">
                         <Check size={16} />
                       </span>
                     )}
-                    {isActive=="1" && (
+                    {isActive == "1" && (
                       <span className="absolute inset-0 flex items-center justify-center text-white text-[10px]">
                         <X size={16} />
                       </span>
@@ -241,26 +241,37 @@ console.log("userDetailData?.projects", userDetail)
 
             {/* Projects Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4  mt-4  ">
-              {userDetailData?.projects?.map((item, index) => (
+              {userDetail?.map((item, index) => (
                 <div
                   key={item?.id}
                   className="w-[100%] h-[132px] border border-gray-300 rounded-[8.93px] p-4 shadow-md hover:shadow-lg transition-all"
                 >
-                  <p className="text-[18px] leading-[24.3px] tracking-[-3%] text-gray-800">
-                    {item?.project_name ||""}
-                  </p>
+                  <div className='flex justify-between'>
+                    <p className="text-[18px] leading-[24.3px] tracking-[-3%] text-gray-800">
+                      {item?.project_name || ""}
+                    </p>
+                    <p
+                      className={`px-3  border rounded-md text-[15px] ${item?.priority === 'High'
+                        ? 'text-[#4976F4] border-[#4976F4]' : item?.priority === 'Low' ?
+                          'text-red-400 border-red-400' : 'text-[#954BAF] border-[#954BAF] h-[25px] w-[60px]'
+                        } inline-block`}
+                    >
+                      {item?.priority || ""}
+                    </p>
+                  </div>
 
                   <ul className="mt-2 space-y-2">
                     <li className="flex text-gray-700">
                       <span className="text-[10.72px] w-[60px]  text-gray-600">
                         End Date
                       </span>
-                      <span className="text-[12px]">{item?.due_date ||""}</span>
+                      <span className="text-[12px]">{item?.due_date || ""}</span>
                     </li>
                     <li className="flex text-gray-700">
                       <span className="text-[10.72px] w-6">Team</span>
                       <span className="text-[12px] ml-9">
-                        Akash Shinde, Aryan Singh, Puneet Omar, Prachi Jadhav
+                      {details?.team_members?.map((item)=>item?.first_name + " " + item?.last_name).join(", ") || ""}
+                        
                       </span>
                     </li>
                   </ul>
