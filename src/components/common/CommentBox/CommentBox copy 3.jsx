@@ -13,16 +13,13 @@ import {
 } from "lucide-react";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
+
+import { format } from "date-fns";
 import UserAvatar from "../UserAvatar/UserAvatar";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUsers } from "@/app/store/userSlice";
-import {
-  addTaskComment,
-  deleteTaskComment,
-  fetchTaskComment,
-} from "@/app/store/projectSlice";
+import { addTaskComment, deleteTaskComment, fetchTaskComment } from "@/app/store/projectSlice";
 import { formatTime } from "../Helper/Helper";
-import TableSkeleton from "../TableSkeleton/TableSkeleton";
 import { storage, ref, uploadBytes, uploadBytesResumable, getDownloadURL } from "../../../configs/firebase";
 
 
@@ -30,9 +27,6 @@ const ChatBox = ({ projectId, taskId }) => {
   const dispatch = useDispatch();
   const usersList = useSelector((state) => state.user?.employeeList?.data);
   const CommentListData = useSelector((state) => state.project?.taskCommentList?.data);
-  console.log("CommentListData", CommentListData)
-  const CommentListLoading = useSelector((state) => state.project);
-
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
@@ -243,22 +237,15 @@ const ChatBox = ({ projectId, taskId }) => {
 
   // Send Message
   const handleSend = () => {
-    dispatch(addTaskComment({ formData, project_id: projectId, task_id: taskId, dispatch }));
-
+    dispatch(addTaskComment({ projectData: formData }));
     setTimeout(() => {
       scrollToTop();
     }, 100);
-    setMessages([])
-    setMessage("");
-    setSelectedFile(null);
-    setAudioURL(null);
-    setAudioBlob(null);
-    setMentionList([]);
   };
 
   // Delete Message
   const handleDelete = (id) => {
-    dispatch(deleteTaskComment({ id, project_id: projectId, task_id: taskId, dispatch }));
+    dispatch(deleteTaskComment({ id, project_id: projectId, task_id: taskId }))
   };
 
   // Like Message
@@ -299,7 +286,7 @@ const ChatBox = ({ projectId, taskId }) => {
       chatContainerRef.current?.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const user = JSON.parse(localStorage.getItem("UserData"));
+  const user = JSON.parse(localStorage.getItem("UserData"))
   const handleRemoveMention = (id) => {
     setFormData((prev) => ({
       ...prev,
@@ -310,8 +297,8 @@ const ChatBox = ({ projectId, taskId }) => {
   useEffect(() => {
     const sendData = {
       project_id: projectId,
-      task_id: taskId,
-    };
+      task_id: taskId
+    }
 
     dispatch(fetchTaskComment(sendData));
   }, [dispatch]);
@@ -324,7 +311,6 @@ const ChatBox = ({ projectId, taskId }) => {
     dispatch(fetchUsers(sendData));
   }, [dispatch]);
 
-  // console.log("formDatat", formData);
 
   return (
     <div className=" ">
@@ -436,10 +422,10 @@ const ChatBox = ({ projectId, taskId }) => {
                     </PhotoView>
                   </PhotoProvider>
                 ) : (
-                  <div className="text-gray-700 flex gap-1">
-                    <FileText size={20} color="#292929" />
-                    {selectedFile.name}
-                  </div>
+                    <div className="text-gray-700 flex gap-1">
+                      <FileText size={20} color="#292929" />
+                      {selectedFile.name}
+                    </div>
                 )}
 
                 {/* Delete Button */}
@@ -509,32 +495,13 @@ const ChatBox = ({ projectId, taskId }) => {
             <div ref={chatStartRef} />
 
             {CommentListData?.map((msg) => {
-              let fileData = null;
-              let parsedDocs;
-
+              let file = null;
               try {
-                parsedDocs = typeof msg?.documents === "string" ? JSON.parse(msg.documents) : msg.documents;
+                file = msg?.documents ? JSON.parse(msg.documents) : null;
               } catch (error) {
-                console.error("Error parsing documents:", error);
-                parsedDocs = null;
+                console.error("Invalid JSON in msg.documents:", error);
               }
-
-              if (Array.isArray(parsedDocs) && parsedDocs.length > 0) {
-                fileData = parsedDocs[0];
-              }
-
-              console.log("fileData: 🧘😁❌", fileData);
-              {/* try {
-                if (msg.documents) {
-                  const parsedDocs = typeof msg.documents === "string" ? JSON.parse(msg.documents) : msg.documents;
-
-                  if (Array.isArray(parsedDocs) && parsedDocs.length > 0) {
-                    fileData = parsedDocs.find(doc => doc.type === "image" || doc.type === "document") || parsedDocs[0];
-                  }
-                }
-              } catch (error) {
-                console.error("Error parsing documents JSON:", error);
-              } */}
+              {/* console.log("file", file); */ }
 
               return (
                 <div key={msg.id} className="flex gap-1 items-start group">
@@ -548,39 +515,23 @@ const ChatBox = ({ projectId, taskId }) => {
                   <div className="bg-gray-100 p-2 rounded-lg w-fit max-w-[90%] relative">
                     <span className="text-xs text-gray-500">{formatTime(msg.created_at)}</span>
 
-
-                    {fileData?.type?.startsWith("image") && (
-                      <PhotoProvider>
-                        <PhotoView src={fileData.url}>
-                          <img
-                            src={fileData.url}
-                            alt={fileData.name}
-                            className="w-40 mt-2 rounded-md cursor-pointer"
-                          />
-                        </PhotoView>
-                      </PhotoProvider>
+                    {/* Image Preview */}
+                    {file && file.type === "image" && !msg.deleted && (
+                      <PhotoView src={file.url}>
+                        <img
+                          src={file.url}
+                          alt="Uploaded"
+                          className="w-40 mt-2 rounded-md cursor-pointer"
+                        />
+                      </PhotoView>
                     )}
 
-                    {fileData?.type === "application/pdf" && (
-                      <div>
-                        <a
-                          href={fileData.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-600 hover:underline"
-                        >
-                          {fileData.name}
-                        </a>
-                      </div>
-                    )}
-
-
-                    {msg.audio_recording && !msg.deleted && (
+                    {/* Audio Player */}
+                    {msg.audio && !msg.deleted && (
                       <audio controls className="mt-2 border-2 rounded-md max-w-[99%]">
-                        <source src={msg.audio_recording} type="audio/mp3" />
+                        <source src={msg.audio.url} type="audio/mp3" />
                       </audio>
                     )}
-
 
                     {/* Text Message */}
                     {msg?.comments && (
@@ -614,4 +565,4 @@ const ChatBox = ({ projectId, taskId }) => {
   );
 };
 export default ChatBox;
-
+//
