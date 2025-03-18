@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 // Fetch notifications list
 export const fetchNotification = createAsyncThunk(
   "notification/fetchList",
-  async ({sendData} , { rejectWithValue }) => {
+  async ({ sendData }, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post(`/notification/list`, sendData);
       return response.data;
@@ -19,9 +19,9 @@ export const fetchNotification = createAsyncThunk(
 // Delete a notification
 export const deleteNotification = createAsyncThunk(
   "notification/deleteNotification",
-  async ({ notification_id }, { rejectWithValue, dispatch }) => {
+  async ({  }, { rejectWithValue, dispatch }) => {
     try {
-      const response = await axiosInstance.post(`/notification/delete`, { notification_id });
+      const response = await axiosInstance.post(`/notification/delete`, {  });
       if (response?.data?.success) {
         toast.success(response?.data?.message);
         dispatch(fetchNotification({ user_id })); // Refetch updated notifications
@@ -36,9 +36,9 @@ export const deleteNotification = createAsyncThunk(
 // Mark a notification as read
 export const markAsReadNotification = createAsyncThunk(
   "notification/markAsRead",
-  async ({ notification_id }, { rejectWithValue, dispatch }) => {
+  async ({ }, { rejectWithValue, dispatch }) => {
     try {
-      const response = await axiosInstance.post(`/notification/read`, { notification_id });
+      const response = await axiosInstance.post(`/notification/read`, {});
       if (response?.data?.success) {
         toast.success(response?.data?.message);
         dispatch(fetchNotification()); // Refetch updated notifications

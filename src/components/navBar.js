@@ -73,9 +73,11 @@ const NavBar = () => {
   }, []);
   const hasNotification = notificationListData?.some((notification) => notification.is_mark_read == 0);
 
-  const handleMarkAsRead = (id) => {
-    dispatch(markAsReadNotification({ notification_id: id }))
-  }
+  useEffect(() => {
+    if (isOpen) {
+      dispatch(markAsReadNotification());
+    }
+  }, [isOpen, dispatch]);
 
   const handleClearNotifications = () => {
     dispatch(deleteNotification());
@@ -128,9 +130,15 @@ const NavBar = () => {
                 onClick={() => setIsOpen(!isOpen)}
               >
                 <Bell className="w-6 h-6 text-gray-700" />
-                <span className="absolute bottom-3 right-1 w-2 h-2 bg-green-500 rounded-full" />
+                {/* <span className="absolute bottom-3 right-1 w-2 h-2 bg-green-500 rounded-full" /> */}
                 {hasNotification && hasNotificationBlink && (
-                  <span className="absolute bottom-[10px]  w-3 h-3 right-4 bg-green-400 rounded-full animate-ping" />
+                  <>
+                    <span className="absolute bottom-3 right-1 w-2 h-2 bg-green-500 rounded-full" />
+                    <span className="absolute bottom-[10px]  w-3 h-3 right-4 bg-green-400 rounded-full animate-ping" />
+
+                  </>
+
+                  // <span className="absolute bottom-[10px]  w-3 h-3 right-4 bg-green-400 rounded-full animate-ping" />
                 )}
               </div>
             </Tooltip>
@@ -146,7 +154,7 @@ const NavBar = () => {
                       className="text-xs text-gray-500 hover:text-gray-700 font-semibold w-4 h-4 flex justify-center items-center"
                       onClick={handleClearNotifications}
                     >
-                      ✕
+                      clear notification
                     </button>
                     {/* Tooltip */}
                     <div className="absolute right-0 bottom-6 w-max px-2 py-1 text-xs text-white bg-gray-700 rounded opacity-0 group-hover:opacity-100 transition-opacity">
@@ -162,7 +170,7 @@ const NavBar = () => {
                     <div key={notification.id} className="py-2">
                       <h3
                         className="text-sm font-semibold text-gray-900 hover:cursor-pointer"
-                        onClick={() => handleMarkAsRead(notification?.id)}
+
                       >
                         {notification?.heading}
                       </h3>
