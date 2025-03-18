@@ -178,7 +178,7 @@ export const Dropdown002 = ({ options, selectedValue, onSelect, label }) => {
               >
                 {`${item.name} `}
                 <span
-                  className="w-4 h-4 ml-2 cursor-pointer text-gray-500 hover:text-gray-700"
+                  className="w-4 h-4 ml-2 cursor-pointer text-gray-500 hover:text-gray-700 mt-[-10px]"
                   onClick={(e) => {
                     e.stopPropagation();
                     removeSelected(item.id);

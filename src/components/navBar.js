@@ -1,22 +1,22 @@
 "use client"
 import { OtherIcons } from "@/assests/icons";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import UserAvatar from "./common/UserAvatar/UserAvatar";
+import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import LogOut from "./LogOut";
-
-import { Bell, LogOutIcon } from "lucide-react";
-// import { FiMenu } from "react-icons/fi"; // Hamburger Icon
-// import { IoClose } from "react-icons/io5"; // Close Icon
+import UserAvatar from "./common/UserAvatar/UserAvatar";
+import { Bell, LogOutIcon, Trash } from "lucide-react";
+import { deleteNotification, fetchNotification, markAsReadNotification } from "@/app/store/notificationSlice";
 import { Tooltip } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
 
 const NavBar = () => {
   const router = useRouter();
+  const dispatch = useDispatch()
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false); // State for mobile menu
   const [isOpen2, setIsOpen2] = useState(false); // State for mobile menu
-  const [hasNotification, setHasNotification] = useState(false);
+  const [hasNotificationBlink, setHasNotification] = useState(false);
+  const notificationListData = useSelector((state) => state.notification?.list?.data);
 
   const navItems = [
     { path: "/home", icon: OtherIcons.home_svg, label: "Home" },
@@ -25,12 +25,7 @@ const NavBar = () => {
     { path: ["/client/list", "/client/add", "/client/details"], icon: OtherIcons.clients_svg, label: "Clients" },
   ];
 
-  const user = {
-    name: "Ram Kumar",
-    isActive: true,
-    email: 'email@gmail.com',
-    image: "",
-  };
+  // console.log("notificationListData", notificationListData)
 
   useEffect(() => {
     const token = localStorage.getItem("access_token");
@@ -57,10 +52,10 @@ const NavBar = () => {
 
 
 
-
-
-
-
+  useEffect(() => {
+    const sendData = { id: userData?.id,is_mark_read:1 };
+    dispatch(fetchNotification({ sendData }));
+  }, [dispatch, userData?.id]); // Added userData?.id as a dependency
   useEffect(() => {
     const interval = setInterval(() => {
 
@@ -69,8 +64,15 @@ const NavBar = () => {
 
     return () => clearInterval(interval);
   }, []);
+  const hasNotification = notificationListData?.some((notification) => notification.is_mark_read == 0);
 
+  const handleMarkAsRead = (id) => {
+    dispatch(markAsReadNotification({ notification_id: id }))
+  }
 
+  const handleClearNotifications = () => {
+    dispatch(deleteNotification());
+  }
   return (
     <div className="w-full z-50 h-[80px] fixed  flex items-center shadow-nav-Shadow  border-b border-gray-50 bg-white ">
       <Toaster
@@ -113,15 +115,62 @@ const NavBar = () => {
         {/* Avatar Button */}
         <div className="absolute gap-3  top-4 right-3 sm:right-10 md:right-14 lg:right-20 flex items-center space-x-2">
           <div className="relative w-10 h-10 flex items-center justify-center">
-            <Tooltip title='Notification' arrow disableInteractive>
-              <Bell className="w-6 h-6 text-gray-700 cursor-pointer" />
+            <Tooltip title="Notification" arrow disableInteractive>
+              <div
+                className="relative cursor-pointer"
+                onClick={() => setIsOpen(!isOpen)}
+              >
+                <Bell className="w-6 h-6 text-gray-700" />
+                <span className="absolute bottom-3 right-1 w-2 h-2 bg-green-500 rounded-full" />
+                {hasNotification && hasNotificationBlink && (
+                  <span className="absolute bottom-[10px]  w-3 h-3 right-4 bg-green-400 rounded-full animate-ping" />
+                )}
+              </div>
             </Tooltip>
-            <span className="absolute bottom-3 right-1 w-2 h-2 bg-green-500 rounded-full" />
-            {hasNotification && (
-              <>
-                <span className="absolute bottom-[10px] right-[2px] w-3 h-3 bg-green-400 rounded-full animate-ping" />
-              </>
+
+            {/* Dropdown Menu */}
+            {isOpen && (
+              <div className="absolute top-12 right-0 w-[300px] bg-white shadow-lg border border-gray-200 rounded-lg p-3 z-50">
+                {/* Header with Clear Button */}
+                <div className="flex justify-between items-center mb-1">
+                  <h3 className="text-sm font-semibold text-gray-900"></h3>
+                  <div className="relative group flex items-center">
+                    <button
+                      className="text-xs text-gray-500 hover:text-gray-700 font-semibold w-4 h-4 flex justify-center items-center"
+                      onClick={handleClearNotifications}
+                    >
+                      ✕
+                    </button>
+                    {/* Tooltip */}
+                    <div className="absolute right-0 bottom-6 w-max px-2 py-1 text-xs text-white bg-gray-700 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                      Clear Notifications
+                    </div>
+                  </div>
+                </div>
+
+
+                {/* Notifications List */}
+                {notificationListData?.length > 0 ? (
+                  notificationListData?.map((notification, index) => (
+                    <div key={notification.id} className="py-2">
+                      <h3
+                        className="text-sm font-semibold text-gray-900 hover:cursor-pointer"
+                        onClick={() => handleMarkAsRead(notification?.id)}
+                      >
+                        {notification?.heading}
+                      </h3>
+                      <p className="text-gray-900 text-sm hover:cursor-pointer">{notification?.body}</p>
+                      {index !== notificationListData.length - 1 && <hr className="my-2 border-gray-300" />}
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-gray-700 text-sm">No notifications available</p>
+                )}
+              </div>
             )}
+
+
+
           </div>
           <button onClick={() => setIsOpen2(true)}>
             <UserAvatar

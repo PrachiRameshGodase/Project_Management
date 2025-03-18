@@ -1,9 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../Config/axiosInstance";
-import toast from "react-hot-toast";
-
-
-
 
 // Async thunk to fetch users list
 export const fetchDashboard = createAsyncThunk(

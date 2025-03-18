@@ -24,6 +24,8 @@ const UserDetails = () => {
     }
   }, []);
   const userDetailData = useSelector((state) => state?.user?.userDetails?.data);
+  const userDetail = useSelector((state) => state?.user?.userDetails?.projects);
+  
 
   const [isActive, setIsActive] = useState(userDetailData?.status || "");
 
@@ -70,7 +72,7 @@ const UserDetails = () => {
     router.push(`/user/add?id=${itemId}&edit=true`);
   };
 
-
+console.log("userDetailData?.projects", userDetail)
   return (
     <>
       {usersLoading?.loading ? (<Loader />) : (<LayOut>
@@ -239,13 +241,13 @@ const UserDetails = () => {
 
             {/* Projects Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4  mt-4  ">
-              {[...Array(4)].map((_, index) => (
+              {userDetailData?.projects?.map((item, index) => (
                 <div
-                  key={index}
+                  key={item?.id}
                   className="w-[100%] h-[132px] border border-gray-300 rounded-[8.93px] p-4 shadow-md hover:shadow-lg transition-all"
                 >
                   <p className="text-[18px] leading-[24.3px] tracking-[-3%] text-gray-800">
-                    HRMS Dashboard
+                    {item?.project_name ||""}
                   </p>
 
                   <ul className="mt-2 space-y-2">
@@ -253,9 +255,9 @@ const UserDetails = () => {
                       <span className="text-[10.72px] w-[60px]  text-gray-600">
                         End Date
                       </span>
-                      <span className="text-[12px]">01 Jan, 2025</span>
+                      <span className="text-[12px]">{item?.due_date ||""}</span>
                     </li>
-                    <li className="flex text-gray-700  text-gray-600 ">
+                    <li className="flex text-gray-700">
                       <span className="text-[10.72px] w-6">Team</span>
                       <span className="text-[12px] ml-9">
                         Akash Shinde, Aryan Singh, Puneet Omar, Prachi Jadhav
