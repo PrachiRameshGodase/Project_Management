@@ -51,11 +51,18 @@ const NavBar = () => {
   }, []);
 
 
-
   useEffect(() => {
-    const sendData = { id: userData?.id,is_mark_read:1 };
-    dispatch(fetchNotification({ sendData }));
-  }, [dispatch, userData?.id]); // Added userData?.id as a dependency
+    if (!userData?.id) return; // Prevent calling API if userData.id is not available
+
+    const timeout = setTimeout(() => {
+      const sendData = { user_id: userData?.id };
+      dispatch(fetchNotification({ sendData }));
+    }, 2000); // 2 seconds delay
+
+    return () => clearTimeout(timeout); // Cleanup timeout on unmount or re-run
+  }, [dispatch, userData?.id]);
+
+
   useEffect(() => {
     const interval = setInterval(() => {
 

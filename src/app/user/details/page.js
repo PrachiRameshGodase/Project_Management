@@ -38,7 +38,7 @@ const UserDetails = () => {
   };
 
   useEffect(() => {
-    if (itemId) dispatch(fetchUserDetails(itemId));
+    if (itemId) dispatch(fetchUserDetails(Number(itemId)));
   }, [dispatch, itemId]);
 
   useEffect(() => {
@@ -72,7 +72,10 @@ const UserDetails = () => {
     router.push(`/user/add?id=${itemId}&edit=true`);
   };
 
-  console.log("userDetailData?.projects", userDetail)
+ const [showAll, setShowAll] = useState(false);
+
+    // Limit projects to 8 initially
+    const visibleProjects = showAll ? userDetail : userDetail?.slice(0, 8);
   return (
     <>
       {usersLoading?.loading ? (<Loader />) : (<LayOut>
@@ -241,7 +244,7 @@ const UserDetails = () => {
 
             {/* Projects Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4  mt-4  ">
-              {userDetail?.map((item, index) => (
+              {visibleProjects?.map((item, index) => (
                 <div
                   key={item?.id}
                   className="w-[100%] h-[132px] border border-gray-300 rounded-[8.93px] p-4 shadow-md hover:shadow-lg transition-all"
@@ -251,26 +254,26 @@ const UserDetails = () => {
                       {item?.project_name || ""}
                     </p>
                     <p
-                      className={`px-3  border rounded-md text-[15px] ${item?.priority === 'High'
-                        ? 'text-[#4976F4] border-[#4976F4]' : item?.priority === 'Low' ?
-                          'text-red-400 border-red-400' : 'text-[#954BAF] border-[#954BAF] h-[25px] w-[60px]'
+                      className={`px-2  border rounded-md text-[13px] ${item?.priority === 'high'
+                        ? 'text-[#4976F4] border-[#4976F4]' : item?.priority === 'low' ?
+                          'text-red-400 border-red-400' : 'text-[#954BAF] border-[#954BAF] h-[20px] w-[70px]'
                         } inline-block`}
                     >
-                      {item?.priority || ""}
+                      {item?.priority ? item.priority.charAt(0).toUpperCase() + item.priority.slice(1) : ""}
                     </p>
                   </div>
 
                   <ul className="mt-2 space-y-2">
                     <li className="flex text-gray-700">
-                      <span className="text-[10.72px] w-[60px]  text-gray-600">
+                      <span className="text-[12px] w-[60px]  text-gray-600">
                         End Date
                       </span>
                       <span className="text-[12px]">{item?.due_date || ""}</span>
                     </li>
                     <li className="flex text-gray-700">
-                      <span className="text-[10.72px] w-6">Team</span>
+                      <span className="text-[12px] w-6">Team</span>
                       <span className="text-[12px] ml-9">
-                      {details?.team_members?.map((item)=>item?.first_name + " " + item?.last_name).join(", ") || ""}
+                      {item?.team_members?.map((item)=>item?.first_name + " " + item?.last_name).join(", ") || ""}
                         
                       </span>
                     </li>
@@ -280,9 +283,14 @@ const UserDetails = () => {
             </div>
 
             {/* View More Button */}
-            <button className="mt-4 px-4 py-2 bg-white border border-gray-200 text-black rounded-md flex align-middle items-center mx-auto shadow-md hover:shadow-lg">
-              View More
-            </button>
+            {userDetail?.length > 8 && !showAll && (
+                        <button
+                            onClick={() => setShowAll(true)}
+                            className="mt-4 px-4 py-2 bg-white border border-gray-200 text-black rounded-md flex align-middle items-center mx-auto shadow-md hover:shadow-lg"
+                        >
+                            View More
+                        </button>
+                    )}
           </div>
         </div>
       </LayOut>)}

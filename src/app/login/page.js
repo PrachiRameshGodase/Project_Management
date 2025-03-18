@@ -21,7 +21,7 @@ const LoginPage = () => {
   useEffect(() => {
     const token = localStorage.getItem("access_token");
     if (token) {
-      router.push("/home");
+      router.push("/all-projects");
     }
   }, []);
 
@@ -38,7 +38,7 @@ const LoginPage = () => {
       if (res?.payload?.success) {
         toast.success("Login Successful!");
         dispatch(fetchLoggedInUser())
-        router.push("/home");
+        router.push("/all-projects");
       } else {
         toast.error(res?.payload?.message || "Login Failed!");
       }
