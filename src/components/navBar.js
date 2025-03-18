@@ -9,6 +9,7 @@ import { deleteNotification, fetchNotification, markAsReadNotification } from "@
 import { Tooltip } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import useUserData from "./common/Helper/useUserData";
+import TableSkeleton from "./common/TableSkeleton/TableSkeleton";
 
 const NavBar = () => {
   const router = useRouter();
@@ -21,6 +22,8 @@ const NavBar = () => {
   const isActive = userData?.status == 0 ? true : false
 
   const notificationListData = useSelector((state) => state.notification?.list?.data);
+  const notificationListLoading = useSelector((state) => state.notification);
+
 
   const navItems = [
     { path: "/home", icon: OtherIcons.home_svg, label: "Home" },
@@ -43,7 +46,7 @@ const NavBar = () => {
     localStorage.removeItem("access_token");
     router.push("/login");
     toast.success("Logout Successful!");
-   
+
   };
 
 
@@ -91,17 +94,17 @@ const NavBar = () => {
   }, [hasNotification]); // Depend on hasNotification
 
 
-useEffect(() => {
-  if (isOpen && userData?.id) {
-    dispatch(markAsReadNotification({ user_id: userData.id }));
-  }
-}, [isOpen, userData?.id, dispatch])
+  useEffect(() => {
+    if (isOpen && userData?.id) {
+      dispatch(markAsReadNotification({ user_id: userData.id }));
+    }
+  }, [isOpen, userData?.id, dispatch])
 
-const handleClearNotifications = () => {
-  if (userData?.id) {
-    dispatch(deleteNotification({ user_id: userData.id }));
-  }
-};
+  const handleClearNotifications = () => {
+    if (userData?.id) {
+      dispatch(deleteNotification({ user_id: userData.id }));
+    }
+  };
   return (
     <div className="w-full z-50 h-[80px] fixed  flex items-center shadow-nav-Shadow  border-b border-gray-50 bg-white ">
       <Toaster
@@ -185,22 +188,23 @@ const handleClearNotifications = () => {
 
 
                 {/* Notifications List */}
-                {notificationListData?.length > 0 ? (
-                  notificationListData?.map((notification, index) => (
-                    <div key={notification.id} className="py-2">
-                      <h3
-                        className="text-sm font-semibold text-gray-900 hover:cursor-pointer"
+                {notificationListData?.loading ? (<TableSkeleton />) :
+                  notificationListData?.length > 0 ? (
+                    notificationListData?.map((notification, index) => (
+                      <div key={notification.id} className="py-2">
+                        <h3
+                          className="text-sm font-semibold text-gray-900 hover:cursor-pointer"
 
-                      >
-                        {notification?.heading}
-                      </h3>
-                      <p className="text-gray-900 text-sm hover:cursor-pointer">{notification?.body}</p>
-                      {index !== notificationListData.length - 1 && <hr className="my-2 border-gray-300" />}
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-gray-700 text-sm">No notifications available</p>
-                )}
+                        >
+                          {notification?.heading}
+                        </h3>
+                        <p className="text-gray-900 text-sm hover:cursor-pointer">{notification?.body}</p>
+                        {index !== notificationListData.length - 1 && <hr className="my-2 border-gray-300" />}
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-gray-700 text-sm">No notifications available</p>
+                  )}
               </div>
             )}
 

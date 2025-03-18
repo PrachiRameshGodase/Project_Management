@@ -22,13 +22,13 @@ const AddTask = () => {
 
     const [itemId2, setStoredValue] = useState(null);
 
-     useEffect(() => {
+    useEffect(() => {
     if (typeof window !== "undefined") {
       setStoredValue(localStorage.getItem("itemId"));
     }
     }, []);
    
-
+   console.log("itemId2", itemId2)
     const [itemId, setItemId] = useState(null);
     const [isEditMode, setIsEditMode] = useState(false);
     useEffect(() => {
@@ -53,7 +53,7 @@ const AddTask = () => {
     }, [searchTrigger, dispatch,]);
 
     const [formData, setFormData] = useState({
-        project_id: "",
+        project_id: itemId2,
         task_title: "",
         task_type: "",
         due_date: "",
@@ -65,6 +65,7 @@ const AddTask = () => {
         description: "",
         attachment: [],
     })
+    console.log("formData", formData)
     const [errors, setErrors] = useState({
         task_title: false,
 
@@ -91,7 +92,7 @@ const AddTask = () => {
         if (itemId2) {
             setFormData(prev => ({ ...prev, project_id: itemId2 }));
         }
-    }, [itemId]);
+    }, [itemId2]);
     const handleSubmit = async (e) => {
         e.preventDefault();
         let newErrors = {
@@ -238,11 +239,11 @@ const AddTask = () => {
 
                                     setFormData((prev) => ({
                                         ...prev,
-                                        attachments: files,
+                                        attachment: files,
                                     }))
                                 }
 
-                                } initialFiles={formData.attachments} />
+                                } initialFiles={formData.attachment} />
 
                         </div>
                         <div className="flex justify-between">

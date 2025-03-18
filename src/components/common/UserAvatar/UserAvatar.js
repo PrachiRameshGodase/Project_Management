@@ -36,7 +36,7 @@ const StyledBadge = styled(Badge)(({ theme, dotcolor }) => ({
 
 const UserAvatar = ({ name, size = 68, isActive, onClick }) => {
     const dotColor = isActive ? "green" : "red";
-    console.log("isActive", isActive)
+   
     return (
         <Box sx={{ display: "flex", alignItems: "center", cursor: "pointer" }} onClick={onClick}>
             <StyledBadge
