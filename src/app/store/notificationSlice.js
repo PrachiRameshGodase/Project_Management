@@ -19,12 +19,12 @@ export const fetchNotification = createAsyncThunk(
 // Delete a notification
 export const deleteNotification = createAsyncThunk(
   "notification/deleteNotification",
-  async ({  }, { rejectWithValue, dispatch }) => {
+  async ({user_id}, { rejectWithValue, dispatch }) => {
     try {
-      const response = await axiosInstance.post(`/notification/delete`, {  });
+      const response = await axiosInstance.post(`/notification/delete`, {});
       if (response?.data?.success) {
         toast.success(response?.data?.message);
-        dispatch(fetchNotification({ user_id })); // Refetch updated notifications
+        dispatch(fetchNotification({user_id})); // Refetch updated notifications
       }
       return response.data;
     } catch (error) {
@@ -33,15 +33,16 @@ export const deleteNotification = createAsyncThunk(
   }
 );
 
+
 // Mark a notification as read
 export const markAsReadNotification = createAsyncThunk(
   "notification/markAsRead",
-  async ({ }, { rejectWithValue, dispatch }) => {
+  async ({user_id}, { rejectWithValue, dispatch }) => {
     try {
       const response = await axiosInstance.post(`/notification/read`, {});
       if (response?.data?.success) {
         toast.success(response?.data?.message);
-        dispatch(fetchNotification()); // Refetch updated notifications
+        dispatch(fetchNotification({user_id})); // Refetch updated notifications
       }
       return response.data;
     } catch (error) {

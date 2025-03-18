@@ -1,42 +1,35 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { OtherIcons } from "@/assests/icons";
 import UserAvatar from "@/components/common/UserAvatar/UserAvatar";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDashboard } from "../store/dashboardSlice";
-
-
+import useUserData from "@/components/common/Helper/useUserData";
+import Loader from "@/components/common/Loader/Loader";
 
 const HomePage = () => {
     const router = useRouter();
-    const dispatch=useDispatch()
+    const userData = useUserData()
+    const dispatch = useDispatch()
+
     const dashboardList = useSelector((state) => state.dashboard?.list?.data);
     const dashboardLoading = useSelector((state) => state.dashboard);
-    const [isOpen2, setIsOpen2] = useState(false);
-    const user = {
-        name: "Shubham Yadhav",
-        isActive: true,
-        email: 'a@gmai.com',
-        image: "",
-    };
 
+  
+    const isActive = userData?.status == 0 ? true : false
 
     useEffect(() => {
-
         dispatch(fetchDashboard());
-
     }, [dispatch]);
+
     return (
-        <div className="flex justify-center items-start min-h-screen bg-gray-100 p-4 sm:p-10 relative ">
-            {/* Avatar Section (Top-Right) */}
-            {/* <LogOut isOpen2={isOpen2} user={user} setIsOpen2={setIsOpen2} /> */}
+        <> {dashboardLoading?.loading ? (<Loader />) : (<div className="flex justify-center items-start min-h-screen bg-gray-100 p-4 sm:p-10 relative ">
 
             <div className="absolute top-4 right-5 sm:right-14 flex items-center space-x-2">
-                <UserAvatar onClick={() => setIsOpen2(true)} name={user.name} dotcolor="green" size={36} image={user.image} isActive={user.isActive} />
+                <UserAvatar name={userData?.name} size={36} isActive={isActive} />
 
-                <span className="cursor-pointer" onClick={() => router.push(`/`)}>
+                <span className="cursor-pointer" onClick={() => router.push(`/`)} title="Go To Dashboard">
                     {OtherIcons.back_svg}
                 </span>
             </div>
@@ -54,23 +47,23 @@ const HomePage = () => {
                             <div
                                 key={card.id}
                                 className="w-full h-full bg-white shadow-sm hover:shadow-md rounded-[17.5px] p-4 text-center flex flex-col justify-between hover:cursor-pointer"
-                                onClick={()=>router.push(`/project/details?id=${card?.id}`)}
+                                onClick={() => router.push(`/project/details?id=${card?.id}`)}
                             >
                                 <div className="flex flex-col gap-2">
                                     <div className="flex justify-between">
-                                        <p className="capitalize text-[18px] text-[#2A2A2A] text-left">{card?.project_name ||""}</p>
+                                        <p className="capitalize text-[18px] text-[#2A2A2A] text-left">{card?.project_name || ""}</p>
 
                                         <span
                                             className={`border rounded-[4px] ${card.status === "In Progress"
                                                 ? "text-[#CA9700] border-[#CA9700]"
                                                 : card.status === "Under Review"
                                                     ? "text-[#0D4FA7] border-[#0D4FA7]"
-                                                    :card.status === "Completed"
-                                                    ? "text-[#538d4b] border-[#538d4b]"
-                                                    : ""
+                                                    : card.status === "Completed"
+                                                        ? "text-[#538d4b] border-[#538d4b]"
+                                                        : ""
                                                 } h-[24px] w-fit px-2 py-1 flex items-center text-[12px] text-[#202730] border-[#7a8ba0]`}
                                         >
-                                            {card?.status ||""}
+                                            {card?.status || ""}
                                         </span>
                                     </div>
 
@@ -80,7 +73,7 @@ const HomePage = () => {
                                             {OtherIcons.dateTime_svg}
                                         </div>
                                         <div className="flex flex-col">
-                                            <p className="text-gray-800 text-[14px]">{card?.due_date ||""}</p>
+                                            <p className="text-gray-800 text-[14px]">{card?.due_date || ""}</p>
                                             <p className="text-[#320b5775] text-[12px]">Deadline Date</p>
                                         </div>
                                     </div>
@@ -92,7 +85,7 @@ const HomePage = () => {
                                         </div>
                                         <div className="flex flex-col text-left">
                                             <p className="text-gray-800 text-[14px]">
-                                                {card?.team_leaders?.map((item)=>item?.first_name + " " + item?.last_name)?.join(", ")}
+                                                {card?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name)?.join(", ")}
                                             </p>
                                             <p className="text-[#320b5775] text-[12px]">Team</p>
                                         </div>
@@ -124,16 +117,16 @@ const HomePage = () => {
                                                 <tbody>
                                                     <tr className="">
                                                         <td className="font-300 text-gray-700 text-[14px] text-center">
-                                                            {card?.to_do_tasks_count ||0}
+                                                            {card?.to_do_tasks_count || 0}
                                                         </td>
                                                         <td className="font-300 text-gray-700 text-[14px] text-center">
-                                                            {card?.in_progress_tasks_count ||0}
+                                                            {card?.in_progress_tasks_count || 0}
                                                         </td>
                                                         <td className="font-300 text-gray-700 text-[14px] text-center">
-                                                            {card?.under_review_tasks_count ||0}
+                                                            {card?.under_review_tasks_count || 0}
                                                         </td>
                                                         <td className="font-300 text-gray-700 text-[14px] text-center">
-                                                            {card?.completed_tasks_count ||0}
+                                                            {card?.completed_tasks_count || 0}
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -146,7 +139,8 @@ const HomePage = () => {
                     })}
                 </div>
             </div>
-        </div>
+        </div>)}</>
+
     );
 };
 

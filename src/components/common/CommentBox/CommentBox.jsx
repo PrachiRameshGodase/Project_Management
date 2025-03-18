@@ -344,7 +344,7 @@ const ChatBox = ({ projectId, taskId }) => {
                 name={user?.name}
                 dotcolor=""
                 size={24}
-                image={"https://via.placeholder.com/24?text=💬"}
+                // image={"https://via.placeholder.com/24?text=💬"}
                 isActive={user?.isActive}
               />
               <input

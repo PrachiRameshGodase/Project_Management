@@ -72,10 +72,11 @@ const UserDetails = () => {
     router.push(`/user/add?id=${itemId}&edit=true`);
   };
 
- const [showAll, setShowAll] = useState(false);
+  const [showAll, setShowAll] = useState(false);
 
-    // Limit projects to 8 initially
-    const visibleProjects = showAll ? userDetail : userDetail?.slice(0, 8);
+  // Limit projects to 8 initially
+  const visibleProjects = showAll ? userDetail : userDetail?.slice(0, 8);
+  const isActive3 = userDetailData?.status == 0 ? true : false
   return (
     <>
       {usersLoading?.loading ? (<Loader />) : (<LayOut>
@@ -141,19 +142,14 @@ const UserDetails = () => {
               </button>
             </div>
           </div>
-          <div className="p-4 flex flex-col gap-4 xl:gap-6  xl:flex-row items-start justify-between mt-16 sm:mt-0">
+          <div className="p-4 flex flex-col gap-4 xl:gap-6  xl:flex-row items-start justify-between mt-16 sm:mt-4">
             {/* Avatar Section */}
             <div className=" w-[260px] h-[69px] flex items-center gap-[12.21px] ">
-              <UserAvatar
-                name={user.name}
-                dotcolor="green"
-                size={66}
-                image={user.image}
-                isActive={user.isActive}
-              />
-              <div className=" text-xl text-gray-700">
-                <p className="font-medium flex w-full ">{`${userDetailData?.first_name || ""
-                  } ${userDetailData?.last_name || ""}`}</p>
+              <UserAvatar name={userDetailData?.name} size={66} isActive={isActive3} />
+
+              <div className="text-[28px] text-gray-700">
+                <p className="font-medium flex w-full ">{`${userDetailData?.name || ""
+                  }`}</p>
                 <p className="text-xs text-gray-500">
                   {userDetailData?.designation || ""}
                 </p>
@@ -273,8 +269,8 @@ const UserDetails = () => {
                     <li className="flex text-gray-700">
                       <span className="text-[12px] w-6">Team</span>
                       <span className="text-[12px] ml-9">
-                      {item?.team_members?.map((item)=>item?.first_name + " " + item?.last_name).join(", ") || ""}
-                        
+                        {item?.team_members?.map((item) => item?.first_name + " " + item?.last_name).join(", ") || ""}
+
                       </span>
                     </li>
                   </ul>
@@ -284,13 +280,13 @@ const UserDetails = () => {
 
             {/* View More Button */}
             {userDetail?.length > 8 && !showAll && (
-                        <button
-                            onClick={() => setShowAll(true)}
-                            className="mt-4 px-4 py-2 bg-white border border-gray-200 text-black rounded-md flex align-middle items-center mx-auto shadow-md hover:shadow-lg"
-                        >
-                            View More
-                        </button>
-                    )}
+              <button
+                onClick={() => setShowAll(true)}
+                className="mt-4 px-4 py-2 bg-white border border-gray-200 text-black rounded-md flex align-middle items-center mx-auto shadow-md hover:shadow-lg"
+              >
+                View More
+              </button>
+            )}
           </div>
         </div>
       </LayOut>)}

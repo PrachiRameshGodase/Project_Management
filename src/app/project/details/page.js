@@ -184,7 +184,8 @@ const TaskList = () => {
     router.push(`/project/add-task`)
 
   }
-  console.log("itemId", itemId2)
+  const isActive2 = projectDetailData?.project_status == 1 ? true : false
+
   return (
     <>
       {projectLoading?.loading ? (
@@ -195,14 +196,8 @@ const TaskList = () => {
             <div className=" min-[1250px]:flex   justify-between mt-[10px] sm:p-4 w-full">
               {/* Avatar Section */}
               <div className="  sm:w-full h-[69px] flex items-center gap-[12.21px] ">
-                <UserAvatar
-                  name={user?.name || 'a'}
-                  dotcolor="blue"
-                  size={66}
-                  // image={user.image}
-                  isActive={user.isActive}
-                />
-
+              <UserAvatar name={projectDetailData?.project_name} size={54} isActive={isActive2} />
+               
                 <div className="text-xl text-gray-700">
                   <p className="font-bold text-[14px] sm:text-[18px]">
                     {projectDetailData?.project_name || ""}

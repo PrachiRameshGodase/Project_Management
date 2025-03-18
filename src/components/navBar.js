@@ -8,14 +8,18 @@ import { Bell, LogOutIcon, Trash } from "lucide-react";
 import { deleteNotification, fetchNotification, markAsReadNotification } from "@/app/store/notificationSlice";
 import { Tooltip } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
+import useUserData from "./common/Helper/useUserData";
 
 const NavBar = () => {
   const router = useRouter();
   const dispatch = useDispatch()
+  const userData = useUserData()
   const pathname = usePathname();
+
   const [isOpen, setIsOpen] = useState(false); // State for mobile menu
   const [isOpen2, setIsOpen2] = useState(false); // State for mobile menu
-  const [hasNotificationBlink, setHasNotification] = useState(false);
+  const isActive = userData?.status == 0 ? true : false
+
   const notificationListData = useSelector((state) => state.notification?.list?.data);
 
   const navItems = [
@@ -37,50 +41,64 @@ const NavBar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("access_token");
-    toast.success("Logout Successful!");
     router.push("/login");
+    toast.success("Logout Successful!");
+   
   };
 
-  const [userData, setUserData] = useState(null);
 
-  useEffect(() => {
-    const storedData = localStorage.getItem("UserData");
-    if (storedData) {
-      setUserData(JSON.parse(storedData));
-    }
-  }, []);
 
 
   useEffect(() => {
-    if (!userData?.id) return; // Prevent calling API if userData.id is not available
+    if (!userData?.id) return; // Prevent unnecessary calls
 
-    const timeout = setTimeout(() => {
-      const sendData = { user_id: userData?.id };
+    const fetchNotifications = () => {
+      const sendData = { user_id: userData.id };
       dispatch(fetchNotification({ sendData }));
-    }, 2000); // 2 seconds delay
+    };
 
-    return () => clearTimeout(timeout); // Cleanup timeout on unmount or re-run
+    // Call API immediately
+    fetchNotifications();
+
+    // Set interval to call API every 2 minutes (120,000 ms)
+    const interval = setInterval(fetchNotifications, 120000);
+
+    // Cleanup function to clear interval when component unmounts
+    return () => clearInterval(interval);
   }, [dispatch, userData?.id]);
 
 
+
+
+
+  const [hasNotificationBlink, setHasNotificationBlink] = useState(false);
+
+  const hasNotification = notificationListData?.some(
+    (notification) => notification.is_mark_read === 0
+  );
+
+
   useEffect(() => {
-    const interval = setInterval(() => {
+    if (hasNotification) {
+      const interval = setInterval(() => {
+        setHasNotificationBlink((prev) => !prev);
+      }, 1000); // Blink every 1 second
 
-      setHasNotification((prev) => !prev);
-    }, 1000); // Har 1 second me blink karega
+      return () => clearInterval(interval); // Cleanup interval
+    } else {
+      setHasNotificationBlink(false); // Ensure it stops blinking when no unread notifications
+    }
+  }, [hasNotification]); // Depend on hasNotification
 
-    return () => clearInterval(interval);
-  }, []);
-  const hasNotification = notificationListData?.some((notification) => notification.is_mark_read == 0);
 
   useEffect(() => {
     if (isOpen) {
-      dispatch(markAsReadNotification());
+      dispatch(markAsReadNotification({ user_id: userData?.id }));
     }
   }, [isOpen, dispatch]);
 
   const handleClearNotifications = () => {
-    dispatch(deleteNotification());
+    dispatch(deleteNotification({ user_id: userData?.id }));
   }
   return (
     <div className="w-full z-50 h-[80px] fixed  flex items-center shadow-nav-Shadow  border-b border-gray-50 bg-white ">
@@ -151,10 +169,10 @@ const NavBar = () => {
                   <h3 className="text-sm font-semibold text-gray-900"></h3>
                   <div className="relative group flex items-center">
                     <button
-                      className="text-xs text-gray-500 hover:text-gray-700 font-semibold w-4 h-4 flex justify-center items-center"
+                      className="text-xs text-gray-500 hover:text-gray-700  w-4 h-4 flex justify-center items-center"
                       onClick={handleClearNotifications}
                     >
-                      clear notification
+                      Clear
                     </button>
                     {/* Tooltip */}
                     <div className="absolute right-0 bottom-6 w-max px-2 py-1 text-xs text-white bg-gray-700 rounded opacity-0 group-hover:opacity-100 transition-opacity">
@@ -188,13 +206,7 @@ const NavBar = () => {
 
           </div>
           <button onClick={() => setIsOpen2(true)}>
-            <UserAvatar
-              name={userData?.name}
-              dotcolor="#E19F1E"
-              size={40}
-
-            // isActive={user.isActive}
-            />
+            <UserAvatar name={userData?.name} size={36} isActive={isActive} />
           </button>
           <Tooltip title='Logout' arrow disableInteractive>
             <LogOutIcon className="cursor-pointer hover:text-red-600" onClick={handleLogout} />
