@@ -246,11 +246,11 @@ const NavBar = () => {
 
         {/* Sidebar Navigation */}
         <div className="mt-16  flex flex-col gap-4 px-4">
-          {navItems.map((item) => {
+          {navItems.map((item, index) => {
             const isActive = Array.isArray(item.path) ? item.path.includes(pathname) : pathname === item.path;
             return (
               <div
-                key={Array.isArray(item.path) ? item.path[0] : item.path}
+                key={index}
                 onClick={() => {
                   router.push(Array.isArray(item.path) ? item.path[0] : item.path);
                   setIsOpen(false); // Close menu on click
