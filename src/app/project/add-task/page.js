@@ -56,7 +56,7 @@ const AddTask = () => {
     }, [searchTrigger, dispatch,]);
 
     const [formData, setFormData] = useState({
-        project_id: "",
+        project_id: null,
         task_title: "",
         task_type: "",
         due_date: "",
