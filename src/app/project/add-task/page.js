@@ -93,7 +93,7 @@ const AddTask = () => {
 
     useEffect(() => {
         if (itemId2) {
-            setFormData(prev => ({ ...prev, project_id: itemId2 }));
+            setFormData(prev => ({ ...prev, project_id: Number(itemId2) }));
         }
     }, [itemId2]);
     const handleSubmit = async (e) => {
