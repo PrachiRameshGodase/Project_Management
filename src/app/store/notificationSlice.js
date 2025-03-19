@@ -5,9 +5,9 @@ import toast from "react-hot-toast";
 // Fetch notifications list
 export const fetchNotification = createAsyncThunk(
   "notification/fetchList",
-  async ({ sendData }, { rejectWithValue }) => {
+  async ({ user_id }, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post(`/notification/list`, sendData);
+      const response = await axiosInstance.post(`/notification/list`, {user_id});
       return response.data;
     } catch (error) {
       console.error("API Error:", error);
@@ -20,9 +20,9 @@ export const fetchNotification = createAsyncThunk(
 export const deleteNotification = createAsyncThunk(
   "notification/deleteNotification",
   async ({ user_id }, { rejectWithValue, dispatch }) => {
-    console.log("Received user_id in deleteNotification:", user_id);
+   
     try {
-      const response = await axiosInstance.post(`/notification/delete`, { user_id }); // Pass user_id in the request body
+      const response = await axiosInstance.post(`/notification/delete`, { }); // Pass user_id in the request body
       if (response?.data?.success) {
         toast.success(response?.data?.message);
         dispatch(fetchNotification({ user_id })); // Refetch updated notifications
@@ -40,7 +40,7 @@ export const markAsReadNotification = createAsyncThunk(
   "notification/markAsRead",
   async ({ user_id }, { rejectWithValue, dispatch }) => {
     try {
-      const response = await axiosInstance.post(`/notification/read`, { user_id }); // Include user_id in request
+      const response = await axiosInstance.post(`/notification/read`, { }); // Include user_id in request
       if (response?.data?.success) {
         toast.success(response?.data?.message);
         dispatch(fetchNotification({ user_id })); // Refetch updated notifications

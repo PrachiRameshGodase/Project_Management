@@ -57,8 +57,8 @@ const NavBar = () => {
     if (!userData?.id) return; // Prevent unnecessary calls
 
     const fetchNotifications = () => {
-      const sendData = { user_id: userData.id };
-      dispatch(fetchNotification({ sendData }));
+    
+      dispatch(fetchNotification({ user_id: userData.id }));
     };
 
     // Call API immediately
