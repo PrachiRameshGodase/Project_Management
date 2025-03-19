@@ -69,12 +69,13 @@ export const updateProjectStatus = createAsyncThunk("project/updateProjectStatus
 // Async thunk to add a new task
 export const addProjectTask = createAsyncThunk(
   "task/addProjectTask",
-  async ({ projectData, router, itemId, itemId2 }, { rejectWithValue }) => {
+  async ({ projectData, router, itemId2, dispatch }, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post(`/task/create`, projectData);
       if (response?.data?.success === true) {
         toast.success(response?.data?.message);
-        router.push(`/project/details?id=${itemId}`); // Navigate on success
+        dispatch(fetchProjectTasks({ project_id: itemId2}))
+        router.push(`/project/details?id=${itemId2}`); // Navigate on success
         localStorage.removeItem("itemId", itemId2)
       }
       return response.data;

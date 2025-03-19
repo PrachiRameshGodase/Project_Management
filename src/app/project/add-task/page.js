@@ -31,7 +31,7 @@ const AddTask = () => {
         }
     }, []);
    
-   console.log("itemId2", itemId2)
+  
     const [itemId, setItemId] = useState(null);
     const [isEditMode, setIsEditMode] = useState(false);
     useEffect(() => {
@@ -69,6 +69,7 @@ const AddTask = () => {
         attachment: [],
     })
     console.log("formData", formData)
+    console.log("itemId", itemId)
     const [errors, setErrors] = useState({
         task_title: false,
 
@@ -96,6 +97,8 @@ const AddTask = () => {
             setFormData(prev => ({ ...prev, project_id: Number(itemId2) }));
         }
     }, [itemId2]);
+
+    console.log("itemId2", itemId2)
     const handleSubmit = async (e) => {
         e.preventDefault();
         let newErrors = {
@@ -114,7 +117,7 @@ const AddTask = () => {
             return;
         } else {
             try {
-                dispatch(addProjectTask({ projectData: formData, router, itemId, itemId2 }));
+                dispatch(addProjectTask({ projectData: formData, router, itemId2, dispatch }));
             } catch (error) {
                 console.error("Error updating user:", error);
             }

@@ -35,7 +35,7 @@ import Swal from "sweetalert2";
 const TaskList = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const userData=useUserData()
+  const userData = useUserData()
   const [itemId, setItemId] = useState(null);
 
   const projectLoading = useSelector((state) => state.project);
@@ -198,8 +198,8 @@ const TaskList = () => {
             <div className=" min-[1250px]:flex   justify-between mt-[10px] sm:p-4 w-full">
               {/* Avatar Section */}
               <div className="  sm:w-full h-[69px] flex items-center gap-[12.21px] ">
-              <UserAvatar name={projectDetailData?.project_name} size={54} isActive={isActive2} />
-               
+                <UserAvatar name={projectDetailData?.project_name} size={54} isActive={isActive2} />
+
                 <div className="text-xl text-gray-700">
                   <p className="font-bold text-[14px] sm:text-[18px]">
                     {projectDetailData?.project_name || ""}
@@ -257,7 +257,7 @@ const TaskList = () => {
                         <input
                           type="checkbox"
                           className="sr-only"
-                          defaultChecked={isActive} 
+                          defaultChecked={isActive}
                           onChange={userData?.is_client === 0 ? handleToggleStatus : undefined}
                         />
                         {/* Track */}
@@ -268,12 +268,12 @@ const TaskList = () => {
                             ? "translate-x-7 bg-[#048339]"
                             : "bg-[#E23703]"
                             }`}>
-                          {isActive && (
+                          {isActive == "0" && (
                             <span className="absolute inset-0 flex items-center justify-center text-white text-[10px]">
                               <Check size={16} />
                             </span>
                           )}
-                          {!isActive && (
+                          {isActive == "1" && (
                             <span className="absolute inset-0 flex items-center justify-center text-white text-[10px]">
                               <X size={16} />
                             </span>
