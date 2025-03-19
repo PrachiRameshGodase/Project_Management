@@ -20,6 +20,7 @@ export const fetchNotification = createAsyncThunk(
 export const deleteNotification = createAsyncThunk(
   "notification/deleteNotification",
   async ({ user_id }, { rejectWithValue, dispatch }) => {
+    console.log("Received user_id in deleteNotification:", user_id);
     try {
       const response = await axiosInstance.post(`/notification/delete`, { user_id }); // Pass user_id in the request body
       if (response?.data?.success) {
