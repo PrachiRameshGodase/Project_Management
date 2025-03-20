@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import '../Fonts/WEB/css/supreme.css'; 
+/* @import '../Fonts/WEB/css/supreme.css';  */
 
 *{
   box-sizing: border-box;
@@ -9,7 +9,9 @@
   margin: 0;
 }
 body {
-  font-family: 'Supreme-Medium', sans-serif;
+  /* font-family: 'Supreme-Medium', sans-serif; */
+  /* font-family: Arial, sans-serif; */
+  font-family: Inter, "Source Sans Pro", Helvetica, Arial, sans-serif;
 }
 
 :root {
