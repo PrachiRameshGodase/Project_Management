@@ -7,6 +7,7 @@ import {
   updateStatus,
 } from "@/app/store/projectSlice";
 import { OtherIcons } from "@/assests/icons";
+import DataNotFound from "@/components/common/DataNotFound/DataNotFound";
 import Drawer01, { Drawer001 } from "@/components/common/Drawer/Drawer01";
 import Dropdown01 from "@/components/common/Dropdown/Dropdown01";
 import DropdownStatus01 from "@/components/common/Dropdown/DropdownStatus01";
@@ -21,6 +22,7 @@ import KanBanView from "@/components/common/KanBanView/KanBanView";
 import Loader from "@/components/common/Loader/Loader";
 import Pagenation from "@/components/common/Pagenation/Pagenation";
 import SearchComponent from "@/components/common/SearchComponent/SearchComponent";
+import SortBy from "@/components/common/Sort/SortBy";
 import TableSkeleton from "@/components/common/TableSkeleton/TableSkeleton";
 import TruncatedTooltipText from "@/components/common/TruncatedTooltipText/TruncatedTooltipText";
 import UserAvatar from "@/components/common/UserAvatar/UserAvatar";
@@ -489,12 +491,9 @@ const TaskList = () => {
                       <thead className=" ">
                         <tr className="text-left m-1 text-sm uppercase text-gray-800 shadow-tr-border rounded-md  ">
                           <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]   flex ">
-                            TASK TITLE
-                            <span className="mt-1 pl-10 flex flex-col gap-1">
-                              {OtherIcons.arrow_up_svg}
-                              {OtherIcons.arrow_down_svg}
-                            </span>
-                          </th>
+
+                            <div className='flex items-center justify-between'>
+                              <span>TASK TITLE</span><SortBy setSearchTrigger={setSearchTrigger} selectedSortBy={selectedSortBy} setSelectedSortBy={setSelectedSortBy} sortOrder={sortOrder} setSortOrder={setSortOrder} sortOptions="task_title" resetPageIfNeeded={resetPageIfNeeded} /> </div></th>
                           <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] ">
                             STATUS
                           </th>
@@ -514,7 +513,7 @@ const TaskList = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {projectTaskListData?.map((item, index) => (
+                        {projectTaskListData?.length > 0 ? (projectTaskListData?.map((item, index) => (
                           <tr
                             key={item?.id}
                             className="cursor-pointer  hover:bg-gray-100   hover:shadow-tr-border   rounded-md  transition-all duration-200">
@@ -559,18 +558,31 @@ const TaskList = () => {
                             <td
                               className={` text-[12px] sm:text-[14px] `}
                               onClick={() => handleTaskClick(item?.id)}>
-                              <span
-                                className={`py-1 px-2 sm:px-4   text-[12px] sm:text-[14px]  border rounded-md ml-4  ${user.priority === "High"
-                                  ? "text-[#4976F4] border-[#4976F4]"
-                                  : user.priority === "Low"
-                                    ? "text-red-400 border-red-400"
-                                    : "text-[#954BAF] border-[#954BAF]"
-                                  } inline-block`}>
-                                {item?.priority}
-                              </span>
+                              {item?.priority ? (
+                                <span
+                                  className={`py-1 sm:py-1 px-2 sm:px-4 text-[12px] sm:text-[15px] border rounded-md inline-block 
+      ${item.priority === "High"
+                                      ? "text-[#4976F4] border-[#4976F4]"
+                                      : item.priority === "Low"
+                                        ? "text-red-400 border-red-400"
+                                        : "text-[#954BAF] border-[#954BAF]"
+                                    }`}
+                                >
+                                  {item.priority.charAt(0).toUpperCase() + item.priority.slice(1)}
+                                </span>
+                              ) : (
+                                ""
+                              )}
                             </td>
                           </tr>
-                        ))}
+                        ))) : (<tr>
+                          <td colSpan="8" className="text-center py-8">
+                            <div className="flex justify-center items-center">
+                              <DataNotFound />
+                            </div>
+                          </td>
+                        </tr>)
+                        }
                       </tbody>
                     </table>
                   )}

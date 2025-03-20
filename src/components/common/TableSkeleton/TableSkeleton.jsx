@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 
-const TableSkeleton = ({ rows = 5, columns = 4 }) => {
+const TableSkeleton = ({ rows = 7, columns = 4 }) => {
     return (
         <div className="w-full overflow-x-auto">
             <table className="w-full border-collapse">
@@ -33,10 +33,10 @@ const TableSkeleton = ({ rows = 5, columns = 4 }) => {
 export default TableSkeleton;
 
 
-export const TableSkeleton2 = ({ rows = 5, columns = 4 }) => {
+export const TableSkeleton2 = ({ rows = 5, columns = 2 }) => {
     return (
-        <div className="w-[500px] overflow-x-auto">
-            <table className="w-[500px] border-collapse">
+        <div className="w-full overflow-x-auto">
+            <table className="w-full border-collapse">
                 <thead>
                     <tr>
                         {Array.from({ length: columns }).map((_, index) => (

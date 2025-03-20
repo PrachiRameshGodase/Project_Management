@@ -63,3 +63,19 @@ body {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.notdatafound {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 460px;
+
+  iframe {
+    height: 450px;
+    width: max-content;
+  }
+
+  svg {
+    height: 250px;
+  }
+}
