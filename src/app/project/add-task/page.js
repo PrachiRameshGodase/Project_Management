@@ -30,8 +30,8 @@ const AddTask = () => {
             }
         }
     }, []);
-   
-  
+
+
     const [itemId, setItemId] = useState(null);
     const [isEditMode, setIsEditMode] = useState(false);
     useEffect(() => {
@@ -150,16 +150,24 @@ const AddTask = () => {
 
     return (
         <LayOut>
-            <div className="sm:flex mx-auto sm:mx-0  flex-col items-center justify-center">
-                <div className="text-2xl tracking-tight ml-4 sm:ml-[7px] text-[32px]  w-full ">{itemId ? "Update Task" : "Add New Task"}</div>
-
-                <div className="sm:flex justify-center items-center h-screen mx-auto sm:-mt-16 xl:lg:-mt-18">
-                    <form className="w-full sm:w-[650px] mb-4 h-[656px] bg-white p-8 rounded-lg space-y-6" onSubmit={handleSubmit}>
-                        <div className="sm:flex flex-col sm:flex-row justify-between">
-                            <label className="block text-[20px]">Task Title <span className="text-red-600">*</span></label>
+            <div className="flex-col pb-5 justify-center items-center mx-auto sm:flex sm:mx-0">
+                <div className="flex justify-content-between w-full">
+                    <div className="text-[32px] text-2xl w-full ml-4 sm:ml-[7px] tracking-tight">{itemId ? "Update Task" : "Add New Task"}</div>
+                    <div className="flex  justify-end absolute right-3 top-[90px]">
+                        <button
+                            onClick={handleClose}
+                            className="text-gray-700 hover:text-black">
+                            <CircleX size={30} strokeWidth={1.5} />
+                        </button>
+                    </div>
+                </div>
+                <div className="h-screen justify-center items-center mx-auto sm:-mt-16 sm:flex xl:lg:-mt-[115px]">
+                    <form className="bg-white h-[656px] p-8 rounded-lg w-full mb-4 sm:w-[650px] space-y-6" onSubmit={handleSubmit}>
+                        <div className="flex-col justify-between sm:flex sm:flex-row">
+                            <label className="text-[20px] block">Task Title <span className="text-red-600">*</span></label>
                             <div className="flex flex-col">
                                 <input
-                                    className="w-[310px] sm:w-[350px] md:w-[400px] h-10 border border-[#0000004D] rounded-lg p-2 text-m sm:ml-7 placeholder:text-gray-400"
+                                    className="border border-[#0000004D] h-10 p-2 rounded-lg text-m w-[310px] md:w-[400px] placeholder:text-gray-400 sm:ml-7 sm:w-[350px]"
                                     type='text'
                                     placeholder='Enter Task Title'
                                     value={formData?.task_title}
@@ -167,7 +175,7 @@ const AddTask = () => {
                                     name='task_title'
                                 />
                                 {errors?.task_title && (
-                                    <p className="text-red-500 text-sm flex items-center mt-1 sm:ml-7">
+                                    <p className="flex text-red-500 text-sm items-center mt-1 sm:ml-7">
                                         {OtherIcons.error_svg} <span className="ml-1">Please Enter Task Title</span>
                                     </p>
                                 )}
@@ -175,8 +183,8 @@ const AddTask = () => {
                         </div>
 
 
-                        <div className="sm:flex justify-between">
-                            <label className="block text-[20px]">Task Type</label>
+                        <div className="justify-between sm:flex">
+                            <label className="text-[20px] block">Task Type</label>
                             <Dropdown001
                                 options={taskType}
                                 selectedValue={formData?.task_type}
@@ -185,15 +193,15 @@ const AddTask = () => {
                             />
                         </div>
 
-                        <div className="sm:flex justify-between">
-                            <label className="block text-[20px]">Due date</label>
+                        <div className="justify-between sm:flex">
+                            <label className="text-[20px] block">Due date</label>
                             <CustomDatePicker
                                 selectedDate={formData?.due_date}
                                 onChange={(date) => handleDropdownChange("due_date", date)} />
                         </div>
 
-                        <div className="sm:flex justify-between">
-                            <label className="block text-[20px]">Priority</label>
+                        <div className="justify-between sm:flex">
+                            <label className="text-[20px] block">Priority</label>
                             <Dropdown001
                                 options={projectPriority}
                                 selectedValue={formData?.priority}
@@ -202,8 +210,8 @@ const AddTask = () => {
                             />
                         </div>
 
-                        <div className="sm:flex justify-between">
-                            <label className="block text-[20px]">Department</label>
+                        <div className="justify-between sm:flex">
+                            <label className="text-[20px] block">Department</label>
                             <Dropdown001
                                 options={departmentOptions}
                                 selectedValue={formData?.department}
@@ -212,8 +220,8 @@ const AddTask = () => {
                             />
                         </div>
 
-                        <div className="sm:flex justify-between">
-                            <label className="block text-[20px]">Team</label>
+                        <div className="justify-between sm:flex">
+                            <label className="text-[20px] block">Team</label>
                             <Dropdown002
                                 options={usersList}
                                 selectedValue={formData?.team}
@@ -222,13 +230,13 @@ const AddTask = () => {
                             />
                         </div>
 
-                        <div className="flex justify-between">
-                            <label className="block text-[20px]">Link</label>
-                            <input className="w-[310px] sm:w-[350px] md:w-[400px] h-10 border border-gray-400 rounded-lg p-2 text-m ml-[78px] placeholder:text-gray-400" type='text' placeholder='Enter Link' value={formData?.link} name='link' onChange={handleChange} />
+                        <div className="justify-between sm:flex">
+                            <label className="text-[20px] block">Link</label>
+                            <input className="border border-gray-400 h-10 p-2 rounded-lg text-m w-[310px] md:w-[400px] placeholder:text-gray-400 sm:ml-[78px] sm:w-[350px]" type='text' placeholder='Enter Link' value={formData?.link} name='link' onChange={handleChange} />
                         </div>
 
-                        <div className="sm:flex justify-between">
-                            <label className="block text-[20px]">Visibility</label>
+                        <div className="justify-between sm:flex">
+                            <label className="text-[20px] block">Visibility</label>
                             <Dropdown001
                                 options={taskVisibility}
                                 selectedValue={formData?.visibility}
@@ -237,8 +245,8 @@ const AddTask = () => {
                             />
                         </div>
 
-                        <div className="sm:flex justify-between">
-                            <label className="block text-[20px]">Attachments</label>
+                        <div className="justify-between sm:flex">
+                            <label className="text-[20px] block">Attachments</label>
                             <FileUpload
 
                                 onFilesChange={(files) => {
@@ -252,19 +260,19 @@ const AddTask = () => {
                                 } initialFiles={formData.attachment} />
 
                         </div>
-                        <div className="flex justify-between">
-                            <label className="block text-[20px]">Description</label>
-                            <textarea className="w-[310px] sm:w-[350px] md:w-[400px] h-40 border border-gray-300 rounded-lg p-2 text-m ml-[35px] placeholder:text-gray-400" type='text' placeholder='Enter Description' value={formData?.description} name='description' onChange={handleChange} />
+                        <div className="justify-between sm:flex">
+                            <label className="text-[20px] block">Description</label>
+                            <textarea className="border border-gray-300 h-40 p-2 rounded-lg text-m w-[310px] md:w-[400px] placeholder:text-gray-400 sm:ml-[35px] sm:w-[350px]" type='text' placeholder='Enter Description' value={formData?.description} name='description' onChange={handleChange} />
                         </div>
 
-                        <div className='sm:flex w-full justify-end'>
+                        <div className='justify-end w-full sm:flex'>
                             <button
                                 type="submit"
-                                className="w-[310px] sm:w-[350px] md:w-[400px] h-10 border border-[#0000004D] rounded-lg p-2 text-m bg-black text-gray-100 flex items-center justify-center"
+                                className="flex bg-black border border-[#0000004D] h-10 justify-center p-2 rounded-lg text-gray-100 text-m w-[310px] items-center md:w-[400px] sm:w-[350px]"
                                 disabled={addTaskLoading?.loading}
                             >
                                 {addTaskLoading?.loading ? (
-                                    <div className="w-5 h-5 border-2 border-gray-100 border-t-transparent rounded-full animate-spin"></div>
+                                    <div className="border-2 border-gray-100 border-t-transparent h-5 rounded-full w-5 animate-spin"></div>
                                 ) : (
                                     itemId ? "Update" : "Submit"
                                 )}
@@ -272,13 +280,7 @@ const AddTask = () => {
                         </div>
                     </form>
                 </div>
-                <div className=" flex justify-end ">
-                    <button
-                        onClick={handleClose}
-                        className="text-gray-700 hover:text-black">
-                        <CircleX size={30} strokeWidth={1.5} />
-                    </button>
-                </div>
+
             </div>
         </LayOut>
     )

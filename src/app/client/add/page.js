@@ -2,7 +2,7 @@
 import { addUser, fetchUserDetails } from '@/app/store/userSlice';
 import { OtherIcons } from '@/assests/icons';
 import LayOut from '@/components/LayOut';
-import { Eye, EyeOff } from 'lucide-react';
+import { CircleX, Eye, EyeOff } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -111,20 +111,33 @@ const AddClient = () => {
         }
     }, [userDetailData, itemId]);
 
+    const handleClose = () => {
+        router.push(`/client/list`)
+        localStorage.removeItem("itemId", itemId2)
+    }
+
 
     return (
-        <LayOut> <div className="sm:flex mx-auto sm:mx-0  flex-col items-center justify-center">
-            <div className="text-2xl tracking-tight sm:ml-[7px] text-[32px]  w-full">{!itemId ? "Add New Client" : "Update Client"}</div>
-
-            <div className="sm:flex   justify-between items-center h-screen mx-auto sm:-mt-16  xl:lg:-mt-18">
-                <form className="sm:w-[690px] h-[656px] bg-white p-3 sm:p-8 rounded-lg space-y-8" onSubmit={handleSubmit}>
-                    <div className="sm:flex flex-col sm:flex-row justify-between items-start sm:items-center">
-                        <label className="block text-[20px]">
+        <LayOut> <div className="flex-col justify-center items-center mx-auto sm:flex sm:mx-0">
+            <div className="flex justify-content-between w-full">
+                <div className="text-[32px] text-2xl w-full sm:ml-[7px] tracking-tight">{!itemId ? "Add New Client" : "Update Client"}</div>
+                <div className="flex justify-end absolute right-3 top-[90px]">
+                    <button
+                        onClick={handleClose}
+                        className="text-gray-700 hover:text-black">
+                        <CircleX size={30} strokeWidth={1.5} />
+                    </button>
+                </div>
+            </div>
+            <div className="h-screen justify-between items-center mx-auto sm:-mt-16 sm:flex xl:lg:-mt-[115px]">
+                <form className="bg-white h-[656px] p-3 rounded-lg sm:p-8 sm:w-[690px] space-y-8" onSubmit={handleSubmit}>
+                    <div className="flex-col justify-between items-start sm:flex sm:flex-row sm:items-center">
+                        <label className="text-[20px] block">
                             Client Name <span className='text-red-600'>*</span>
                         </label>
-                        <div className="flex flex-col w-[310px] sm:w-[350px] md:w-[400px]">
+                        <div className="flex flex-col w-[310px] md:w-[400px] sm:w-[350px]">
                             <input
-                                className="h-10 border border-[#0000004D] rounded-lg p-2 text-m placeholder:text-gray-400"
+                                className="border border-[#0000004D] h-10 p-2 rounded-lg text-m placeholder:text-gray-400"
                                 type="text"
                                 name="name"
                                 placeholder="Enter Client Name"
@@ -132,20 +145,20 @@ const AddClient = () => {
                                 onChange={handleChange}
                             />
                             {errors?.name && (
-                                <p className="text-red-500 text-sm flex items-center mt-2">
+                                <p className="flex text-red-500 text-sm items-center mt-2">
                                     {OtherIcons.error_svg} <span className="ml-1">Please Enter Client Name</span>
                                 </p>
                             )}
                         </div>
                     </div>
 
-                    <div className="sm:flex flex-col sm:flex-row justify-between items-start sm:items-center">
-                        <label className="block text-[20px]">
+                    <div className="flex-col justify-between items-start sm:flex sm:flex-row sm:items-center">
+                        <label className="text-[20px] block">
                             Email <span className='text-red-600'>*</span>
                         </label>
-                        <div className="flex flex-col w-[310px] sm:w-[350px] md:w-[400px]">
+                        <div className="flex flex-col w-[310px] md:w-[400px] sm:w-[350px]">
                             <input
-                                className="h-10 border border-[#0000004D] rounded-lg p-2 text-m placeholder:text-gray-400"
+                                className="border border-[#0000004D] h-10 p-2 rounded-lg text-m placeholder:text-gray-400"
                                 type="email"
                                 name="email"
                                 placeholder="Enter Email"
@@ -154,19 +167,19 @@ const AddClient = () => {
                                 autoComplete="off"
                             />
                             {errors?.email && (
-                                <p className="text-red-500 text-sm flex items-center mt-2">
+                                <p className="flex text-red-500 text-sm items-center mt-2">
                                     {OtherIcons.error_svg} <span className="ml-1">Please Fill Email</span>
                                 </p>
                             )}
                         </div>
                     </div>
-                    <div className="sm:flex flex-col sm:flex-row justify-between items-start sm:items-center relative">
-                        <label className="block text-[20px]">
+                    <div className="flex-col justify-between items-start relative sm:flex sm:flex-row sm:items-center">
+                        <label className="text-[20px] block">
                             Password <span className="text-red-600">*</span>
                         </label>
-                        <div className="relative w-[310px] sm:w-[350px] md:w-[400px]">
+                        <div className="w-[310px] md:w-[400px] relative sm:w-[350px]">
                             <input
-                                className="w-full h-10 border border-[#0000004D] rounded-lg p-2 pr-10 text-m placeholder:text-gray-400"
+                                className="border border-[#0000004D] h-10 p-2 rounded-lg text-m w-full placeholder:text-gray-400 pr-10"
                                 type={showPassword ? "text" : "password"}
                                 name="password"
                                 placeholder="Enter Password"
@@ -176,22 +189,22 @@ const AddClient = () => {
                             />
                             <button
                                 type="button"
-                                className="absolute right-3 top-3 text-gray-600"
+                                className="text-gray-600 absolute right-3 top-3"
                                 onClick={() => setShowPassword(!showPassword)}
                             >
                                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                             </button>
                             {errors?.password && ( // Ensure it's checking for password errors, not phone_number
-                                <p className="text-red-500 text-sm flex items-center mt-2">
+                                <p className="flex text-red-500 text-sm items-center mt-2">
                                     {OtherIcons.error_svg} <span className="ml-1">Password must be at least **6-10 characters** long, containing an uppercase letter, a lowercase letter, a number, and a special character</span>
                                 </p>
                             )}
                         </div>
                     </div>
-                    {/* <div className="sm:flex justify-between items-center">
-                        <label className="block text-m">Client ID <span className='text-red-600'>*</span></label>
+                    {/* <div className="justify-between items-center sm:flex">
+                        <label className="text-m block">Client ID <span className='text-red-600'>*</span></label>
                         <input
-                            className="w-[310px] sm:w-[350px]  h-10 border border-gray-300 rounded-lg p-2 text-m placeholder:text-gray-400"
+                            className="border border-gray-300 h-10 p-2 rounded-lg text-m w-[310px] placeholder:text-gray-400 sm:w-[350px]"
                             type="text"
                             name="employee_id"
                             placeholder="Enter Client ID"
@@ -200,31 +213,31 @@ const AddClient = () => {
                         />
                     </div> */}
 
-                    <div className="sm:flex  justify-between items-center">
-                        <label className="block text-[20px]">Contact Person Name</label>
-                        <input className="w-[310px] sm:w-[400px]  h-10 border border-[#0000004D] rounded-lg p-2 text-m sm:ml-3 placeholder:text-gray-400" type='text' placeholder='Enter Name' value={formData.contact_name} name='contact_name'
+                    <div className="justify-between items-center sm:flex">
+                        <label className="text-[20px] block">Contact Person Name</label>
+                        <input className="border border-[#0000004D] h-10 p-2 rounded-lg text-m w-[310px] placeholder:text-gray-400 sm:ml-3 sm:w-[400px]" type='text' placeholder='Enter Name' value={formData.contact_name} name='contact_name'
                             onChange={handleChange} />
                     </div>
 
-                    {/* <div className="sm:flex  justify-between items-center">
-                        <label className="block text-m">Username</label>
-                        <input className="w-[310px] sm:w-[350px]  h-10 border border-gray-300 rounded-lg p-2 text-m sm:ml-[60px] placeholder:text-gray-400" type='text' placeholder='Enter Username' />
+                    {/* <div className="justify-between items-center sm:flex">
+                        <label className="text-m block">Username</label>
+                        <input className="border border-gray-300 h-10 p-2 rounded-lg text-m w-[310px] placeholder:text-gray-400 sm:ml-[60px] sm:w-[350px]" type='text' placeholder='Enter Username' />
                     </div> */}
 
 
-                    {/* <div className="sm:flex  justify-between items-center">
-                        <label className="block text-m ">Confirm Password</label>
-                        <input className="w-[310px] sm:w-[350px]  h-10 border border-gray-300 rounded-lg p-2 text-m sm:ml-1 placeholder:text-gray-400" type='text' placeholder='Enter Confirm Password' />
+                    {/* <div className="justify-between items-center sm:flex">
+                        <label className="text-m block">Confirm Password</label>
+                        <input className="border border-gray-300 h-10 p-2 rounded-lg text-m w-[310px] placeholder:text-gray-400 sm:ml-1 sm:w-[350px]" type='text' placeholder='Enter Confirm Password' />
                     </div> */}
 
-                    <div className='sm:flex w-full justify-end'>
+                    <div className='justify-end w-full sm:flex'>
                         <button
                             type="submit"
-                            className="w-[310px] sm:w-[350px] md:w-[400px] h-10 border border-[#0000004D] rounded-lg p-2 text-m bg-black text-gray-100 flex items-center justify-center"
+                            className="flex bg-black border border-[#0000004D] h-10 justify-center p-2 rounded-lg text-gray-100 text-m w-[310px] items-center md:w-[400px] sm:w-[350px]"
                             disabled={usersLoading?.loading}
                         >
                             {usersLoading?.loading ? (
-                                <div className="w-5 h-5 border-2 border-gray-100 border-t-transparent rounded-full animate-spin"></div>
+                                <div className="border-2 border-gray-100 border-t-transparent h-5 rounded-full w-5 animate-spin"></div>
                             ) : (
                                 itemId ? "Update" : "Submit"
                             )}

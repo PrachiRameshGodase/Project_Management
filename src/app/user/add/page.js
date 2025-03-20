@@ -6,7 +6,7 @@ import { Dropdown001 } from '@/components/common/Dropdown/Dropdown01';
 import { Dropdown02 } from '@/components/common/Dropdown/Dropdown02';
 import { departmentOptions, designation, Skills } from '@/components/common/Helper/Helper';
 import LayOut from '@/components/LayOut';
-import { Eye, EyeOff } from "lucide-react";
+import { CircleX, Eye, EyeOff } from "lucide-react";
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -126,22 +126,34 @@ const AddUser = () => {
       });
     }
   }, [userDetailData, itemId]);
+  const handleClose = () => {
+    router.push(`/user/list`)
+    localStorage.removeItem("itemId", itemId2)
+  }
 
   return (
     <LayOut>
-      <div className="sm:flex mx-auto sm:mx-0  flex-col items-center justify-center">
-        <div className="text-2xl tracking-tight sm:ml-[7px] text-[32px]  w-full">{itemId ? "Update User" : "Add New User"}</div>
+      <div className="flex-col justify-center items-center mx-auto sm:flex sm:mx-0">
+        <div className="flex justify-content-between w-full">
+          <div className="text-[32px] text-2xl w-full sm:ml-[7px] tracking-tight">{itemId ? "Update User" : "Add New User"}</div>
+          <div className="flex justify-end absolute right-3 top-[90px]">
+            <button
+              onClick={handleClose}
+              className="text-gray-700 hover:text-black">
+              <CircleX size={30} strokeWidth={1.5} />
+            </button>
+          </div>
+        </div>
+        <div className="h-screen justify-between items-center mx-auto sm:flex xl:lg:-mt-16">
+          <form className="bg-white h-[100%] p-2 rounded-lg sm:p-8 sm:w-[650px] space-y-6" onSubmit={handleSubmit}>
 
-        <div className="sm:flex justify-between items-center h-screen mx-auto xl:lg:-mt-16">
-          <form className="sm:w-[650px] h-[100%] bg-white p-2 sm:p-8 rounded-lg space-y-6" onSubmit={handleSubmit}>
-
-            <div className="sm:flex flex-col sm:flex-row justify-between items-start sm:items-center">
-              <label className="block text-[20px]">
+            <div className="flex-col justify-between items-start sm:flex sm:flex-row sm:items-center">
+              <label className="text-[20px] block">
                 First Name <span className='text-red-600'>*</span>
               </label>
-              <div className="flex flex-col w-[310px] sm:w-[350px] md:w-[400px]">
+              <div className="flex flex-col w-[310px] md:w-[400px] sm:w-[350px]">
                 <input
-                  className="h-10 border border-[#0000004D] rounded-lg p-2 text-m placeholder:text-gray-400"
+                  className="border border-[#0000004D] h-10 p-2 rounded-lg text-m placeholder:text-gray-400"
                   type="text"
                   name="first_name"
                   placeholder="Enter First Name"
@@ -150,7 +162,7 @@ const AddUser = () => {
                   autoComplete="off"
                 />
                 {errors?.first_name && (
-                  <p className="text-red-500 text-sm flex items-center mt-2">
+                  <p className="flex text-red-500 text-sm items-center mt-2">
                     {OtherIcons.error_svg} <span className="ml-1">Please Enter First Name</span>
                   </p>
                 )}
@@ -158,10 +170,10 @@ const AddUser = () => {
             </div>
 
 
-            <div className="sm:flex justify-between items-center">
-              <label className="block text-[20px]">Last Name</label>
+            <div className="justify-between items-center sm:flex">
+              <label className="text-[20px] block">Last Name</label>
               <input
-                className="w-[310px] sm:w-[350px] md:w-[400px]  h-10 border border-[#0000004D] rounded-lg p-2 text-m placeholder:text-gray-400"
+                className="border border-[#0000004D] h-10 p-2 rounded-lg text-m w-[310px] md:w-[400px] placeholder:text-gray-400 sm:w-[350px]"
                 type="text"
                 name="last_name"
                 placeholder="Enter Last Name"
@@ -171,10 +183,10 @@ const AddUser = () => {
               />
             </div>
 
-            {/* <div className="sm:flex justify-between items-center">
-              <label className="block text-m">User ID <span className='text-red-600'>*</span></label>
+            {/* <div className="justify-between items-center sm:flex">
+              <label className="text-m block">User ID <span className='text-red-600'>*</span></label>
               <input
-                className="w-[310px] sm:w-[350px] md:w-[400px]  h-10 border border-[#0000004D] rounded-lg p-2 text-m placeholder:text-gray-600"
+                className="border border-[#0000004D] h-10 p-2 rounded-lg text-m w-[310px] md:w-[400px] placeholder:text-gray-600 sm:w-[350px]"
                 type="text"
                 name="employee_id"
                 placeholder="Enter User ID"
@@ -183,13 +195,13 @@ const AddUser = () => {
               />
             </div> */}
 
-            <div className="sm:flex flex-col sm:flex-row justify-between items-start sm:items-center">
-              <label className="block text-[20px]">
+            <div className="flex-col justify-between items-start sm:flex sm:flex-row sm:items-center">
+              <label className="text-[20px] block">
                 Email <span className='text-red-600'>*</span>
               </label>
-              <div className="flex flex-col w-[310px] sm:w-[350px] md:w-[400px]">
+              <div className="flex flex-col w-[310px] md:w-[400px] sm:w-[350px]">
                 <input
-                  className="h-10 border border-[#0000004D] rounded-lg p-2 text-m placeholder:text-gray-400"
+                  className="border border-[#0000004D] h-10 p-2 rounded-lg text-m placeholder:text-gray-400"
                   type="email"
                   name="email"
                   placeholder="Enter Email"
@@ -198,20 +210,20 @@ const AddUser = () => {
                   autoComplete="off"
                 />
                 {errors?.email && (
-                  <p className="text-red-500 text-sm flex items-center mt-2">
+                  <p className="flex text-red-500 text-sm items-center mt-2">
                     {OtherIcons.error_svg} <span className="ml-1">Please Fill Email</span>
                   </p>
                 )}
               </div>
             </div>
 
-            <div className="sm:flex flex-col sm:flex-row justify-between items-start sm:items-center relative">
-              <label className="block text-[20px]">
+            <div className="flex-col justify-between items-start relative sm:flex sm:flex-row sm:items-center">
+              <label className="text-[20px] block">
                 Password <span className="text-red-600">*</span>
               </label>
-              <div className="relative w-[310px] sm:w-[350px] md:w-[400px]">
+              <div className="w-[310px] md:w-[400px] relative sm:w-[350px]">
                 <input
-                  className="w-full h-10 border border-[#0000004D] rounded-lg p-2 pr-10 text-m placeholder:text-gray-400"
+                  className="border border-[#0000004D] h-10 p-2 rounded-lg text-m w-full placeholder:text-gray-400 pr-10"
                   type={showPassword ? "text" : "password"}
                   name="password"
                   placeholder="Enter Password"
@@ -221,23 +233,23 @@ const AddUser = () => {
                 />
                 <button
                   type="button"
-                  className="absolute right-3 top-3 text-gray-600"
+                  className="text-gray-600 absolute right-3 top-3"
                   onClick={() => setShowPassword(!showPassword)}
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
                 {errors?.password && ( // Ensure it's checking for password errors, not phone_number
-                  <p className="text-red-500 text-sm flex items-center mt-2">
+                  <p className="flex text-red-500 text-sm items-center mt-2">
                     {OtherIcons.error_svg} <span className="ml-1">Password must be at least **6-10 characters** long, containing an uppercase letter, a lowercase letter, a number, and a special character</span>
                   </p>
                 )}
               </div>
             </div>
 
-            <div className="sm:flex justify-between items-center">
-              <label className="block text-[20px]">Phone Number</label>
+            <div className="justify-between items-center sm:flex">
+              <label className="text-[20px] block">Phone Number</label>
               <input
-                className="w-[310px] sm:w-[350px] md:w-[400px]  h-10 border border-[#0000004D] rounded-lg p-2 text-m placeholder:text-gray-400"
+                className="border border-[#0000004D] h-10 p-2 rounded-lg text-m w-[310px] md:w-[400px] placeholder:text-gray-400 sm:w-[350px]"
                 type="text"
                 name="phone_number"
                 placeholder="Enter Phone Number"
@@ -246,8 +258,8 @@ const AddUser = () => {
               />
             </div>
 
-            <div className="sm:flex justify-between items-center">
-              <label className="block text-[20px]">Department</label>
+            <div className="justify-between items-center sm:flex">
+              <label className="text-[20px] block">Department</label>
               <Dropdown001
                 options={departmentOptions}
                 selectedValue={formData.department}
@@ -256,8 +268,8 @@ const AddUser = () => {
               />
             </div>
 
-            <div className="sm:flex justify-between items-center">
-              <label className="block text-[20px]">Designation</label>
+            <div className="justify-between items-center sm:flex">
+              <label className="text-[20px] block">Designation</label>
               <Dropdown001
                 options={designation}
                 selectedValue={formData.designation}
@@ -266,16 +278,16 @@ const AddUser = () => {
               />
             </div>
 
-            <div className="sm:flex justify-between items-center">
-              <label className="block text-[20px]">Joining Date</label>
+            <div className="justify-between items-center sm:flex">
+              <label className="text-[20px] block">Joining Date</label>
               <CustomDatePicker
                 selectedDate={formData.joining_date}
                 onChange={(date) => handleDropdownChange("joining_date", date)}
               />
             </div>
 
-            <div className="sm:flex justify-between items-center">
-              <label className="block text-[20px]">Skill Set</label>
+            <div className="justify-between items-center sm:flex">
+              <label className="text-[20px] block">Skill Set</label>
               <Dropdown02
                 options={Skills}
                 selectedValues={Array.isArray(formData.skill_set) ? formData.skill_set : []}
@@ -284,14 +296,14 @@ const AddUser = () => {
               />
             </div>
 
-            <div className='sm:flex w-full justify-end'>
+            <div className='justify-end w-full sm:flex'>
               <button
                 type="submit"
-                className="w-[310px] sm:w-[350px] md:w-[400px] h-10 border border-[#0000004D] rounded-lg p-2 text-m bg-black text-gray-100 flex items-center justify-center"
+                className="flex bg-black border border-[#0000004D] h-10 justify-center p-2 rounded-lg text-gray-100 text-m w-[310px] items-center md:w-[400px] sm:w-[350px]"
                 disabled={usersLoading?.loading}
               >
                 {usersLoading?.loading ? (
-                  <div className="w-5 h-5 border-2 border-gray-100 border-t-transparent rounded-full animate-spin"></div>
+                  <div className="border-2 border-gray-100 border-t-transparent h-5 rounded-full w-5 animate-spin"></div>
                 ) : (
                   itemId ? "Update" : "Submit"
                 )}
