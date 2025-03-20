@@ -191,6 +191,7 @@ const AddUser = () => {
                   placeholder="Enter Email"
                   value={formData.email}
                   onChange={handleChange}
+                  autoComplete="off"
                 />
                 {errors?.email && (
                   <p className="text-red-500 text-sm flex items-center mt-2">
@@ -212,6 +213,7 @@ const AddUser = () => {
                   placeholder="Enter Password"
                   value={formData?.password}
                   onChange={handleChange}
+                  autoComplete="new-password"
                 />
                 <button
                   type="button"
