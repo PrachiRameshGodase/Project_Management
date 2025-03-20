@@ -277,13 +277,13 @@ const AddProject = () => {
                         </div>
                     </form>
                 </div>
-                {/* <div className=" flex justify-end ">
+                <div className=" flex justify-end ">
                     <button
                         onClick={handleClose}
                         className="text-gray-700 hover:text-black">
                         <CircleX size={30} strokeWidth={1.5} />
                     </button>
-                </div> */}
+                </div>
                
             </div>
             

@@ -9,7 +9,7 @@ import { deleteNotification, fetchNotification, markAsReadNotification } from "@
 import { Tooltip } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import useUserData from "./common/Helper/useUserData";
-import TableSkeleton from "./common/TableSkeleton/TableSkeleton";
+import TableSkeleton, { TableSkeleton2 } from "./common/TableSkeleton/TableSkeleton";
 
 const NavBar = () => {
   const router = useRouter();
@@ -189,7 +189,7 @@ const NavBar = () => {
 
 
                 {/* Notifications List */}
-                {notificationListLoading?.loading ? (<TableSkeleton />) :
+                {notificationListLoading?.loading ? (<TableSkeleton2 />) :
                   notificationListData?.length > 0 ? (
                     notificationListData?.map((notification, index) => (
                       <div key={notification.id} className="py-2">
