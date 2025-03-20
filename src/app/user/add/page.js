@@ -147,6 +147,7 @@ const AddUser = () => {
                   placeholder="Enter First Name"
                   value={formData.first_name}
                   onChange={handleChange}
+                  autoComplete="off"
                 />
                 {errors?.first_name && (
                   <p className="text-red-500 text-sm flex items-center mt-2">
@@ -166,6 +167,7 @@ const AddUser = () => {
                 placeholder="Enter Last Name"
                 value={formData.last_name}
                 onChange={handleChange}
+                autoComplete="off"
               />
             </div>
 
@@ -226,7 +228,7 @@ const AddUser = () => {
                 </button>
                 {errors?.password && ( // Ensure it's checking for password errors, not phone_number
                   <p className="text-red-500 text-sm flex items-center mt-2">
-                    {OtherIcons.error_svg} <span className="ml-1">Password must be at least **6-10 characters** long, contain an uppercase letter, a lowercase letter, a number, and a special character</span>
+                    {OtherIcons.error_svg} <span className="ml-1">Password must be at least **6-10 characters** long, containing an uppercase letter, a lowercase letter, a number, and a special character</span>
                   </p>
                 )}
               </div>

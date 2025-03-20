@@ -183,7 +183,7 @@ const AddClient = () => {
                             </button>
                             {errors?.password && ( // Ensure it's checking for password errors, not phone_number
                                 <p className="text-red-500 text-sm flex items-center mt-2">
-                                    {OtherIcons.error_svg} <span className="ml-1">Password must be at least **6-10 characters** long, contain an uppercase letter, a lowercase letter, a number, and a special character</span>
+                                    {OtherIcons.error_svg} <span className="ml-1">Password must be at least **6-10 characters** long, containing an uppercase letter, a lowercase letter, a number, and a special character</span>
                                 </p>
                             )}
                         </div>
