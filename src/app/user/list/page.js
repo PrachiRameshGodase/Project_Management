@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import "../../../components/common/Loader/Loader.css"
 import { Tooltip } from '@mui/material';
 import useUserData from '@/components/common/Helper/useUserData';
+import DataNotFound from '@/components/common/DataNotFound/DataNotFound';
 
 const UserList = () => {
   const router = useRouter();
@@ -190,7 +191,7 @@ const UserList = () => {
                         setSelectedSortBy={setSelectedSortBy}
                         sortOrder={sortOrder}
                         setSortOrder={setSortOrder}
-                        sortOptions="id"
+                        sortOptions="employee_id"
                         resetPageIfNeeded={resetPageIfNeeded}
                       />
                     </div>
@@ -204,19 +205,28 @@ const UserList = () => {
                 </tr>
               </thead>
               <tbody>
-                {usersList?.map((user, index) => (
-                  <tr key={user?.id} className="cursor-pointer hover:bg-gray-100    hover:shadow-tr-border    rounded-md  transition-all duration-200">
-                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] " onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.employee_id}</td>
-                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] " onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.name}</td>
-                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px]" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.email}</td>
-                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] " onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.phone_number}</td>
-                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px]" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.designation}</td>
-                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] " onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.joining_date}</td>
-                    <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] flex justify-center items-center" onClick={() => router.push(`/user/details?id=${user?.id}`)}>
-                      <span className={`w-3 h-3 inline-block  rounded-full ${user.status == 0 ? 'bg-green-600' : 'bg-red-600'}`}></span>
+                {
+                  usersList?.length > 0 ? (
+                    usersList?.map((user, index) => (
+                      <tr key={user?.id} className="cursor-pointer hover:bg-gray-100    hover:shadow-tr-border    rounded-md  transition-all duration-200">
+                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] " onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.employee_id}</td>
+                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] " onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.name}</td>
+                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px]" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.email}</td>
+                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] " onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.phone_number}</td>
+                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px]" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.designation}</td>
+                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] " onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.joining_date}</td>
+                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] flex justify-center items-center" onClick={() => router.push(`/user/details?id=${user?.id}`)}>
+                          <span className={`w-3 h-3 inline-block  rounded-full ${user.status == 0 ? 'bg-green-600' : 'bg-red-600'}`}></span>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (<tr>
+                    <td colSpan="8" className="text-center py-8">
+                      <div className="flex justify-center items-center">
+                        <DataNotFound />
+                      </div>
                     </td>
-                  </tr>
-                ))}
+                  </tr>)}
               </tbody>
             </table>
           )}

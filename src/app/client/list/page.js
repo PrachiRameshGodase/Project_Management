@@ -13,6 +13,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Pagenation from '@/components/common/Pagenation/Pagenation';
 import useUserData from '@/components/common/Helper/useUserData';
+import SortBy from '@/components/common/Sort/SortBy';
 
 const ClientList = () => {
     const router = useRouter()
@@ -188,7 +189,19 @@ const ClientList = () => {
                                 <thead>
                                     <tr className="text-left m-1 text-sm uppercase text-black opacity-80 shadow-tr-border rounded-md  ">
                                         <th className="py-2 sm:py-3 px-2 sm:px-4    text-[13px]  sm:text-[14px] border-b border-gray-100 rounded-t-lg flex">
-                                            Client ID <span className="mt-1 ml-2 flex flex-col gap-1">{OtherIcons.arrow_up_svg}{OtherIcons.arrow_down_svg}</span>
+                                            <div className='flex items-center justify-between'>
+                                                <span>Client ID</span>
+
+                                                <SortBy
+                                                    setSearchTrigger={setSearchTrigger}
+                                                    selectedSortBy={selectedSortBy}
+                                                    setSelectedSortBy={setSelectedSortBy}
+                                                    sortOrder={sortOrder}
+                                                    setSortOrder={setSortOrder}
+                                                    sortOptions="client_id"
+                                                    resetPageIfNeeded={resetPageIfNeeded}
+                                                />
+                                            </div>
                                         </th>
                                         <th className="py-2 sm:py-3 px-2 sm:px-4   text-[13px] sm:text-[16px]  rounded-t-lg">Client Name</th>
                                         <th className="py-2 sm:py-3 px-2 sm:px-4   text-[13px] sm:text-[16px]  rounded-t-lg">Email ID</th>
