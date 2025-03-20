@@ -239,13 +239,8 @@ const AddUser = () => {
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
                 {errors?.password && ( // Ensure it's checking for password errors, not phone_number
-<<<<<<< HEAD
                   <p className="text-red-500 text-sm flex items-center mt-2">
                     {OtherIcons.error_svg} <span className="ml-1">Password must be 6-10 characters long, containing at least one uppercase letter, one lowercase letter, one number, and one special character (@, $, !, %, *, ?, &).</span>
-=======
-                  <p className="flex text-red-500 text-sm items-center mt-2">
-                    {OtherIcons.error_svg} <span className="ml-1">Password must be at least **6-10 characters** long, containing an uppercase letter, a lowercase letter, a number, and a special character</span>
->>>>>>> 117cf58bd03c65e16d80b2959153d91d63fd6954
                   </p>
                 )}
               </div>
