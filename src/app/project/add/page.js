@@ -133,22 +133,30 @@ const AddProject = () => {
             }
         }
     };
-    const handleClose=()=>{
+    const handleClose = () => {
         router.push("/project/list")
         localStorage.removeItem("itemId", itemId)
     }
     return (
         <LayOut>
-            <div className="sm:flex mx-auto sm:mx-0  flex-col items-center justify-center ">
-                <div className="text-2xl tracking-tight ml:20  sm:ml-[7px] text-[32px] w-full">{itemId ? "Update Project" :"Add New Project"}</div>
-
-                <div className="sm:flex justify-center items-center h-screen mx-auto sm:-mt-10 xl:-mt-[70px] ">
-                    <form className="w-full sm:w-[650px] mb-4 h-[656px] bg-white sm:p-8 rounded-lg space-y-6" onSubmit={handleSubmit}>
-                        <div className="sm:flex flex-col sm:flex-row justify-between">
-                            <label className="block text-[20px]">Project Name<span className='text-red-600'>*</span></label>
+            <div className="flex-col justify-center items-center mx-auto sm:flex sm:mx-0">
+                <div className="flex justify-content-between w-full">
+                    <div className="text-[32px] text-2xl w-full ml:20 sm:ml-[7px] tracking-tight">{itemId ? "Update Project" : "Add New Project"}</div>
+                    <div className="flex justify-end absolute right-3 top-[90px]">
+                        <button
+                            onClick={handleClose}
+                            className="text-gray-700 hover:text-black">
+                            <CircleX size={30} strokeWidth={1.5} />
+                        </button>
+                    </div>
+                </div>
+                <div className="h-screen justify-center items-center mx-auto sm:-mt-16 sm:flex xl:-mt-[110px]">
+                    <form className="bg-white  h-[100%] rounded-lg w-full mb-4 sm:p-8 sm:w-[650px] space-y-6" onSubmit={handleSubmit}>
+                        <div className="flex-col justify-between sm:flex sm:flex-row">
+                            <label className="text-[20px] block">Project Name<span className='text-red-600'>*</span></label>
                             <div className="flex flex-col">
                                 <input
-                                    className="w-[310px] sm:w-[350px] md:w-[400px] h-10 border border-[#0000004D] rounded-lg p-2 text-m sm:ml-7 placeholder:text-gray-400"
+                                    className="border border-[#0000004D] h-10 p-2 rounded-lg text-m w-[310px] md:w-[400px] placeholder:text-gray-400 sm:ml-7 sm:w-[350px]"
                                     type='text'
                                     placeholder='Enter Project Name'
                                     value={formData?.project_name}
@@ -156,7 +164,7 @@ const AddProject = () => {
                                     name='project_name'
                                 />
                                 {errors?.project_name && (
-                                    <p className="text-red-500 text-sm flex items-center mt-2 sm:ml-7">
+                                    <p className="flex text-red-500 text-sm items-center mt-2 sm:ml-7">
                                         {OtherIcons.error_svg} <span className="ml-1">Please Enter Project Name</span>
                                     </p>
                                 )}
@@ -164,8 +172,8 @@ const AddProject = () => {
                         </div>
 
 
-                        <div className="sm:flex flex-col sm:flex-row justify-between">
-                            <label className="block text-[20px]">Client Name <span className='text-red-600'>*</span></label>
+                        <div className="flex-col justify-between sm:flex sm:flex-row">
+                            <label className="text-[20px] block">Client Name <span className='text-red-600'>*</span></label>
                             <div className="flex flex-col">
                                 <Dropdown003
                                     selectedValue={formData?.client_id}
@@ -174,31 +182,31 @@ const AddProject = () => {
                                     type="client"
                                 />
                                 {errors?.client_id && (
-                                    <p className="text-red-500 text-sm flex items-center mt-2">
+                                    <p className="flex text-red-500 text-sm items-center mt-2">
                                         {OtherIcons.error_svg} <span className="ml-1">Please Select Client Name</span>
                                     </p>
                                 )}
                             </div>
                         </div>
-                        <div className="sm:flex justify-between">
-                            <label className="block text-[20px]">Starting date</label>
-                            {/* <input className="w-[310px] sm:w-[350px] md:w-[400px] h-10 border border-[#0000004D] rounded-lg p-2 text-m ml-7 placeholder:text-gray-700" type='Date' placeholder='Enter Starting date' /> */}
+                        <div className="justify-between sm:flex">
+                            <label className="text-[20px] block">Starting date</label>
+                            {/* <input className="border border-[#0000004D] h-10 p-2 rounded-lg text-m w-[310px] md:w-[400px] ml-7 placeholder:text-gray-700 sm:w-[350px]" type='Date' placeholder='Enter Starting date' /> */}
                             <CustomDatePicker
                                 selectedDate={formData?.start_date}
                                 onChange={(date) => handleDropdownChange("start_date", date)} />
                         </div>
 
-                        <div className='sm:flex justify-between '>
-                            <label className="block text-[20px]">Due date</label>
-                            {/* <input className="w-[310px] sm:w-[350px] md:w-[400px] h-10 border border-[#0000004D] rounded-lg p-2 text-m ml-14 placeholder:text-gray-700" type='Date' placeholder='Enter Due date' /> */}
+                        <div className='justify-between sm:flex'>
+                            <label className="text-[20px] block">Due date</label>
+                            {/* <input className="border border-[#0000004D] h-10 p-2 rounded-lg text-m w-[310px] md:w-[400px] ml-14 placeholder:text-gray-700 sm:w-[350px]" type='Date' placeholder='Enter Due date' /> */}
                             <CustomDatePicker
                                 selectedDate={formData?.due_date}
                                 onChange={(date) => handleDropdownChange("due_date", date)} />
 
                         </div>
 
-                        <div className="sm:flex justify-between">
-                            <label className="block text-[20px] mr-16">Priority</label>
+                        <div className="justify-between sm:flex">
+                            <label className="text-[20px] block mr-16">Priority</label>
                             <Dropdown001
                                 options={projectPriority}
                                 selectedValue={formData?.priority}
@@ -208,8 +216,8 @@ const AddProject = () => {
                             />
                         </div>
 
-                        <div className="sm:flex justify-between">
-                            <label className="block text-[20px] mr-4">Project Leader</label>
+                        <div className="justify-between sm:flex">
+                            <label className="text-[20px] block mr-4">Project Leader</label>
                             <Dropdown03
                                 options={usersList}
                                 selectedValue={formData?.project_leader}
@@ -219,8 +227,8 @@ const AddProject = () => {
                             />
                         </div>
 
-                        <div className="sm:flex justify-between">
-                            <label className="block text-[20px] mr-6">Project Stage</label>
+                        <div className="justify-between sm:flex">
+                            <label className="text-[20px] block mr-6">Project Stage</label>
                             <Dropdown001
                                 options={projectStage}
                                 selectedValue={formData?.project_stage}
@@ -229,8 +237,8 @@ const AddProject = () => {
                             />
                         </div>
 
-                        <div className="sm:flex justify-between">
-                            <label className="block text-[20px] mr-20">Team</label>
+                        <div className="justify-between sm:flex">
+                            <label className="text-[20px] block mr-20">Team</label>
                             <Dropdown002
                                 options={usersList}
                                 selectedValue={formData.team}
@@ -239,11 +247,11 @@ const AddProject = () => {
                             />
                         </div>
 
-                        <div className="sm:flex justify-between">
-                            <label className="block text-black text-[20px] font-medium">Attachments</label>
+                        <div className="justify-between sm:flex">
+                            <label className="text-[20px] text-black block font-medium">Attachments</label>
                             <FileUpload
                                 onFilesChange={(files) => {
-                                  
+
                                     setFormData((prev) => ({
                                         ...prev,
                                         attachments: files,
@@ -257,19 +265,19 @@ const AddProject = () => {
 
 
                         </div>
-                        <div className="sm:flex justify-between">
-                            <label className="block text-[20px]">Description</label>
-                            <textarea className="w-[310px] sm:w-[350px] md:w-[400px] h-40 border border-[#0000004D] rounded-lg p-2 text-m sm:ml-[35px] placeholder:text-gray-600" type='text' placeholder='Enter Description....' value={formData?.description} onChange={handleChange} name='description' />
+                        <div className="justify-between sm:flex">
+                            <label className="text-[20px] block">Description</label>
+                            <textarea className="border border-[#0000004D] h-40 p-2 rounded-lg text-m w-[310px] md:w-[400px] placeholder:text-gray-600 sm:ml-[35px] sm:w-[350px]" type='text' placeholder='Enter Description....' value={formData?.description} onChange={handleChange} name='description' />
                         </div>
 
-                        <div className='sm:flex w-full justify-end'>
+                        <div className='justify-end w-full sm:flex '>
                             <button
                                 type="submit"
-                                className="w-[310px] sm:w-[350px] md:w-[400px] h-10 border border-[#0000004D] rounded-lg p-2 text-m bg-black text-gray-100 flex items-center justify-center"
+                                className="flex bg-black border border-[#0000004D] h-10 justify-center p-2 rounded-lg text-gray-100 text-m w-[310px] items-center md:w-[400px] sm:w-[350px]"
                                 disabled={projectLoading?.loading}
                             >
                                 {projectLoading?.loading ? (
-                                    <div className="w-5 h-5 border-2 border-gray-100 border-t-transparent rounded-full animate-spin"></div>
+                                    <div className="border-2 border-gray-100 border-t-transparent h-5 rounded-full w-5 animate-spin"></div>
                                 ) : (
                                     itemId ? "Update" : "Submit"
                                 )}
@@ -277,16 +285,10 @@ const AddProject = () => {
                         </div>
                     </form>
                 </div>
-                <div className=" flex justify-end ">
-                    <button
-                        onClick={handleClose}
-                        className="text-gray-700 hover:text-black">
-                        <CircleX size={30} strokeWidth={1.5} />
-                    </button>
-                </div>
                
+
             </div>
-            
+
         </LayOut>
     );
 }

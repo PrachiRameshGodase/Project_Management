@@ -87,12 +87,12 @@ const ProjectList = () => {
   return (
     <LayOut> <div>
       {/* Top Section with Filters and Buttons */}
-      <div className="w-full h-[44px] flex justify-between items-center  ">
+      <div className="flex h-[44px] justify-between w-full items-center">
 
         {/* Left Section (Heading + Count) */}
         <div className="flex">
-          <p className="text-[20px] sm:text-[30px] leading-[32px] tracking-[-1.5px]">All Projects list</p>
-          <p className="font-bold p-2 rounded-full text-[10.16px] leading-[12.19px] text-[#400F6F] mt-3 ml-2 bg-[#f0e7fa] flex items-center justify-center w-[60px] h-[10px]">
+          <p className="text-[20px] leading-[32px] sm:text-[30px] tracking-[-1.5px]">All Projects list</p>
+          <p className="flex bg-[#f0e7fa] h-[10px] justify-center p-2 rounded-full text-[#400F6F] text-[10.16px] w-[60px] font-bold items-center leading-[12.19px] ml-2 mt-3">
             {totalCount} total
           </p>
           <p
@@ -106,16 +106,16 @@ const ProjectList = () => {
         </div>
 
         {/* Right Section (Filters & Search) */}
-        <div className="hidden md:flex gap-6 items-center">
+        <div className="gap-6 hidden items-center md:flex">
           <Dropdown01 options={view} selectedValue={selectedView} onSelect={setSelectedView} label="View" icon={OtherIcons.view_svg} />
           {/* <Dropdown01 options={statusProject} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />  */}
           {/* <Dropdown01 options={projectSortConstant} selectedValue={selectedSort} onSelect={setSelectedSort} label="Sort By" icon={OtherIcons.sort_by_svg} /> */}
           <SearchComponent onSearch={onSearch} section={searchTrigger} />
 
 
-          <div className="w-[1px] h-[40px] bg-gray-400 opacity-40" />
+          <div className="bg-gray-400 h-[40px] w-[1px] opacity-40" />
           <Tooltip title='Add Project' arrow disableInteractive>
-            <button className="w-[49px] h-[44px] bg-[#048339]  text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/project/add')}>+</button>
+            <button className="flex bg-[#048339] h-[44px] justify-center rounded-lg text-2xl text-white w-[49px] items-center" onClick={() => router.push('/project/add')}>+</button>
           </Tooltip>
         </div>
 
@@ -125,7 +125,7 @@ const ProjectList = () => {
           <SearchComponent onSearch={onSearch} section={searchTrigger} />
           <Tooltip title='Filter' arrow disableInteractive>
             <button
-              className="md:hidden w-[44px] h-[44px]  border border-gray-300 hover:ring-2 hover:ring-purple-200  hover:border-purple-500 bg-gray-100 text-gray-600 rounded-lg flex items-center justify-center text-2xl"
+              className="flex bg-gray-100 border border-gray-300 h-[44px] justify-center rounded-lg text-2xl text-gray-600 w-[44px] hover:border-purple-500 hover:ring-2 hover:ring-purple-200 items-center md:hidden"
               onClick={() => setIsFilterOpen(true)}
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#000000" fill="none">
@@ -150,7 +150,7 @@ const ProjectList = () => {
         >
           {/* Close Button */}
           <button
-            className="absolute top-4 right-4 text-2xl"
+            className="text-2xl absolute right-4 top-4"
             onClick={() => setIsFilterOpen(false)}
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#000000" fill="none">
@@ -159,9 +159,9 @@ const ProjectList = () => {
           </button>
 
           {/* Filter Options */}
-          <div className="mt-16 flex flex-col gap-4 px-4">
+          <div className="flex flex-col gap-4 mt-16 px-4">
             {userData?.is_client == 0 && <Tooltip title='Add Project' arrow disableInteractive>
-              <button className="w-[49px] h-[44px] bg-[#048339] text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/project/add')}>+</button>
+              <button className="flex bg-[#048339] h-[44px] justify-center rounded-lg text-2xl text-white w-[49px] items-center" onClick={() => router.push('/project/add')}>+</button>
             </Tooltip>}
             <Dropdown01 options={view} selectedValue={selectedView} onSelect={setSelectedView} label="View" icon={OtherIcons.view_svg} />
             {/* <Dropdown01 options={statusProject} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />
@@ -175,31 +175,34 @@ const ProjectList = () => {
       {/* Table Section */}
       {selectedView == "List" && (
         <>
-          <div className="max-w-full overflow-x-auto mt-6 ">
+          <div className="max-w-full mt-6 overflow-x-auto">
             {projectLoading?.loading ? (
               <TableSkeleton rows={7} columns={5} />
             ) : (
-              <table className="w-full border-spacing-y-1 min-w-[1000px] border-2 border-transparent  ">
+              <table className="border-2 border-spacing-y-1 border-transparent w-full min-w-[1000px]">
                 <thead>
-                  <tr className="text-left m-1 text-sm uppercase text-gray-900 shadow-tr-border rounded-md  ">
-                    <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] min-w-[100px]   flex">
-                      <div className='flex items-center justify-between'>
-                        <span>PROJECT NAME</span><SortBy setSearchTrigger={setSearchTrigger} selectedSortBy={selectedSortBy} setSelectedSortBy={setSelectedSortBy} sortOrder={sortOrder} setSortOrder={setSortOrder} sortOptions="project_name" resetPageIfNeeded={resetPageIfNeeded} /> </div></th>
-                    <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] min-w-[100px]">CLIENT  NAME</th>
-                    <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] w-[118px] sm:w-[160px]">STATUS</th>
-                    <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] min-w-[100px] ">STARTING DATE</th>
-                    <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] min-w-[100px]">DEADLINE</th>
-                    <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] min-w-[100px]">PROJECT LEADER</th>
-                    <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] min-w-[100px] ">TEAM</th>
-                    <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] min-w-[100px] ">PRIORITY</th>
+                  <tr className="m-1 rounded-md shadow-tr-border text-gray-900 text-left text-sm uppercase">
+                    <th className="flex text-[13px] min-w-[180px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px]">
+                      <div className='flex w-full justify-between items-center'>
+                        <span>PROJECT NAME</span>
+                        <SortBy setSearchTrigger={setSearchTrigger} selectedSortBy={selectedSortBy} setSelectedSortBy={setSelectedSortBy} sortOrder={sortOrder} setSortOrder={setSortOrder} sortOptions="project_name" resetPageIfNeeded={resetPageIfNeeded} />
+                      </div>
+                    </th>
+                    <th className="text-[13px] min-w-[140px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px]">CLIENT  NAME</th>
+                    <th className="text-[13px] min-w-[138px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px] sm:w-[160px]">STATUS</th>
+                    <th className="text-[13px] min-w-[150px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px]">STARTING DATE</th>
+                    <th className="text-[13px] min-w-[100px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px]">DEADLINE</th>
+                    <th className="text-[13px] min-w-[180px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px]">PROJECT LEADER</th>
+                    <th className="text-[13px] min-w-[150px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px]">TEAM</th>
+                    <th className="text-[13px] min-w-[100px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px]">PRIORITY</th>
                   </tr>
                 </thead>
                 <tbody>
                   {projectListData?.length > 0 ? (projectListData?.map((item, index) => (
-                    <tr key={item?.id} className="cursor-pointer hover:bg-gray-100   hover:shadow-tr-border   rounded-md  transition-all duration-200">
-                      <td className="py-2 sm:py-3 px-2 sm:px-4   text-[12px]  sm:text-[15px]  rounded " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.project_name || ""}</td>
-                      <td className="py-2 sm:py-3 px-2 sm:px-4   text-[12px]  sm:text-[15px] rounded " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.client?.name || ""}</td>
-                      <td className="py-2 sm:py-3 px-2 sm:px-4 text-[12px] sm:text-[14px] rounded" onClick={() => router.push(`/project/details?id=${item?.id}`)}>
+                    <tr key={item?.id} className="rounded-md cursor-pointer duration-200 hover:bg-gray-100 hover:shadow-tr-border transition-all">
+                      <td className="rounded text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px]" onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.project_name || ""}</td>
+                      <td className="rounded text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px]" onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.client?.name || ""}</td>
+                      <td className="rounded text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[14px]" onClick={() => router.push(`/project/details?id=${item?.id}`)}>
                         {item?.status ? (
                           <span
                             className={`px-3 py-1 border rounded-md inline-block 
@@ -219,10 +222,10 @@ const ProjectList = () => {
                         )}
                       </td>
 
-                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.start_date}</td>
-                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.due_date}</td>
-                      <td className="py-2 sm:py-3 px-2 sm:px-4 text-[12px] sm:text-[15px]   " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.project_leader_name}</td>
-                      <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  " onClick={() => router.push(`/project/details?id=${item?.id}`)}>
+                      <td className="text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px]" onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.start_date}</td>
+                      <td className="text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px]" onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.due_date}</td>
+                      <td className="text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px]" onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.project_leader_name}</td>
+                      <td className="text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px]" onClick={() => router.push(`/project/details?id=${item?.id}`)}>
                         <TruncatedTooltipText text={item?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")} maxLength={25} />
                       </td>
                       <td className={`py-2 sm:py-3 px-2 sm:px-4 text-[12px] sm:text-[15px]`} onClick={() => router.push(`/project/details?id=${item?.id}`)}>
@@ -270,12 +273,12 @@ const ProjectList = () => {
       {/* Card Section */}
       {selectedView == "Card" &&
         (<div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mx-auto mt-[50px]">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3 md:grid-cols-2 mt-[50px] mx-auto xl:grid-cols-4">
             {projectListData?.map((item, index) => (
-              <div key={item?.id} className="w-full min-w-[305px] h-[240px] hover:border-gray-200 hover:shadow-lg  border border-gray-100 rounded-xl p-4 shadow-md hover:cursor-pointer" onClick={() => router.push(`/project/details?id=${item?.id}`)}>
+              <div key={item?.id} className="border border-gray-100 h-[240px] p-4 rounded-xl shadow-md w-full hover:border-gray-200 hover:cursor-pointer hover:shadow-lg min-w-[305px]" onClick={() => router.push(`/project/details?id=${item?.id}`)}>
                 <div className="flex justify-between items-center mb-4">
-                  <p className="font-600 text-[21px]">{item?.project_name || ""}</p>
-                  {/* <p className="font-[400] text-[12px] leading-[16.8px] text-green-600 w-[70px] h-[20px]  rounded flex items-center justify-center">
+                  <p className="text-[21px] font-600">{item?.project_name || ""}</p>
+                  {/* <p className="flex h-[20px] justify-center rounded text-[12px] text-green-600 w-[70px] font-[400] items-center leading-[16.8px]">
                 Completed
               </p> */}
                   <p className={`font-[400] text-[12px] leading-[16.8px] border rounded flex items-center justify-center ${item.status === 'To Do'
@@ -287,46 +290,46 @@ const ProjectList = () => {
                   </p>
                 </div>
                 <div className="flex justify-between items-center mb-2">
-                  <ul className="flex gap-1 flex-col w-[150px]">
-                    <li className=" text-[12.8px] leading-[17.28px] text-gray-400">Team</li>
-                    <li className=" text-[12.8px] leading-[17.28px] text-gray-800 ">{item?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")}</li>
+                  <ul className="flex flex-col w-[150px] gap-1">
+                    <li className="text-[12.8px] text-gray-400 leading-[17.28px]">Team</li>
+                    <li className="text-[12.8px] text-gray-800 leading-[17.28px]">{item?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")}</li>
                   </ul>
-                  <ul className="flex gap-1 flex-col">
-                    <li className=" text-[12.8px] text-gray-400">Due Date</li>
-                    <li className=" text-[12.8px]  text-gray-800">{item?.due_date || ""}</li>
+                  <ul className="flex flex-col gap-1">
+                    <li className="text-[12.8px] text-gray-400">Due Date</li>
+                    <li className="text-[12.8px] text-gray-800">{item?.due_date || ""}</li>
 
                   </ul>
 
                 </div>
-                <div className="flex items-center gap-2 mb-2 justify-between">
-                  <p className='flex items-center flex-row gap-1'> {OtherIcons.projects_svg}
-                    <span className=" font-normal text-[12.8px] leading-[17.28px]">Tasks ( {item?.total_tasks_count || 0} )</span></p>
+                <div className="flex justify-between gap-2 items-center mb-2">
+                  <p className='flex flex-row gap-1 items-center'> {OtherIcons.projects_svg}
+                    <span className="text-[12.8px] font-normal leading-[17.28px]">Tasks ( {item?.total_tasks_count || 0} )</span></p>
 
-                  <ul className="flex gap-1 flex-col mr-[20px]">
+                  <ul className="flex flex-col gap-1 mr-[20px]">
 
-                    <li className=" text-[12.8px] text-gray-400">Priority</li>
+                    <li className="text-[12.8px] text-gray-400">Priority</li>
                     <li className={`text-[12.8px]  text-gray-800 font-700 ${item.priority == 'High'
                       ? 'text-[#4976F4]' : item?.priority == 'Low' ?
                         'text-red-400' : 'text-[#954BAF]'
                       }`}>{item?.priority?.charAt(0).toUpperCase() + item?.priority?.slice(1)}</li>
                   </ul>
                 </div>
-                <div className="w-[270px] h-[39px]">
+                <div className="h-[39px] w-[270px]">
                   <table className="w-full">
                     <thead>
                       <tr className="text-left">
-                        <td className='font-300 text-gray-400 text-[12px]'>To Do</td>
-                        <td className='font-300 text-gray-400 text-[12px]'>In Progress</td>
-                        <td className='font-300 text-gray-400 text-[12px]'>Under Review</td>
-                        <td className='font-300 text-gray-400 text-[12px]'>Completed</td>
+                        <td className='text-[12px] text-gray-400 font-300'>To Do</td>
+                        <td className='text-[12px] text-gray-400 font-300'>In Progress</td>
+                        <td className='text-[12px] text-gray-400 font-300'>Under Review</td>
+                        <td className='text-[12px] text-gray-400 font-300'>Completed</td>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <td className='font-300 text-gray-700 text-[12px] text-center'>{item?.to_do_tasks_count || 0}</td>
-                        <td className='font-300 text-gray-700 text-[12px] text-center'>{item?.in_progress_tasks_count || 0}</td>
-                        <td className='font-300 text-gray-700 text-[12px] text-center'>{item?.under_review_tasks_count || 0}</td>
-                        <td className='font-300 text-gray-700 text-[12px] text-center'>{item?.completed_tasks_count || 0}</td>
+                        <td className='text-[12px] text-center text-gray-700 font-300'>{item?.to_do_tasks_count || 0}</td>
+                        <td className='text-[12px] text-center text-gray-700 font-300'>{item?.in_progress_tasks_count || 0}</td>
+                        <td className='text-[12px] text-center text-gray-700 font-300'>{item?.under_review_tasks_count || 0}</td>
+                        <td className='text-[12px] text-center text-gray-700 font-300'>{item?.completed_tasks_count || 0}</td>
                       </tr>
                     </tbody>
                   </table>

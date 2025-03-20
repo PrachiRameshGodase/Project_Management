@@ -19,6 +19,8 @@ const NavBar = () => {
 
   const [isOpen, setIsOpen] = useState(false); // State for mobile menu
   const [isOpen2, setIsOpen2] = useState(false); // State for mobile menu
+  const [isOpen3, setIsOpen3] = useState(false); // State for mobile menu
+  const [isOpen4, setIsOpen4] = useState(true); // State for mobile menu
   const isActive = userData?.status == 0 ? true : false
 
   const notificationListData = useSelector((state) => state.notification?.list?.data);
@@ -57,7 +59,7 @@ const NavBar = () => {
     if (!userData?.id) return; // Prevent unnecessary calls
 
     const fetchNotifications = () => {
-    
+
       dispatch(fetchNotification({ user_id: userData.id }));
     };
 
@@ -107,14 +109,14 @@ const NavBar = () => {
     }
   };
   return (
-    <div className="w-full z-50 h-[80px] fixed  flex items-center shadow-nav-Shadow  border-b border-gray-50 bg-white ">
+    <div className="flex bg-white border-b border-gray-50 h-[80px] shadow-nav-Shadow w-full fixed items-center z-50">
       <Toaster
         position="top-center"
         reverseOrder={false}
       />
       {/* Mobile Toggle Button */}
       <button
-        className="lg:hidden text-2xl absolute p-2 left-2 sm:left-10 md:left-14  lg:left-20 rounded-md focus:outline-none "
+        className="p-2 rounded-md text-2xl absolute focus:outline-none left-2 lg:hidden lg:left-20 md:left-14 sm:left-10"
         onClick={() => setIsOpen(true)}
       >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#000000" fill="none">
@@ -126,7 +128,7 @@ const NavBar = () => {
       </button>
 
       {/* Desktop Navbar */}
-      <div className="hidden  lg:flex w-[441px] h-[44px] absolute top-[20.5px] left-2 sm:left-10 md:left-14  lg:left-20 gap-2">
+      <div className="h-[44px] w-[441px] absolute gap-2 hidden left-2 lg:flex lg:left-20 md:left-14 sm:left-10 top-[20.5px]">
         {navItems.map((item, index) => {
           const isActive = Array.isArray(item.path) ? item.path.includes(pathname) : pathname === item.path;
           return (
@@ -146,42 +148,47 @@ const NavBar = () => {
       {/* User Avatar */}
       <>
         {/* Avatar Button */}
-        <div className="absolute gap-3  top-4 right-3 sm:right-10 md:right-14 lg:right-20 flex items-center space-x-2">
-          <div className="relative w-10 h-10 flex items-center justify-center">
+        <div className="flex absolute gap-3 items-center lg:right-20 md:right-14 right-3 sm:right-10 space-x-2 top-4">
+          <div className="flex h-10 justify-center w-10 items-center relative">
             <Tooltip title="Notification" arrow disableInteractive>
               <div
-                className="relative cursor-pointer"
-                onClick={() => setIsOpen(!isOpen)}
+                className="cursor-pointer relative"
+                onClick={() => (setIsOpen3(!isOpen3), setIsOpen4(false))}
+
               >
-                <Bell className="w-6 h-6 text-gray-700" />
-                {/* <span className="absolute bottom-3 right-1 w-2 h-2 bg-green-500 rounded-full" /> */}
+                <Bell className="h-6 text-gray-700 w-6" />
+                {isOpen4 &&
+                  <>
+                    <span className="bg-green-500 h-2 rounded-full w-2 absolute bottom-2 right-0" />
+                    <span className="bg-green-400 h-3 rounded-full w-3 -right-[2px] absolute animate-ping bottom-[5px]" />
+                  </>
+                }
                 {hasNotification && hasNotificationBlink && (
                   <>
-                    <span className="absolute bottom-3 right-1 w-2 h-2 bg-green-500 rounded-full" />
-                    <span className="absolute bottom-[10px]  w-3 h-3 right-4 bg-green-400 rounded-full animate-ping" />
+                    <span className="bg-green-500 h-2 rounded-full w-2 absolute bottom-3 right-1" />
+                    <span className="bg-green-400 h-3 rounded-full w-3 absolute animate-ping bottom-[10px] right-4" />
 
                   </>
 
-                  // <span className="absolute bottom-[10px]  w-3 h-3 right-4 bg-green-400 rounded-full animate-ping" />
                 )}
               </div>
             </Tooltip>
 
             {/* Dropdown Menu */}
-            {isOpen && (
-              <div className="absolute top-12 right-0 w-[300px] bg-white shadow-lg border border-gray-200 rounded-lg p-3 z-50">
+            {isOpen3 && (
+              <div className="bg-white border border-gray-200 p-3 rounded-lg shadow-lg w-[300px] absolute right-0 top-12 z-50">
                 {/* Header with Clear Button */}
                 <div className="flex justify-between items-center mb-1">
-                  <h3 className="text-sm font-semibold text-gray-900"></h3>
-                  <div className="relative group flex items-center">
+                  <h3 className="text-gray-900 text-sm font-semibold"></h3>
+                  <div className="flex group items-center relative">
                     <button
-                      className="text-xs text-gray-500 hover:text-gray-700  w-4 h-4 flex justify-center items-center"
+                      className="flex h-4 justify-center text-gray-500 text-xs w-4 hover:text-gray-700 items-center"
                       onClick={handleClearNotifications}
                     >
                       Clear
                     </button>
                     {/* Tooltip */}
-                    <div className="absolute right-0 bottom-6 w-max px-2 py-1 text-xs text-white bg-gray-700 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="bg-gray-700 rounded text-white text-xs w-max absolute bottom-6 group-hover:opacity-100 opacity-0 px-2 py-1 right-0 transition-opacity">
                       Clear Notifications
                     </div>
                   </div>
@@ -194,13 +201,13 @@ const NavBar = () => {
                     notificationListData?.map((notification, index) => (
                       <div key={notification.id} className="py-2">
                         <h3
-                          className="text-sm font-semibold text-gray-900 hover:cursor-pointer"
+                          className="text-gray-900 text-sm font-semibold hover:cursor-pointer"
 
                         >
                           {notification?.heading}
                         </h3>
                         <p className="text-gray-900 text-sm hover:cursor-pointer">{notification?.body}</p>
-                        {index !== notificationListData.length - 1 && <hr className="my-2 border-gray-300" />}
+                        {index !== notificationListData.length - 1 && <hr className="border-gray-300 my-2" />}
                       </div>
                     ))
                   ) : (
@@ -236,7 +243,7 @@ const NavBar = () => {
       >
         {/* Close Button */}
         <button
-          className="absolute top-4 right-4 text-2xl "
+          className="text-2xl absolute right-4 top-4"
           onClick={() => setIsOpen(false)}
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#000000" fill="none">
@@ -245,7 +252,7 @@ const NavBar = () => {
         </button>
 
         {/* Sidebar Navigation */}
-        <div className="mt-16  flex flex-col gap-4 px-4">
+        <div className="flex flex-col gap-4 mt-16 px-4">
           {navItems.map((item, index) => {
             const isActive = Array.isArray(item.path) ? item.path.includes(pathname) : pathname === item.path;
             return (
