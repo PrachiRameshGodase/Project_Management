@@ -15,6 +15,8 @@ const ClientDetails = () => {
     const dispatch = useDispatch();
     const [itemId, setItemId] = useState(null);
     const usersLoading = useSelector((state) => state.user);
+    const userDetailData = useSelector((state) => state?.user?.userDetails?.data?.user);
+    const userDetail = useSelector((state) => state?.user?.userDetails?.data?.projects);
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -23,7 +25,6 @@ const ClientDetails = () => {
         }
     }, []);
 
-    const userDetailData = useSelector((state) => state?.user?.userDetails?.data);
     const [isActive, setIsActive] = useState(userDetailData?.status || "");
 
     const user = {
@@ -33,7 +34,7 @@ const ClientDetails = () => {
     };
 
     useEffect(() => {
-        if (itemId) dispatch(fetchUserDetails(itemId));
+        if (itemId) dispatch(fetchUserDetails(Number(itemId)));
     }, [dispatch, itemId]);
 
     useEffect(() => {
@@ -61,6 +62,10 @@ const ClientDetails = () => {
         }
     };
 
+    const [showAll, setShowAll] = useState(false);
+
+    // Limit projects to 8 initially
+    const visibleProjects = showAll ? userDetail : userDetail?.slice(0, 8);
 
 
     const handleEditUser = () => {
@@ -85,7 +90,7 @@ const ClientDetails = () => {
                                 <input
                                     type="checkbox"
                                     className="sr-only"
-                                    checked={isActive}
+                                    defaultChecked={isActive}
                                     onChange={handleToggleStatus}
                                 />
                                 {/* Track */}
@@ -130,7 +135,7 @@ const ClientDetails = () => {
                     {/* User Information Section */}
                     <div className="md:flex  flex-row gap-4  ">
                         <ul className="flex flex-col space-y-2">
-                            <li className=" w-fit sm:w-[367px] h-[24px] flex items-center">
+                            <li className=" w-fit sm:w-[367px] h-[24px] flex items-center mt-3 mb-3">
                                 <span className=" h-[24px] opacity-90 text-[20px]">Contact Person</span>
                             </li>
                             {/* <li className="w-fit sm:w-[367px] h-[24px] flex items-center">
@@ -145,7 +150,7 @@ const ClientDetails = () => {
                         </ul>
 
                         <ul className="flex  flex-col space-y-2">
-                            <li className="sm:w-[367px] h-[24px] flex items-center">
+                            <li className="sm:w-[367px] h-[24px] flex items-center mt-3 mb-3">
 
                             </li>
                             <li className="sm:w-[367px] h-[24px] flex items-center">
@@ -155,7 +160,7 @@ const ClientDetails = () => {
                             <li className="sm:w-[367px] h-[24px] flex items-center">
                                 <span className="sm:w-[114px] h-[24px] opacity-70">Client ID:</span>
                                 <span className="sm:w-[183px] h-[23px] ml-[35px]">{userDetailData?.client_id || ""}</span>
-                            </li>
+                            </  li>
 
                         </ul>
                     </div>
@@ -170,41 +175,42 @@ const ClientDetails = () => {
 
                     {/* Projects Grid */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4  mt-4  ">
-                        {[...Array(4)].map((_, index) => (
+                        {visibleProjects?.map((item, index) => (
                             <div
-                                key={index}
+                                key={item?.id}
                                 className="w-[100%] h-[132px] border border-gray-300 rounded-[8.93px] p-4 shadow-md hover:shadow-lg transition-all"
                             >
                                 <div className='flex justify-between'>
                                     <p className="text-[18px] leading-[24.3px] tracking-[-3%] text-gray-800">
-                                        HRMS Dashboard
+                                        {item?.project_name || ""}
                                     </p>
                                     <p
-                                        className={`px-3  border rounded-md text-[15px] ${"user.priority" === 'High'
-                                            ? 'text-[#4976F4] border-[#4976F4]' : "user.priority " === 'Low' ?
-                                                'text-red-400 border-red-400' : 'text-[#954BAF] border-[#954BAF] h-[25px] w-[60px]'
+                                        className={`px-2  border rounded-md text-[13px] ${item?.priority === 'high'
+                                            ? 'text-[#4976F4] border-[#4976F4]' : item?.priority === 'low' ?
+                                                'text-red-400 border-red-400' : 'text-[#954BAF] border-[#954BAF] h-[20px] w-[70px]'
                                             } inline-block`}
                                     >
-                                        High
+                                        {item?.priority ? item.priority.charAt(0).toUpperCase() + item.priority.slice(1) : ""}
                                     </p>
                                 </div>
 
 
                                 <ul className="mt-2 space-y-2">
                                     <li className="flex text-gray-700">
-                                        <span className="text-[10.72px] w-[60px]  text-gray-600">
+                                        <span className="text-[12px] w-[60px]  text-gray-600">
                                             End Date
                                         </span>
                                         <span className="text-[12px]">
-                                            01 Jan, 2025
+                                            {item?.due_date || ""}
                                         </span>
                                     </li>
                                     <li className="flex text-gray-700 ">
-                                        <span className="text-[10.72px]  text-gray-600 w-6">
+                                        <span className="text-[12px]  text-gray-600 w-6">
                                             Team
                                         </span>
                                         <span className="text-[12px] ml-9">
-                                            Akash Shinde, Aryan Singh, Puneet Omar, Prachi Jadhav
+
+                                            {item?.team_members?.map((item) => item?.name).join(", ") || ""}
                                         </span>
                                     </li>
                                 </ul>
@@ -212,10 +218,14 @@ const ClientDetails = () => {
                         ))}
                     </div>
 
-                    {/* View More Button */}
-                    <button className="mt-4 px-4 py-2 bg-white border border-gray-200 text-black rounded-md flex align-middle items-center mx-auto shadow-md hover:shadow-lg">
-                        View More
-                    </button>
+                    {userDetail?.length > 8 && !showAll && (
+                        <button
+                            onClick={() => setShowAll(true)}
+                            className="mt-4 px-4 py-2 bg-white border border-gray-200 text-black rounded-md flex align-middle items-center mx-auto shadow-md hover:shadow-lg"
+                        >
+                            View More
+                        </button>
+                    )}
                 </div>
             </div></LayOut>}</>
 

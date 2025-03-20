@@ -45,9 +45,9 @@ export const fetchUserDetails = createAsyncThunk(
   async (userId, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post(`/users/details`, { id: userId });
-      console.log("response", response)
+      console.log("response", response.data)
 
-      return response;
+      return response.data;
       // console.log("response", response)
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);

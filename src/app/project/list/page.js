@@ -5,6 +5,7 @@ import LayOut from '@/components/LayOut';
 import Dropdown01 from '@/components/common/Dropdown/Dropdown01';
 import { view } from '@/components/common/Helper/Helper';
 import { useDebounceSearch } from '@/components/common/Helper/HelperFunction';
+import useUserData from '@/components/common/Helper/useUserData';
 import Pagenation from '@/components/common/Pagenation/Pagenation';
 import SearchComponent from '@/components/common/SearchComponent/SearchComponent';
 import SortBy from '@/components/common/Sort/SortBy';
@@ -18,6 +19,7 @@ import { useDispatch, useSelector } from 'react-redux';
 const ProjectList = () => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const userData = useUserData()
 
   const projectListData = useSelector((state) => state.project?.list?.data);
   const projectLoading = useSelector((state) => state.project);
@@ -63,7 +65,7 @@ const ProjectList = () => {
 
   useEffect(() => {
     const sendData = {
-     
+
       limit: itemsPerPage,
       page: currentPage,
       ...(searchTermFromChild ? { search: searchTermFromChild } : {}),
@@ -89,7 +91,7 @@ const ProjectList = () => {
         {/* Left Section (Heading + Count) */}
         <div className="flex">
           <p className="text-[20px] sm:text-[30px] leading-[32px] tracking-[-1.5px]">All Projects list</p>
-          <p className="font-bold p-2 rounded-full text-[10.16px] leading-[12.19px] text-[#400F6F] mt-3 ml-2 bg-[#f0e7fa] flex items-center justify-center w-[50px] h-[10px]">
+          <p className="font-bold p-2 rounded-full text-[10.16px] leading-[12.19px] text-[#400F6F] mt-3 ml-2 bg-[#f0e7fa] flex items-center justify-center w-[60px] h-[10px]">
             {totalCount} total
           </p>
           <p
@@ -157,9 +159,9 @@ const ProjectList = () => {
 
           {/* Filter Options */}
           <div className="mt-16 flex flex-col gap-4 px-4">
-            <Tooltip title='Add Project' arrow disableInteractive>
+          {userData?.is_client == 0 &&  <Tooltip title='Add Project' arrow disableInteractive>
               <button className="w-[49px] h-[44px] bg-[#048339] text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/project/add')}>+</button>
-            </Tooltip>
+            </Tooltip>}
             <Dropdown01 options={view} selectedValue={selectedView} onSelect={setSelectedView} label="View" icon={OtherIcons.view_svg} />
             {/* <Dropdown01 options={statusProject} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />
             <Dropdown01 options={projectSortConstant} selectedValue={selectedSort} onSelect={setSelectedSort} label="Sort By" icon={OtherIcons.sort_by_svg} /> */}
@@ -195,7 +197,7 @@ const ProjectList = () => {
                   {projectListData?.map((item, index) => (
                     <tr key={item?.id} className="cursor-pointer hover:bg-gray-100   hover:shadow-tr-border   rounded-md  transition-all duration-200">
                       <td className="py-2 sm:py-3 px-2 sm:px-4   text-[12px]  sm:text-[15px]  rounded " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.project_name || ""}</td>
-                      <td className="py-2 sm:py-3 px-2 sm:px-4   text-[12px]  sm:text-[15px] rounded " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.client?.name ||""}</td>
+                      <td className="py-2 sm:py-3 px-2 sm:px-4   text-[12px]  sm:text-[15px] rounded " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.client?.name || ""}</td>
                       <td className={`py-2 sm:py-3 px-2 sm:px-4   text-[12px]  sm:text-[14px]   rounded `} onClick={() => router.push(`/project/details?id=${item?.id}`)}>
                         <span
                           className={`px-3 py-1 border rounded-md ${item.status === 'To Do'
@@ -211,7 +213,7 @@ const ProjectList = () => {
                       <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.due_date}</td>
                       <td className="py-2 sm:py-3 px-2 sm:px-4 text-[12px] sm:text-[15px]   " onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.project_leader_name}</td>
                       <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]  " onClick={() => router.push(`/project/details?id=${item?.id}`)}>
-                        <TruncatedTooltipText text={item?.team_leaders?.map((item)=>item?.first_name + " " + item?.last_name).join(",")} maxLength={25} />
+                        <TruncatedTooltipText text={item?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")} maxLength={25} />
                       </td>
                       <td className={`py-2 sm:py-3 px-2 sm:px-4 text-[12px] sm:text-[15px]`} onClick={() => router.push(`/project/details?id=${item?.id}`)}>
                         <span
@@ -242,12 +244,13 @@ const ProjectList = () => {
 
 
       {/* Card Section */}
-      {selectedView == "Card" && (
+      {selectedView == "Card" && 
+      (<div> 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mx-auto mt-[50px]">
           {projectListData?.map((item, index) => (
             <div key={item?.id} className="w-full min-w-[305px] h-[240px] hover:border-gray-200 hover:shadow-lg  border border-gray-100 rounded-xl p-4 shadow-md hover:cursor-pointer" onClick={() => router.push(`/project/details?id=${item?.id}`)}>
               <div className="flex justify-between items-center mb-4">
-                <p className="font-700 text-[21.33px] leading-[28.8px] ">{item?.project_name || ""}</p>
+                <p className="font-600 text-[21px]">{item?.project_name || ""}</p>
                 {/* <p className="font-[400] text-[12px] leading-[16.8px] text-green-600 w-[70px] h-[20px]  rounded flex items-center justify-center">
                 Completed
               </p> */}
@@ -262,7 +265,7 @@ const ProjectList = () => {
               <div className="flex justify-between items-center mb-2">
                 <ul className="flex gap-1 flex-col w-[150px]">
                   <li className=" text-[12.8px] leading-[17.28px] text-gray-400">Team</li>
-                  <li className=" text-[12.8px] leading-[17.28px] text-gray-800 ">{JSON.parse(item?.team)?.join(", ")}</li>
+                  <li className=" text-[12.8px] leading-[17.28px] text-gray-800 ">{item?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")}</li>
                 </ul>
                 <ul className="flex gap-1 flex-col">
                   <li className=" text-[12.8px] text-gray-400">Due Date</li>
@@ -273,13 +276,13 @@ const ProjectList = () => {
               </div>
               <div className="flex items-center gap-2 mb-2 justify-between">
                 <p className='flex items-center flex-row gap-1'> {OtherIcons.projects_svg}
-                  <span className=" font-normal text-[12.8px] leading-[17.28px]">Tasks (20)</span></p>
+                  <span className=" font-normal text-[12.8px] leading-[17.28px]">Tasks ( {item?.total_tasks_count || 0} )</span></p>
 
                 <ul className="flex gap-1 flex-col mr-[20px]">
 
                   <li className=" text-[12.8px] text-gray-400">Priority</li>
-                  <li className={`text-[12.8px]  text-gray-800 font-700 ${item.priority === 'high'
-                    ? 'text-[#4976F4]' : item?.priority === 'low' ?
+                  <li className={`text-[12.8px]  text-gray-800 font-700 ${item.priority == 'High'
+                    ? 'text-[#4976F4]' : item?.priority == 'Low' ?
                       'text-red-400' : 'text-[#954BAF]'
                     }`}>{item?.priority?.charAt(0).toUpperCase() + item?.priority?.slice(1)}</li>
                 </ul>
@@ -296,17 +299,26 @@ const ProjectList = () => {
                   </thead>
                   <tbody>
                     <tr>
-                      <td className='font-300 text-gray-700 text-[12px] text-center'>08</td>
-                      <td className='font-300 text-gray-700 text-[12px] text-center'>08</td>
-                      <td className='font-300 text-gray-700 text-[12px] text-center'>08</td>
-                      <td className='font-300 text-gray-700 text-[12px] text-center'>08</td>
+                      <td className='font-300 text-gray-700 text-[12px] text-center'>{item?.to_do_tasks_count || 0}</td>
+                      <td className='font-300 text-gray-700 text-[12px] text-center'>{item?.in_progress_tasks_count || 0}</td>
+                      <td className='font-300 text-gray-700 text-[12px] text-center'>{item?.under_review_tasks_count || 0}</td>
+                      <td className='font-300 text-gray-700 text-[12px] text-center'>{item?.completed_tasks_count || 0}</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
             </div>
           ))}
-        </div>)}
+        </div>
+        <Pagenation
+            itemList={totalCount}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            itemsPerPage={itemsPerPage}
+            setItemsPerPage={setItemsPerPage}
+            setSearchCall={setSearchTrigger} />
+        </div>
+      )}
 
     </div></LayOut>
 

@@ -12,9 +12,11 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Pagenation from '@/components/common/Pagenation/Pagenation';
+import useUserData from '@/components/common/Helper/useUserData';
 
 const ClientList = () => {
     const router = useRouter()
+    const userData = useUserData()
     const dispatch = useDispatch();
     const usersList = useSelector((state) => state.user?.clientList?.data);
     const usersLoading = useSelector((state) => state.user);
@@ -116,9 +118,9 @@ const ClientList = () => {
                         <SearchComponent onSearch={onSearch} section={searchTrigger} />
 
                         <div className="w-[1px] h-[40px] bg-gray-400 opacity-40" />
-                        <Tooltip title='Add Client' arrow disableInteractive>
+                        {userData?.is_admin == 1 && <Tooltip title='Add Client' arrow disableInteractive>
                             <button className="w-[49px] h-[44px] bg-[#048339] text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/client/add')}>+</button>
-                        </Tooltip>
+                        </Tooltip>}
                     </div>
 
                     {/* Mobile Filter Button */}

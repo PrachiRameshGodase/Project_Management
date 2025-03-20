@@ -21,7 +21,7 @@ const AddClient = () => {
             setIsEditMode(params.get("edit") === "true"); // Convert string to boolean
         }
     }, []);
-    const userDetailData = useSelector(state => state?.user?.userDetails?.data);
+    const userDetailData = useSelector(state => state?.user?.userDetails?.data?.user);
     const usersLoading = useSelector((state) => state.user);
 
 

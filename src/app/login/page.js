@@ -5,9 +5,11 @@ import { fetchLoggedInUser, loginUser } from "../store/authSlice";
 import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast"; // Import react-hot-toast
 import { Eye, EyeOff } from "lucide-react";
+import useUserData from "@/components/common/Helper/useUserData";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
+  const userData = useUserData()
   const router = useRouter();
   const { loading, error } = useSelector((state) => state.auth);
   const [showPassword, setShowPassword] = useState(false);
@@ -17,13 +19,16 @@ const LoginPage = () => {
     password: "",
   });
 
-  // Check if user is already logged in
   useEffect(() => {
     const token = localStorage.getItem("access_token");
-    if (token) {
-      router.push("/home");
+    const storedUserData = localStorage.getItem("UserData");
+
+    if (token && storedUserData) {
+      const userData = JSON.parse(storedUserData);
+      router.push(userData?.is_admin === 1 ? "/all-projects" : "/home");
     }
   }, []);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -32,18 +37,21 @@ const LoginPage = () => {
       [name]: value,
     }));
   };
-
   const handleSubmit = () => {
     dispatch(loginUser(formData)).then((res) => {
       if (res?.payload?.success) {
         toast.success("Login Successful!");
-        dispatch(fetchLoggedInUser())
-        router.push("/home");
+        dispatch(fetchLoggedInUser()).then((userRes) => {
+          console.log("userRes", userRes)
+          const isAdmin = userRes?.payload?.is_admin === 1;
+          router.push(isAdmin ? "/all-projects" : "/home");
+        });
       } else {
         toast.error(res?.payload?.message || "Login Failed!");
       }
     });
   };
+
 
   return (
     <div className="flex justify-center items-center h-screen">

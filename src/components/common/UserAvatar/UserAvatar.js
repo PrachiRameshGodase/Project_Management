@@ -34,19 +34,21 @@ const StyledBadge = styled(Badge)(({ theme, dotcolor }) => ({
     },
 }));
 
-const UserAvatar = ({ name, image, isActive, size = 68, dotcolor = "green", onClick }) => {
+const UserAvatar = ({ name, size = 68, isActive, onClick }) => {
+    const dotColor = isActive ? "green" : "red";
+   
     return (
         <Box sx={{ display: "flex", alignItems: "center", cursor: "pointer" }} onClick={onClick}>
             <StyledBadge
                 overlap="circular"
                 anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                variant={isActive && dotcolor !== "none" ? "dot" : "stanard"}
-                dotcolor={dotcolor}
+                variant={isActive ? "dot" : "standard"} // Show dot only when active
+                dotcolor={dotColor}
                 className="border-2 border-[#4c9949] rounded-full p-[2px]"
             >
                 <Avatar
                     alt={name}
-                    src={image}
+                    // src={image}
                     sx={{
                         width: size,
                         height: size,
@@ -61,7 +63,7 @@ const UserAvatar = ({ name, image, isActive, size = 68, dotcolor = "green", onCl
                     {
                         name ? (() => {
                             const words = name.trim().split(" ");
-                            return words.length > 1 ? words[0][0] + words[words.length - 1][0] : words[0][0];
+                            return words.length > 1 ? words[0][0].toUpperCase()  + words[words.length - 1][0].toUpperCase()   : words[0][0].toUpperCase() ;
                         })() : "U"
                     }
                 </Avatar>

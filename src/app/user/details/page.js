@@ -23,10 +23,10 @@ const UserDetails = () => {
       setItemId(params.get("id"));
     }
   }, []);
-  const userDetailData = useSelector((state) => state?.user?.userDetails?.data);
-  const userDetail = useSelector((state) => state?.user?.userDetails?.projects);
-  
+  const userDetailData = useSelector((state) => state?.user?.userDetails?.data?.user);
+  const userDetail = useSelector((state) => state?.user?.userDetails?.data?.projects);
 
+  console.log("userDetail", userDetail)
   const [isActive, setIsActive] = useState(userDetailData?.status || "");
 
   const user = {
@@ -38,7 +38,7 @@ const UserDetails = () => {
   };
 
   useEffect(() => {
-    if (itemId) dispatch(fetchUserDetails(itemId));
+    if (itemId) dispatch(fetchUserDetails(Number(itemId)));
   }, [dispatch, itemId]);
 
   useEffect(() => {
@@ -72,7 +72,11 @@ const UserDetails = () => {
     router.push(`/user/add?id=${itemId}&edit=true`);
   };
 
-console.log("userDetailData?.projects", userDetail)
+  const [showAll, setShowAll] = useState(false);
+
+  // Limit projects to 8 initially
+  const visibleProjects = showAll ? userDetail : userDetail?.slice(0, 8);
+  const isActive3 = userDetailData?.status == 0 ? true : false
   return (
     <>
       {usersLoading?.loading ? (<Loader />) : (<LayOut>
@@ -91,7 +95,7 @@ console.log("userDetailData?.projects", userDetail)
                   <input
                     type="checkbox"
                     className="sr-only"
-                    checked={isActive}
+                    defaultChecked={isActive}
                     onChange={handleToggleStatus}
                   />
                   {/* Track */}
@@ -112,15 +116,15 @@ console.log("userDetailData?.projects", userDetail)
 
                   </div>
                   <div
-                    className={`absolute w-[33px] h-[33px] rounded-full shadow-md top-[4px] left-[4px] transition-transform duration-300 ease-in-out ${isActive=="0" ? 'translate-x-7 bg-[#048339]' : 'bg-[#E23703]'
+                    className={`absolute w-[33px] h-[33px] rounded-full shadow-md top-[4px] left-[4px] transition-transform duration-300 ease-in-out ${isActive == "0" ? 'translate-x-7 bg-[#048339]' : 'bg-[#E23703]'
                       }`}
                   >
-                    {isActive=="0" && (
+                    {isActive == "0" && (
                       <span className="absolute inset-0 flex items-center justify-center text-white text-[10px]">
                         <Check size={16} />
                       </span>
                     )}
-                    {isActive=="1" && (
+                    {isActive == "1" && (
                       <span className="absolute inset-0 flex items-center justify-center text-white text-[10px]">
                         <X size={16} />
                       </span>
@@ -138,19 +142,14 @@ console.log("userDetailData?.projects", userDetail)
               </button>
             </div>
           </div>
-          <div className="p-4 flex flex-col gap-4 xl:gap-6  xl:flex-row items-start justify-between mt-16 sm:mt-0">
+          <div className="p-4 flex flex-col gap-4 xl:gap-6  xl:flex-row items-start justify-between mt-16 sm:mt-4">
             {/* Avatar Section */}
             <div className=" w-[260px] h-[69px] flex items-center gap-[12.21px] ">
-              <UserAvatar
-                name={user.name}
-                dotcolor="green"
-                size={66}
-                image={user.image}
-                isActive={user.isActive}
-              />
-              <div className=" text-xl text-gray-700">
-                <p className="font-medium flex w-full ">{`${userDetailData?.first_name || ""
-                  } ${userDetailData?.last_name || ""}`}</p>
+              <UserAvatar name={userDetailData?.name} size={66} isActive={isActive3} />
+
+              <div className="text-[28px] text-gray-700">
+                <p className="font-medium flex w-full ">{`${userDetailData?.name || ""
+                  }`}</p>
                 <p className="text-xs text-gray-500">
                   {userDetailData?.designation || ""}
                 </p>
@@ -241,26 +240,37 @@ console.log("userDetailData?.projects", userDetail)
 
             {/* Projects Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4  mt-4  ">
-              {userDetailData?.projects?.map((item, index) => (
+              {visibleProjects?.map((item, index) => (
                 <div
                   key={item?.id}
                   className="w-[100%] h-[132px] border border-gray-300 rounded-[8.93px] p-4 shadow-md hover:shadow-lg transition-all"
                 >
-                  <p className="text-[18px] leading-[24.3px] tracking-[-3%] text-gray-800">
-                    {item?.project_name ||""}
-                  </p>
+                  <div className='flex justify-between'>
+                    <p className="text-[18px] leading-[24.3px] tracking-[-3%] text-gray-800">
+                      {item?.project_name || ""}
+                    </p>
+                    <p
+                      className={`px-2  border rounded-md text-[13px] ${item?.priority === 'high'
+                        ? 'text-[#4976F4] border-[#4976F4]' : item?.priority === 'low' ?
+                          'text-red-400 border-red-400' : 'text-[#954BAF] border-[#954BAF] h-[20px] w-[70px]'
+                        } inline-block`}
+                    >
+                      {item?.priority ? item.priority.charAt(0).toUpperCase() + item.priority.slice(1) : ""}
+                    </p>
+                  </div>
 
                   <ul className="mt-2 space-y-2">
                     <li className="flex text-gray-700">
-                      <span className="text-[10.72px] w-[60px]  text-gray-600">
+                      <span className="text-[12px] w-[60px]  text-gray-600">
                         End Date
                       </span>
-                      <span className="text-[12px]">{item?.due_date ||""}</span>
+                      <span className="text-[12px]">{item?.due_date || ""}</span>
                     </li>
                     <li className="flex text-gray-700">
-                      <span className="text-[10.72px] w-6">Team</span>
+                      <span className="text-[12px] w-6">Team</span>
                       <span className="text-[12px] ml-9">
-                        Akash Shinde, Aryan Singh, Puneet Omar, Prachi Jadhav
+                        {item?.team_members?.map((item) => item?.first_name + " " + item?.last_name).join(", ") || ""}
+
                       </span>
                     </li>
                   </ul>
@@ -269,9 +279,14 @@ console.log("userDetailData?.projects", userDetail)
             </div>
 
             {/* View More Button */}
-            <button className="mt-4 px-4 py-2 bg-white border border-gray-200 text-black rounded-md flex align-middle items-center mx-auto shadow-md hover:shadow-lg">
-              View More
-            </button>
+            {userDetail?.length > 8 && !showAll && (
+              <button
+                onClick={() => setShowAll(true)}
+                className="mt-4 px-4 py-2 bg-white border border-gray-200 text-black rounded-md flex align-middle items-center mx-auto shadow-md hover:shadow-lg"
+              >
+                View More
+              </button>
+            )}
           </div>
         </div>
       </LayOut>)}

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { OutsideClick } from "../OutsideClick/OutsideClick";
 import { ChevronDown, ChevronUp } from "lucide-react"; // Import arrow icons
+import useUserData from "../Helper/useUserData";
 
 const DropdownStatus01 = ({
   options = [],
@@ -11,6 +12,7 @@ const DropdownStatus01 = ({
   className = "",
 }) => {
   const dropdownOutsideClick = OutsideClick();
+  const userData = useUserData();
   const [selected, setSelected] = useState(selectedValue);
 
   const handleOptionSelect = (value) => {
@@ -53,7 +55,11 @@ const DropdownStatus01 = ({
                 )}]  border border-[#D8D8D8] hover:border-purple-500 hover:ring-2 hover:ring-purple-200 `
               : "border-[#D8D8D8] text-gray-700 hover:border-purple-500 hover:ring-2 hover:ring-purple-200"
           }`}
-        onClick={dropdownOutsideClick?.handleToggle}
+        onClick={
+          userData?.is_client === 0
+            ? dropdownOutsideClick?.handleToggle
+            : undefined
+        }
         ref={dropdownOutsideClick?.buttonRef}
       >
         {icon}
@@ -62,19 +68,21 @@ const DropdownStatus01 = ({
         </span>
 
         {/* Up & Down arrow toggle button with dynamic color */}
-        <button type="button" onClick={dropdownOutsideClick?.handleToggle}>
-          {dropdownOutsideClick?.isOpen ? (
-            <ChevronUp
-              size={16}
-              className={`text-[${getStatusColor(selected)}] `}
-            />
-          ) : (
-            <ChevronDown
-              size={16}
-              className={`text-[${getStatusColor(selected)}]`}
-            />
-          )}
-        </button>
+        {userData?.is_client == 0 && (
+          <button type="button" onClick={dropdownOutsideClick?.handleToggle}>
+            {dropdownOutsideClick?.isOpen ? (
+              <ChevronUp
+                size={16}
+                className={`text-[${getStatusColor(selected)}] `}
+              />
+            ) : (
+              <ChevronDown
+                size={16}
+                className={`text-[${getStatusColor(selected)}]`}
+              />
+            )}
+          </button>
+        )}
       </div>
 
       {dropdownOutsideClick?.isOpen && (

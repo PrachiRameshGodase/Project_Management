@@ -41,7 +41,7 @@ const AddProject = () => {
         priority: "",
         project_leader: null,
         project_stage: "",
-        team: "",
+        team: [],
         attachments: [],
         description: "",
 
@@ -125,7 +125,7 @@ const AddProject = () => {
             try {
                 const updatedFormData = {
                     ...formData,
-                    team: JSON.stringify(formData?.team), // Convert array of IDs to JSON string
+                    // team: JSON.stringify(formData?.team), // Convert array of IDs to JSON string
                 };
                 dispatch(addProject({ projectData: updatedFormData, router }));
             } catch (error) {

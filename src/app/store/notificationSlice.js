@@ -5,9 +5,9 @@ import toast from "react-hot-toast";
 // Fetch notifications list
 export const fetchNotification = createAsyncThunk(
   "notification/fetchList",
-  async ({sendData} , { rejectWithValue }) => {
+  async ({ user_id }, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post(`/notification/list`, sendData);
+      const response = await axiosInstance.post(`/notification/list`, {user_id});
       return response.data;
     } catch (error) {
       console.error("API Error:", error);
@@ -19,15 +19,17 @@ export const fetchNotification = createAsyncThunk(
 // Delete a notification
 export const deleteNotification = createAsyncThunk(
   "notification/deleteNotification",
-  async ({ notification_id }, { rejectWithValue, dispatch }) => {
+  async ({ user_id }, { rejectWithValue, dispatch }) => {
+   
     try {
-      const response = await axiosInstance.post(`/notification/delete`, { notification_id });
+      const response = await axiosInstance.post(`/notification/delete`, { }); // Pass user_id in the request body
       if (response?.data?.success) {
         toast.success(response?.data?.message);
         dispatch(fetchNotification({ user_id })); // Refetch updated notifications
       }
       return response.data;
     } catch (error) {
+      console.error("Error deleting notifications:", error);
       return rejectWithValue(error.response?.data || error.message);
     }
   }
@@ -36,15 +38,16 @@ export const deleteNotification = createAsyncThunk(
 // Mark a notification as read
 export const markAsReadNotification = createAsyncThunk(
   "notification/markAsRead",
-  async ({ notification_id }, { rejectWithValue, dispatch }) => {
+  async ({ user_id }, { rejectWithValue, dispatch }) => {
     try {
-      const response = await axiosInstance.post(`/notification/read`, { notification_id });
+      const response = await axiosInstance.post(`/notification/read`, { }); // Include user_id in request
       if (response?.data?.success) {
         toast.success(response?.data?.message);
-        dispatch(fetchNotification()); // Refetch updated notifications
+        dispatch(fetchNotification({ user_id })); // Refetch updated notifications
       }
       return response.data;
     } catch (error) {
+      console.error("Error marking notification as read:", error);
       return rejectWithValue(error.response?.data || error.message);
     }
   }

@@ -8,22 +8,30 @@ import { Bell, LogOutIcon, Trash } from "lucide-react";
 import { deleteNotification, fetchNotification, markAsReadNotification } from "@/app/store/notificationSlice";
 import { Tooltip } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
+import useUserData from "./common/Helper/useUserData";
+import TableSkeleton, { TableSkeleton2 } from "./common/TableSkeleton/TableSkeleton";
 
 const NavBar = () => {
   const router = useRouter();
   const dispatch = useDispatch()
+  const userData = useUserData()
   const pathname = usePathname();
+
   const [isOpen, setIsOpen] = useState(false); // State for mobile menu
   const [isOpen2, setIsOpen2] = useState(false); // State for mobile menu
-  const [hasNotificationBlink, setHasNotification] = useState(false);
+  const isActive = userData?.status == 0 ? true : false
+
   const notificationListData = useSelector((state) => state.notification?.list?.data);
+  const notificationListLoading = useSelector((state) => state.notification);
+
+  const isEmployee = userData?.is_employee == 0
 
   const navItems = [
     { path: "/home", icon: OtherIcons.home_svg, label: "Home" },
     { path: ["/user/list", "/user/add", "/user/details"], icon: OtherIcons.user_svg, label: "User" },
     { path: ["/project/list", "/project/add", "/project/details", "/project/add-task"], icon: OtherIcons.projects_svg, label: "Projects" },
-    { path: ["/client/list", "/client/add", "/client/details"], icon: OtherIcons.clients_svg, label: "Clients" },
-  ];
+    isEmployee && { path: ["/client/list", "/client/add", "/client/details"], icon: OtherIcons.clients_svg, label: "Clients" },
+  ]
 
   // console.log("notificationListData", notificationListData)
 
@@ -37,42 +45,67 @@ const NavBar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("access_token");
-    toast.success("Logout Successful!");
     router.push("/login");
+    toast.success("Logout Successful!");
+
   };
 
-  const [userData, setUserData] = useState(null);
-
-  useEffect(() => {
-    const storedData = localStorage.getItem("UserData");
-    if (storedData) {
-      setUserData(JSON.parse(storedData));
-    }
-  }, []);
 
 
 
   useEffect(() => {
-    const sendData = { id: userData?.id,is_mark_read:1 };
-    dispatch(fetchNotification({ sendData }));
-  }, [dispatch, userData?.id]); // Added userData?.id as a dependency
-  useEffect(() => {
-    const interval = setInterval(() => {
+    if (!userData?.id) return; // Prevent unnecessary calls
 
-      setHasNotification((prev) => !prev);
-    }, 1000); // Har 1 second me blink karega
+    const fetchNotifications = () => {
+    
+      dispatch(fetchNotification({ user_id: userData.id }));
+    };
 
+    // Call API immediately
+    fetchNotifications();
+
+    // Set interval to call API every 2 minutes (120,000 ms)
+    const interval = setInterval(fetchNotifications, 6000);
+
+    // Cleanup function to clear interval when component unmounts
     return () => clearInterval(interval);
-  }, []);
-  const hasNotification = notificationListData?.some((notification) => notification.is_mark_read == 0);
+  }, [dispatch, userData?.id]);
 
-  const handleMarkAsRead = (id) => {
-    dispatch(markAsReadNotification({ notification_id: id }))
-  }
+
+
+
+
+  const [hasNotificationBlink, setHasNotificationBlink] = useState(false);
+
+  const hasNotification = notificationListData?.some(
+    (notification) => notification.is_mark_read === 0
+  );
+
+
+  useEffect(() => {
+    if (hasNotification) {
+      const interval = setInterval(() => {
+        setHasNotificationBlink((prev) => !prev);
+      }, 1000); // Blink every 1 second
+
+      return () => clearInterval(interval); // Cleanup interval
+    } else {
+      setHasNotificationBlink(false); // Ensure it stops blinking when no unread notifications
+    }
+  }, [hasNotification]); // Depend on hasNotification
+
+
+  useEffect(() => {
+    if (isOpen && userData?.id) {
+      dispatch(markAsReadNotification({ user_id: userData.id }));
+    }
+  }, [isOpen, userData?.id, dispatch])
 
   const handleClearNotifications = () => {
-    dispatch(deleteNotification());
-  }
+    if (userData?.id) {
+      dispatch(deleteNotification({ user_id: userData.id }));
+    }
+  };
   return (
     <div className="w-full z-50 h-[80px] fixed  flex items-center shadow-nav-Shadow  border-b border-gray-50 bg-white ">
       <Toaster
@@ -94,11 +127,11 @@ const NavBar = () => {
 
       {/* Desktop Navbar */}
       <div className="hidden  lg:flex w-[441px] h-[44px] absolute top-[20.5px] left-2 sm:left-10 md:left-14  lg:left-20 gap-2">
-        {navItems.map((item) => {
+        {navItems.map((item, index) => {
           const isActive = Array.isArray(item.path) ? item.path.includes(pathname) : pathname === item.path;
           return (
             <div
-              key={Array.isArray(item.path) ? item.path[0] : item.path}
+              key={index}
               onClick={() => router.push(Array.isArray(item.path) ? item.path[0] : item.path)}
               className={`hover:opacity-80 rounded-lg flex items-center gap-1.5 px-2 py-1.5 cursor-pointer 
                 ${isActive ? "border border-gray-200 bg-gray-100" : "opacity-70"} 
@@ -121,9 +154,15 @@ const NavBar = () => {
                 onClick={() => setIsOpen(!isOpen)}
               >
                 <Bell className="w-6 h-6 text-gray-700" />
-                <span className="absolute bottom-3 right-1 w-2 h-2 bg-green-500 rounded-full" />
+                {/* <span className="absolute bottom-3 right-1 w-2 h-2 bg-green-500 rounded-full" /> */}
                 {hasNotification && hasNotificationBlink && (
-                  <span className="absolute bottom-[10px]  w-3 h-3 right-4 bg-green-400 rounded-full animate-ping" />
+                  <>
+                    <span className="absolute bottom-3 right-1 w-2 h-2 bg-green-500 rounded-full" />
+                    <span className="absolute bottom-[10px]  w-3 h-3 right-4 bg-green-400 rounded-full animate-ping" />
+
+                  </>
+
+                  // <span className="absolute bottom-[10px]  w-3 h-3 right-4 bg-green-400 rounded-full animate-ping" />
                 )}
               </div>
             </Tooltip>
@@ -136,10 +175,10 @@ const NavBar = () => {
                   <h3 className="text-sm font-semibold text-gray-900"></h3>
                   <div className="relative group flex items-center">
                     <button
-                      className="text-xs text-gray-500 hover:text-gray-700 font-semibold w-4 h-4 flex justify-center items-center"
+                      className="text-xs text-gray-500 hover:text-gray-700  w-4 h-4 flex justify-center items-center"
                       onClick={handleClearNotifications}
                     >
-                      ✕
+                      Clear
                     </button>
                     {/* Tooltip */}
                     <div className="absolute right-0 bottom-6 w-max px-2 py-1 text-xs text-white bg-gray-700 rounded opacity-0 group-hover:opacity-100 transition-opacity">
@@ -150,22 +189,23 @@ const NavBar = () => {
 
 
                 {/* Notifications List */}
-                {notificationListData?.length > 0 ? (
-                  notificationListData?.map((notification, index) => (
-                    <div key={notification.id} className="py-2">
-                      <h3
-                        className="text-sm font-semibold text-gray-900 hover:cursor-pointer"
-                        onClick={() => handleMarkAsRead(notification?.id)}
-                      >
-                        {notification?.heading}
-                      </h3>
-                      <p className="text-gray-900 text-sm hover:cursor-pointer">{notification?.body}</p>
-                      {index !== notificationListData.length - 1 && <hr className="my-2 border-gray-300" />}
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-gray-700 text-sm">No notifications available</p>
-                )}
+                {notificationListLoading?.loading ? (<TableSkeleton2 />) :
+                  notificationListData?.length > 0 ? (
+                    notificationListData?.map((notification, index) => (
+                      <div key={notification.id} className="py-2">
+                        <h3
+                          className="text-sm font-semibold text-gray-900 hover:cursor-pointer"
+
+                        >
+                          {notification?.heading}
+                        </h3>
+                        <p className="text-gray-900 text-sm hover:cursor-pointer">{notification?.body}</p>
+                        {index !== notificationListData.length - 1 && <hr className="my-2 border-gray-300" />}
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-gray-700 text-sm">No notifications available</p>
+                  )}
               </div>
             )}
 
@@ -173,13 +213,7 @@ const NavBar = () => {
 
           </div>
           <button onClick={() => setIsOpen2(true)}>
-            <UserAvatar
-              name={userData?.name}
-              dotcolor="#E19F1E"
-              size={40}
-
-            // isActive={user.isActive}
-            />
+            <UserAvatar name={userData?.name} size={36} isActive={isActive} />
           </button>
           <Tooltip title='Logout' arrow disableInteractive>
             <LogOutIcon className="cursor-pointer hover:text-red-600" onClick={handleLogout} />
@@ -212,11 +246,11 @@ const NavBar = () => {
 
         {/* Sidebar Navigation */}
         <div className="mt-16  flex flex-col gap-4 px-4">
-          {navItems.map((item) => {
+          {navItems.map((item, index) => {
             const isActive = Array.isArray(item.path) ? item.path.includes(pathname) : pathname === item.path;
             return (
               <div
-                key={Array.isArray(item.path) ? item.path[0] : item.path}
+                key={index}
                 onClick={() => {
                   router.push(Array.isArray(item.path) ? item.path[0] : item.path);
                   setIsOpen(false); // Close menu on click

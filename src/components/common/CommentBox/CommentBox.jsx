@@ -23,14 +23,20 @@ import {
 } from "@/app/store/projectSlice";
 import { formatTime } from "../Helper/Helper";
 import TableSkeleton from "../TableSkeleton/TableSkeleton";
-import { storage, ref, uploadBytes, uploadBytesResumable, getDownloadURL } from "../../../configs/firebase";
-
+import {
+  storage,
+  ref,
+  uploadBytes,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "../../../configs/firebase";
 
 const ChatBox = ({ projectId, taskId }) => {
   const dispatch = useDispatch();
   const usersList = useSelector((state) => state.user?.employeeList?.data);
-  const CommentListData = useSelector((state) => state.project?.taskCommentList?.data);
-  console.log("CommentListData", CommentListData)
+  const CommentListData = useSelector(
+    (state) => state.project?.taskCommentList?.data
+  );
   const CommentListLoading = useSelector((state) => state.project);
 
   const [messages, setMessages] = useState([]);
@@ -92,8 +98,8 @@ const ChatBox = ({ projectId, taskId }) => {
       setMentionList(
         searchText
           ? usersList.filter((user) =>
-            user.name.toLowerCase().startsWith(searchText)
-          )
+              user.name.toLowerCase().startsWith(searchText)
+            )
           : usersList
       );
     } else {
@@ -168,14 +174,17 @@ const ChatBox = ({ projectId, taskId }) => {
         // ✅ Firebase URL formData.documents me store karo
         setFormData((prevData) => ({
           ...prevData,
-          documents: [...prevData.documents, { name: file.name, url: downloadURL, type: file.type }],
+          documents: [
+            ...prevData.documents,
+            { name: file.name, url: downloadURL, type: file.type },
+          ],
         }));
 
         setUploading(false);
       }
     );
   };
-  console.log("form Data", formData)
+  console.log("form Data", formData);
 
   // Start Recording
   // const startRecording = async () => {
@@ -241,45 +250,40 @@ const ChatBox = ({ projectId, taskId }) => {
     mediaRecorderRef.current.stop();
   };
 
-  // Send Message
   const handleSend = () => {
-    dispatch(addTaskComment({ formData, project_id: projectId, task_id: taskId, dispatch }));
+    dispatch(
+      addTaskComment({
+        formData,
+        project_id: projectId,
+        task_id: taskId,
+        dispatch,
+      })
+    ).then((response) => {
+      if (response?.data?.success == true)
+        setFormData(() => ({
+          project_id: "",
+          task_id: "",
+          documents: [],
+          audio_recording: "",
+          assigned_ids: [],
+          comments: "",
+        }));
+    });
 
     setTimeout(() => {
       scrollToTop();
     }, 100);
-    setMessages([])
-    setMessage("");
-    setSelectedFile(null);
-    setAudioURL(null);
-    setAudioBlob(null);
-    setMentionList([]);
   };
 
   // Delete Message
   const handleDelete = (id) => {
-    dispatch(deleteTaskComment({ id, project_id: projectId, task_id: taskId, dispatch }));
-  };
-
-  // Like Message
-  const handleLike = (id) => {
-    setMessages(
-      messages.map((msg) =>
-        msg.id === id ? { ...msg, liked: !msg.liked } : msg
-      )
-    );
-  };
-
-  // 🔹 Highlight mentions in text
-  const formatMessage = (text) => {
-    return text.split(" ").map((word, index) =>
-      word.startsWith("@") ? (
-        <span key={index} className="text-blue-600 font-bold">
-          {word}{" "}
-        </span>
-      ) : (
-        word + " "
-      )
+    dispatch(
+      deleteTaskComment({
+        id,
+        project_id: projectId,
+        task_id: taskId,
+        dispatch,
+      })
     );
   };
 
@@ -324,26 +328,11 @@ const ChatBox = ({ projectId, taskId }) => {
     dispatch(fetchUsers(sendData));
   }, [dispatch]);
 
-  // console.log("formDatat", formData);
-
   return (
     <div className=" ">
-      {/* Floating Chat Icon */}
-      {/* <button
-                className="bg-blue-500 text-white p-3 rounded-full shadow-lg hover:bg-blue-600 transition"
-                onClick={() => setIsChatOpen(!isChatOpen)}
-            >
-                <MessageSquare size={24} />
-            </button> */}
-
-      {/* Chat Box */}
-      {/* {isChatOpen && ( */}
       <div className="w-full p-2  border rounded-lg shadow-lg bg-white  bottom-16 ">
         <div className="flex justify-between items-center mb-2">
           <h2 className="font-semibold">Comment</h2>
-          {/* <button className="text-gray-500 hover:text-black" onClick={() => setIsChatOpen(false)}>
-                        ✖
-                    </button> */}
         </div>
 
         {/* Input Field with File & Audio Preview */}
@@ -355,7 +344,7 @@ const ChatBox = ({ projectId, taskId }) => {
                 name={user?.name}
                 dotcolor=""
                 size={24}
-                image={"https://via.placeholder.com/24?text=💬"}
+                // image={"https://via.placeholder.com/24?text=💬"}
                 isActive={user?.isActive}
               />
               <input
@@ -436,9 +425,15 @@ const ChatBox = ({ projectId, taskId }) => {
                     </PhotoView>
                   </PhotoProvider>
                 ) : (
-                  <div className="text-gray-700 flex gap-1">
+                  <div className="text-gray-700 flex gap-1 cursor-pointer">
                     <FileText size={20} color="#292929" />
-                    {selectedFile.name}
+                    <a
+                      href={selectedFile.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {selectedFile.name}
+                    </a>
                   </div>
                 )}
 
@@ -500,112 +495,107 @@ const ChatBox = ({ projectId, taskId }) => {
           </button>
         </div>
 
-        {/* Display Mentioned Users Below Input */}
-        {/* Display Mentioned Users Below Input */}
-
         {/* Messages */}
         <div className="space-y-3 p-2  max-h-64 overflow-y-auto ">
           <PhotoProvider>
             <div ref={chatStartRef} />
 
-            {CommentListData?.map((msg) => {
-              let fileData = null;
-              let parsedDocs;
+            {CommentListLoading?.taskDetailsLoading ? (
+              <TableSkeleton />
+            ) : (
+              CommentListData?.map((msg) => {
+                let fileData = null;
+                let parsedDocs;
 
-              try {
-                parsedDocs = typeof msg?.documents === "string" ? JSON.parse(msg.documents) : msg.documents;
-              } catch (error) {
-                console.error("Error parsing documents:", error);
-                parsedDocs = null;
-              }
-
-              if (Array.isArray(parsedDocs) && parsedDocs.length > 0) {
-                fileData = parsedDocs[0];
-              }
-
-              console.log("fileData: 🧘😁❌", fileData);
-              {/* try {
-                if (msg.documents) {
-                  const parsedDocs = typeof msg.documents === "string" ? JSON.parse(msg.documents) : msg.documents;
-
-                  if (Array.isArray(parsedDocs) && parsedDocs.length > 0) {
-                    fileData = parsedDocs.find(doc => doc.type === "image" || doc.type === "document") || parsedDocs[0];
-                  }
+                try {
+                  parsedDocs =
+                    typeof msg?.documents === "string"
+                      ? JSON.parse(msg.documents)
+                      : msg.documents;
+                } catch (error) {
+                  console.error("Error parsing documents:", error);
+                  parsedDocs = null;
                 }
-              } catch (error) {
-                console.error("Error parsing documents JSON:", error);
-              } */}
 
-              return (
-                <div key={msg.id} className="flex gap-1 items-start group">
-                  <UserAvatar
-                    name={user?.name}
-                    dotcolor=""
-                    size={20}
-                    image={user?.image}
-                    isActive={user?.isActive}
-                  />
-                  <div className="bg-gray-100 p-2 rounded-lg w-fit max-w-[90%] relative">
-                    <span className="text-xs text-gray-500">{formatTime(msg.created_at)}</span>
+                if (Array.isArray(parsedDocs) && parsedDocs.length > 0) {
+                  fileData = parsedDocs[0];
+                }
 
+                return (
+                  <div key={msg.id} className="flex gap-1 items-start group">
+                    <UserAvatar
+                      name={user?.name}
+                      dotcolor=""
+                      size={20}
+                      image={user?.image}
+                      isActive={user?.isActive}
+                    />
+                    <div className="bg-gray-100 p-2 rounded-lg w-fit max-w-[90%] relative">
+                      <span className="text-xs text-gray-500">
+                        {formatTime(msg.created_at)}
+                      </span>
 
-                    {fileData?.type?.startsWith("image") && (
-                      <PhotoProvider>
-                        <PhotoView src={fileData.url}>
-                          <img
-                            src={fileData.url}
-                            alt={fileData.name}
-                            className="w-40 mt-2 rounded-md cursor-pointer"
-                          />
-                        </PhotoView>
-                      </PhotoProvider>
-                    )}
+                      {fileData?.type?.startsWith("image") && (
+                        <PhotoProvider>
+                          <PhotoView src={fileData.url}>
+                            <img
+                              src={fileData.url}
+                              alt={fileData.name}
+                              className="w-40 mt-2 rounded-md cursor-pointer"
+                            />
+                          </PhotoView>
+                        </PhotoProvider>
+                      )}
 
-                    {fileData?.type === "application/pdf" && (
-                      <div>
-                        <a
-                          href={fileData.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-600 hover:underline"
+                      {fileData?.type === "application/pdf" && (
+                        <div>
+                          <a
+                            href={fileData.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:underline"
+                          >
+                            {fileData.name}
+                          </a>
+                        </div>
+                      )}
+
+                      {msg.audio_recording && !msg.deleted && (
+                        <audio
+                          controls
+                          className="mt-2 border-2 rounded-md max-w-[99%]"
                         >
-                          {fileData.name}
-                        </a>
-                      </div>
-                    )}
+                          <source src={msg.audio_recording} type="audio/mp3" />
+                        </audio>
+                      )}
 
-
-                    {msg.audio_recording && !msg.deleted && (
-                      <audio controls className="mt-2 border-2 rounded-md max-w-[99%]">
-                        <source src={msg.audio_recording} type="audio/mp3" />
-                      </audio>
-                    )}
-
-
-                    {/* Text Message */}
-                    {msg?.comments && (
-                      <p
-                        className={`whitespace-pre-line ${msg.deleted ? "italic text-[12px] text-gray-500" : ""
+                      {/* Text Message */}
+                      {msg?.comments && (
+                        <p
+                          className={`whitespace-pre-line ${
+                            msg.deleted
+                              ? "italic text-[12px] text-gray-500"
+                              : ""
                           }`}
-                      >
-                        {msg?.comments || ""}
-                      </p>
-                    )}
+                        >
+                          {msg?.comments || ""}
+                        </p>
+                      )}
 
-                    {/* Like & Delete */}
-                    <div className="absolute -mt-2 top-2 right-1 hidden group-hover:flex gap-2">
-                      <button
-                        className="text-gray-500 hover:text-red-500"
-                        onClick={() => handleDelete(msg.id)}
-                      >
-                        <Trash2 size={12} />
-                      </button>
+                      {/* Like & Delete */}
+                      <div className="absolute -mt-2 top-2 right-1 hidden group-hover:flex gap-2">
+                        <button
+                          className="text-gray-500 hover:text-red-500"
+                          onClick={() => handleDelete(msg.id)}
+                        >
+                          <Trash2 size={12} />
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
-
+                );
+              })
+            )}
           </PhotoProvider>
         </div>
       </div>
@@ -614,4 +604,3 @@ const ChatBox = ({ projectId, taskId }) => {
   );
 };
 export default ChatBox;
-
