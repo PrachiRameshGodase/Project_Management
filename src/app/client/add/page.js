@@ -67,10 +67,13 @@ const AddClient = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,10}$/;
+
         let newErrors = {
             name: formData?.name ? false : true,
             email: formData?.email ? false : true,
-            password: formData?.password ? false : true,
+            password: !formData?.password || !passwordRegex.test(formData.password),
+
         }
         setErrors(newErrors);
         const hasAnyError = Object.values(newErrors).some(
@@ -111,7 +114,7 @@ const AddClient = () => {
 
     return (
         <LayOut> <div className="sm:flex mx-auto sm:mx-0  flex-col items-center justify-center">
-            <div className="text-2xl tracking-tight sm:ml-[7px] text-[32px]  w-full">{!itemId ? "Add New Client": "Update Client"}</div>
+            <div className="text-2xl tracking-tight sm:ml-[7px] text-[32px]  w-full">{!itemId ? "Add New Client" : "Update Client"}</div>
 
             <div className="sm:flex   justify-between items-center h-screen mx-auto sm:-mt-16  xl:lg:-mt-18">
                 <form className="sm:w-[690px] h-[656px] bg-white p-3 sm:p-8 rounded-lg space-y-8" onSubmit={handleSubmit}>
@@ -180,7 +183,7 @@ const AddClient = () => {
                             </button>
                             {errors?.password && ( // Ensure it's checking for password errors, not phone_number
                                 <p className="text-red-500 text-sm flex items-center mt-2">
-                                    {OtherIcons.error_svg} <span className="ml-1">Please Fill Password</span>
+                                    {OtherIcons.error_svg} <span className="ml-1">Password must be at least **6-10 characters** long, contain an uppercase letter, a lowercase letter, a number, and a special character</span>
                                 </p>
                             )}
                         </div>
@@ -223,7 +226,7 @@ const AddClient = () => {
                             {usersLoading?.loading ? (
                                 <div className="w-5 h-5 border-2 border-gray-100 border-t-transparent rounded-full animate-spin"></div>
                             ) : (
-                               itemId? "Update": "Submit"
+                                itemId ? "Update" : "Submit"
                             )}
                         </button>
                     </div>

@@ -78,11 +78,13 @@ const AddUser = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,10}$/;
+
     let newErrors = {
       first_name: formData?.first_name ? false : true,
       email: formData?.email ? false : true,
-      password: formData?.password ? false : true,
-    }
+      password: !formData?.password || !passwordRegex.test(formData.password),
+    };
     setErrors(newErrors);
     const hasAnyError = Object.values(newErrors).some(
       (value) => value === true
@@ -224,7 +226,7 @@ const AddUser = () => {
                 </button>
                 {errors?.password && ( // Ensure it's checking for password errors, not phone_number
                   <p className="text-red-500 text-sm flex items-center mt-2">
-                    {OtherIcons.error_svg} <span className="ml-1">Please Fill Password</span>
+                    {OtherIcons.error_svg} <span className="ml-1">Password must be at least **6-10 characters** long, contain an uppercase letter, a lowercase letter, a number, and a special character</span>
                   </p>
                 )}
               </div>
