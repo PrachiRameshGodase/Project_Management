@@ -98,8 +98,8 @@ const ChatBox = ({ projectId, taskId }) => {
       setMentionList(
         searchText
           ? usersList.filter((user) =>
-              user.name.toLowerCase().startsWith(searchText)
-            )
+            user.name.toLowerCase().startsWith(searchText)
+          )
           : usersList
       );
     } else {
@@ -336,17 +336,20 @@ const ChatBox = ({ projectId, taskId }) => {
         </div>
 
         {/* Input Field with File & Audio Preview */}
-        <div className="flex justify-between items-center  ">
+        <div className="flex  justify-between items-center  ">
           <div className="relative border w-full rounded-lg p-1 mb-2 ">
             <div className="flex items-center ">
-              {/* Attach File */}
-              <UserAvatar
-                name={user?.name}
-                dotcolor=""
-                size={24}
-                // image={"https://via.placeholder.com/24?text=💬"}
-                isActive={user?.isActive}
-              />
+              <div className=" hidden sm:block">
+                {/* Attach File */}
+                <UserAvatar
+                  name={user?.name}
+                  dotcolor=""
+                  size={24}
+                  // image={"https://via.placeholder.com/24?text=💬"}
+                  isActive={user?.isActive}
+                  className='hidden sm:block'
+                />
+              </div>
               <input
                 type="file"
                 ref={fileInputRef}
@@ -369,7 +372,7 @@ const ChatBox = ({ projectId, taskId }) => {
 
               <button
                 onClick={handleMentionClick}
-                className="p-1 text-[26px] text-gray-500 hover:text-black cursor-pointer"
+                className="p-1 hidden sm:block  text-[26px] text-gray-500 hover:text-black cursor-pointer"
               >
                 @
               </button>
@@ -396,7 +399,7 @@ const ChatBox = ({ projectId, taskId }) => {
 
               {/* Mention List Dropdown */}
               {mentionList.length > 0 && (
-                <ul className="absolute -mt-56 max-h-[180px]  overflow-y-auto bg-white border rounded-md shadow-md w-full z-10">
+                <ul className="absolute  -mt-56 max-h-[180px]  overflow-y-auto bg-white border rounded-md shadow-md w-full z-10">
                   {mentionList.map((user, index) => (
                     <li
                       key={index}
@@ -572,11 +575,10 @@ const ChatBox = ({ projectId, taskId }) => {
                       {/* Text Message */}
                       {msg?.comments && (
                         <p
-                          className={`whitespace-pre-line ${
-                            msg.deleted
-                              ? "italic text-[12px] text-gray-500"
-                              : ""
-                          }`}
+                          className={`whitespace-pre-line ${msg.deleted
+                            ? "italic text-[12px] text-gray-500"
+                            : ""
+                            }`}
                         >
                           {msg?.comments || ""}
                         </p>
