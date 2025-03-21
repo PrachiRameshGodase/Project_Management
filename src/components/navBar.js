@@ -176,7 +176,7 @@ const NavBar = () => {
 
             {/* Dropdown Menu */}
             {isOpen3 && (
-              <div className="bg-white border border-gray-200 p-3 rounded-lg shadow-lg w-[300px] absolute right-0 top-12 z-50">
+              <div className="bg-white border border-gray-200 p-3 rounded-lg shadow-lg ml-28 sm:ml-0  w-[300px] fixed sm:absolute right-2 top-16 sm:top-12 z-50">
                 {/* Header with Clear Button */}
                 <div className="flex justify-between items-center mb-1">
                   <h3 className="text-gray-900 text-sm font-semibold"></h3>

@@ -86,15 +86,15 @@ const Drawer01 = ({
       animate={{ x: 0 }}
       exit={{ x: "100%" }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className="fixed top-0 right-0 h-full w-[456px] bg-white shadow-lg z-50 drawer-scrollbar">
-      <div className="p-2 flex justify-end items-center">
+      className="fixed top-0 right-0 h-full w-[320px] sm:w-[456px] bg-white shadow-lg z-50 drawer-scrollbar">
+      <div className="p-2 flex justify-end items-center ">
         <button
           onClick={() => setIsDrawerOpen(false)}
           className="text-gray-700 hover:text-black">
           <CircleX size={30} strokeWidth={1.5} />
         </button>
       </div>
-      <div className="p-4 overflow-y-auto h-full ">
+      <div className="p-1 sm:p-4 overflow-y-auto h-full  ">
         <div className="flex justify-between">
           <div className="w-full h-[69px] flex items-center justify-between ">
             <div className="text-xl text-gray-700 ">
@@ -156,7 +156,7 @@ const Drawer01 = ({
         </div>
         {/* Project Details Section */}
         <div className="mb-4 mt-4 ml-[5px]">
-          <p className="text-xl leading-6">Project Details</p>
+          <p className="text-xl leading-6">Project Details </p>
           <ul className=" h-[22px] mt-[20px] ">
             <li className="flex mb-2 gap-4">
               <span className="text-gray-400 w-[120px] text-[14px]">
@@ -244,7 +244,7 @@ export default Drawer01;
 export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId2, itemId, details }) => {
   const dispatch = useDispatch();
   const router = useRouter()
-  const userData =useUserData()
+  const userData = useUserData()
   const documents = details?.attachments ? JSON.parse(details?.attachments) : []
   const [selectedStatus, setSelectedStatus] = useState("");
   const [isActive, setIsActive] = useState(details?.task_status || "");
@@ -309,7 +309,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId2, itemId, details })
       animate={{ x: 0 }}
       exit={{ x: "100%" }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className="fixed top-0 right-0 h-full w-[456px] bg-white shadow-lg z-50 drawer-scrollbar">
+      className="fixed top-0 right-0 h-full w-[320px] sm:w-[456px] bg-white shadow-lg z-50 drawer-scrollbar">
       <div className="p-2 flex justify-end items-center">
         <button
           onClick={() => setIsDrawerOpen(false)}
@@ -317,7 +317,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId2, itemId, details })
           <X size={18} />
         </button>
       </div>
-      <div className="p-4 overflow-y-auto h-full">
+      <div className="p-1 sm:p-4 overflow-y-auto h-full">
         <div className="flex justify-between">
           <div className="w-full flex items-center gap-[10px] ">
             <div className="text-xl text-gray-700">
