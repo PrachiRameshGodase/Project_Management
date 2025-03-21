@@ -162,6 +162,7 @@ const AddProject = () => {
                                     value={formData?.project_name}
                                     onChange={handleChange}
                                     name='project_name'
+                                    autoComplete='off'
                                 />
                                 {errors?.project_name && (
                                     <p className="flex text-red-500 text-sm items-center mt-2 sm:ml-7">
@@ -267,7 +268,7 @@ const AddProject = () => {
                         </div>
                         <div className="justify-between sm:flex">
                             <label className="text-[20px] block">Description</label>
-                            <textarea className="border border-[#0000004D] h-40 p-2 rounded-lg text-m w-[310px] md:w-[400px] placeholder:text-gray-600 sm:ml-[35px] sm:w-[350px]" type='text' placeholder='Enter Description....' value={formData?.description} onChange={handleChange} name='description' />
+                            <textarea className="border border-[#0000004D] h-40 p-2 rounded-lg text-m w-[310px] md:w-[400px] placeholder:text-gray-600 sm:ml-[35px] sm:w-[350px]" type='text' placeholder='Enter Description....' value={formData?.description} onChange={handleChange} name='description' autoComplete='off'/>
                         </div>
 
                         <div className='justify-end w-full sm:flex '>

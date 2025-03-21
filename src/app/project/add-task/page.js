@@ -173,6 +173,7 @@ const AddTask = () => {
                                     value={formData?.task_title}
                                     onChange={handleChange}
                                     name='task_title'
+                                    autoComplete='off'
                                 />
                                 {errors?.task_title && (
                                     <p className="flex text-red-500 text-sm items-center mt-1 sm:ml-7">
@@ -232,7 +233,7 @@ const AddTask = () => {
 
                         <div className="justify-between sm:flex">
                             <label className="text-[20px] block">Link</label>
-                            <input className="border border-gray-400 h-10 p-2 rounded-lg text-m w-[310px] md:w-[400px] placeholder:text-gray-400 sm:ml-[78px] sm:w-[350px]" type='text' placeholder='Enter Link' value={formData?.link} name='link' onChange={handleChange} />
+                            <input className="border border-gray-400 h-10 p-2 rounded-lg text-m w-[310px] md:w-[400px] placeholder:text-gray-400 sm:ml-[78px] sm:w-[350px]" type='text' placeholder='Enter Link' value={formData?.link} name='link' onChange={handleChange} autoComplete='off'/>
                         </div>
 
                         <div className="justify-between sm:flex">
@@ -262,7 +263,7 @@ const AddTask = () => {
                         </div>
                         <div className="justify-between sm:flex">
                             <label className="text-[20px] block">Description</label>
-                            <textarea className="border border-gray-300 h-40 p-2 rounded-lg text-m w-[310px] md:w-[400px] placeholder:text-gray-400 sm:ml-[35px] sm:w-[350px]" type='text' placeholder='Enter Description' value={formData?.description} name='description' onChange={handleChange} />
+                            <textarea className="border border-gray-300 h-40 p-2 rounded-lg text-m w-[310px] md:w-[400px] placeholder:text-gray-400 sm:ml-[35px] sm:w-[350px]" type='text' placeholder='Enter Description' value={formData?.description} name='description' onChange={handleChange} autoComplete='off'/>
                         </div>
 
                         <div className='justify-end w-full sm:flex'>

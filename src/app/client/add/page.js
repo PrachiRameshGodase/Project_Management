@@ -80,10 +80,10 @@ const AddClient = () => {
             (value) => value === true
         );
         if (hasAnyError) {
-            await Swal.fire({
-                text: "Please fill all the required fields.",
-                confirmButtonText: "OK",
-            });
+            // await Swal.fire({
+            //     text: "Please fill all the required fields.",
+            //     confirmButtonText: "OK",
+            // });
             return;
         } else {
             try {
@@ -113,7 +113,7 @@ const AddClient = () => {
 
     const handleClose = () => {
         router.push(`/client/list`)
-        localStorage.removeItem("itemId", itemId2)
+        // localStorage.removeItem("itemId", itemId2)
     }
 
 
@@ -143,6 +143,7 @@ const AddClient = () => {
                                 placeholder="Enter Client Name"
                                 value={formData.name}
                                 onChange={handleChange}
+                                autoComplete='off'
                             />
                             {errors?.name && (
                                 <p className="flex text-red-500 text-sm items-center mt-2">
@@ -216,7 +217,7 @@ const AddClient = () => {
                     <div className="justify-between items-center sm:flex">
                         <label className="text-[20px] block">Contact Person Name</label>
                         <input className="border border-[#0000004D] h-10 p-2 rounded-lg text-m w-[310px] placeholder:text-gray-400 sm:ml-3 sm:w-[400px]" type='text' placeholder='Enter Name' value={formData.contact_name} name='contact_name'
-                            onChange={handleChange} />
+                            onChange={handleChange} autoComplete='off'/>
                     </div>
 
                     {/* <div className="justify-between items-center sm:flex">

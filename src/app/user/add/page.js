@@ -90,10 +90,10 @@ const AddUser = () => {
       (value) => value === true
     );
     if (hasAnyError) {
-      await Swal.fire({
-        text: "Please fill all the required fields.",
-        confirmButtonText: "OK",
-      });
+      // await Swal.fire({
+      //   text: "Please fill all the required fields.",
+      //   confirmButtonText: "OK",
+      // });
       return;
     } else {
       try {
@@ -255,6 +255,7 @@ const AddUser = () => {
                 placeholder="Enter Phone Number"
                 value={formData.phone_number}
                 onChange={handleChange}
+                autoComplete='off'
               />
             </div>
 

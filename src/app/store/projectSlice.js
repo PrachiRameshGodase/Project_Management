@@ -57,7 +57,7 @@ export const updateProjectStatus = createAsyncThunk("project/updateProjectStatus
     const response = await axiosInstance.post(`/project_status`, { id, status });
     if (response?.data?.success === true) {
       toast.success(response?.data?.message);
-      router.push("/project/list"); // Navigate on success
+      // router.push("/project/list"); // Navigate on success
     }
     return response.data;
   } catch (error) {
