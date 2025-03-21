@@ -7,6 +7,8 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
+import { Tooltip } from '@mui/material';
+
 
 const AddClient = () => {
     const router = useRouter();
@@ -195,10 +197,18 @@ const AddClient = () => {
                             >
                                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                             </button>
-                            {errors?.password && ( // Ensure it's checking for password errors, not phone_number
-                                <p className="text-red-500 text-sm flex items-center mt-2">
-                                    {OtherIcons.error_svg} <span className="ml-1">Password must be 6-10 characters long, containing at least one uppercase letter, one lowercase letter, one number, and one special character (@, $, !, %, *, ?, &).</span>
-                                </p>
+                            {errors?.password && (
+                                <Tooltip
+                                    title="Password must be 6-10 characters long, containing at least one uppercase letter, one lowercase letter, one number, and one special character (@, $, !, %, *, ?, &)."
+                                    arrow
+                                >
+                                    <p className="text-red-500 text-sm flex items-center mt-2 cursor-pointer">
+                                        {OtherIcons.error_svg}
+                                        <span className="ml-1">
+                                            Password must be 6-10  characters long, containing...
+                                        </span>
+                                    </p>
+                                </Tooltip>
                             )}
                         </div>
                     </div>
@@ -217,7 +227,7 @@ const AddClient = () => {
                     <div className="justify-between items-center sm:flex">
                         <label className="text-[20px] block">Contact Person Name</label>
                         <input className="border border-[#0000004D] h-10 p-2 rounded-lg text-m w-[310px] placeholder:text-gray-400 sm:ml-3 sm:w-[400px]" type='text' placeholder='Enter Name' value={formData.contact_name} name='contact_name'
-                            onChange={handleChange} autoComplete='off'/>
+                            onChange={handleChange} autoComplete='off' />
                     </div>
 
                     {/* <div className="justify-between items-center sm:flex">

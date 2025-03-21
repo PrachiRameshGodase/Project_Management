@@ -96,7 +96,7 @@ const ClientList = () => {
                     {/* Left Section (Heading + Count) */}
                     <div className="flex">
                         <p className="text-[20px] sm:text-[30px] leading-[32px] tracking-[-1.5px]">All Client list</p>
-                        <p className="font-bold p-2 rounded-full text-[10.16px] leading-[12.19px] text-[#400F6F] mt-3 ml-2 bg-[#f0e7fa] flex items-center justify-center w-[50px] h-[10px]">
+                        <p className="font-bold p-2 rounded-full text-[10.16px] leading-[12.19px] text-[#400F6F] mt-3 ml-2 bg-[#f0e7fa] flex items-center justify-center w-[60px] h-[10px]">
                             {totalCount} total
                         </p>
                         <p

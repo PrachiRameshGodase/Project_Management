@@ -2,7 +2,7 @@
 import { fetchUsers } from '@/app/store/userSlice';
 import { OtherIcons } from '@/assests/icons';
 import Dropdown01, { DropdownStatus } from '@/components/common/Dropdown/Dropdown01';
-import { designation, status } from '@/components/common/Helper/Helper';
+import { designation, designationFilter, status } from '@/components/common/Helper/Helper';
 import { useDebounceSearch } from '@/components/common/Helper/HelperFunction';
 import Pagenation from '@/components/common/Pagenation/Pagenation';
 import SearchComponent from '@/components/common/SearchComponent/SearchComponent';
@@ -91,7 +91,7 @@ const UserList = () => {
           {/* Left Section (Heading + Count) */}
           <div className="flex">
             <p className="text-[20px] sm:text-[30px]  leading-[32px] tracking-[-1.5px]">All User list</p>
-            <p className="font-bold p-2 rounded-full text-[10.16px] leading-[12.19px] text-[#400F6F] mt-3 ml-2 bg-[#f0e7fa] flex items-center justify-center w-[50px] h-[10px]">
+            <p className="font-bold p-2 rounded-full text-[10.16px] leading-[12.19px] text-[#400F6F] mt-3 ml-2 bg-[#f0e7fa] flex items-center justify-center w-[60px] h-[10px]">
               {totalCount} total
             </p>
             <p
@@ -112,7 +112,7 @@ const UserList = () => {
               selectedValue={selectedStatus}
               onSelect={setSelectedStatus}
             />
-            <Dropdown01 options={designation} selectedValue={selectedDesignation} onSelect={setSelectedDesignation} label="View" icon={OtherIcons.view_svg} />
+            <Dropdown01 options={designationFilter} selectedValue={selectedDesignation} onSelect={setSelectedDesignation} label="View" icon={OtherIcons.view_svg} />
             <SearchComponent onSearch={onSearch} section={searchTrigger} />
 
             <div className="w-[1px] h-[40px] bg-gray-400 opacity-40" />
@@ -166,7 +166,7 @@ const UserList = () => {
                 <button className="w-[49px] h-[44px] bg-[#048339] text-white rounded-lg flex items-center justify-center text-2xl" onClick={() => router.push('/user/add')}>+</button>
               </Tooltip>
               <Dropdown01 options={status} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />
-              <Dropdown01 options={designation} selectedValue={selectedDesignation} onSelect={setSelectedDesignation} label="View" icon={OtherIcons.view_svg} />
+              <Dropdown01 options={designationFilter} selectedValue={selectedDesignation} onSelect={setSelectedDesignation} label="View" icon={OtherIcons.view_svg} />
               {/* <SearchComponent /> */}
             </div>
 
@@ -215,9 +215,11 @@ const UserList = () => {
                         <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] " onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.phone_number}</td>
                         <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px]" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.designation}</td>
                         <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] " onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.joining_date}</td>
+                        <Tooltip title={user?.status == 0 ? 'User Is Active' : 'User Is Inactive'} arrow disableInteractive>
                         <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] flex justify-center items-center" onClick={() => router.push(`/user/details?id=${user?.id}`)}>
                           <span className={`w-3 h-3 inline-block  rounded-full ${user.status == 0 ? 'bg-green-600' : 'bg-red-600'}`}></span>
                         </td>
+                        </Tooltip>
                       </tr>
                     ))
                   ) : (<tr>

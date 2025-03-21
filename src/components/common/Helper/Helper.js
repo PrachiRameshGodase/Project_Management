@@ -1,6 +1,7 @@
 export const status=["All", "Active", "Inactive"]
 export const statusProject = ["To Do","In Progress", "Under Review", 'Completed']
-export const designation=["Maneger", "Team Lead", "Tester", "Jr. Developer", "Sr. Developer"]
+export const designation = ["Manager", "Team Lead", "Tester", "Jr. Developer", "Sr. Developer"];
+export const designationFilter = ["All","Manager", "Team Lead", "Tester", "Jr. Developer", "Sr. Developer"];
 export const view=["Card", "List"]
 export const projectSortConstant=["Project Name", "Team"]
 export const departmentOptions=["IT", "Marketing"]
