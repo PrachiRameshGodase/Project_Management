@@ -133,7 +133,7 @@ export const updateProjectTaskStatus = createAsyncThunk("task/updateProjectTaskS
   try {
     const response = await axiosInstance.post(`/task_status`, { id, task_status,task_id, project_id });
     if (response?.data?.success === true) {
-      toast.success(response?.data?.message);
+      // toast.success(response?.data?.message);
       // router.push("/project/list"); // Navigate on success
       dispatch(fetchProjectTasks({ project_id: project_id,id: task_id }))
       dispatch(fetchProjectTaskDetails(id))
@@ -180,12 +180,20 @@ export const fetchTaskComment = createAsyncThunk(
 
 export const addTaskComment = createAsyncThunk(
   "task/addTaskComment",
-  async ({formData, project_id, task_id, dispatch}, { rejectWithValue }) => {
+  async ({formData, project_id, task_id, dispatch,setFormData}, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post(`/comment/create`, formData);
       if (response?.data?.success === true) {
         toast.success(response?.data?.message);
-        dispatch(fetchTaskComment({ project_id: project_id, task_id}))
+        dispatch(fetchTaskComment({ project_id, task_id}))
+        setFormData({
+          // project_id: "",
+          // task_id: "",
+          documents: [],
+          audio_recording: "",
+          assigned_ids: [],
+          comments: "",
+        });
       }
       return response.data;
 

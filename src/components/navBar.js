@@ -79,21 +79,25 @@ const NavBar = () => {
 
   const [hasNotificationBlink, setHasNotificationBlink] = useState(false);
 
-  const hasNotification = notificationListData?.some(
-    (notification) => notification.is_mark_read === 0
-  );
-
+  const hasNotification = notificationListData?.some((notification) => notification?.is_mark_read == 0);
+// console.log("notificationListData",notificationListData)
+//   console.log("hasNotification", hasNotification);
+//   console.log("hasNotificationBlink", hasNotificationBlink);
 
   useEffect(() => {
+    let interval;
+
     if (hasNotification) {
-      const interval = setInterval(() => {
+      interval = setInterval(() => {
         setHasNotificationBlink((prev) => !prev);
       }, 1000); // Blink every 1 second
-
-      return () => clearInterval(interval); // Cleanup interval
     } else {
-      setHasNotificationBlink(false); // Ensure it stops blinking when no unread notifications
+      setHasNotificationBlink(false); // Stop blinking immediately` if no unread notifications
     }
+
+    return () => {
+      if (interval) clearInterval(interval); // Ensure cleanup of interval
+    };
   }, [hasNotification]); // Depend on hasNotification
 
 
@@ -157,13 +161,13 @@ const NavBar = () => {
 
               >
                 <Bell className="h-6 text-gray-700 w-6" />
-                {isOpen4 &&
+                {/* {isOpen4 &&
                   <>
                     <span className="bg-green-500 h-2 rounded-full w-2 absolute bottom-2 right-0" />
                     <span className="bg-green-400 h-3 rounded-full w-3 -right-[2px] absolute animate-ping bottom-[5px]" />
                   </>
-                }
-                {hasNotification && hasNotificationBlink && (
+                } */}
+                {isOpen4 && hasNotification && hasNotificationBlink && (
                   <>
                     <span className="bg-green-500 h-2 rounded-full w-2 absolute bottom-3 right-1" />
                     <span className="bg-green-400 h-3 rounded-full w-3 absolute animate-ping bottom-[10px] right-4" />
