@@ -67,7 +67,7 @@ const NavBar = () => {
     fetchNotifications();
 
     // Set interval to call API every 2 minutes (120,000 ms)
-    const interval = setInterval(fetchNotifications, 12000);
+    const interval = setInterval(fetchNotifications, 120000);
 
     // Cleanup function to clear interval when component unmounts
     return () => clearInterval(interval);

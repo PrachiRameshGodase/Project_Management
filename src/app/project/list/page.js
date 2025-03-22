@@ -63,23 +63,54 @@ const ProjectList = () => {
   // filter
   const [selectedStatus, setSelectedStatus] = useState('View');
   // filter
-
   useEffect(() => {
-    const sendData = {
+    if (userData?.is_client == 1) {
+      const sendData = {
+        client_id: userData?.id,
+        limit: itemsPerPage,
+        page: currentPage,
+        ...(searchTermFromChild ? { search: searchTermFromChild } : {}),
+        ...(selectedSortBy && { sort_by: selectedSortBy, sort_order: sortOrder }),
+        ...(selectedDesignation && { designation: selectedDesignation }),
 
-      limit: itemsPerPage,
-      page: currentPage,
-      ...(searchTermFromChild ? { search: searchTermFromChild } : {}),
-      ...(selectedSortBy && { sort_by: selectedSortBy, sort_order: sortOrder }),
-      ...(selectedDesignation && { designation: selectedDesignation }),
+        // ...(selectedStatus !== null && selectedStatus !== undefined
+        //   ? { status: selectedStatus }
+        //   : {}),
+      };
+      dispatch(fetchProjects(sendData));
+    }
+    else if (userData?.is_employee == 1) {
+      const sendData = {
+        team_id: userData?.id,
+        limit: itemsPerPage,
+        page: currentPage,
+        ...(searchTermFromChild ? { search: searchTermFromChild } : {}),
+        ...(selectedSortBy && { sort_by: selectedSortBy, sort_order: sortOrder }),
+        ...(selectedDesignation && { designation: selectedDesignation }),
 
-      // ...(selectedStatus !== null && selectedStatus !== undefined
-      //   ? { status: selectedStatus }
-      //   : {}),
-    };
+        // ...(selectedStatus !== null && selectedStatus !== undefined
+        //   ? { status: selectedStatus }
+        //   : {}),
+      };
+      dispatch(fetchProjects(sendData));
+    } else if(userData?.is_admin==1) {
+      const sendData = {
+        team_id: userData?.id,
+        limit: itemsPerPage,
+        page: currentPage,
+        ...(searchTermFromChild ? { search: searchTermFromChild } : {}),
+        ...(selectedSortBy && { sort_by: selectedSortBy, sort_order: sortOrder }),
+        ...(selectedDesignation && { designation: selectedDesignation }),
 
-    dispatch(fetchProjects(sendData));
-  }, [searchTrigger, dispatch, selectedStatus, selectedDesignation]);
+        // ...(selectedStatus !== null && selectedStatus !== undefined
+        //   ? { status: selectedStatus }
+        //   : {}),
+      };
+      dispatch(fetchProjects(sendData));
+    }
+
+
+  }, [searchTrigger, dispatch, selectedStatus, selectedDesignation, userData]);
 
 
   // filter short-list

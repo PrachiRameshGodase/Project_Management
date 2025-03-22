@@ -231,8 +231,8 @@ const Drawer01 = ({
         </div>
 
         {/* Comment Section */}
-        <div className="mt-[390px] mb-[20px]">
-          <CommentBox projectId={itemId} taskId="" />
+        <div className="mt-[250px] mb-[20px]">
+          <CommentBox projectId={Number(itemId)} taskId="" />
         </div>
       </div>
     </motion.div>
@@ -487,8 +487,8 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId2, itemId, details })
 
                     </div>
                 </div> */}
-        <div className="mt-[390px] mb-[20px]">
-          <CommentBox projectId={itemId2} taskId={itemId} />
+        <div className="mt-[250px] mb-[20px]">
+          <CommentBox projectId={Number(itemId2)} taskId={itemId} />
         </div>
       </div>
     </motion.div>
