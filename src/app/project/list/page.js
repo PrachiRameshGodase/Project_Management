@@ -95,7 +95,7 @@ const ProjectList = () => {
       dispatch(fetchProjects(sendData));
     } else if(userData?.is_admin==1) {
       const sendData = {
-        team_id: userData?.id,
+       
         limit: itemsPerPage,
         page: currentPage,
         ...(searchTermFromChild ? { search: searchTermFromChild } : {}),
