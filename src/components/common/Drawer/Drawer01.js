@@ -275,7 +275,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId2, itemId, details })
       setSelectedStatus(value);
 
       // Dispatch updateUserStatus with the new status
-      dispatch(updateTaskStatus({ id: itemId, status: value, dispatch, project_id: itemId2 }));
+      dispatch(updateTaskStatus({ id: itemId, status: value, dispatch, project_id:Number(itemId2) }));
     }
   };
   const handleToggleStatus = async (event) => {
@@ -283,7 +283,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId2, itemId, details })
 
     const result = await Swal.fire({
       text: `Do you want to ${newStatus === 0 ? "Active" : "Inactive"
-        } this Project?`,
+        } this Task?`,
       showCancelButton: true,
       confirmButtonText: "Yes",
       cancelButtonText: "No",
@@ -294,7 +294,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId2, itemId, details })
 
       // Dispatch updateUserStatus with the new status
       dispatch(
-        updateProjectTaskStatus({ id: itemId, task_status: newStatus, dispatch, project_id: itemId2 })
+        updateProjectTaskStatus({ id: itemId, task_status: newStatus, dispatch, project_id:itemId2})
       );
     }
   };
@@ -349,7 +349,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId2, itemId, details })
             selectedValue={details?.status}
             onSelect={(value) => handleStatusChange(value)}
             label="Status"
-            className="w-[150px]"
+            className="w-[140px]"
           />
           <div className="flex items-center mr-2">
             <label className="flex items-center cursor-pointer">

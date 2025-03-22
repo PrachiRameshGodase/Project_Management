@@ -1,4 +1,6 @@
+import { updateTaskStatus } from "@/app/store/projectSlice";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 
 const DraggableCard = ({ user, index, status, moveUser, moveCard }) => {
   const handleDragStart = (e) => {
@@ -114,8 +116,9 @@ const DroppableColumn = ({ status, users, moveUser, moveCard }) => {
   );
 };
 
-const KanBanView = ({ groupedUsers }) => {
-  console.log("groupedUsers", groupedUsers);
+const KanBanView = ({ groupedUsers, itemId2 }) => {
+  console.log("itemId2", itemId2)
+ const dispatch = useDispatch();
   // Define the required statuses
   const statuses = ["To Do", "In Progress", "Under Review", "Completed"];
 
@@ -129,9 +132,9 @@ const KanBanView = ({ groupedUsers }) => {
 
   console.log("columns", columns);
 
-  const moveUser = (userId, fromStatus, toStatus) => {
+  const moveUser = async (userId, fromStatus, toStatus) => {
     if (fromStatus === toStatus) return;
-
+  
     let userToMove;
     const updatedColumns = columns.map((group) => {
       if (group.status === fromStatus) {
@@ -143,21 +146,34 @@ const KanBanView = ({ groupedUsers }) => {
       }
       return group;
     });
-
+  
     if (!userToMove) return;
-
-    const finalColumns = updatedColumns.map((group) => {
-      if (group.status === toStatus) {
-        return {
-          ...group,
-          users: [...group.users, { ...userToMove, status: toStatus }],
-        };
-      }
-      return group;
-    });
-
-    setColumns(finalColumns);
+  
+    const { id } = userToMove;
+    console.log("iddd", id)
+      dispatch(
+        updateTaskStatus({
+          id: id,
+          status: toStatus,
+          dispatch,
+          project_id: Number(itemId2),
+        })
+      );
+  
+      const finalColumns = updatedColumns.map((group) => {
+        if (group.status === toStatus) {
+          return {
+            ...group,
+            users: [...group.users, { ...userToMove, status: toStatus }],
+          };
+        }
+        return group;
+      });
+  
+      setColumns(finalColumns);
+    
   };
+  
 
   const moveCard = (id, fromStatus, fromIndex, toIndex) => {
     const updatedColumns = columns.map((group) => {

@@ -147,10 +147,10 @@ const UserDetails = () => {
             <div className=" w-[260px] h-[69px] flex items-center gap-[12.21px] ">
               <UserAvatar name={userDetailData?.name} size={66} isActive={isActive3} />
 
-              <div className="text-[28px] text-gray-700">
-                <p className="font-medium flex w-full ">{`${userDetailData?.name || ""
+              <div className=" text-gray-700">
+                <p className="flex w-full text-[24px]">{`${userDetailData?.name || ""
                   }`}</p>
-                <p className="text-xs text-gray-500">
+                <p className="text-[15px] text-gray-500">
                   {userDetailData?.designation || ""}
                 </p>
               </div>

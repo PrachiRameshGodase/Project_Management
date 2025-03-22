@@ -148,7 +148,6 @@ const TaskList = () => {
 
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
-  const statusDetails = getStatusDetails(projectDetailData?.status);
   const handleToggleStatus = async (event) => {
     const newStatus = !isActive ? 1 : 0; // Toggle logic: Active (0) → Inactive (1), Inactive (1) → Active (0)
 
@@ -190,6 +189,17 @@ const TaskList = () => {
   }
   const isActive2 = projectDetailData?.project_status == 1 ? true : false
 
+  const statusDetails = (() => {
+    const completed = projectDetailData?.completed_tasks_count;
+    const total = projectDetailData?.total_tasks_count;
+    
+    
+    const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+    const color = percentage === 100 ? "#4CAF50" : "#3B82F6"; // Green if complete, else blue
+  
+    return { percentage, color };
+  })();
+
   return (
     <>
       {projectLoading?.loading ? (
@@ -222,7 +232,7 @@ const TaskList = () => {
                   selectedValue={projectDetailData?.status}
                   onSelect={(value) => handleStatusChange(value)}
                   label="Status"
-                  className="w-[150px]"
+                  className="w-[140px]"
                 />
               </div>
               <div className="flex max-[850px]:flex-col justify-between gap-5 md:gap-10 lg:gap-4 max-[1250px]:mt-4">
@@ -270,12 +280,12 @@ const TaskList = () => {
                             ? "translate-x-7 bg-[#048339]"
                             : "bg-[#E23703]"
                             }`}>
-                          {isActive == "0" && (
+                          {isActive == "1" && (
                             <span className="absolute inset-0 flex items-center justify-center text-white text-[10px]">
                               <Check size={16} />
                             </span>
                           )}
-                          {isActive == "1" && (
+                          {isActive == "0" && (
                             <span className="absolute inset-0 flex items-center justify-center text-white text-[10px]">
                               <X size={16} />
                             </span>
@@ -600,7 +610,7 @@ const TaskList = () => {
             )}
 
             {selectedView == "Kanban" && (
-              <KanBanView groupedUsers={projectTaskListData} />
+              <KanBanView groupedUsers={projectTaskListData} itemId2={itemId}/>
             )}
           </div>
           <Drawer01

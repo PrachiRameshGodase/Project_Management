@@ -47,7 +47,7 @@ const DropdownStatus01 = ({
       ref={dropdownOutsideClick?.ref}
     >
       <div
-        className={`h-[34px] w-full flex items-center justify-between gap-2 border rounded-lg px-3 cursor-pointer transition-all duration-200
+        className={`h-[30px] w-full flex items-center justify-between gap-2 border rounded-lg px-3 cursor-pointer transition-all duration-200
           ${
             selected
               ? `border-[${getStatusColor(selected)}] text-[${getStatusColor(
@@ -63,7 +63,7 @@ const DropdownStatus01 = ({
         ref={dropdownOutsideClick?.buttonRef}
       >
         {icon}
-        <span className={`${!selected ? "text-gray-400" : ""}`}>
+        <span className={`${!selected ? "text-gray-400 text-[12px]" : "text-[13px]"}`}>
           {selected || selectedValue}
         </span>
 
@@ -91,8 +91,8 @@ const DropdownStatus01 = ({
             {options.map((option, index) => (
               <li
                 key={index}
-                className={`font-[400] text-[14px] leading-[16.8px] rounded flex items-center justify-start pl-2 cursor-pointer transition-all duration-200
-                  ${`text-[${getStatusColor(option)}] h-[35px] hover:shadow-md`}
+                className={`font-[400] text-[12px] leading-[16.8px] rounded flex items-center justify-start pl-2 cursor-pointer transition-all duration-200
+                  ${`text-[${getStatusColor(option)}] h-[30px] hover:shadow-md`}
                   ${selected === option ? "bg-opacity-50" : ""}`}
                 onClick={() => handleOptionSelect(option)}
               >

@@ -11,10 +11,12 @@ const Dropdown01 = ({ options, selectedValue, onSelect, label, icon }) => {
   const [selected, setSelected] = useState(selectedValue || ""); // Ensure default selection
 
   const handleOptionSelect = (value) => {
-    onSelect(value);
-    setSelected(value);
+    const newValue = value === "All" ? " " : value; // Convert "All" to an empty string
+    onSelect(newValue);
+    setSelected(newValue);
     dropdownOutsideClick.handleToggle();
   };
+  
 
   return (
     <div className="relative" ref={dropdownOutsideClick?.ref}>
@@ -33,7 +35,7 @@ const Dropdown01 = ({ options, selectedValue, onSelect, label, icon }) => {
         >
           {icon}
           <span className={`text-gray-700 ${!selected ? "text-gray-400" : ""}`}>
-            {selected || label}
+            {selected== " " ? "All" :selected || label}
           </span>
         </div>
       </Tooltip>
