@@ -69,12 +69,11 @@ const AddClient = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,10}$/;
 
         let newErrors = {
             name: formData?.name ? false : true,
             email: formData?.email ? false : true,
-            password: !formData?.password || !passwordRegex.test(formData.password),
+            password: formData?.password ? false : true,
 
         }
         setErrors(newErrors);
@@ -199,13 +198,13 @@ const AddClient = () => {
                             </button>
                             {errors?.password && (
                                 <Tooltip
-                                    title="Password must be 6-10 characters long, containing at least one uppercase letter, one lowercase letter, one number, and one special character (@, $, !, %, *, ?, &)."
+                                    title="Password must be 8 characters long, containing at least one uppercase letter, one lowercase letter, one number."
                                     arrow
                                 >
                                     <p className="text-red-500 text-sm flex items-center mt-2 cursor-pointer">
                                         {OtherIcons.error_svg}
                                         <span className="ml-1">
-                                            Password must be 6-10  characters long, containing...
+                                            Password must be 8 characters long, containing...
                                         </span>
                                     </p>
                                 </Tooltip>

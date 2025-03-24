@@ -1,7 +1,7 @@
 "use client"
 import { OtherIcons } from "@/assests/icons";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import UserAvatar from "./common/UserAvatar/UserAvatar";
 import { Bell, LogOutIcon, Trash } from "lucide-react";
@@ -10,12 +10,14 @@ import { Tooltip } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import useUserData from "./common/Helper/useUserData";
 import TableSkeleton, { TableSkeleton2 } from "./common/TableSkeleton/TableSkeleton";
+import { OutsideClick } from "./common/OutsideClick/OutsideClick";
 
 const NavBar = () => {
   const router = useRouter();
   const dispatch = useDispatch()
   const userData = useUserData()
   const pathname = usePathname();
+  const notificationDropDown = OutsideClick()
 
   const [isOpen, setIsOpen] = useState(false); // State for mobile menu
   const [isOpen2, setIsOpen2] = useState(false); // State for mobile menu
@@ -25,17 +27,21 @@ const NavBar = () => {
 
   const notificationListData = useSelector((state) => state.notification?.list?.data);
   const notificationListLoading = useSelector((state) => state.notification);
-
-  const isEmployee = userData?.is_employee == 0
-
+  console.log("userData?.is_employee ", userData?.is_employee)
+  const isEmployee = userData?.is_employee == 1
+  console.log("isEmployee", isEmployee)
+  const isClient = userData?.is_client == 1
+  console.log("isClient", isClient)
   const navItems = [
     { path: "/home", icon: OtherIcons.home_svg, label: "Home" },
-    { path: ["/user/list", "/user/add", "/user/details"], icon: OtherIcons.user_svg, label: "User" },
     { path: ["/project/list", "/project/add", "/project/details", "/project/add-task"], icon: OtherIcons.projects_svg, label: "Projects" },
-    isEmployee && { path: ["/client/list", "/client/add", "/client/details"], icon: OtherIcons.clients_svg, label: "Clients" },
+    (isClient || isEmployee) && [{ path: ["/user/list", "/user/add", "/user/details"], icon: OtherIcons.user_svg, label: "User" }],
+    isClient && [{ path: ["/client/list", "/client/add", "/client/details"], icon: OtherIcons.clients_svg, label: "Clients" }]
   ]
 
-  // console.log("notificationListData", notificationListData)
+
+
+
 
   useEffect(() => {
     const token = localStorage.getItem("access_token");
@@ -52,26 +58,23 @@ const NavBar = () => {
 
   };
 
+  const fetchNotifications = useCallback(() => {
+    if (!userData?.id) return;
 
 
+    dispatch(fetchNotification({ user_id: userData.id }));
+
+  }, [dispatch, userData?.id]);
 
   useEffect(() => {
-    if (!userData?.id) return; // Prevent unnecessary calls
+    if (!userData?.id) return;
 
-    const fetchNotifications = () => {
+    fetchNotifications(); // Fetch immediately
 
-      dispatch(fetchNotification({ user_id: userData.id }));
-    };
+    const interval = setInterval(fetchNotifications, 6000);
 
-    // Call API immediately
-    fetchNotifications();
-
-    // Set interval to call API every 2 minutes (120,000 ms)
-    const interval = setInterval(fetchNotifications, 120000);
-
-    // Cleanup function to clear interval when component unmounts
-    return () => clearInterval(interval);
-  }, [dispatch, userData?.id]);
+    return () => clearInterval(interval); // Cleanup interval
+  }, [fetchNotifications]);
 
 
 
@@ -80,9 +83,9 @@ const NavBar = () => {
   const [hasNotificationBlink, setHasNotificationBlink] = useState(false);
 
   const hasNotification = notificationListData?.some((notification) => notification?.is_mark_read == 0);
-// console.log("notificationListData",notificationListData)
-//   console.log("hasNotification", hasNotification);
-//   console.log("hasNotificationBlink", hasNotificationBlink);
+  // console.log("notificationListData",notificationListData)
+  //   console.log("hasNotification", hasNotification);
+  //   console.log("hasNotificationBlink", hasNotificationBlink);
 
   useEffect(() => {
     let interval;
@@ -109,7 +112,7 @@ const NavBar = () => {
 
   const handleClearNotifications = () => {
     if (userData?.id) {
-      dispatch(deleteNotification({ user_id: userData.id }));
+      dispatch(deleteNotification({ user_id: userData.id, notificationDropDown }));
     }
   };
   return (
@@ -157,17 +160,13 @@ const NavBar = () => {
             <Tooltip title="Notification" arrow disableInteractive>
               <div
                 className="cursor-pointer relative"
-                onClick={() => (setIsOpen3(!isOpen3), setIsOpen4(false))}
+                ref={notificationDropDown?.ref}
 
               >
-                <Bell className="h-6 text-gray-700 w-6" />
-                {/* {isOpen4 &&
-                  <>
-                    <span className="bg-green-500 h-2 rounded-full w-2 absolute bottom-2 right-0" />
-                    <span className="bg-green-400 h-3 rounded-full w-3 -right-[2px] absolute animate-ping bottom-[5px]" />
-                  </>
-                } */}
-                {isOpen4 && hasNotification && hasNotificationBlink && (
+                <Bell className="h-6 text-gray-700 w-6" onClick={notificationDropDown?.handleToggle}
+                  ref={notificationDropDown?.buttonRef} />
+
+                {hasNotification && hasNotificationBlink && (
                   <>
                     <span className="bg-green-500 h-2 rounded-full w-2 absolute bottom-3 right-1" />
                     <span className="bg-green-400 h-3 rounded-full w-3 absolute animate-ping bottom-[10px] right-4" />
@@ -179,7 +178,7 @@ const NavBar = () => {
             </Tooltip>
 
             {/* Dropdown Menu */}
-            {isOpen3 && (
+            {notificationDropDown?.isOpen && (
               <div className="bg-white border border-gray-200 p-3 rounded-lg shadow-lg ml-28 sm:ml-0  w-[300px] fixed sm:absolute right-2 top-16 sm:top-12 z-50">
                 {/* Header with Clear Button */}
                 <div className="flex justify-between items-center mb-1">

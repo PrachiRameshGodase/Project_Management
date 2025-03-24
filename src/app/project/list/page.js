@@ -4,7 +4,7 @@ import { OtherIcons } from '@/assests/icons';
 import LayOut from '@/components/LayOut';
 import DataNotFound from '@/components/common/DataNotFound/DataNotFound';
 import Dropdown01 from '@/components/common/Dropdown/Dropdown01';
-import { view } from '@/components/common/Helper/Helper';
+import { formatDate, view } from '@/components/common/Helper/Helper';
 import { useDebounceSearch } from '@/components/common/Helper/HelperFunction';
 import useUserData from '@/components/common/Helper/useUserData';
 import Pagenation from '@/components/common/Pagenation/Pagenation';
@@ -141,7 +141,7 @@ const ProjectList = () => {
           <Dropdown01 options={view} selectedValue={selectedView} onSelect={setSelectedView} label="View" icon={OtherIcons.view_svg} />
           {/* <Dropdown01 options={statusProject} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />  */}
           {/* <Dropdown01 options={projectSortConstant} selectedValue={selectedSort} onSelect={setSelectedSort} label="Sort By" icon={OtherIcons.sort_by_svg} /> */}
-          <SearchComponent onSearch={onSearch} section={searchTrigger} />
+          <SearchComponent onSearch={onSearch} placeholder="Search By Using Project Name, Client Name.." section={searchTrigger} />
 
 
           <div className="bg-gray-400 h-[40px] w-[1px] opacity-40" />
@@ -153,7 +153,7 @@ const ProjectList = () => {
         {/* Mobile Filter Button */}
         <div className='flex gap-2 md:hidden'>
 
-          <SearchComponent onSearch={onSearch} section={searchTrigger} />
+          <SearchComponent onSearch={onSearch} placeholder="Search By Using Project Name, Client Name.." section={searchTrigger} />
           <Tooltip title='Filter' arrow disableInteractive>
             <button
               className="flex bg-gray-100 border border-gray-300 h-[44px] justify-center rounded-lg text-2xl text-gray-600 w-[44px] hover:border-purple-500 hover:ring-2 hover:ring-purple-200 items-center md:hidden"
@@ -221,8 +221,8 @@ const ProjectList = () => {
                     </th>
                     <th className="text-[13px] min-w-[140px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px]">CLIENT  NAME</th>
                     <th className="text-[13px] min-w-[138px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px] sm:w-[160px]">STATUS</th>
-                    <th className="text-[13px] min-w-[150px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px]">STARTING DATE</th>
-                    <th className="text-[13px] min-w-[100px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px]">DEADLINE</th>
+                    <th className="text-[13px] min-w-[150px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px]">START DATE</th>
+                    <th className="text-[13px] min-w-[100px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px]">DUE DATE</th>
                     <th className="text-[13px] min-w-[180px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px]">PROJECT LEADER</th>
                     <th className="text-[13px] min-w-[150px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px]">TEAM</th>
                     <th className="text-[13px] min-w-[100px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px]">PRIORITY</th>
@@ -253,11 +253,11 @@ const ProjectList = () => {
                         )}
                       </td>
 
-                      <td className="text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px]" onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.start_date}</td>
-                      <td className="text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px]" onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.due_date}</td>
-                      <td className="text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px]" onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.project_leader_name}</td>
+                      <td className="text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px]" onClick={() => router.push(`/project/details?id=${item?.id}`)}>{formatDate(item?.start_date) ||""}</td>
+                      <td className="text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px]" onClick={() => router.push(`/project/details?id=${item?.id}`)}>{formatDate(item?.due_date ||"")}</td>
+                      <td className="text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px]" onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.project_leader_name ||""}</td>
                       <td className="text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px]" onClick={() => router.push(`/project/details?id=${item?.id}`)}>
-                        <TruncatedTooltipText text={item?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")} maxLength={25} />
+                        <TruncatedTooltipText text={item?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")} maxLength={25} onClick={() => router.push(`/project/details?id=${item?.id}`)}/>
                       </td>
                       <td className={`py-2 sm:py-3 px-2 sm:px-4 text-[12px] sm:text-[15px]`} onClick={() => router.push(`/project/details?id=${item?.id}`)}>
                         {item?.priority ? (
@@ -327,7 +327,7 @@ const ProjectList = () => {
                   </ul>
                   <ul className="flex flex-col gap-1">
                     <li className="text-[12.8px] text-gray-400">Due Date</li>
-                    <li className="text-[12.8px] text-gray-800">{item?.due_date || ""}</li>
+                    <li className="text-[12.8px] text-gray-800">{formatDate(item?.due_date) || ""}</li>
 
                   </ul>
 

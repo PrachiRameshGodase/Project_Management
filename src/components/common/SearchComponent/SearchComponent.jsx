@@ -3,7 +3,8 @@ import { useState } from "react";
 import { OtherIcons } from "@/assests/icons";
 import { Tooltip } from "@mui/material";
 
-const SearchComponent = ({ onSearch, section }) => {
+const SearchComponent = ({ onSearch,placeholder, section,  }) => {
+ 
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState(""); // Local state for search term
   const [searchCall, setSearchCall] = useState(false); // Local state to trigger search calls
@@ -72,7 +73,7 @@ const SearchComponent = ({ onSearch, section }) => {
           <input
             id="commonmcsearchbar"
             type="text"
-            placeholder="Search..."
+            placeholder={placeholder}
             className="w-full p-2.5 border border-purple-300 rounded-md focus:outline-none hover:border-purple-700 focus:ring-2 focus:ring-purple-300"
             onChange={handleSearch}
           />

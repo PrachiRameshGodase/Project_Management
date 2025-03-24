@@ -2,7 +2,7 @@
 import { fetchUsers } from '@/app/store/userSlice';
 import { OtherIcons } from '@/assests/icons';
 import Dropdown01, { DropdownStatus } from '@/components/common/Dropdown/Dropdown01';
-import { designation, designationFilter, status } from '@/components/common/Helper/Helper';
+import { designation, designationFilter, formatDate, status } from '@/components/common/Helper/Helper';
 import { useDebounceSearch } from '@/components/common/Helper/HelperFunction';
 import Pagenation from '@/components/common/Pagenation/Pagenation';
 import SearchComponent from '@/components/common/SearchComponent/SearchComponent';
@@ -113,7 +113,7 @@ const UserList = () => {
               onSelect={setSelectedStatus}
             />
             <Dropdown01 options={designationFilter} selectedValue={selectedDesignation} onSelect={setSelectedDesignation} label="View" icon={OtherIcons.view_svg} />
-            <SearchComponent onSearch={onSearch} section={searchTrigger} />
+            <SearchComponent onSearch={onSearch} placeholder="Search By Using Name, Email, User ID.." section={searchTrigger} />
 
             <div className="w-[1px] h-[40px] bg-gray-400 opacity-40" />
             {userData?.is_admin == 1 && <Tooltip title='Add User' arrow disableInteractive>
@@ -125,7 +125,7 @@ const UserList = () => {
           {/* Mobile Filter Button */}
           <div className='flex gap-2 md:hidden'>
 
-            <SearchComponent onSearch={onSearch} section={searchTrigger} />
+            <SearchComponent onSearch={onSearch} placeholder="Search By Using Name, Email, User ID.." section={searchTrigger} />
             <Tooltip title='Filter' arrow disableInteractive>
               <button
                 className="md:hidden w-[44px] h-[44px]  border border-gray-300 hover:ring-2 hover:ring-purple-200  hover:border-purple-500 bg-gray-100 text-gray-600 rounded-lg flex items-center justify-center text-2xl"
@@ -209,16 +209,16 @@ const UserList = () => {
                   usersList?.length > 0 ? (
                     usersList?.map((user, index) => (
                       <tr key={user?.id} className="cursor-pointer hover:bg-gray-100    hover:shadow-tr-border    rounded-md  transition-all duration-200">
-                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] " onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.employee_id}</td>
-                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] " onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.name}</td>
-                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px]" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.email}</td>
-                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] " onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.phone_number}</td>
-                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px]" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.designation}</td>
-                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] " onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.joining_date}</td>
+                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] " onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.employee_id || ""}</td>
+                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] " onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.name || ""}</td>
+                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px]" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.email || ""}</td>
+                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] " onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.phone_number || ""}</td>
+                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px]" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.designation || ""}</td>
+                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] " onClick={() => router.push(`/user/details?id=${user?.id}`)}>{formatDate(user?.joining_date) || ""}</td>
                         <Tooltip title={user?.status == 0 ? 'User Is Active' : 'User Is Inactive'} arrow disableInteractive>
-                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] flex justify-center items-center" onClick={() => router.push(`/user/details?id=${user?.id}`)}>
-                          <span className={`w-3 h-3 inline-block  rounded-full ${user.status == 0 ? 'bg-green-600' : 'bg-red-600'}`}></span>
-                        </td>
+                          <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] flex justify-center items-center" onClick={() => router.push(`/user/details?id=${user?.id}`)}>
+                            <span className={`w-3 h-3 inline-block  rounded-full ${user.status == 0 ? 'bg-green-600' : 'bg-red-600'}`}></span>
+                          </td>
                         </Tooltip>
                       </tr>
                     ))

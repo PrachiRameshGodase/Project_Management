@@ -12,6 +12,7 @@ import Drawer01, { Drawer001 } from "@/components/common/Drawer/Drawer01";
 import Dropdown01 from "@/components/common/Dropdown/Dropdown01";
 import DropdownStatus01 from "@/components/common/Dropdown/DropdownStatus01";
 import {
+  formatDate,
   getStatusDetails,
   statusProject,
   taskView
@@ -28,7 +29,7 @@ import TruncatedTooltipText from "@/components/common/TruncatedTooltipText/Trunc
 import UserAvatar from "@/components/common/UserAvatar/UserAvatar";
 import LayOut from "@/components/LayOut";
 import { Tooltip } from "@mui/material";
-import { Check, X } from "lucide-react";
+import { Check, CircleX, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -127,8 +128,19 @@ const TaskList = () => {
   // // filter
 
   useEffect(() => {
-    if (!itemId) return; // Ensure itemId is set before dispatching
-
+    if (!itemId) return; 
+    if(userData?.is_client==1){
+      const sendData = {
+        project_id: itemId,
+        visibility:"Public",
+        limit: itemsPerPage,
+        page: currentPage,
+        ...(searchTermFromChild ? { search: searchTermFromChild } : {}),
+        ...(selectedSortBy && { sort_by: selectedSortBy, sort_order: sortOrder }),
+      };
+    dispatch(fetchProjectTasks(sendData));
+      
+    }else{
     const sendData = {
       project_id: itemId,
       limit: itemsPerPage,
@@ -138,6 +150,7 @@ const TaskList = () => {
     };
 
     dispatch(fetchProjectTasks(sendData));
+    }
   }, [searchTrigger, dispatch, selectedStatus, itemId]); // Include all dependencies
 
   useEffect(() => {
@@ -192,20 +205,31 @@ const TaskList = () => {
   const statusDetails = (() => {
     const completed = projectDetailData?.completed_tasks_count;
     const total = projectDetailData?.total_tasks_count;
-    
-    
+
+
     const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
     const color = percentage === 100 ? "#4CAF50" : "#3B82F6"; // Green if complete, else blue
-  
+
     return { percentage, color };
   })();
-
+  const handleClose = () => {
+    router.push(`/project/list`)
+    // localStorage.removeItem("itemId", itemId2)
+  }
+  // projectTaskLoading?.taskListLoading
   return (
     <>
-      {projectLoading?.loading ? (
-        <Loader />
-      ) : (
+      {/* {projectLoading?.loading ? (
+        <></>
+      ) : ( */}
         <LayOut>
+          <div className="flex justify-end absolute right-3 top-[90px]">
+            <button
+              onClick={handleClose}
+              className="text-gray-700 hover:text-black">
+              <CircleX size={30} strokeWidth={1.5} />
+            </button>
+          </div>
           <div className="w-full  h-full mx-auto px-1  sm:px-4  ml-[5px] sm:border border-gray-100 rounded-[10px]  ">
             <div className=" min-[1250px]:flex   justify-between mt-[10px] sm:p-4 w-full">
               {/* Avatar Section */}
@@ -345,7 +369,7 @@ const TaskList = () => {
                   icon={OtherIcons.user_svg}
                 />
                 {/* <Dropdown01 options={projectSortConstant} selectedValue={selectedSort} onSelect={setSelectedSort} label="Sort By" icon={OtherIcons.sort_by_svg} /> */}
-                <SearchComponent onSearch={onSearch} section={searchTrigger} />
+                <SearchComponent onSearch={onSearch} placeholder="Search By Using Task Title..." section={searchTrigger} />
 
                 <div className="w-[1px] h-[40px] bg-gray-400 opacity-40" />
                 <Tooltip title="Add Task" arrow disableInteractive>
@@ -361,7 +385,7 @@ const TaskList = () => {
 
               {/* Mobile Filter Button */}
               <div className="flex  gap-2  min-[950px]:hidden ">
-                <SearchComponent onSearch={onSearch} section={searchTrigger} />
+                <SearchComponent onSearch={onSearch} placeholder="Search By Using Task Title..." section={searchTrigger} />
                 <Tooltip title="Filter" arrow disableInteractive>
                   <button
                     className="min-[950px]:hidden w-[44px] h-[44px]  border border-gray-300 hover:ring-2 hover:ring-purple-200  hover:border-purple-500 bg-gray-100 text-gray-600 rounded-lg flex items-center justify-center text-2xl"
@@ -550,7 +574,7 @@ const TaskList = () => {
                             <td
                               className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px]   "
                               onClick={() => handleTaskClick(item?.id)}>
-                              {item?.due_date || ""}
+                              {formatDate(item?.due_date) || ""}
                             </td>
                             <td
                               className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px]   "
@@ -563,6 +587,7 @@ const TaskList = () => {
                               <TruncatedTooltipText
                                 text={item?.team_names?.join(", ")}
                                 maxLength={25}
+                                onClick={() => handleTaskClick(item?.id)}
                               />
                             </td>
                             <td
@@ -610,7 +635,7 @@ const TaskList = () => {
             )}
 
             {selectedView == "Kanban" && (
-              <KanBanView groupedUsers={projectTaskListData} itemId2={itemId}/>
+              <KanBanView groupedUsers={projectTaskListData} itemId2={itemId} />
             )}
           </div>
           <Drawer01
@@ -628,7 +653,7 @@ const TaskList = () => {
             details={taskDetailsData}
           />
         </LayOut>
-      )}
+      {/* )} */}
     </>
   );
 };

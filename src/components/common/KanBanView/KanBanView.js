@@ -1,6 +1,7 @@
 import { updateTaskStatus } from "@/app/store/projectSlice";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { formatDate } from "../Helper/Helper";
 
 const DraggableCard = ({ user, index, status, moveUser, moveCard }) => {
   const handleDragStart = (e) => {
@@ -32,7 +33,7 @@ const DraggableCard = ({ user, index, status, moveUser, moveCard }) => {
         <li className="flex items-center gap-2">
           <p className="text-[15px] text-gray-400 w-[120px]">Due Date</p>
           <span className="text-[15px] text-gray-700 w-[150px]">
-            {user?.due_date || ""}
+            {formatDate(user?.due_date) || ""}
           </span>
         </li>
         <li className="flex items-center gap-2">

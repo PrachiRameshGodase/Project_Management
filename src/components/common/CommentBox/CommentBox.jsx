@@ -529,10 +529,10 @@ console.log("formData", formData)
                     <div className="bg-gray-100 p-2 rounded-lg w-fit max-w-[90%] relative">
                       <div className="flex justify-between">
                         {msg?.assigned_ids &&
-                          JSON.parse(msg.assigned_ids).length > 0 && (
+                          JSON.parse(msg?.assigned_ids).length > 0 && (
                             <div className="flex flex-wrap">
-                              {JSON.parse(msg.assigned_ids).map((id) => {
-                                const user = usersList.find((u) => u.id === id);
+                              {JSON.parse(msg.assigned_ids)?.map((id) => {
+                                const user = usersList?.find((u) => u.id === id);
                                 return (
                                   user && (
                                     <span

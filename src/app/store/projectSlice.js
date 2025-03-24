@@ -150,7 +150,7 @@ export const updateTaskStatus = createAsyncThunk("task/updateTaskStatus", async 
   try {
     const response = await axiosInstance.post(`/task/status`, { id, status , project_id });
     if (response?.data?.success === true) {
-      toast.success(response?.data?.message);
+      // toast.success(response?.data?.message);
       // router.push("/project/list"); // Navigate on success
       dispatch(fetchProjectTasks({ project_id: project_id,id: id }))
       dispatch(fetchProjectTaskDetails(id))

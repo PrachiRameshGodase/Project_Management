@@ -6,7 +6,7 @@ import { OtherIcons } from "@/assests/icons";
 import AttachmentPreview from "../Attachments/AttachmentPreview";
 import DropdownStatus01 from "../Dropdown/DropdownStatus01";
 import CommentBox from "../CommentBox/CommentBox";
-import { statusProject } from "../Helper/Helper";
+import { formatDate, statusProject } from "../Helper/Helper";
 import {
   fetchProjectTaskDetails,
   updateProjectStatus,
@@ -111,11 +111,7 @@ const Drawer01 = ({
               className="w-[150px]"
             />
           </div>
-          {/* <div>
-                        <button className="w-[100px] h-[35px] rounded-[4px] py-[4px] bg-black text-white text-[16px] mb-2 p-4 mt-4">
-                            Edit
-                        </button>
-                    </div> */}
+
         </div>
         <div className="flex justify-end">
           <div className="flex items-center mr-2">
@@ -155,83 +151,73 @@ const Drawer01 = ({
           </div>
         </div>
         {/* Project Details Section */}
-        <div className="mb-4 mt-4 ml-[5px]">
-          <p className="text-xl leading-6">Project Details </p>
-          <ul className=" h-[22px] mt-[20px] ">
-            <li className="flex mb-2 gap-4">
-              <span className="text-gray-400 w-[120px] text-[14px]">
-                Priority
-              </span>
-              <h4>:</h4>
-              <span className="text-gray-700 w-[200px] text-[14px]">
-                {details?.priority || ""}
-              </span>
-            </li>
-            <li className="flex mb-2 gap-4">
-              <span className="text-gray-400 w-[120px] text-[14px]">
-                Project Stage{" "}
-              </span>
-              <h4>:</h4>
-              <span className="text-gray-700 w-[200px] text-[14px]">
-                {details?.project_stage}
-              </span>
-            </li>
-            <li className="flex mb-2 gap-4">
-              <span className="text-gray-400 w-[120px] text-[14px]">
-                Starting Date
-              </span>
-              <h4>:</h4>
-              <span className="text-gray-700 w-[200px] text-[14px]">
-                {details?.start_date || ""}
-              </span>
-            </li>
-            <li className="flex mb-2 gap-4">
-              <span className="text-gray-400 w-[120px] text-[14px]">
-                Deadline
-              </span>
-              <h4>:</h4>
-              <span className="text-gray-700 w-[200px] text-[14px]">
-                {details?.due_date || ""}
-              </span>
-            </li>
-            <li className="flex mb-2 gap-4">
-              <span className="text-gray-400 w-[120px] text-[14px]">
-                Project Leader
-              </span>
-              <h4>:</h4>
-              <span className="text-gray-700 w-[200px] text-[14px]">
-                {details?.project_leader?.name || ""}
-              </span>
-            </li>
-            <li className="flex mb-2 gap-4">
-              <span className="text-gray-400 w-[120px] text-[14px]">Team</span>
-              <h4>:</h4>
-              <span className="text-gray-700 w-[200px] text-[14px]">{details?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(", ") || ""}</span>
-            </li>
-            <li className="flex mb-2 gap-4">
-              <span className="text-gray-400 w-[120px] text-[14px]">
-                Description
-              </span>
-              <h4>:</h4>
-              <span className="text-gray-700 w-[200px] text-[14px]">
-                {details?.description || ""}
-              </span>
-            </li>
-            <li className="flex mb-2 gap-4">
-              <span className="text-gray-400 w-[120px] text-[14px]">
-                Attachments
-              </span>
-              <h4>:</h4>
-              <span className="text-gray-700 w-[200px]">
-                <AttachmentPreview files={documents} />
-              </span>
-            </li>
-          </ul>
-          .
+        <div className="p-1 sm:p-4 overflow-y-auto flex-grow">
+          {/* Project Details Section */}
+          <div className="mb-4 mt-4 ml-[5px]">
+            <p className="text-xl leading-6">Project Details </p>
+            <ul className="mt-[20px]">
+              <li className="flex mb-2 gap-4">
+                <span className="text-gray-400 w-[120px] text-[14px]">Priority</span>
+                <h4>:</h4>
+                <span className="text-gray-700 w-[200px] text-[14px]">
+                {details?.priority?.charAt(0).toUpperCase() + details?.priority?.slice(1)}
+                </span>
+              </li>
+              <li className="flex mb-2 gap-4">
+                <span className="text-gray-400 w-[120px] text-[14px]">Project Stage</span>
+                <h4>:</h4>
+                <span className="text-gray-700 w-[200px] text-[14px]">
+                  {details?.project_stage}
+                </span>
+              </li>
+              <li className="flex mb-2 gap-4">
+                <span className="text-gray-400 w-[120px] text-[14px]">Starting Date</span>
+                <h4>:</h4>
+                <span className="text-gray-700 w-[200px] text-[14px]">
+                  {details?.start_date || ""}
+                </span>
+              </li>
+              <li className="flex mb-2 gap-4">
+                <span className="text-gray-400 w-[120px] text-[14px]">Deadline</span>
+                <h4>:</h4>
+                <span className="text-gray-700 w-[200px] text-[14px]">
+                  {formatDate(details?.due_date) || ""}
+                </span>
+              </li>
+              <li className="flex mb-2 gap-4">
+                <span className="text-gray-400 w-[120px] text-[14px]">Project Leader</span>
+                <h4>:</h4>
+                <span className="text-gray-700 w-[200px] text-[14px]">
+                  {details?.project_leader?.name || ""}
+                </span>
+              </li>
+              <li className="flex mb-2 gap-4">
+                <span className="text-gray-400 w-[120px] text-[14px]">Team</span>
+                <h4>:</h4>
+                <span className="text-gray-700 w-[200px] text-[14px]">
+                  {details?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(", ") || ""}
+                </span>
+              </li>
+              <li className="flex mb-2 gap-4">
+                <span className="text-gray-400 w-[120px] text-[14px]">Description</span>
+                <h4>:</h4>
+                <span className="text-gray-700 w-[200px] text-[14px]">
+                  {details?.description || ""}
+                </span>
+              </li>
+              <li className="flex mb-2 gap-4">
+                <span className="text-gray-400 w-[120px] text-[14px]">Attachments</span>
+                <h4>:</h4>
+                <span className="text-gray-700 w-[200px]">
+                  <AttachmentPreview files={documents} />
+                </span>
+              </li>
+            </ul>
+          </div>
         </div>
 
-        {/* Comment Section */}
-        <div className="mt-[250px] mb-[20px]">
+        {/* Comment Section - Fixed at Bottom */}
+        <div className="p-4">
           <CommentBox projectId={Number(itemId)} taskId="" />
         </div>
       </div>
@@ -275,7 +261,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId2, itemId, details })
       setSelectedStatus(value);
 
       // Dispatch updateUserStatus with the new status
-      dispatch(updateTaskStatus({ id: itemId, status: value, dispatch, project_id:Number(itemId2) }));
+      dispatch(updateTaskStatus({ id: itemId, status: value, dispatch, project_id: Number(itemId2) }));
     }
   };
   const handleToggleStatus = async (event) => {
@@ -294,7 +280,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId2, itemId, details })
 
       // Dispatch updateUserStatus with the new status
       dispatch(
-        updateProjectTaskStatus({ id: itemId, task_status: newStatus, dispatch, project_id:itemId2})
+        updateProjectTaskStatus({ id: itemId, task_status: newStatus, dispatch, project_id: itemId2 })
       );
     }
   };
@@ -386,108 +372,67 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId2, itemId, details })
           </div>
         </div>
         {/* Project Details Section */}
-        <div className="mb-4 mt-4 ml-[5px]">
-          <p className="text-xl leading-6">Task Details</p>
-          <ul className=" h-[22px] mt-[20px] ">
-            <li className="flex mb-2 gap-4">
-              <span className="text-gray-400 w-[120px] text-[14px]">
-                Due Date
-              </span>
-              <h4>:</h4>
-              <span className="text-gray-700 w-[200px] text-[14px]">
-                {details?.due_date || ""}
-              </span>
-            </li>
-            <li className="flex mb-2 gap-4">
-              <span className="text-gray-400 w-[120px] text-[14px]">Type</span>
-              <h4>:</h4>
-              <span className="text-gray-700 w-[200px] text-[14px]">
+        <div className="p-1 sm:p-4 overflow-y-auto flex-grow">
+          {/* Project Details Section */}
+          <div className="mb-4 mt-4 ml-[5px]">
+            <p className="text-xl leading-6">Task Details </p>
+            <ul className="mt-[20px]">
+              <li className="flex mb-2 gap-4">
+                <span className="text-gray-400 w-[120px] text-[14px]"> Due Date</span>
+                <h4>:</h4>
+                <span className="text-gray-700 w-[200px] text-[14px]">
+                {formatDate(details?.due_date) || ""}
+                </span>
+              </li>
+              <li className="flex mb-2 gap-4">
+                <span className="text-gray-400 w-[120px] text-[14px]">Task Type</span>
+                <h4>:</h4>
+                <span className="text-gray-700 w-[200px] text-[14px]">
                 {details?.task_type || ""}
-              </span>
-            </li>
-            <li className="flex mb-2 gap-4">
-              <span className="text-gray-400 w-[120px] text-[14px]">Team</span>
-              <h4>:</h4>
-              <span className="text-gray-700 w-[200px] text-[14px]">
+                </span>
+              </li>
+              <li className="flex mb-2 gap-4">
+                <span className="text-gray-400 w-[120px] text-[14px]">Team</span>
+                <h4>:</h4>
+                <span className="text-gray-700 w-[200px] text-[14px]">
                 {details?.team?.map((item) => item?.first_name + " " + item?.last_name).join(", ") || ""}{" "}
-              </span>
-            </li>
-            <li className="flex mb-2 gap-4">
-              <span className="text-gray-400 w-[120px] text-[14px]">
-                Visibility
-              </span>
-              <h4>:</h4>
-              <span className="text-gray-700 w-[200px] text-[14px]">
+                </span>
+              </li>
+              <li className="flex mb-2 gap-4">
+                <span className="text-gray-400 w-[120px] text-[14px]">Visibility</span>
+                <h4>:</h4>
+                <span className="text-gray-700 w-[200px] text-[14px]">
                 {details?.visibility || ""}
-              </span>
-            </li>
-            <li className="flex mb-2 gap-4">
-              <span className="text-gray-400 w-[120px] text-[14px]">Link</span>
-              <h4>:</h4>
-              <span className="text-gray-700 w-[200px] text-[14px]">
+                </span>
+              </li>
+              <li className="flex mb-2 gap-4">
+                <span className="text-gray-400 w-[120px] text-[14px]">Link</span>
+                <h4>:</h4>
+                <span className="text-gray-700 w-[200px] text-[14px]">
                 {details?.link || ""}
-              </span>
-            </li>
-
-            <li className="flex mb-2 gap-4">
-              <span className="text-gray-400 w-[120px] text-[14px]">
-                Description
-              </span>
-              <h4>:</h4>
-              <span className="text-gray-700 w-[200px] text-[14px]">
+                </span>
+              </li>
+              <li className="flex mb-2 gap-4">
+                <span className="text-gray-400 w-[120px] text-[14px]">Description</span>
+                <h4>:</h4>
+                <span className="text-gray-700 w-[200px] text-[14px]">
                 {details?.description || ""}
-              </span>
-            </li>
-            <li className="flex mb-2 gap-4">
-              <span className="text-gray-400 w-[120px] text-[14px]">
-                Attachments
-              </span>
-              <h4>:</h4>
-              <span className="text-gray-700 w-[200px]">
-                <AttachmentPreview files={documents} />
-              </span>
-            </li>
-          </ul>
+                </span>
+              </li>
+            
+              <li className="flex mb-2 gap-4">
+                <span className="text-gray-400 w-[120px] text-[14px]">Attachments</span>
+                <h4>:</h4>
+                <span className="text-gray-700 w-[200px]">
+                  <AttachmentPreview files={documents} />
+                </span>
+              </li>
+            </ul>
+          </div>
         </div>
 
-        {/* Comment Section */}
-
-        {/* <div className="mt-[350px] mb-[20px]">
-                    <p className="text-md">Comment</p>
-                    <div className="flex"> <div className="flex items-center mt-2 border border-gray-300 rounded-md p-2">
-                        <img
-                            src="https://randomuser.me/api/portraits/men/10.jpg"
-                            alt="avatar"
-                            className="w-[30px] h-[30px] rounded-full mr-2"
-                        />
-                        <input
-                            type="text"
-                            placeholder="Add Comment..."
-                            className="flex-1 border-none outline-none p-2 w-[139px]"
-                        />
-                        <p className="flex space-x-2 ml-2 mr-2">
-                            <span>{OtherIcons.special_svg}</span>
-                            <span>{OtherIcons.attachment_svg}</span>
-                            <span>{OtherIcons.speak_svg}</span>
-                        </p>
-                    </div>
-                        <p className="mt-6 ml-4">{OtherIcons.send_comment_svg}</p></div>
-
-                </div>
-
-                <div className="flex mb-[60px]">
-                    <img
-                        src="https://randomuser.me/api/portraits/men/10.jpg"
-                        alt="avatar"
-                        className="w-[30px] h-[30px] rounded-full mr-2"
-                    />
-                    <div className="w-[340px] h-[80px] bg-gray-100 rounded-sm flex flex-col p-2">
-                        <div className="flex justify-between"> <p className="text-gray-400 text-[12px]">2 min</p><p>{OtherIcons.dotted_svg}</p></div>
-                        <p className="text-[14px]">Lorem ipsum dolor sit amet, coetur adipiscing elit ut aliquam, purus sit amet </p>
-
-                    </div>
-                </div> */}
-        <div className="mt-[250px] mb-[20px]">
+        {/* Comment Section - Fixed at Bottom */}
+        <div className="p-4">
           <CommentBox projectId={Number(itemId2)} taskId={itemId} />
         </div>
       </div>

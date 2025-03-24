@@ -9,7 +9,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchUserDetails, updateUserStatus } from "@/app/store/userSlice";
 import Swal from "sweetalert2";
 import Loader from "@/components/common/Loader/Loader";
-import { Check, X } from "lucide-react";
+import { Check, CircleX, X } from "lucide-react";
+import { formatDate } from "@/components/common/Helper/Helper";
 
 const UserDetails = () => {
   const router = useRouter();
@@ -77,9 +78,22 @@ const UserDetails = () => {
   // Limit projects to 8 initially
   const visibleProjects = showAll ? userDetail : userDetail?.slice(0, 8);
   const isActive3 = userDetailData?.status == 0 ? true : false
+
+
+  const handleClose = () => {
+    router.push(`/user/list`)
+    // localStorage.removeItem("itemId", itemId2)
+  }
   return (
     <>
       {usersLoading?.loading ? (<Loader />) : (<LayOut>
+        <div className="flex justify-end absolute right-3 top-[90px]">
+          <button
+            onClick={handleClose}
+            className="text-gray-700 hover:text-black">
+            <CircleX size={30} strokeWidth={1.5} />
+          </button>
+        </div>
         <div className="w-full  h-full   sm:left-[80px] rounded-[10.17px] sm:border border-[#F4EAEA] bg-white p-6 sm:shadow-lg">
           <div className="w-full  h-[40px] relative top-[6px] sm:flex items-center justify-between px-2 border-b border-gray-100 ">
             <p className="text-[26px] mb-[20px]">User Information</p>
@@ -185,7 +199,7 @@ const UserDetails = () => {
                     Date of Join:
                   </span>
                   <span className="sm:w-[183px] h-[23px] ml-[35px]">
-                    {userDetailData?.joining_date || ""}
+                    {formatDate(userDetailData?.joining_date) || ""}
                   </span>
                 </li>
                 <li className="sm:w-[767px] sm:pt-[120px] sm:pb-10 sm:mt-[200px] t-2 sm:absolute  flex items-start">
@@ -262,9 +276,9 @@ const UserDetails = () => {
                   <ul className="mt-2 space-y-2">
                     <li className="flex text-gray-700">
                       <span className="text-[12px] w-[60px]  text-gray-600">
-                        End Date
+                        Due Date
                       </span>
-                      <span className="text-[12px]">{item?.due_date || ""}</span>
+                      <span className="text-[12px]">{formatDate(item?.due_date) || ""}</span>
                     </li>
                     <li className="flex text-gray-700">
                       <span className="text-[12px] w-6">Team</span>

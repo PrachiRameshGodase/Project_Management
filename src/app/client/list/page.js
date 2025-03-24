@@ -116,7 +116,7 @@ const ClientList = () => {
                         />
                         {/* <Dropdown01 options={designation} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />
                         <Dropdown01 options={projectSortConstant} selectedValue={selectedSort} onSelect={setSelectedSort} label="Sort By" icon={OtherIcons.sort_by_svg} /> */}
-                        <SearchComponent onSearch={onSearch} section={searchTrigger} />
+                        <SearchComponent onSearch={onSearch} placeholder="Search By Using Name, Email, Client ID.." section={searchTrigger} />
 
                         <div className="w-[1px] h-[40px] bg-gray-400 opacity-40" />
                         {userData?.is_admin == 1 && <Tooltip title='Add Client' arrow disableInteractive>
@@ -127,7 +127,7 @@ const ClientList = () => {
                     {/* Mobile Filter Button */}
                     <div className='flex gap-2 md:hidden'>
 
-                        <SearchComponent onSearch={onSearch} section={searchTrigger} />
+                        <SearchComponent onSearch={onSearch} placeholder="Search By Using Name, Email, Client ID.." section={searchTrigger} />
                         <Tooltip title='Filter' arrow disableInteractive>
                             <button
                                 className="md:hidden  w-[44px] h-[44px] bg-gray-100 text-gray-600  border border-gray-300 hover:ring-2 hover:ring-purple-200  hover:border-purple-500 rounded-lg flex items-center justify-center text-2xl"

@@ -19,12 +19,13 @@ export const fetchNotification = createAsyncThunk(
 // Delete a notification
 export const deleteNotification = createAsyncThunk(
   "notification/deleteNotification",
-  async ({ user_id }, { rejectWithValue, dispatch }) => {
+  async ({ user_id, notificationDropDown }, { rejectWithValue, dispatch }) => {
    
     try {
       const response = await axiosInstance.post(`/notification/delete`, { }); // Pass user_id in the request body
       if (response?.data?.success) {
         toast.success(response?.data?.message);
+        // notificationDropDown.handleToggle();
         dispatch(fetchNotification({ user_id })); // Refetch updated notifications
       }
       return response.data;

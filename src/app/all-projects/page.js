@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchDashboard } from "../store/dashboardSlice";
 import useUserData from "@/components/common/Helper/useUserData";
 import Loader from "@/components/common/Loader/Loader";
+import { formatDate } from "@/components/common/Helper/Helper";
 
 const HomePage = () => {
     const router = useRouter();
@@ -73,7 +74,7 @@ const HomePage = () => {
                                             {OtherIcons.dateTime_svg}
                                         </div>
                                         <div className="flex flex-col">
-                                            <p className="text-gray-800 text-[14px]">{card?.due_date || ""}</p>
+                                            <p className="text-gray-800 text-[14px]">{formatDate(card?.due_date) || ""}</p>
                                             <p className="text-[#320b5775] text-[12px]">Deadline Date</p>
                                         </div>
                                     </div>

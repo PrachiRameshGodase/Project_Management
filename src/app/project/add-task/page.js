@@ -161,7 +161,7 @@ const AddTask = () => {
                         </button>
                     </div>
                 </div>
-                <div className="h-screen justify-center items-center mx-auto sm:-mt-16 sm:flex xl:lg:-mt-[115px]">
+                <div className="h-screen justify-center items-center mx-auto sm:-mt-16 sm:flex xl:lg:-mt-[65px]">
                     <form className="bg-white h-[656px] p-8 rounded-lg w-full mb-4 sm:w-[650px] space-y-6" onSubmit={handleSubmit}>
                         <div className="flex-col justify-between sm:flex sm:flex-row">
                             <label className="text-[20px] block">Task Title <span className="text-red-600">*</span></label>

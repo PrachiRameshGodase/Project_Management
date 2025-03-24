@@ -97,6 +97,7 @@ const FileUpload = ({ onFilesChange ,initialFiles}) => {
                                     </a>
                                 )}
                                 <button
+                                    type='button'
                                     onClick={() => handleDelete(file.name)}
                                     className="absolute top-1 right-1 bg-red-600 text-white p-[2px] rounded-full z-50 text-xs"
                                 >

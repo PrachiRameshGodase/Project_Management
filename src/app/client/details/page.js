@@ -4,7 +4,7 @@ import { OtherIcons } from '@/assests/icons';
 import Loader from '@/components/common/Loader/Loader';
 import UserAvatar from '@/components/common/UserAvatar/UserAvatar';
 import LayOut from '@/components/LayOut';
-import { Check, X } from 'lucide-react';
+import { Check, CircleX, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -71,8 +71,19 @@ const ClientDetails = () => {
     const handleEditUser = () => {
         router.push(`/client/add?id=${itemId}&edit=true`);
     };
+    const handleClose = () => {
+        router.push(`/client/list`)
+        // localStorage.removeItem("itemId", itemId2)
+      }
     return (
         <>{usersLoading?.loading ? (<Loader />) : <LayOut>
+            <div className="flex justify-end absolute right-3 top-[90px]">
+                <button
+                    onClick={handleClose}
+                    className="text-gray-700 hover:text-black">
+                    <CircleX size={30} strokeWidth={1.5} />
+                </button>
+            </div>
             <div className="w-full  h-full  left-[80px] rounded-[10.17px] sm:border border-[#F4EAEA] bg-white p-6 sm:shadow-lg">
                 <div className="w-full  h-[40px] relative top-[6px] sm:flex items-center justify-between px-2 border-b border-gray-100 ">
                     <p className="text-[26px] mb-[20px]">
