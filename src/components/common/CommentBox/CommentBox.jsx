@@ -32,9 +32,10 @@ import {
 } from "../../../configs/firebase";
 
 const ChatBox = ({ projectId, taskId }) => {
-  console.log("projectId", projectId)
+ 
   const dispatch = useDispatch();
   const usersList = useSelector((state) => state.user?.employeeList?.data);
+  
   const CommentListData = useSelector(
     (state) => state.project?.taskCommentList?.data
   );
@@ -258,7 +259,8 @@ console.log("projectId", projectId)
         project_id: projectId,
         task_id: taskId,
         dispatch,
-        setFormData
+        setFormData,
+        setSelectedFile
       })
     )
 
@@ -315,11 +317,12 @@ console.log("projectId", projectId)
   useEffect(() => {
     const sendData = {
       is_employee: 1,
+      project_id: projectId,
     };
 
     dispatch(fetchUsers(sendData));
   }, [dispatch]);
-console.log("formData", formData)
+
   return (
     <div className=" ">
       <div className="w-full p-2  border rounded-lg shadow-lg bg-white  bottom-16 ">

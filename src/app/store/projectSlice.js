@@ -180,11 +180,11 @@ export const fetchTaskComment = createAsyncThunk(
 
 export const addTaskComment = createAsyncThunk(
   "task/addTaskComment",
-  async ({formData, project_id, task_id, dispatch,setFormData}, { rejectWithValue }) => {
+  async ({formData, project_id, task_id, dispatch,setFormData, setSelectedFile}, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post(`/comment/create`, formData);
       if (response?.data?.success === true) {
-        toast.success(response?.data?.message);
+        // toast.success(response?.data?.message);
         dispatch(fetchTaskComment({ project_id, task_id}))
         setFormData({
           project_id: project_id,
@@ -194,6 +194,7 @@ export const addTaskComment = createAsyncThunk(
           assigned_ids: [],
           comments: "",
         });
+        setSelectedFile(null)
       }
       return response.data;
 
@@ -212,7 +213,7 @@ export const deleteTaskComment = createAsyncThunk("task/deleteTaskComment", asyn
   try {
     const response = await axiosInstance.post(`/comment/destroy`, { id });
     if (response?.data?.success === true) {
-      toast.success(response?.data?.message);
+      // toast.success(response?.data?.message);
       dispatch(fetchTaskComment({project_id, task_id}))
     }
     return response.data;

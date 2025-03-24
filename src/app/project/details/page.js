@@ -226,7 +226,7 @@ const TaskList = () => {
   return (
     <>
       {projectLoading?.loading ? (
-        <></>
+       <Loader />
       ) : (
         <LayOut>
           <div className="flex justify-end absolute right-3 top-[90px]">
