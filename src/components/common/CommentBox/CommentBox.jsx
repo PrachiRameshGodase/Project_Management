@@ -66,7 +66,7 @@ const ChatBox = ({ projectId, taskId }) => {
     assigned_ids: [],
     comments: "",
   });
-
+console.log("formData", formData)
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,

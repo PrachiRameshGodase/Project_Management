@@ -187,8 +187,8 @@ export const addTaskComment = createAsyncThunk(
         toast.success(response?.data?.message);
         dispatch(fetchTaskComment({ project_id, task_id}))
         setFormData({
-          // project_id: "",
-          // task_id: "",
+          project_id: project_id,
+          task_id: task_id,
           documents: [],
           audio_recording: "",
           assigned_ids: [],

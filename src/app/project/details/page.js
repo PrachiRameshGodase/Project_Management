@@ -591,7 +591,8 @@ const TaskList = () => {
                               className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px] text-gray-700"
                               onClick={() => handleTaskClick(item?.id)}>
                               <TruncatedTooltipText
-                                text={item?.team_names?.join(", ")}
+                                 text={item?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")}
+                                
                                 maxLength={25}
                                 onClick={() => handleTaskClick(item?.id)}
                               />

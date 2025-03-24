@@ -103,13 +103,30 @@ const Drawer01 = ({
                 {details?.client?.name || "--"}
               </p>
             </div>
-            <DropdownStatus01
+            {/* <DropdownStatus01
               options={statusProject}
               selectedValue={details?.status}
               onSelect={(value) => handleStatusChange(value)}
               label="Status"
               className="w-[150px]"
-            />
+            /> */}
+            {details?.status ? (
+              <span
+                className={`px-3 py-1 border rounded-md inline-block text-[12px]
+        ${details.status === "To Do"
+                    ? "text-[#6C757D] border-[#6C757D]"
+                    : details.status === "In progress"
+                      ? "text-[#CA9700] border-[#CA9700]"
+                      : details.status === "Completed"
+                        ? "text-[#008053] border-[#008053]"
+                        : "text-[#0D4FA7] border-[#0D4FA7]"
+                  }`}
+              >
+                {details?.status}
+              </span>
+            ) : (
+              "" // Placeholder for empty status
+            )}
           </div>
 
         </div>
@@ -228,7 +245,7 @@ const Drawer01 = ({
 export default Drawer01;
 
 export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId2, itemId, details }) => {
-  console.log("details", details)
+  console.log("setIsDrawerOpen", isOpen)
   const dispatch = useDispatch();
   const router = useRouter()
   const userData = useUserData()
@@ -397,7 +414,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId2, itemId, details })
                 <span className="text-gray-400 w-[120px] text-[14px]">Team</span>
                 <h4>:</h4>
                 <span className="text-gray-700 w-[200px] text-[14px]">
-                  {details?.team_names?.join(", ") || ""}{" "}
+                  {details?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(", ") || ""}{" "}
                 </span>
               </li>
               <li className="flex mb-2 gap-4">

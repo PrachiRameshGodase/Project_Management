@@ -44,7 +44,7 @@ const DraggableCard = ({ user, index, status, itemId }) => {
         <li className="flex items-center gap-2">
           <p className="text-[15px] text-gray-400 w-[120px] z">Team</p>
           <span className="text-[15px] text-gray-700 w-[150px]">
-            {user?.team_names?.join(", ") || "-"}
+          {user?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")}
           </span>
         </li>
         <li className="flex items-center gap-2">
