@@ -21,6 +21,7 @@ import { useDebounceSearch } from "@/components/common/Helper/HelperFunction";
 import useUserData from "@/components/common/Helper/useUserData";
 import KanBanView from "@/components/common/KanBanView/KanBanView";
 import Loader from "@/components/common/Loader/Loader";
+import { OutsideClick } from "@/components/common/OutsideClick/OutsideClick";
 import Pagenation from "@/components/common/Pagenation/Pagenation";
 import SearchComponent from "@/components/common/SearchComponent/SearchComponent";
 import SortBy from "@/components/common/Sort/SortBy";
@@ -40,6 +41,7 @@ const TaskList = () => {
   const dispatch = useDispatch();
   const userData = useUserData()
   const [itemId, setItemId] = useState(null);
+  const drawerIsOpen=OutsideClick()
 
   const projectLoading = useSelector((state) => state.project);
   const projectDetailData = useSelector((state) => state?.project?.projectDetails?.data);
@@ -222,7 +224,7 @@ const TaskList = () => {
     router.push(`/project/list`)
     // localStorage.removeItem("itemId", itemId2)
   }
-  // projectTaskLoading?.taskListLoading
+  
   return (
     <>
       {projectLoading?.loading ? (

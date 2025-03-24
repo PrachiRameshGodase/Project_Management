@@ -180,7 +180,7 @@ export const fetchTaskComment = createAsyncThunk(
 
 export const addTaskComment = createAsyncThunk(
   "task/addTaskComment",
-  async ({formData, project_id, task_id, dispatch,setFormData, setSelectedFile}, { rejectWithValue }) => {
+  async ({formData, project_id, task_id, dispatch,setFormData, setSelectedFile, setAudioURL, setMentionList}, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post(`/comment/create`, formData);
       if (response?.data?.success === true) {
@@ -195,6 +195,8 @@ export const addTaskComment = createAsyncThunk(
           comments: "",
         });
         setSelectedFile(null)
+        setAudioURL(null)
+        setMentionList([])
       }
       return response.data;
 

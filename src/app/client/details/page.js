@@ -133,9 +133,9 @@ const ClientDetails = () => {
                         </button>
                     </div>
                 </div>
-                <div className="p-4 mt-16 sm:mt-0 flex flex-col gap-4 xl:gap-6  xl:flex-row items-start justify-between ">
+                <div className="p-4 mt-16 sm:mt-0 flex flex-col gap-4 xl:gap-6  xl:flex-row items-start justify-between px-2">
                     {/* Avatar Section */}
-                    <div className="  sm:w-[260px] h-[69px] flex items-center gap-[12.21px] ">
+                    <div className="sm:w-full h-[69px] flex items-center gap-[20px] mt-6">
                         <UserAvatar name={user.name} dotcolor='purple' size={66} image={user.image} isActive={user.isActive} />
                         <div className=" text-xl text-gray-700">
                             <p className="font-medium flex w-full ">{userDetailData?.name || ""}</p>
@@ -144,40 +144,44 @@ const ClientDetails = () => {
                     </div>
 
                     {/* User Information Section */}
-                    <div className="md:flex  flex-row gap-4  ">
-                        <ul className="flex flex-col space-y-2">
-                            <li className=" w-fit sm:w-[367px] h-[24px] flex items-center mt-3 mb-3">
+                    <div className="md:flex  flex-row gap-4 mt-4">
+                        <ul className="flex flex-col space-y-1">
+                            <li className=" w-fit sm:w-full h-[24px] flex items-center mt-3 mb-3">
                                 <span className=" h-[24px] opacity-90 text-[20px]">Contact Person</span>
                             </li>
                             {/* <li className="w-fit sm:w-[367px] h-[24px] flex items-center">
                                 <span className="sm:w-[130px] h-[24px] opacity-50">Name:</span>
                                 <span className="sm:w-[183px] h-[23px] ml-[35px]">{userDetailData?.name || ""}</span>
                             </li> */}
-                            <li className="sm:w-[367px] h-[24px] flex items-center">
-                                <span className="sm:w-[130px] h-[24px] opacity-50">Contact Person Name:</span>
-                                <span className="sm:w-[183px] h-[23px] ml-[35px]">{userDetailData?.contact_name}</span>
+                            <li className="sm:w-full h-[24px] flex mb-4">
+                                <span className="sm:w-[180px] h-[24px] opacity-70">Contact Person Name:</span>
+                                <span className="sm:w-[183px] h-[23px]">{userDetailData?.contact_name}</span>
                             </li>
+                            <li className="sm:w-[367px] h-[24px] flex items-center mt-4" style={{marginTop:"15px"}}>
+                                <span className="sm:w-[180px] h-[24px] opacity-70">Client ID:</span>
+                                <span className="sm:w-[183px] h-[23px]">{userDetailData?.client_id || ""}</span>
+                            </  li>
 
                         </ul>
 
-                        <ul className="flex  flex-col space-y-2">
+                        <ul className="flex  flex-col space-y-1">
                             <li className="sm:w-[367px] h-[24px] flex items-center mt-3 mb-3">
 
                             </li>
                             <li className="sm:w-[367px] h-[24px] flex items-center">
                                 <span className="sm:w-[114px] h-[24px] opacity-70">Email:</span>
-                                <span className="sm:w-[183px] h-[23px] ml-[35px]">{userDetailData?.email || ""}</span>
+                                <span className="sm:w-[183px] h-[23px]">{userDetailData?.email || ""}</span>
                             </li>
-                            <li className="sm:w-[367px] h-[24px] flex items-center">
+                            {/* <li className="sm:w-[367px] h-[24px] flex items-center">
                                 <span className="sm:w-[114px] h-[24px] opacity-70">Client ID:</span>
-                                <span className="sm:w-[183px] h-[23px] ml-[35px]">{userDetailData?.client_id || ""}</span>
-                            </  li>
+                                <span className="sm:w-[183px] h-[23px]">{userDetailData?.client_id || ""}</span>
+                            </  li> */}
 
                         </ul>
                     </div>
                 </div>
 
-                <div className="ml-[33] mt-[20px]">
+                <div className="ml-[10px] mt-[20px]">
                     {/* Projects Heading */}
                     <div className="w-full h-[34.39px] flex items-center gap-[6px]">
                         {OtherIcons.projects_svg}
@@ -189,7 +193,7 @@ const ClientDetails = () => {
                         {visibleProjects?.map((item, index) => (
                             <div
                                 key={item?.id}
-                                className="w-[100%] h-[132px] border border-gray-300 rounded-[8.93px] p-4 shadow-md hover:shadow-lg transition-all"
+                                className="w-[100%] h-[150px] border border-gray-300 rounded-[8.93px] p-4 shadow-md hover:shadow-lg transition-all"
                             >
                                 <div className='flex justify-between'>
                                     <p className="text-[18px] leading-[24.3px] tracking-[-3%] text-gray-800">

@@ -156,9 +156,9 @@ const UserDetails = () => {
               </button>
             </div>
           </div>
-          <div className="p-4 flex flex-col gap-4 xl:gap-6  xl:flex-row items-start justify-between mt-16 sm:mt-4">
+          <div className="p-4 flex flex-col gap-4 xl:gap-4  xl:flex-row items-start justify-between mt-16 sm:mt-4 px-2">
             {/* Avatar Section */}
-            <div className=" w-[260px] h-[69px] flex items-center gap-[12.21px] ">
+            <div className=" w-full h-[69px] flex items-center gap-[25px] mt-4">
               <UserAvatar name={userDetailData?.name} size={66} isActive={isActive3} />
 
               <div className=" text-gray-700">
@@ -171,9 +171,9 @@ const UserDetails = () => {
             </div>
 
             {/* User Information Section */}
-            <div className="md:flex flex-row gap-8   ">
+            <div className="md:flex flex-row gap-8 mt-4">
               <ul className="flex  flex-col space-y-2 ">
-                <li className=" sm:w-[367px] h-[24px] flex items-center">
+                <li className=" sm:w-full h-[24px] flex items-center">
                   <span className="sm:w-[114px] h-[24px] opacity-70">
                     Full Name:
                   </span>
@@ -245,7 +245,7 @@ const UserDetails = () => {
             </div>
           </div>
 
-          <div className="ml-[33] mt-[40px]">
+          <div className="ml-[10px] mt-[40px]">
             {/* Projects Heading */}
             <div className="w-[112.39px] h-[34.39px] flex items-center gap-[6px]">
               {OtherIcons.projects_svg}
@@ -257,7 +257,7 @@ const UserDetails = () => {
               {visibleProjects?.map((item, index) => (
                 <div
                   key={item?.id}
-                  className="w-[100%] h-[132px] border border-gray-300 rounded-[8.93px] p-4 shadow-md hover:shadow-lg transition-all"
+                  className="w-[100%] h-[150px] border border-gray-300 rounded-[8.93px] p-4 shadow-md hover:shadow-lg transition-all"
                 >
                   <div className='flex justify-between'>
                     <p className="text-[18px] leading-[24.3px] tracking-[-3%] text-gray-800">

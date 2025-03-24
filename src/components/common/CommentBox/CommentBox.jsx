@@ -118,14 +118,36 @@ console.log("formData", formData)
   };
 
   // Select Mention
+  // const handleSelectMention = (user) => {
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     assigned_ids: [...prev.assigned_ids, user.id], // ✅ Add selected user ID
+  //   }));
+  //   setMentionList([]);
+  // };
   const handleSelectMention = (user) => {
-    setFormData((prev) => ({
-      ...prev,
-      assigned_ids: [...prev.assigned_ids, user.id], // ✅ Add selected user ID
-    }));
-    setMentionList([]);
+    setFormData((prev) => {
+      const comment = prev.comments;
+      const cursorPos = inputRef.current.selectionStart; // Get cursor position
+  
+      // Find the last '@' before cursor
+      const lastAtIndex = comment.lastIndexOf("@", cursorPos - 1);
+      if (lastAtIndex === -1) return prev; // No '@' found, return original
+  
+      // Insert selected username
+      const newComment =
+        comment.substring(0, lastAtIndex + 1) + user.name + " " + comment.substring(cursorPos);
+  
+      return {
+        ...prev,
+        comments: newComment, // ✅ Show `@user.name` in the input
+        assigned_ids: [...prev.assigned_ids, user.id], // ✅ Store user ID
+      };
+    });
+  
+    setMentionList([]); // Clear mention list after selection
   };
-
+  
   // File Select
 
   // const handleFileSelect = (event) => {
@@ -251,7 +273,7 @@ console.log("formData", formData)
     setRecording(false);
     mediaRecorderRef.current.stop();
   };
-console.log("projectId", projectId)
+
   const handleSend = () => {
     dispatch(
       addTaskComment({
@@ -260,7 +282,10 @@ console.log("projectId", projectId)
         task_id: taskId,
         dispatch,
         setFormData,
-        setSelectedFile
+        setSelectedFile,
+        setAudioURL,
+        setMentionList
+      
       })
     )
 
@@ -496,7 +521,7 @@ console.log("projectId", projectId)
         </div>
 
         {/* Messages */}
-        <div className="space-y-3 p-2  max-h-64 overflow-y-auto ">
+        <div className="space-y-3 p-2  max-h-full  ">
           <PhotoProvider>
             <div ref={chatStartRef} />
 

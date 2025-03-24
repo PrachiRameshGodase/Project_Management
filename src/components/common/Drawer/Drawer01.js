@@ -1,22 +1,20 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { Check, CircleX, X } from "lucide-react";
-import { OtherIcons } from "@/assests/icons";
-import AttachmentPreview from "../Attachments/AttachmentPreview";
-import DropdownStatus01 from "../Dropdown/DropdownStatus01";
-import CommentBox from "../CommentBox/CommentBox";
-import { formatDate, statusProject } from "../Helper/Helper";
 import {
-  fetchProjectTaskDetails,
   updateProjectStatus,
   updateProjectTaskStatus,
   updateStatus,
-  updateTaskStatus,
+  updateTaskStatus
 } from "@/app/store/projectSlice";
+import { motion } from "framer-motion";
+import { Check, CircleX, X } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
-import { useDispatch, useSelector } from "react-redux";
+import AttachmentPreview from "../Attachments/AttachmentPreview";
+import CommentBox from "../CommentBox/CommentBox";
+import DropdownStatus01 from "../Dropdown/DropdownStatus01";
+import { formatDate, statusProject } from "../Helper/Helper";
 import useUserData from "../Helper/useUserData";
 
 const Drawer01 = ({
@@ -29,6 +27,8 @@ const Drawer01 = ({
   const router = useRouter();
   const dispatch = useDispatch();
   const userData = useUserData()
+  const drawerRef = useRef(null);
+
   const documents = details?.attachments ? JSON.parse(details?.attachments) : []
   const [isActive, setIsActive] = useState(details?.project_status || "");
   const [isActive2, setIsActive2] = useState(details?.status || "");
@@ -78,10 +78,28 @@ const Drawer01 = ({
       dispatch(updateStatus({ id: itemId, project_status: newStatus, router }));
     }
   };
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (drawerRef.current && !drawerRef.current.contains(event.target)) {
+        setIsDrawerOpen(false); // Close drawer if clicked outside
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
 
   if (!isOpen) return null;
+
+
   return (
     <motion.div
+      ref={drawerRef}
       initial={{ x: "100%" }}
       animate={{ x: 0 }}
       exit={{ x: "100%" }}
@@ -94,7 +112,7 @@ const Drawer01 = ({
           <CircleX size={30} strokeWidth={1.5} />
         </button>
       </div>
-      <div className="p-1 sm:p-4 overflow-y-auto h-full  ">
+      <div className="p-1 sm:p-4 overflow-y-auto h-full">
         <div className="flex justify-between">
           <div className="w-full h-[69px] flex items-center justify-between ">
             <div className="text-xl text-gray-700 ">
@@ -168,7 +186,7 @@ const Drawer01 = ({
           </div> */}
         </div>
         {/* Project Details Section */}
-        <div className="p-1 sm:p-4 overflow-y-auto flex-grow">
+        <div className="p-1 sm:p-4 overflow-y-auto flex-grow drawer-scrollbar">
           {/* Project Details Section */}
           <div className="mb-4 mt-4 ml-[5px]">
             <p className="text-xl leading-6">Project Details </p>
@@ -245,10 +263,11 @@ const Drawer01 = ({
 export default Drawer01;
 
 export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId2, itemId, details }) => {
-  console.log("setIsDrawerOpen", isOpen)
+
   const dispatch = useDispatch();
   const router = useRouter()
   const userData = useUserData()
+  const drawerRef=useRef(null)
   const documents = details?.attachments ? JSON.parse(details?.attachments) : []
   const [selectedStatus, setSelectedStatus] = useState("");
   const [isActive, setIsActive] = useState(details?.task_status || "");
@@ -303,24 +322,42 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId2, itemId, details })
     }
   };
 
-  if (!isOpen) return null;
+
   const handleEditUser = () => {
     localStorage.setItem("itemId", itemId2)
     router.push(`/project/add-task?id=${itemId}&edit=true`);
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (drawerRef.current && !drawerRef.current.contains(event.target)) {
+        setIsDrawerOpen(false); // Close drawer if clicked outside
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
+  if (!isOpen) return null;
   return (
     <motion.div
+      ref={drawerRef}
       initial={{ x: "100%" }}
       animate={{ x: 0 }}
       exit={{ x: "100%" }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
       className="fixed top-0 right-0 h-full w-[320px] sm:w-[456px] bg-white shadow-lg z-50 drawer-scrollbar">
       <div className="p-2 flex justify-end items-center">
-        <button
+        {/* <button
           onClick={() => setIsDrawerOpen(false)}
-          className="text-gray-500 hover:text-black">
-          <X size={18} />
-        </button>
+          className="text-gray-800 hover:text-black">
+          <CircleX size={25} />
+        </button> */}
       </div>
       <div className="p-1 sm:p-4 overflow-y-auto h-full">
         <div className="flex justify-between">
