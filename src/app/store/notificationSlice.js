@@ -19,13 +19,12 @@ export const fetchNotification = createAsyncThunk(
 // Delete a notification
 export const deleteNotification = createAsyncThunk(
   "notification/deleteNotification",
-  async ({ user_id, notificationDropDown }, { rejectWithValue, dispatch }) => {
+  async ({ user_id, dispatch }, { rejectWithValue }) => {
    
     try {
       const response = await axiosInstance.post(`/notification/delete`, { }); // Pass user_id in the request body
       if (response?.data?.success) {
-        toast.success(response?.data?.message);
-        // notificationDropDown.handleToggle();
+        
         dispatch(fetchNotification({ user_id })); // Refetch updated notifications
       }
       return response.data;
@@ -43,7 +42,7 @@ export const markAsReadNotification = createAsyncThunk(
     try {
       const response = await axiosInstance.post(`/notification/read`, { }); // Include user_id in request
       if (response?.data?.success) {
-        toast.success(response?.data?.message);
+        // toast.success(response?.data?.message);
         dispatch(fetchNotification({ user_id })); // Refetch updated notifications
       }
       return response.data;
@@ -84,18 +83,12 @@ const notificationSlice = createSlice({
 
       // Delete notification
       .addCase(deleteNotification.fulfilled, (state, action) => {
-        state.list = state.list.filter(
-          (notification) => notification.id !== action.meta.arg.user_id
-        );
+        state.list =[]
       })
 
       // Mark notification as read
       .addCase(markAsReadNotification.fulfilled, (state, action) => {
-        state.list = state.list.map((notification) =>
-          notification.id === action.meta.arg.notification_id
-            ? { ...notification, read: true }
-            : notification
-        );
+        state.list = []
       });
   },
 });

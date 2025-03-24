@@ -18,6 +18,7 @@ const AddTask = () => {
     const router = useRouter()
     const dispatch = useDispatch();
     const usersList = useSelector((state) => state.user?.employeeList?.data);
+    console.log("usersList", usersList)
     const addTaskLoading = useSelector((state) => state.project);
 
     const [itemId2, setStoredValue] = useState(null);
@@ -68,8 +69,8 @@ const AddTask = () => {
         description: "",
         attachment: [],
     })
-    console.log("formData", formData)
-    console.log("itemId", itemId)
+    // console.log("formData", formData)
+    // console.log("itemId", itemId)
     const [errors, setErrors] = useState({
         task_title: false,
 
@@ -98,7 +99,6 @@ const AddTask = () => {
         }
     }, [itemId2]);
 
-    console.log("itemId2", itemId2)
     const handleSubmit = async (e) => {
         e.preventDefault();
         let newErrors = {

@@ -27,17 +27,18 @@ const NavBar = () => {
 
   const notificationListData = useSelector((state) => state.notification?.list?.data);
   const notificationListLoading = useSelector((state) => state.notification);
-  console.log("userData?.is_employee ", userData?.is_employee)
-  const isEmployee = userData?.is_employee == 1
-  console.log("isEmployee", isEmployee)
-  const isClient = userData?.is_client == 1
-  console.log("isClient", isClient)
+
+
+  const isAdmin = userData?.is_admin == 1;
+
   const navItems = [
     { path: "/home", icon: OtherIcons.home_svg, label: "Home" },
     { path: ["/project/list", "/project/add", "/project/details", "/project/add-task"], icon: OtherIcons.projects_svg, label: "Projects" },
-    (isClient || isEmployee) && [{ path: ["/user/list", "/user/add", "/user/details"], icon: OtherIcons.user_svg, label: "User" }],
-    isClient && [{ path: ["/client/list", "/client/add", "/client/details"], icon: OtherIcons.clients_svg, label: "Clients" }]
-  ]
+    isAdmin ? { path: ["/user/list", "/user/add", "/user/details"], icon: OtherIcons.user_svg, label: "User" } : null,
+    isAdmin ? { path: ["/client/list", "/client/add", "/client/details"], icon: OtherIcons.clients_svg, label: "Clients" } : null
+  ].filter(Boolean); // Removes `null` values
+
+
 
 
 
@@ -105,14 +106,15 @@ const NavBar = () => {
 
 
   useEffect(() => {
-    if (isOpen && userData?.id) {
+    if (notificationDropDown?.isOpen && userData?.id) {
       dispatch(markAsReadNotification({ user_id: userData.id }));
     }
-  }, [isOpen, userData?.id, dispatch])
+  }, [notificationDropDown?.isOpen, userData?.id, dispatch])
 
   const handleClearNotifications = () => {
+   
     if (userData?.id) {
-      dispatch(deleteNotification({ user_id: userData.id, notificationDropDown }));
+      dispatch(deleteNotification({ user_id: userData.id, dispatch }));
     }
   };
   return (
@@ -179,7 +181,7 @@ const NavBar = () => {
 
             {/* Dropdown Menu */}
             {notificationDropDown?.isOpen && (
-              <div className="bg-white border border-gray-200 p-3 rounded-lg shadow-lg ml-28 sm:ml-0  w-[300px] fixed sm:absolute right-2 top-16 sm:top-12 z-50">
+              <div className="bg-white border border-gray-200 p-3 rounded-lg shadow-lg ml-28 sm:ml-0  w-[400px] fixed sm:absolute right-2 top-16 sm:top-12 z-50"  ref={notificationDropDown?.ref}>
                 {/* Header with Clear Button */}
                 <div className="flex justify-between items-center mb-1">
                   <h3 className="text-gray-900 text-sm font-semibold"></h3>
@@ -187,6 +189,9 @@ const NavBar = () => {
                     <button
                       className="flex h-4 justify-center text-gray-500 text-xs w-4 hover:text-gray-700 items-center"
                       onClick={handleClearNotifications}
+                      // onClick={() => console.log("Clear button clicked")}
+                      type="button"
+                      ref={notificationDropDown?.buttonRef}
                     >
                       Clear
                     </button>
@@ -199,7 +204,8 @@ const NavBar = () => {
 
 
                 {/* Notifications List */}
-                {notificationListLoading?.loading ? (<TableSkeleton2 />) :
+                {
+                  // notificationListLoading?.loading ? (<TableSkeleton2 />) :
                   notificationListData?.length > 0 ? (
                     notificationListData?.map((notification, index) => (
                       <div key={notification.id} className="py-2">
