@@ -90,7 +90,7 @@ const UserList = () => {
         <div className="w-full h-[44px] flex justify-between items-center ">
           {/* Left Section (Heading + Count) */}
           <div className="flex">
-            <p className="text-[20px] sm:text-[30px]  leading-[32px] tracking-[-1.5px]">All User list</p>
+            <p className="text-[20px] sm:text-[30px]  leading-[32px] tracking-[-1.5px]  text-gray-800">All User list</p>
             <p className="font-bold p-2 rounded-full text-[10.16px] leading-[12.19px] text-[#400F6F] mt-3 ml-2 bg-[#f0e7fa] flex items-center justify-center w-[60px] h-[10px]">
               {totalCount} total
             </p>
@@ -183,7 +183,7 @@ const UserList = () => {
                 <tr className="text-left m-1 text-sm uppercase text-black opacity-80 shadow-tr-border rounded-md  ">
                   <th className="py-2 sm:py-3 px-2 sm:px-4  text-[13px] sm:text-[16px] min-w-[100px] ">
                     <div className='flex items-center justify-between'>
-                      <span> User ID</span>
+                      <span className='text-gray-800'> User ID</span>
 
                       <SortBy
                         setSearchTrigger={setSearchTrigger}
@@ -196,12 +196,12 @@ const UserList = () => {
                       />
                     </div>
                   </th>
-                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[13px] sm:text-[16px] min-w-[100px]">Name</th>
-                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[13px] sm:text-[16px] in-w-[100px]  ">Email ID</th>
-                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[13px] sm:text-[16px] min-w-[100px] ">Mobile Number</th>
-                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[13px] sm:text-[16px] min-w-[100px] ">Designation</th>
-                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[13px] sm:text-[16px] min-w-[100px] ">Date Of Joining</th>
-                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[13px] sm:text-[16px] min w-full flex justify-center items-center">Status</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[13px] sm:text-[16px] min-w-[100px] text-gray-800">Name</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[13px] sm:text-[16px] in-w-[100px] text-gray-800">Email ID</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[13px] sm:text-[16px] min-w-[100px] text-gray-800">Mobile Number</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[13px] sm:text-[16px] min-w-[100px] text-gray-800">Designation</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[13px] sm:text-[16px] min-w-[100px] text-gray-800">Date Of Joining</th>
+                  <th className="py-2 sm:py-3 px-2 sm:px-4  text-[13px] sm:text-[16px] min w-full flex justify-center items-center text-gray-800">Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -209,12 +209,12 @@ const UserList = () => {
                   usersList?.length > 0 ? (
                     usersList?.map((user, index) => (
                       <tr key={user?.id} className="cursor-pointer hover:bg-gray-100    hover:shadow-tr-border    rounded-md  transition-all duration-200">
-                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] " onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.employee_id || ""}</td>
-                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] " onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.name || ""}</td>
-                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px]" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.email || ""}</td>
-                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] " onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.phone_number || ""}</td>
-                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px]" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.designation || ""}</td>
-                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] " onClick={() => router.push(`/user/details?id=${user?.id}`)}>{formatDate(user?.joining_date) || ""}</td>
+                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] text-gray-700" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.employee_id || ""}</td>
+                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] text-gray-700" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.name || ""}</td>
+                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] text-gray-700" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.email || ""}</td>
+                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] text-gray-700" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.phone_number || ""}</td>
+                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] text-gray-700" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.designation || ""}</td>
+                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] text-gray-700" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{formatDate(user?.joining_date) || ""}</td>
                         <Tooltip title={user?.status == 0 ? 'User Is Active' : 'User Is Inactive'} arrow disableInteractive>
                           <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] flex justify-center items-center" onClick={() => router.push(`/user/details?id=${user?.id}`)}>
                             <span className={`w-3 h-3 inline-block  rounded-full ${user.status == 0 ? 'bg-green-600' : 'bg-red-600'}`}></span>

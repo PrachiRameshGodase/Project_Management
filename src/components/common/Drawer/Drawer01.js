@@ -114,7 +114,7 @@ const Drawer01 = ({
 
         </div>
         <div className="flex justify-end">
-          <div className="flex items-center mr-2">
+          {/* <div className="flex items-center mr-2">
             <label className="flex items-center cursor-pointer">
               <span className="ml-2 text-[15px] mr-2">
                 {!isActive ? "Inactive" : "Active"}
@@ -148,7 +148,7 @@ const Drawer01 = ({
                 </div>
               </div>
             </label>
-          </div>
+          </div> */}
         </div>
         {/* Project Details Section */}
         <div className="p-1 sm:p-4 overflow-y-auto flex-grow">
@@ -160,7 +160,7 @@ const Drawer01 = ({
                 <span className="text-gray-400 w-[120px] text-[14px]">Priority</span>
                 <h4>:</h4>
                 <span className="text-gray-700 w-[200px] text-[14px]">
-                {details?.priority?.charAt(0).toUpperCase() + details?.priority?.slice(1)}
+                  {details?.priority?.charAt(0).toUpperCase() + details?.priority?.slice(1)}
                 </span>
               </li>
               <li className="flex mb-2 gap-4">
@@ -228,6 +228,7 @@ const Drawer01 = ({
 export default Drawer01;
 
 export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId2, itemId, details }) => {
+  console.log("details", details)
   const dispatch = useDispatch();
   const router = useRouter()
   const userData = useUserData()
@@ -287,6 +288,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId2, itemId, details })
 
   if (!isOpen) return null;
   const handleEditUser = () => {
+    localStorage.setItem("itemId", itemId2)
     router.push(`/project/add-task?id=${itemId}&edit=true`);
   };
   return (
@@ -381,45 +383,54 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId2, itemId, details })
                 <span className="text-gray-400 w-[120px] text-[14px]"> Due Date</span>
                 <h4>:</h4>
                 <span className="text-gray-700 w-[200px] text-[14px]">
-                {formatDate(details?.due_date) || ""}
+                  {formatDate(details?.due_date) || ""}
                 </span>
               </li>
               <li className="flex mb-2 gap-4">
                 <span className="text-gray-400 w-[120px] text-[14px]">Task Type</span>
                 <h4>:</h4>
                 <span className="text-gray-700 w-[200px] text-[14px]">
-                {details?.task_type || ""}
+                  {details?.task_type || ""}
                 </span>
               </li>
               <li className="flex mb-2 gap-4">
                 <span className="text-gray-400 w-[120px] text-[14px]">Team</span>
                 <h4>:</h4>
                 <span className="text-gray-700 w-[200px] text-[14px]">
-                {details?.team?.map((item) => item?.first_name + " " + item?.last_name).join(", ") || ""}{" "}
+                  {details?.team_names?.join(", ") || ""}{" "}
                 </span>
               </li>
               <li className="flex mb-2 gap-4">
                 <span className="text-gray-400 w-[120px] text-[14px]">Visibility</span>
                 <h4>:</h4>
                 <span className="text-gray-700 w-[200px] text-[14px]">
-                {details?.visibility || ""}
+                  {details?.visibility || ""}
                 </span>
               </li>
               <li className="flex mb-2 gap-4">
                 <span className="text-gray-400 w-[120px] text-[14px]">Link</span>
                 <h4>:</h4>
-                <span className="text-gray-700 w-[200px] text-[14px]">
-                {details?.link || ""}
-                </span>
+                {details?.link ? (
+                  <a
+                    href={details?.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-500 w-[200px] text-[14px] underline cursor-pointer"
+                  >
+                    {details?.link}
+                  </a>
+                ) : (
+                  <span className="text-gray-700 w-[200px] text-[14px]"></span>
+                )}
               </li>
               <li className="flex mb-2 gap-4">
                 <span className="text-gray-400 w-[120px] text-[14px]">Description</span>
                 <h4>:</h4>
                 <span className="text-gray-700 w-[200px] text-[14px]">
-                {details?.description || ""}
+                  {details?.description || ""}
                 </span>
               </li>
-            
+
               <li className="flex mb-2 gap-4">
                 <span className="text-gray-400 w-[120px] text-[14px]">Attachments</span>
                 <h4>:</h4>

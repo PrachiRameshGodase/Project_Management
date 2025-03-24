@@ -128,28 +128,34 @@ const TaskList = () => {
   // // filter
 
   useEffect(() => {
-    if (!itemId) return; 
-    if(userData?.is_client==1){
+    if (!itemId) return;
+    if (userData?.is_client == 1) {
       const sendData = {
-        project_id: itemId,
-        visibility:"Public",
+        project_id: Number(itemId),
+        visibility: "Public",
         limit: itemsPerPage,
         page: currentPage,
         ...(searchTermFromChild ? { search: searchTermFromChild } : {}),
         ...(selectedSortBy && { sort_by: selectedSortBy, sort_order: sortOrder }),
+        ...(selectedStatus !== null && selectedStatus !== undefined
+          ? { status: selectedStatus }
+          : {}),
       };
-    dispatch(fetchProjectTasks(sendData));
-      
-    }else{
-    const sendData = {
-      project_id: itemId,
-      limit: itemsPerPage,
-      page: currentPage,
-      ...(searchTermFromChild ? { search: searchTermFromChild } : {}),
-      ...(selectedSortBy && { sort_by: selectedSortBy, sort_order: sortOrder }),
-    };
+      dispatch(fetchProjectTasks(sendData));
 
-    dispatch(fetchProjectTasks(sendData));
+    } else {
+      const sendData = {
+        project_id: Number(itemId),
+        limit: itemsPerPage,
+        page: currentPage,
+        ...(searchTermFromChild ? { search: searchTermFromChild } : {}),
+        ...(selectedSortBy && { sort_by: selectedSortBy, sort_order: sortOrder }),
+        ...(selectedStatus !== null && selectedStatus !== undefined
+          ? { status: selectedStatus }
+          : {}),
+      };
+
+      dispatch(fetchProjectTasks(sendData));
     }
   }, [searchTrigger, dispatch, selectedStatus, itemId]); // Include all dependencies
 
@@ -219,9 +225,9 @@ const TaskList = () => {
   // projectTaskLoading?.taskListLoading
   return (
     <>
-      {/* {projectLoading?.loading ? (
+      {projectLoading?.loading ? (
         <></>
-      ) : ( */}
+      ) : (
         <LayOut>
           <div className="flex justify-end absolute right-3 top-[90px]">
             <button
@@ -335,7 +341,7 @@ const TaskList = () => {
             <div className="w-full h-[44px] mt-6  flex justify-between items-center px-2 sm:px-4  ">
               {/* Left Section (Heading + Count) */}
               <div className="flex">
-                <p className="text-[20px] sm:text-[30px] leading-[32px] tracking-[-1.5px]">
+                <p className="text-[20px] sm:text-[30px] leading-[32px] tracking-[-1.5px] text-gray-800">
                   All Tasks list
                 </p>
                 <p className="font-bold p-2 rounded-full text-[10.16px] leading-[12.19px] text-[#400F6F] mt-3 ml-2 bg-[#f0e7fa] flex items-center justify-center w-[50px] h-[10px]">
@@ -527,21 +533,21 @@ const TaskList = () => {
                           <th className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px]   flex ">
 
                             <div className='flex items-center justify-between'>
-                              <span>TASK TITLE</span><SortBy setSearchTrigger={setSearchTrigger} selectedSortBy={selectedSortBy} setSelectedSortBy={setSelectedSortBy} sortOrder={sortOrder} setSortOrder={setSortOrder} sortOptions="task_title" resetPageIfNeeded={resetPageIfNeeded} /> </div></th>
-                          <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] ">
+                              <span className="text-gray-800">TASK TITLE</span><SortBy setSearchTrigger={setSearchTrigger} selectedSortBy={selectedSortBy} setSelectedSortBy={setSelectedSortBy} sortOrder={sortOrder} setSortOrder={setSortOrder} sortOptions="task_title" resetPageIfNeeded={resetPageIfNeeded} /> </div></th>
+                          <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] text-gray-800">
                             STATUS
                           </th>
-                          <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px]  ">
+                          <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] text-gray-800">
                             DUE DATE
                           </th>
-                          <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px]  ">
+                          <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] text-gray-800">
                             TASK TYPE
                           </th>
 
-                          <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] ">
+                          <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] text-gray-800">
                             TEAM
                           </th>
-                          <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] ">
+                          <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] text-gray-800">
                             PRIORITY
                           </th>
                         </tr>
@@ -552,12 +558,12 @@ const TaskList = () => {
                             key={item?.id}
                             className="cursor-pointer  hover:bg-gray-100   hover:shadow-tr-border   rounded-md  transition-all duration-200">
                             <td
-                              className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px]   rounded "
+                              className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px]   rounded  text-gray-700"
                               onClick={() => handleTaskClick(item?.id)}>
                               {item?.task_title || ""}
                             </td>
                             <td
-                              className={`py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[14px]  min-w-[150px] rounded `}
+                              className={`py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[14px]  min-w-[150px] rounded text-gray-700`}
                               onClick={() => handleTaskClick(item?.id)}>
                               <span
                                 className={`py-1 px-2 sm:px-2   text-[12px] sm:text-[14px]  border rounded-md ${item?.status === "To Do"
@@ -572,17 +578,17 @@ const TaskList = () => {
                               </span>
                             </td>
                             <td
-                              className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px]   "
+                              className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px] text-gray-700"
                               onClick={() => handleTaskClick(item?.id)}>
                               {formatDate(item?.due_date) || ""}
                             </td>
                             <td
-                              className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px]   "
+                              className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px] text-gray-700"
                               onClick={() => handleTaskClick(item?.id)}>
                               {item?.task_type || ""}
                             </td>
                             <td
-                              className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px]  "
+                              className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px] text-gray-700"
                               onClick={() => handleTaskClick(item?.id)}>
                               <TruncatedTooltipText
                                 text={item?.team_names?.join(", ")}
@@ -591,7 +597,7 @@ const TaskList = () => {
                               />
                             </td>
                             <td
-                              className={` text-[12px] sm:text-[14px] `}
+                              className={` text-[12px] sm:text-[14px] text-gray-700`}
                               onClick={() => handleTaskClick(item?.id)}>
                               {item?.priority ? (
                                 <span
@@ -635,7 +641,7 @@ const TaskList = () => {
             )}
 
             {selectedView == "Kanban" && (
-              <KanBanView groupedUsers={projectTaskListData} itemId2={itemId} />
+              <KanBanView groupedUsers={projectTaskListData} itemId={itemId} />
             )}
           </div>
           <Drawer01
@@ -653,7 +659,7 @@ const TaskList = () => {
             details={taskDetailsData}
           />
         </LayOut>
-      {/* )} */}
+      )}
     </>
   );
 };

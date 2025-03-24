@@ -95,7 +95,7 @@ const ClientList = () => {
 
                     {/* Left Section (Heading + Count) */}
                     <div className="flex">
-                        <p className="text-[20px] sm:text-[30px] leading-[32px] tracking-[-1.5px]">All Client list</p>
+                        <p className="text-[20px] sm:text-[30px] leading-[32px] tracking-[-1.5px] text-gray-800">All Client list</p>
                         <p className="font-bold p-2 rounded-full text-[10.16px] leading-[12.19px] text-[#400F6F] mt-3 ml-2 bg-[#f0e7fa] flex items-center justify-center w-[60px] h-[10px]">
                             {totalCount} total
                         </p>
@@ -190,7 +190,7 @@ const ClientList = () => {
                                     <tr className="text-left m-1 text-sm uppercase text-black opacity-80 shadow-tr-border rounded-md  ">
                                         <th className="py-2 sm:py-3 px-2 sm:px-4    text-[13px]  sm:text-[14px] border-b border-gray-100 rounded-t-lg flex">
                                             <div className='flex items-center justify-between'>
-                                                <span>Client ID</span>
+                                                <span className='text-gray-800'>Client ID</span>
 
                                                 <SortBy
                                                     setSearchTrigger={setSearchTrigger}
@@ -203,9 +203,9 @@ const ClientList = () => {
                                                 />
                                             </div>
                                         </th>
-                                        <th className="py-2 sm:py-3 px-2 sm:px-4   text-[13px] sm:text-[16px]  rounded-t-lg">Client Name</th>
-                                        <th className="py-2 sm:py-3 px-2 sm:px-4   text-[13px] sm:text-[16px]  rounded-t-lg">Email ID</th>
-                                        <th className="py-2 sm:py-3 px-2 sm:px-4   text-[13px] sm:text-[16px]  rounded-t-lg">CONTACT PERSON NAME</th>
+                                        <th className="py-2 sm:py-3 px-2 sm:px-4   text-[13px] sm:text-[16px]  rounded-t-lg text-gray-800">Client Name</th>
+                                        <th className="py-2 sm:py-3 px-2 sm:px-4   text-[13px] sm:text-[16px]  rounded-t-lg text-gray-800">Email ID</th>
+                                        <th className="py-2 sm:py-3 px-2 sm:px-4   text-[13px] sm:text-[16px]  rounded-t-lg text-gray-800">CONTACT PERSON NAME</th>
                                         {/* <th className="py-2 sm:py-3 px-2 sm:px-4    text-[12px] sm:text-[15px] rounded-t-lg">MOBILE NUMBER</th> */}
 
                                         <th className="py-2 sm:py-3 px-2 sm:px-4   text-[13px] sm:text-[16px] rounded-t-lg">Status</th>
@@ -214,13 +214,13 @@ const ClientList = () => {
                                 <tbody>
                                     {usersList?.map((user, index) => (
                                         <tr key={user?.id} className="cursor-pointer   hover:shadow-tr-border hover:bg-gray-100   rounded-md  transition-all duration-200">
-                                            <td className="py-2 sm:py-3 px-2 sm:px-4    text-[12px] sm:text-[15px]  border-gray-50" onClick={() => router.push(`/client/details?id=${user?.id}`)}>{user?.client_id}</td>
-                                            <td className="py-2 sm:py-3 px-2 sm:px-4    text-[12px] sm:text-[15px]  border-gray-50" onClick={() => router.push(`/client/details?id=${user?.id}`)}>{user?.name}</td>
-                                            <td className="py-2 sm:py-3 px-2 sm:px-4    text-[12px] sm:text-[15px]" onClick={() => router.push(`/client/details?id=${user?.id}`)}>{user?.email}</td>
+                                            <td className="py-2 sm:py-3 px-2 sm:px-4    text-[12px] sm:text-[15px]  border-gray-50 text-gray-700" onClick={() => router.push(`/client/details?id=${user?.id}`)}>{user?.client_id}</td>
+                                            <td className="py-2 sm:py-3 px-2 sm:px-4    text-[12px] sm:text-[15px]  border-gray-50 text-gray-700" onClick={() => router.push(`/client/details?id=${user?.id}`)}>{user?.name}</td>
+                                            <td className="py-2 sm:py-3 px-2 sm:px-4    text-[12px] sm:text-[15px] text-gray-700" onClick={() => router.push(`/client/details?id=${user?.id}`)}>{user?.email}</td>
                                             {/* <td className="py-2 sm:py-3 px-2 sm:px-4    text-[12px] sm:text-[15px]" onClick={() => router.push(`/client/details?id=${user.userId}`)}>{user.mobileNumber}</td> */}
-                                            <td className="py-2 sm:py-3 px-2 sm:px-4    text-[12px] sm:text-[15px] " onClick={() => router.push(`/client/details?id=${user?.id}`)}>{user?.contact_name}</td>
+                                            <td className="py-2 sm:py-3 px-2 sm:px-4    text-[12px] sm:text-[15px] text-gray-700" onClick={() => router.push(`/client/details?id=${user?.id}`)}>{user?.contact_name}</td>
                                             <td
-                                                className="py-2 sm:py-3 px-2 sm:px-4    text-[12px] sm:text-[15px]  font-bold items-center flex align-middle"
+                                                className="py-2 sm:py-3 px-2 sm:px-4    text-[12px] sm:text-[15px]  items-center flex align-middle"
                                                 onClick={() => router.push(`/client/details?id=${user?.id}`)}
                                             >
                                                 <span

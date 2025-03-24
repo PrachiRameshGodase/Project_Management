@@ -11,7 +11,7 @@ const TruncatedTooltipText = ({ text, maxLength = 22, onClick}) => {
     return (
         <Tooltip title={isTruncated ? text : ""} arrow disableInteractive>
             <span
-                className="cursor-pointer  text-[13px] sm:text-[16px]"
+                className="cursor-pointer  text-[12px] sm:text-[15px]"
                 onClick={onClick}
             >
                 {displayText}

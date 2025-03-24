@@ -2,29 +2,34 @@ import { updateTaskStatus } from "@/app/store/projectSlice";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { formatDate } from "../Helper/Helper";
+import { Drawer001 } from "../Drawer/Drawer01";
 
-const DraggableCard = ({ user, index, status, moveUser, moveCard }) => {
+const DraggableCard = ({ user, index, status, itemId }) => {
   const handleDragStart = (e) => {
     e.dataTransfer.effectAllowed = "move";
     e.dataTransfer.setData("userId", String(user.id)); // Ensure it's a string
     e.dataTransfer.setData("fromStatus", status);
     e.dataTransfer.setData("fromIndex", String(index));
   };
-
+  const [isDrawerOpen1, setIsDrawerOpen1] = useState(false);
+  const [itemId2, setItemId2] = useState(null);
+  const handleTaskClick = (id) => {
+    setItemId2(id);
+    setIsDrawerOpen1(true);
+  }
   return (
     <div
       draggable
       onDragStart={handleDragStart}
-      className="w-[300px] h-full mt-4 bg-white p-4 gap-4 shadow-md rounded cursor-pointer"
+      className="w-[300px] h-full mt-4 bg-white p-4 gap-4 shadow-md rounded cursor-pointer " onClick={() => handleTaskClick(user?.id)}
     >
       <p
-        className={`px-3 py-1 border rounded-md text-[15px] inline-block ${
-          user.priority === "High"
+        className={`px-3 py-1 border rounded-md text-[15px] inline-block ${user.priority === "High"
             ? "text-[#4976F4] border-[#4976F4]"
             : user.priority === "Low"
-            ? "text-red-400 border-red-400"
-            : "text-[#954BAF] border-[#954BAF]"
-        }`}
+              ? "text-red-400 border-red-400"
+              : "text-[#954BAF] border-[#954BAF]"
+          }`}
       >
         {user.priority}
       </p>
@@ -49,11 +54,18 @@ const DraggableCard = ({ user, index, status, moveUser, moveCard }) => {
           </span>
         </li>
       </ul>
+      <Drawer001
+        isOpen={isDrawerOpen1}
+        setIsDrawerOpen={setIsDrawerOpen1}
+        itemId2={itemId}
+        itemId={itemId2}
+        details={user}
+      />
     </div>
   );
 };
 
-const DroppableColumn = ({ status, users, moveUser, moveCard }) => {
+const DroppableColumn = ({ status, users, moveUser, moveCard, itemId }) => {
   const handleDragOver = (e) => {
     e.preventDefault();
   };
@@ -79,17 +91,16 @@ const DroppableColumn = ({ status, users, moveUser, moveCard }) => {
       onDrop={handleDrop}
       className="w-[310px] h-full border border-gray-100 rounded bg-gray-100 mb-4 min-h-[1000px] flex flex-col"
     >
-      <div className="w-full h-[40px] bg-[#F0E7FA] flex items-center px-4">
+      <div className="w-full h-[40px] bg-[#F0E7FA] flex items-center px-4" >
         <p
-          className={`w-[13px] h-[13px] rounded-full ${
-            status === "To Do"
+          className={`w-[13px] h-[13px] rounded-full ${status === "To Do"
               ? "bg-[#6C757D]"
               : status === "In Progress"
-              ? "bg-[#CA9700]"
-              : status === "Under Review"
-              ? "bg-[#0D4FA7]"
-              : "bg-[#048339]"
-          }`}
+                ? "bg-[#CA9700]"
+                : status === "Under Review"
+                  ? "bg-[#0D4FA7]"
+                  : "bg-[#048339]"
+            }`}
         ></p>
         <p className="text-[15px] ml-2">{status}</p>
         <p className="text-[14px] ml-4">{users.length}</p>
@@ -103,8 +114,9 @@ const DroppableColumn = ({ status, users, moveUser, moveCard }) => {
               user={user}
               index={index}
               status={status}
-              moveUser={moveUser}
-              moveCard={moveCard}
+              itemId={itemId}
+            // moveUser={moveUser}
+            // moveCard={moveCard}
             />
           ))
         ) : (
@@ -117,9 +129,9 @@ const DroppableColumn = ({ status, users, moveUser, moveCard }) => {
   );
 };
 
-const KanBanView = ({ groupedUsers, itemId2 }) => {
-  console.log("itemId2", itemId2)
- const dispatch = useDispatch();
+const KanBanView = ({ groupedUsers, itemId }) => {
+  console.log("itemId2", itemId)
+  const dispatch = useDispatch();
   // Define the required statuses
   const statuses = ["To Do", "In Progress", "Under Review", "Completed"];
 
@@ -135,7 +147,7 @@ const KanBanView = ({ groupedUsers, itemId2 }) => {
 
   const moveUser = async (userId, fromStatus, toStatus) => {
     if (fromStatus === toStatus) return;
-  
+
     let userToMove;
     const updatedColumns = columns.map((group) => {
       if (group.status === fromStatus) {
@@ -147,34 +159,34 @@ const KanBanView = ({ groupedUsers, itemId2 }) => {
       }
       return group;
     });
-  
+
     if (!userToMove) return;
-  
+
     const { id } = userToMove;
     console.log("iddd", id)
-      dispatch(
-        updateTaskStatus({
-          id: id,
-          status: toStatus,
-          dispatch,
-          project_id: Number(itemId2),
-        })
-      );
-  
-      const finalColumns = updatedColumns.map((group) => {
-        if (group.status === toStatus) {
-          return {
-            ...group,
-            users: [...group.users, { ...userToMove, status: toStatus }],
-          };
-        }
-        return group;
-      });
-  
-      setColumns(finalColumns);
-    
+    dispatch(
+      updateTaskStatus({
+        id: id,
+        status: toStatus,
+        dispatch,
+        project_id: Number(itemId2),
+      })
+    );
+
+    const finalColumns = updatedColumns.map((group) => {
+      if (group.status === toStatus) {
+        return {
+          ...group,
+          users: [...group.users, { ...userToMove, status: toStatus }],
+        };
+      }
+      return group;
+    });
+
+    setColumns(finalColumns);
+
   };
-  
+
 
   const moveCard = (id, fromStatus, fromIndex, toIndex) => {
     const updatedColumns = columns.map((group) => {
@@ -201,6 +213,7 @@ const KanBanView = ({ groupedUsers, itemId2 }) => {
             users={group.users}
             moveUser={moveUser}
             moveCard={moveCard}
+            itemId={itemId}
           />
         ))}
       </div>

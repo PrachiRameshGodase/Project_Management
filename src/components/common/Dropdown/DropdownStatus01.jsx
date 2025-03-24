@@ -16,8 +16,9 @@ const DropdownStatus01 = ({
   const [selected, setSelected] = useState(selectedValue);
 
   const handleOptionSelect = (value) => {
-    setSelected(value);
-    if (onSelect) onSelect(value); // Ensure onSelect callback is executed
+    const newValue = value === "All" ? " " : value; // Convert "All" to an empty string
+    onSelect(newValue);
+    setSelected(newValue);
     dropdownOutsideClick.handleToggle();
   };
 

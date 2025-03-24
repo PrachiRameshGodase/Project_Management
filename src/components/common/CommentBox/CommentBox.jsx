@@ -32,6 +32,7 @@ import {
 } from "../../../configs/firebase";
 
 const ChatBox = ({ projectId, taskId }) => {
+  console.log("projectId", projectId)
   const dispatch = useDispatch();
   const usersList = useSelector((state) => state.user?.employeeList?.data);
   const CommentListData = useSelector(

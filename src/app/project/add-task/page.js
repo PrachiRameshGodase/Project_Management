@@ -18,7 +18,7 @@ const AddTask = () => {
     const router = useRouter()
     const dispatch = useDispatch();
     const usersList = useSelector((state) => state.user?.employeeList?.data);
-    console.log("usersList", usersList)
+   
     const addTaskLoading = useSelector((state) => state.project);
 
     const [itemId2, setStoredValue] = useState(null);
