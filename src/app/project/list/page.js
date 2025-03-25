@@ -100,7 +100,6 @@ const ProjectList = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [selectedStatus2, setSelectedStatus2] = useState('View');
   const [statusUpdating, setStatusUpdating] = useState(false);
-console.log("statusUpdating", statusUpdating)
     const handleStatusChange = async (value, itemId) => {
       const result = await Swal.fire({
         text: `Do you want to update the status of this Project?`,

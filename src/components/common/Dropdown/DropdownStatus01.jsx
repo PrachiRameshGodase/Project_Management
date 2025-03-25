@@ -70,16 +70,18 @@ const DropdownStatus01 = ({
 
         {/* Up & Down arrow toggle button with dynamic color */}
         {userData?.is_client == 0 && (
-          <button type="button" onClick={dropdownOutsideClick?.handleToggle}>
+          <button type="button" onClick={dropdownOutsideClick?.handleToggle}  ref={dropdownOutsideClick?.buttonRef}>
             {dropdownOutsideClick?.isOpen ? (
               <ChevronUp
                 size={16}
                 className={`text-[${getStatusColor(selected)}] `}
+                onClick={dropdownOutsideClick?.handleToggle}
               />
             ) : (
               <ChevronDown
                 size={16}
                 className={`text-[${getStatusColor(selected)}]`}
+                onClick={dropdownOutsideClick?.handleToggle}
               />
             )}
           </button>
