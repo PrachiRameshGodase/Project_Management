@@ -5,7 +5,6 @@ import {
   fetchProjectTasks,
   updateProjectStatus,
   updateStatus,
-  updateTaskStatus,
 } from "@/app/store/projectSlice";
 import { OtherIcons } from "@/assests/icons";
 import DataNotFound from "@/components/common/DataNotFound/DataNotFound";
@@ -144,8 +143,8 @@ const TaskList = () => {
         limit: itemsPerPage,
         page: currentPage,
         ...(searchTermFromChild ? { search: searchTermFromChild } : {}),
-        ...(selectedSortBy ? { sort_by: selectedSortBy, sort_order: sortOrder } : {}),
-        ...(selectedStatus ? { status: selectedStatus } : {}),
+        ...(selectedSortBy ? { sort_by: selectedSortBy, sort_order: sortOrder }: {}),
+        ...(selectedStatus  ? { status: selectedStatus } : {}),
         ...(selectedPriority ? { priority: selectedPriority } : {})
       };
       dispatch(fetchProjectTasks(sendData));
@@ -156,9 +155,9 @@ const TaskList = () => {
         limit: itemsPerPage,
         page: currentPage,
         ...(searchTermFromChild ? { search: searchTermFromChild } : {}),
-        ...(selectedSortBy ? { sort_by: selectedSortBy, sort_order: sortOrder } : {}),
-        ...(selectedStatus ? { status: selectedStatus } : {}),
-        ...(selectedPriority ? { priority: selectedPriority } : {})
+        ...(selectedSortBy ? { sort_by: selectedSortBy, sort_order: sortOrder }:{}),
+        ...(selectedStatus  ? { status: selectedStatus } : {}),
+        ...(selectedPriority ?  { priority: selectedPriority } : {})
       };
 
       dispatch(fetchProjectTasks(sendData));
@@ -229,21 +228,6 @@ const TaskList = () => {
     // localStorage.removeItem("itemId", itemId2)
   }
 
-  const handleStatusChange2 = async (value, itemId2) => {
-    const result = await Swal.fire({
-      text: `Do you want to update the status of this Task?`,
-      showCancelButton: true,
-      confirmButtonText: "Yes",
-      cancelButtonText: "No",
-    });
-
-    if (result.isConfirmed && itemId2) {
-      // setSelectedStatus(value);
-
-      // Dispatch updateUserStatus with the new status
-      dispatch(updateTaskStatus({ id: itemId2, status: value, dispatch, project_id: Number(itemId) }));
-    }
-  };
   return (
     <>
       {projectLoading?.loading ? (
@@ -381,7 +365,7 @@ const TaskList = () => {
 
               {/* Right Section (Filters & Search) */}
               <div className="hidden min-[950px]:flex gap-6 items-center">
-                <Dropdown01
+              <Dropdown01
                   options={taskView}
                   selectedValue={selectedView}
                   onSelect={setSelectedView}
@@ -395,7 +379,7 @@ const TaskList = () => {
 
                 </>}
 
-
+                
 
                 {/* <Dropdown01 options={projectSortConstant} selectedValue={selectedSort} onSelect={setSelectedSort} label="Sort By" icon={OtherIcons.sort_by_svg} /> */}
 
@@ -586,19 +570,18 @@ const TaskList = () => {
                             </td>
                             <td
                               className={`py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[14px]  min-w-[150px] rounded text-gray-700`}
-                            >
-                              {item?.status ? (
-                                <DropdownStatus01
-                                  options={statusProject}
-                                  selectedValue={item?.status}
-                                  onSelect={(value) => handleStatusChange2(value, item?.id)}
-                                  label="Status"
-                                  className="w-[140px]"
-                                />
-                              ) : (
-                                "" // Placeholder for empty status
-                              )}
-
+                              onClick={() => handleTaskClick(item?.id)}>
+                              <span
+                                className={`py-1 px-2 sm:px-2   text-[12px] sm:text-[14px]  border rounded-md ${item?.status === "To Do"
+                                  ? "text-[#6C757D] border-[#6C757D]"
+                                  : item?.status === "In progress"
+                                    ? "text-[#CA9700] border-[#CA9700]"
+                                    : item?.status === "Completed"
+                                      ? "text-[#008053] border-[#008053]"
+                                      : "text-[#0D4FA7] border-[#0D4FA7]"
+                                  } inline-block`}>
+                                {item?.status || ""}
+                              </span>
                             </td>
                             <td
                               className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px] text-gray-700"
