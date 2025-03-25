@@ -52,11 +52,13 @@ export const fetchProjectDetails = createAsyncThunk("project/fetchDetails", asyn
 });
 
 // Async thunk to fetch user details by ID
-export const updateProjectStatus = createAsyncThunk("project/updateProjectStatus", async ({ id, status, router }, { rejectWithValue }) => {
+export const updateProjectStatus = createAsyncThunk("project/updateProjectStatus", async ({ id, status , dispatch, setDataLoading}, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.post(`/project_status`, { id, status });
     if (response?.data?.success === true) {
       toast.success(response?.data?.message);
+      setDataLoading(false)
+      dispatch(fetchProjects()); // Refresh the list
       // router.push("/project/list"); // Navigate on success
     }
     return response.data;
@@ -150,8 +152,6 @@ export const updateTaskStatus = createAsyncThunk("task/updateTaskStatus", async 
   try {
     const response = await axiosInstance.post(`/task/status`, { id, status , project_id });
     if (response?.data?.success === true) {
-      // toast.success(response?.data?.message);
-      // router.push("/project/list"); // Navigate on success
       dispatch(fetchProjectTasks({ project_id: project_id,id: id }))
       dispatch(fetchProjectTaskDetails(id))
       dispatch(fetchProjectDetails(project_id))
@@ -297,10 +297,16 @@ const projectSlice = createSlice({
       })
       .addCase(updateProjectStatus.fulfilled, (state, action) => {
         state.loading = false;
-        // Update the user status in the list
-        const updatedUser = action.payload;
-        state.list = state.list.map(user =>
-          user.id === updatedUser.id ? { ...user, status: updatedUser.status } : user
+        if (!state.list || !Array.isArray(state.list)) {
+          state.list = []; // Ensure state.list is an array before mapping
+        }
+      
+        const updatedProject = action.payload;
+      
+        state.list = state.list.map(project =>
+          project.id === updatedProject.id
+            ? { ...project, status: updatedProject.status }
+            : project
         );
       })
       .addCase(updateProjectStatus.rejected, (state, action) => {
@@ -398,7 +404,7 @@ const projectSlice = createSlice({
         // Update the user status in the list
         const updatedUser = action.payload;
         state.taskList = state.taskList.map(user =>
-          user.id === updatedUser.id ? { ...user, task_status: updatedUser.task_status } : user
+          user.id === updatedUser.id ? { ...user, status: updatedUser.status } : user
         );
       })
       .addCase(updateTaskStatus.rejected, (state, action) => {

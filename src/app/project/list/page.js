@@ -1,10 +1,11 @@
 "use client"
-import { fetchProjects } from '@/app/store/projectSlice';
+import { fetchProjects, updateProjectStatus } from '@/app/store/projectSlice';
 import { OtherIcons } from '@/assests/icons';
 import LayOut from '@/components/LayOut';
 import DataNotFound from '@/components/common/DataNotFound/DataNotFound';
 import Dropdown01 from '@/components/common/Dropdown/Dropdown01';
-import { formatDate, view } from '@/components/common/Helper/Helper';
+import DropdownStatus01 from '@/components/common/Dropdown/DropdownStatus01';
+import { formatDate, projectPriority, projectPriority2, statusProject, statusProject2, view } from '@/components/common/Helper/Helper';
 import { useDebounceSearch } from '@/components/common/Helper/HelperFunction';
 import useUserData from '@/components/common/Helper/useUserData';
 import Pagenation from '@/components/common/Pagenation/Pagenation';
@@ -16,6 +17,7 @@ import { Tooltip } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Swal from 'sweetalert2';
 
 const ProjectList = () => {
   const router = useRouter();
@@ -26,6 +28,7 @@ const ProjectList = () => {
   const projectLoading = useSelector((state) => state.project);
   const totalCount = useSelector((state) => state?.project?.list?.total || 0);
   const [selectedView, setSelectedView] = useState('List');
+  const [dataLoading, setDataLoading]=useState(false)
 
   const [selectedDesignation, setSelectedDesignation] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -61,60 +64,56 @@ const ProjectList = () => {
   //sortby
 
   // filter
-  const [selectedStatus, setSelectedStatus] = useState('View');
+  const [selectedStatus, setSelectedStatus] = useState('');
+  const [selectedPriority, setSelectedPriority] = useState('');
+
   // filter
   useEffect(() => {
-    if (userData?.is_client == 1) {
-      const sendData = {
-        client_id: userData?.id,
+    if (userData?.id) {
+      // setDataLoading(true); // Set loading to true before fetching
+  
+      let sendData = {
         limit: itemsPerPage,
         page: currentPage,
         ...(searchTermFromChild ? { search: searchTermFromChild } : {}),
-        ...(selectedSortBy && { sort_by: selectedSortBy, sort_order: sortOrder }),
+        ...(selectedSortBy ? { sort_by: selectedSortBy, sort_order: sortOrder } : {}),
         ...(selectedDesignation && { designation: selectedDesignation }),
-
-        // ...(selectedStatus !== null && selectedStatus !== undefined
-        //   ? { status: selectedStatus }
-        //   : {}),
+        ...(selectedStatus ? { status: selectedStatus } : {}),
+        ...(selectedPriority ? { priority: selectedPriority } : {})
       };
-      dispatch(fetchProjects(sendData));
+  
+      if (userData?.is_client == 1) {
+        sendData.client_id = userData?.id;
+      } else if (userData?.is_employee == 1) {
+        sendData.team_id = userData?.id;
+      }
+  
+      dispatch(fetchProjects(sendData)).finally(() => {
+        setDataLoading(false); // Reset loading after fetching
+      });
     }
-    else if (userData?.is_employee == 1) {
-      const sendData = {
-        team_id: userData?.id,
-        limit: itemsPerPage,
-        page: currentPage,
-        ...(searchTermFromChild ? { search: searchTermFromChild } : {}),
-        ...(selectedSortBy && { sort_by: selectedSortBy, sort_order: sortOrder }),
-        ...(selectedDesignation && { designation: selectedDesignation }),
-
-        // ...(selectedStatus !== null && selectedStatus !== undefined
-        //   ? { status: selectedStatus }
-        //   : {}),
-      };
-      dispatch(fetchProjects(sendData));
-    } else if (userData?.is_admin == 1) {
-      const sendData = {
-
-        limit: itemsPerPage,
-        page: currentPage,
-        ...(searchTermFromChild ? { search: searchTermFromChild } : {}),
-        ...(selectedSortBy && { sort_by: selectedSortBy, sort_order: sortOrder }),
-        ...(selectedDesignation && { designation: selectedDesignation }),
-
-        // ...(selectedStatus !== null && selectedStatus !== undefined
-        //   ? { status: selectedStatus }
-        //   : {}),
-      };
-      dispatch(fetchProjects(sendData));
-    }
-
-
-  }, [searchTrigger, dispatch, selectedStatus, selectedDesignation, userData]);
+  }, [searchTrigger, dispatch, selectedStatus, selectedDesignation, userData, selectedPriority]);
+  
 
 
   // filter short-list
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [selectedStatus2, setSelectedStatus2] = useState('View');
+  const [statusUpdating, setStatusUpdating] = useState(false);
+console.log("statusUpdating", statusUpdating)
+    const handleStatusChange = async (value, itemId) => {
+      const result = await Swal.fire({
+        text: `Do you want to update the status of this Project?`,
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+      });
+  
+      if (result.isConfirmed && itemId) {
+        setStatusUpdating(true)
+        setDataLoading(false)
+        dispatch(updateProjectStatus({ id: itemId, status: value , dispatch, setDataLoading}))}
+    };
   return (
     <LayOut> <div>
       {/* Top Section with Filters and Buttons */}
@@ -139,10 +138,10 @@ const ProjectList = () => {
         {/* Right Section (Filters & Search) */}
         <div className="gap-6 hidden items-center md:flex">
           <Dropdown01 options={view} selectedValue={selectedView} onSelect={setSelectedView} label="View" icon={OtherIcons.view_svg} />
-          {/* <Dropdown01 options={statusProject} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />  */}
-          {/* <Dropdown01 options={projectSortConstant} selectedValue={selectedSort} onSelect={setSelectedSort} label="Sort By" icon={OtherIcons.sort_by_svg} /> */}
+         {selectedView=="List" && <><Dropdown01 options={statusProject2} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />
+          <Dropdown01 options={projectPriority2} selectedValue={selectedPriority} onSelect={setSelectedPriority} label="Priority" icon={OtherIcons.user_svg} />
           <SearchComponent onSearch={onSearch} placeholder="Search By Using Project Name, Client Name.." section={searchTrigger} />
-
+          </> }
 
           <div className="bg-gray-400 h-[40px] w-[1px] opacity-40" />
           <Tooltip title='Add Project' arrow disableInteractive>
@@ -207,8 +206,8 @@ const ProjectList = () => {
       {selectedView == "List" && (
         <>
           <div className="max-w-full mt-6 overflow-x-auto">
-            {projectLoading?.loading ? (
-              <TableSkeleton rows={7} columns={5} />
+            {(projectLoading?.loading || (dataLoading && !statusUpdating)) ? (
+              <TableSkeleton rows={7} columns={6} />
             ) : (
               <table className="border-2 border-spacing-y-1 border-transparent w-full min-w-[1000px]">
                 <thead>
@@ -233,24 +232,20 @@ const ProjectList = () => {
                     <tr key={item?.id} className="rounded-md cursor-pointer duration-200 hover:bg-gray-100 hover:shadow-tr-border transition-all">
                       <td className="rounded text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px] text-gray-700" onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.project_name || ""}</td>
                       <td className="rounded text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px] text-gray-700" onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.client?.name || ""}</td>
-                      <td className="rounded text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[14px] text-gray-700" onClick={() => router.push(`/project/details?id=${item?.id}`)}>
+                      <td className="rounded text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[14px] text-gray-700">
                         {item?.status ? (
-                          <span
-                            className={`px-3 py-1 border rounded-md inline-block 
-        ${item.status === "To Do"
-                                ? "text-[#6C757D] border-[#6C757D]"
-                                : item.status === "In progress"
-                                  ? "text-[#CA9700] border-[#CA9700]"
-                                  : item.status === "Completed"
-                                    ? "text-[#008053] border-[#008053]"
-                                    : "text-[#0D4FA7] border-[#0D4FA7]"
-                              }`}
-                          >
-                            {item?.status}
-                          </span>
+                         <DropdownStatus01
+                         options={statusProject}
+                         selectedValue={item?.status}
+                         onSelect={(value) => handleStatusChange(value, item?.id)}
+                         label="Status"
+                         className="w-[140px]"
+                       />
                         ) : (
                           "" // Placeholder for empty status
                         )}
+
+
                       </td>
 
                       <td className="text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px] text-gray-700" onClick={() => router.push(`/project/details?id=${item?.id}`)}>{formatDate(item?.start_date) || ""}</td>
@@ -306,7 +301,7 @@ const ProjectList = () => {
         (<div>
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-3 md:grid-cols-2 mt-[50px] mx-auto xl:grid-cols-4">
             {projectListData?.map((item, index) => (
-              <div key={item?.id} className="border border-gray-100 h-[240px] p-4 rounded-xl shadow-md w-full hover:border-gray-200 hover:cursor-pointer hover:shadow-lg min-w-[305px]" onClick={() => router.push(`/project/details?id=${item?.id}`)}>
+              <div key={item?.id} className="border border-gray-100  p-4 rounded-xl shadow-md w-full hover:border-gray-200 hover:cursor-pointer hover:shadow-lg min-w-[305px] max-h-[250px] overflow-auto scrollbar-hide" onClick={() => router.push(`/project/details?id=${item?.id}`)}>
                 <div className="flex justify-between items-center mb-4">
                   <p className="text-[21px] font-600">{item?.project_name || ""}</p>
                   {/* <p className="flex h-[20px] justify-center rounded text-[12px] text-green-600 w-[70px] font-[400] items-center leading-[16.8px]">

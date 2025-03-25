@@ -199,7 +199,7 @@ const UserDetails = () => {
                     Date of Join:
                   </span>
                   <span className="sm:w-[183px] h-[23px] ml-[35px]">
-                    {formatDate(userDetailData?.joining_date) || ""}
+                    {userDetailData?.joining_date ? (userDetailData?.joining_date):"" || ""}
                   </span>
                 </li>
                 <li className="sm:w-[767px] sm:pt-[120px] sm:pb-10 sm:mt-[200px] t-2 sm:absolute  flex items-start">
@@ -278,7 +278,7 @@ const UserDetails = () => {
                       <span className="text-[12px] w-[60px]  text-gray-600">
                         Due Date
                       </span>
-                      <span className="text-[12px]">{formatDate(item?.due_date) || ""}</span>
+                      <span className="text-[12px]">{item?.due_date? formatDate(item?.due_date):"" || ""}</span>
                     </li>
                     <li className="flex text-gray-700">
                       <span className="text-[12px] w-6">Team</span>

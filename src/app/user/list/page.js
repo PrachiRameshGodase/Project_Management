@@ -176,7 +176,7 @@ const UserList = () => {
         {/* Table Section */}
         <div className="max-w-full overflow-x-auto mt-6 ">
           {usersLoading?.listLoading ? (
-            <TableSkeleton rows={7} columns={5} />
+            <TableSkeleton rows={7} columns={7} />
           ) : (
             <table className="w-full border-spacing-y-1 min-w-[1000px] border-2 border-transparent  ">
               <thead>
@@ -214,7 +214,7 @@ const UserList = () => {
                         <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] text-gray-700" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.email || ""}</td>
                         <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] text-gray-700" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.phone_number || ""}</td>
                         <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] text-gray-700" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.designation || ""}</td>
-                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] text-gray-700" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{formatDate(user?.joining_date) || ""}</td>
+                        <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] text-gray-700" onClick={() => router.push(`/user/details?id=${user?.id}`)}>{user?.joining_date ? formatDate(user?.joining_date):"" || ""}</td>
                         <Tooltip title={user?.status == 0 ? 'User Is Active' : 'User Is Inactive'} arrow disableInteractive>
                           <td className="py-2 sm:py-3 px-2 sm:px-4  text-[12px] sm:text-[15px] min-w-[100px] flex justify-center items-center" onClick={() => router.push(`/user/details?id=${user?.id}`)}>
                             <span className={`w-3 h-3 inline-block  rounded-full ${user.status == 0 ? 'bg-green-600' : 'bg-red-600'}`}></span>

@@ -209,14 +209,14 @@ const Drawer01 = ({
                 <span className="text-gray-400 w-[120px] text-[14px]">Starting Date</span>
                 <h4>:</h4>
                 <span className="text-gray-700 w-[200px] text-[14px]">
-                  {details?.start_date || ""}
+                  {details?.start_date ? formatDate(details?.start_date):"" || ""}
                 </span>
               </li>
               <li className="flex mb-2 gap-4">
                 <span className="text-gray-400 w-[120px] text-[14px]">Deadline</span>
                 <h4>:</h4>
                 <span className="text-gray-700 w-[200px] text-[14px]">
-                  {formatDate(details?.due_date) || ""}
+                  {details?.due_date ? formatDate(details?.due_date):"" || ""}
                 </span>
               </li>
               <li className="flex mb-2 gap-4">
@@ -437,7 +437,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId2, itemId, details })
                 <span className="text-gray-400 w-[120px] text-[14px]"> Due Date</span>
                 <h4>:</h4>
                 <span className="text-gray-700 w-[200px] text-[14px]">
-                  {formatDate(details?.due_date) || ""}
+                  {details?.due_date ? formatDate(details?.due_date):"" || ""}
                 </span>
               </li>
               <li className="flex mb-2 gap-4">

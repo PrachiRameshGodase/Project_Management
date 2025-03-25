@@ -17,12 +17,16 @@ const HomePage = () => {
     const dashboardList = useSelector((state) => state.dashboard?.list?.data);
     const dashboardLoading = useSelector((state) => state.dashboard);
 
-  
     const isActive = userData?.status == 0 ? true : false
-
     useEffect(() => {
-        dispatch(fetchDashboard());
-    }, [dispatch]);
+        if (!userData?.id) return;
+        if (userData?.id && userData?.is_employee==1) {
+            dispatch(fetchDashboard({ team_id: userData?.id }));
+        }else if(userData?.id && userData?.is_client==1){
+            dispatch(fetchDashboard({ client_id: userData?.id }));
+
+        }
+    }, [dispatch, userData?.id, userData?.is_employee, userData?.is_client]);
 
     return (
         <> {dashboardLoading?.loading ? (<Loader />) : (<div className="flex justify-center items-start min-h-screen bg-gray-100 p-4 sm:p-10 relative ">

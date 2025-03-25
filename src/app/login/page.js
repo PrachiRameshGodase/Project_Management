@@ -42,9 +42,9 @@ const LoginPage = () => {
       if (res?.payload?.success) {
         toast.success("Login Successful!");
         dispatch(fetchLoggedInUser()).then((userRes) => {
-          console.log("userRes", userRes)
+
           const isAdmin = userRes?.payload?.is_admin === 1;
-          router.push(isAdmin ? "/all-projects" : "/home");
+          router.push(isAdmin ? "/home" : "/all-projects");
         });
       } else {
         toast.error(res?.payload?.message || "Login Failed!");

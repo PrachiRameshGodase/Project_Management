@@ -1,5 +1,7 @@
 export const status=["All", "Active", "Inactive"]
-export const statusProject = ["All", "To Do","In Progress", "Under Review", 'Completed']
+export const statusProject = [ "To Do","In Progress", "Under Review", 'Completed']
+export const statusProject2 = ["All", "To Do","In Progress", "Under Review", 'Completed']
+
 export const designation = ["Manager", "Team Lead", "Tester", "Jr. Developer", "Sr. Developer"];
 export const designationFilter = ["All","Manager", "Team Lead", "Tester", "Jr. Developer", "Sr. Developer"];
 export const view=["Card", "List"]
@@ -7,6 +9,8 @@ export const projectSortConstant=["Project Name", "Team"]
 export const departmentOptions=["IT", "Marketing"]
 export const taskView =["List", "Kanban"]
 export const projectPriority =["High", "Low", "Medium"]
+export const projectPriority2 =["All","High", "Low", "Medium"]
+
 export const projectStage =["Stage 1", "Stage 2", "Stage 3"]
 export const taskType=["Documentation", "Bug Fix", "Implementation", "Review"]
 export const taskVisibility=["Public", "Private"]

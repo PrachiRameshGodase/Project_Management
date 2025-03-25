@@ -14,7 +14,10 @@ import DropdownStatus01 from "@/components/common/Dropdown/DropdownStatus01";
 import {
   formatDate,
   getStatusDetails,
+  projectPriority,
+  projectPriority2,
   statusProject,
+  statusProject2,
   taskView
 } from "@/components/common/Helper/Helper";
 import { useDebounceSearch } from "@/components/common/Helper/HelperFunction";
@@ -41,7 +44,7 @@ const TaskList = () => {
   const dispatch = useDispatch();
   const userData = useUserData()
   const [itemId, setItemId] = useState(null);
-  const drawerIsOpen=OutsideClick()
+  const drawerIsOpen = OutsideClick()
 
   const projectLoading = useSelector((state) => state.project);
   const projectDetailData = useSelector((state) => state?.project?.projectDetails?.data);
@@ -123,11 +126,13 @@ const TaskList = () => {
   // sortBy
   const [selectedSortBy, setSelectedSortBy] = useState("");
   const [sortOrder, setSortOrder] = useState(1);
+
   //sortby
 
   // // filter
   // const [selectedStatus, setSelectedStatus] = useState('View');
   // // filter
+  const [selectedPriority, setSelectedPriority] = useState('');
 
   useEffect(() => {
     if (!itemId) return;
@@ -138,10 +143,9 @@ const TaskList = () => {
         limit: itemsPerPage,
         page: currentPage,
         ...(searchTermFromChild ? { search: searchTermFromChild } : {}),
-        ...(selectedSortBy && { sort_by: selectedSortBy, sort_order: sortOrder }),
-        ...(selectedStatus !== null && selectedStatus !== undefined
-          ? { status: selectedStatus }
-          : {}),
+        ...(selectedSortBy ? { sort_by: selectedSortBy, sort_order: sortOrder }: {}),
+        ...(selectedStatus  ? { status: selectedStatus } : {}),
+        ...(selectedPriority ? { priority: selectedPriority } : {})
       };
       dispatch(fetchProjectTasks(sendData));
 
@@ -151,15 +155,14 @@ const TaskList = () => {
         limit: itemsPerPage,
         page: currentPage,
         ...(searchTermFromChild ? { search: searchTermFromChild } : {}),
-        ...(selectedSortBy && { sort_by: selectedSortBy, sort_order: sortOrder }),
-        ...(selectedStatus !== null && selectedStatus !== undefined
-          ? { status: selectedStatus }
-          : {}),
+        ...(selectedSortBy ? { sort_by: selectedSortBy, sort_order: sortOrder }:{}),
+        ...(selectedStatus  ? { status: selectedStatus } : {}),
+        ...(selectedPriority ?  { priority: selectedPriority } : {})
       };
 
       dispatch(fetchProjectTasks(sendData));
     }
-  }, [searchTrigger, dispatch, selectedStatus, itemId]); // Include all dependencies
+  }, [searchTrigger, dispatch, selectedStatus, itemId, selectedPriority]); // Include all dependencies
 
   useEffect(() => {
     if (projectDetailData?.project_status !== undefined) {
@@ -224,11 +227,11 @@ const TaskList = () => {
     router.push(`/project/list`)
     // localStorage.removeItem("itemId", itemId2)
   }
-  
+
   return (
     <>
       {projectLoading?.loading ? (
-       <Loader />
+        <Loader />
       ) : (
         <LayOut>
           <div className="flex justify-end absolute right-3 top-[90px]">
@@ -362,22 +365,23 @@ const TaskList = () => {
 
               {/* Right Section (Filters & Search) */}
               <div className="hidden min-[950px]:flex gap-6 items-center">
-                <Dropdown01
+              <Dropdown01
                   options={taskView}
                   selectedValue={selectedView}
                   onSelect={setSelectedView}
                   label="View"
                   icon={OtherIcons.view_svg}
                 />
-                <Dropdown01
-                  options={statusProject}
-                  selectedValue={selectedStatus}
-                  onSelect={setSelectedStatus}
-                  label="Status"
-                  icon={OtherIcons.user_svg}
-                />
+                {selectedView == "List" && <>
+                  <Dropdown01 options={statusProject2} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />
+                  <Dropdown01 options={projectPriority2} selectedValue={selectedPriority} onSelect={setSelectedPriority} label="Priority" icon={OtherIcons.user_svg} />
+                  <SearchComponent onSearch={onSearch} placeholder="Search By Using Task Title..." section={searchTrigger} />
+
+                </>}
+
+                
+
                 {/* <Dropdown01 options={projectSortConstant} selectedValue={selectedSort} onSelect={setSelectedSort} label="Sort By" icon={OtherIcons.sort_by_svg} /> */}
-                <SearchComponent onSearch={onSearch} placeholder="Search By Using Task Title..." section={searchTrigger} />
 
                 <div className="w-[1px] h-[40px] bg-gray-400 opacity-40" />
                 <Tooltip title="Add Task" arrow disableInteractive>
@@ -593,8 +597,8 @@ const TaskList = () => {
                               className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px] text-gray-700"
                               onClick={() => handleTaskClick(item?.id)}>
                               <TruncatedTooltipText
-                                 text={item?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")}
-                                
+                                text={item?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")}
+
                                 maxLength={25}
                                 onClick={() => handleTaskClick(item?.id)}
                               />
