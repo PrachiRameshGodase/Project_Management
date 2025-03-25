@@ -169,7 +169,7 @@ const KanBanView = ({ groupedUsers, itemId }) => {
         id: id,
         status: toStatus,
         dispatch,
-        project_id: Number(itemId2),
+        project_id: Number(itemId),
       })
     );
 
