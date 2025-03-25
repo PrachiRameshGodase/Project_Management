@@ -107,8 +107,9 @@ const DroppableColumn = ({ status, users, moveUser, moveCard, itemId }) => {
       </div>
 
       <div className="w-full h-full bg-gray-50 p-2  flex flex-col">
-        {users.length > 0 ? (
-          users.map((user, index) => (
+        {
+        // users.length > 0 ? (
+          users?.map((user, index) => (
             <DraggableCard
               key={user.id}
               user={user}
@@ -119,11 +120,12 @@ const DroppableColumn = ({ status, users, moveUser, moveCard, itemId }) => {
             // moveCard={moveCard}
             />
           ))
-        ) : (
-          <div className="w-full flex items-center justify-center text-gray-400 text-sm">
-            Drag here
-          </div>
-        )}
+        // ) : (
+        //   <div className="w-full flex items-center justify-center text-gray-400 text-sm">
+        //     Drag here
+        //   </div>
+        // )
+        }
       </div>
     </div>
   );
