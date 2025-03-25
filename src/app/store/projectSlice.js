@@ -154,7 +154,7 @@ export const updateTaskStatus = createAsyncThunk("task/updateTaskStatus", async 
     if (response?.data?.success === true) {
       dispatch(fetchProjectTasks({ project_id: project_id,id: id }))
       dispatch(fetchProjectTaskDetails(id))
-      // dispatch(fetchProjectDetails(project_id))
+      dispatch(fetchProjectDetails(project_id))
 
     }
     return response.data;
