@@ -28,7 +28,7 @@ const ProjectList = () => {
   const projectLoading = useSelector((state) => state.project);
   const totalCount = useSelector((state) => state?.project?.list?.total || 0);
   const [selectedView, setSelectedView] = useState('List');
-  const [dataLoading, setDataLoading]=useState(false)
+  const [dataLoading, setDataLoading]=useState(true)
 
   const [selectedDesignation, setSelectedDesignation] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -89,7 +89,7 @@ const ProjectList = () => {
       }
   
       dispatch(fetchProjects(sendData)).finally(() => {
-        setDataLoading(false); // Reset loading after fetching
+        // setDataLoading(false); // Reset loading after fetching
       });
     }
   }, [searchTrigger, dispatch, selectedStatus, selectedDesignation, userData, selectedPriority]);
@@ -109,8 +109,8 @@ const ProjectList = () => {
       });
   
       if (result.isConfirmed && itemId) {
-        setStatusUpdating(true)
-        setDataLoading(false)
+        // setStatusUpdating(true)
+        // setDataLoading(false)
         dispatch(updateProjectStatus({ id: itemId, status: value , dispatch, setDataLoading}))}
     };
   return (
@@ -205,7 +205,7 @@ const ProjectList = () => {
       {selectedView == "List" && (
         <>
           <div className="max-w-full mt-6 overflow-x-auto">
-            {(projectLoading?.loading || (dataLoading && !statusUpdating)) ? (
+            {(projectLoading?.loading && dataLoading ) ? (
               <TableSkeleton rows={7} columns={6} />
             ) : (
               <table className="border-2 border-spacing-y-1 border-transparent w-full min-w-[1000px]">

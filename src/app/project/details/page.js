@@ -92,6 +92,7 @@ const TaskList = () => {
   const [selectedSort, setSelectedSort] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isDrawerOpen1, setIsDrawerOpen1] = useState(false);
+  const [dataLoading, setDataLoading]=useState(true)
 
   const [isActive, setIsActive] = useState(
     projectDetailData?.project_status || ""
@@ -230,7 +231,7 @@ const TaskList = () => {
 
   return (
     <>
-      {projectLoading?.loading ? (
+      {(projectLoading?.loading && dataLoading) ? (
         <Loader />
       ) : (
         <LayOut>
@@ -648,7 +649,7 @@ const TaskList = () => {
             )}
 
             {selectedView == "Kanban" && (
-              <KanBanView groupedUsers={projectTaskListData} itemId={itemId} />
+              <KanBanView groupedUsers={projectTaskListData} itemId={itemId} setDataLoading={setDataLoading}/>
             )}
           </div>
           <Drawer01

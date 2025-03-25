@@ -129,7 +129,7 @@ const DroppableColumn = ({ status, users, moveUser, moveCard, itemId }) => {
   );
 };
 
-const KanBanView = ({ groupedUsers, itemId }) => {
+const KanBanView = ({ groupedUsers, itemId, setDataLoading }) => {
   console.log("itemId2", itemId)
   const dispatch = useDispatch();
   // Define the required statuses
@@ -163,13 +163,15 @@ const KanBanView = ({ groupedUsers, itemId }) => {
     if (!userToMove) return;
 
     const { id } = userToMove;
-    console.log("iddd", id)
+    
     dispatch(
       updateTaskStatus({
         id: id,
         status: toStatus,
         dispatch,
         project_id: Number(itemId),
+        setDataLoading
+        
       })
     );
 
@@ -202,6 +204,7 @@ const KanBanView = ({ groupedUsers, itemId }) => {
 
     setColumns(updatedColumns);
   };
+ 
 
   return (
     <div className="w-full mx-auto max-w-full overflow-x-auto mt-[50px]">
