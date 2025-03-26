@@ -209,14 +209,14 @@ const Drawer01 = ({
                 <span className="text-gray-400 w-[120px] text-[14px]">Starting Date</span>
                 <h4>:</h4>
                 <span className="text-gray-700 w-[200px] text-[14px]">
-                  {details?.start_date ? formatDate(details?.start_date):"" || ""}
+                  {details?.start_date ? formatDate(details?.start_date) : "" || ""}
                 </span>
               </li>
               <li className="flex mb-2 gap-4">
                 <span className="text-gray-400 w-[120px] text-[14px]">Deadline</span>
                 <h4>:</h4>
                 <span className="text-gray-700 w-[200px] text-[14px]">
-                  {details?.due_date ? formatDate(details?.due_date):"" || ""}
+                  {details?.due_date ? formatDate(details?.due_date) : "" || ""}
                 </span>
               </li>
               <li className="flex mb-2 gap-4">
@@ -267,7 +267,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId2, itemId, details })
   const dispatch = useDispatch();
   const router = useRouter()
   const userData = useUserData()
-  const drawerRef=useRef(null)
+  const drawerRef = useRef(null)
   const documents = details?.attachments ? JSON.parse(details?.attachments) : []
   const [selectedStatus, setSelectedStatus] = useState("");
   const [isActive, setIsActive] = useState(details?.task_status || "");
@@ -368,31 +368,25 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId2, itemId, details })
           </div>
 
           <div>
-            <button className="w-[100px] h-[35px] rounded-[4px] py-[4px] bg-black text-white text-[16px] mb-2 p-4 mt-4" onClick={handleEditUser}>
-              Edit
-            </button>
+            <span
+              className={`px-3 py-1 border rounded-md inline-block text-[12px] h-[25px]
+        ${details?.status === "To Do"
+                  ? "text-[#6C757D] border-[#6C757D]"
+                  : details?.status === "In progress"
+                    ? "text-[#CA9700] border-[#CA9700]"
+                    : details?.status === "Completed"
+                      ? "text-[#008053] border-[#008053]"
+                      : "text-[#0D4FA7] border-[#0D4FA7]"
+                }`}
+            >
+              {details?.status}
+            </span>
+
+
           </div>
         </div>
         <div className="flex justify-between">
-          {/* <p
-                        className={`font-[400] text-[12px] leading-[16.8px] border rounded flex items-center justify-center mt-2 ${"user.status" === "To Do"
-                            ? "text-[#6C757D] border-[#6C757D]  w-[50px] h-[20px]"
-                            : "user.status" === "In progress"
-                                ? "text-[#CA9700] border-[#CA9700]  w-[90px] h-[20px]"
-                                : "user.status" === "Completed"
-                                    ? "text-[#008053] border-[#008053]  w-[90px] h-[20px]"
-                                    : "text-[#0D4FA7] border-[#0D4FA7]  w-[90px] h-[20px]"
-                            }`}
-                    >
-                        Under Review
-                    </p> */}
-          <DropdownStatus01
-            options={statusProject}
-            selectedValue={details?.status}
-            onSelect={(value) => handleStatusChange(value)}
-            label="Status"
-            className="w-[140px]"
-          />
+          
           <div className="flex items-center mr-2">
             <label className="flex items-center cursor-pointer">
               <span className="ml-2 text-[15px] mr-2">
@@ -426,6 +420,9 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId2, itemId, details })
               </div>
             </label>
           </div>
+          <button className="w-[100px] h-[35px] rounded-[4px] py-[4px] bg-black text-white text-[16px] mb-2 p-4 mt-4" onClick={handleEditUser}>
+            Edit
+          </button>
         </div>
         {/* Project Details Section */}
         <div className="p-1 sm:p-4 overflow-y-auto flex-grow">
@@ -437,7 +434,7 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId2, itemId, details })
                 <span className="text-gray-400 w-[120px] text-[14px]"> Due Date</span>
                 <h4>:</h4>
                 <span className="text-gray-700 w-[200px] text-[14px]">
-                  {details?.due_date ? formatDate(details?.due_date):"" || ""}
+                  {details?.due_date ? formatDate(details?.due_date) : "" || ""}
                 </span>
               </li>
               <li className="flex mb-2 gap-4">

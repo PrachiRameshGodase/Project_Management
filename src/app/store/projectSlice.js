@@ -52,14 +52,14 @@ export const fetchProjectDetails = createAsyncThunk("project/fetchDetails", asyn
 });
 
 // Async thunk to fetch user details by ID
-export const updateProjectStatus = createAsyncThunk("project/updateProjectStatus", async ({ id, status , dispatch, setDataLoading}, { rejectWithValue }) => {
+export const updateProjectStatus = createAsyncThunk("project/updateProjectStatus", async ({ id, status, dispatch, setDataLoading }, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.post(`/project_status`, { id, status });
     if (response?.data?.success === true) {
       toast.success(response?.data?.message);
       setDataLoading(false)
       dispatch(fetchProjects()); // Refresh the list
-      
+
     }
     return response.data;
   } catch (error) {
@@ -76,7 +76,7 @@ export const addProjectTask = createAsyncThunk(
       const response = await axiosInstance.post(`/task/create`, projectData);
       if (response?.data?.success === true) {
         toast.success(response?.data?.message);
-        dispatch(fetchProjectTasks({ project_id: itemId2}))
+        dispatch(fetchProjectTasks({ project_id: itemId2 }))
         router.push(`/project/details?id=${itemId2}`); // Navigate on success
         localStorage.removeItem("itemId", itemId2)
       }
@@ -120,6 +120,21 @@ export const updateStatus = createAsyncThunk("project/updateStatus", async ({ id
     return rejectWithValue(error.response?.data || error.message);
   }
 });
+
+export const updateProjectPriority = createAsyncThunk("project/updateProjectPriority", async ({ id, priority, dispatch, setDataLoading }, { rejectWithValue }) => {
+  try {
+    const response = await axiosInstance.post(`/project/priority`, { id, priority });
+    if (response?.data?.success === true) {
+      setDataLoading(false)
+      toast.success(response?.data?.message);
+
+      dispatch(fetchProjects());
+    }
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response?.data || error.message);
+  }
+});
 // Async thunk to fetch user details by ID
 export const fetchProjectTaskDetails = createAsyncThunk("task/fetchTaskDetails", async (id, { rejectWithValue }) => {
   try {
@@ -131,13 +146,13 @@ export const fetchProjectTaskDetails = createAsyncThunk("task/fetchTaskDetails",
 });
 
 // Async thunk to fetch user details by ID
-export const updateProjectTaskStatus = createAsyncThunk("task/updateProjectTaskStatus", async ({ id, task_status, dispatch,task_id, project_id }, { rejectWithValue }) => {
+export const updateProjectTaskStatus = createAsyncThunk("task/updateProjectTaskStatus", async ({ id, task_status, dispatch, task_id, project_id }, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.post(`/task_status`, { id, task_status,task_id, project_id });
+    const response = await axiosInstance.post(`/task_status`, { id, task_status, task_id, project_id });
     if (response?.data?.success === true) {
       // toast.success(response?.data?.message);
       // router.push("/project/list"); // Navigate on success
-      dispatch(fetchProjectTasks({ project_id: project_id,id: task_id }))
+      dispatch(fetchProjectTasks({ project_id: project_id, id: task_id }))
       dispatch(fetchProjectTaskDetails(id))
     }
     return response.data;
@@ -148,12 +163,29 @@ export const updateProjectTaskStatus = createAsyncThunk("task/updateProjectTaskS
 
 
 // Async thunk to fetch user details by ID
-export const updateTaskStatus = createAsyncThunk("task/updateTaskStatus", async ({ id, status, dispatch ,project_id, setDataLoading}, { rejectWithValue }) => {
+export const updateTaskStatus = createAsyncThunk("task/updateTaskStatus", async ({ id, status, dispatch, project_id, setDataLoading }, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.post(`/task/status`, { id, status , project_id });
+    const response = await axiosInstance.post(`/task/status`, { id, status, project_id });
     if (response?.data?.success === true) {
-      dispatch(fetchProjectTasks({ project_id: project_id,id: id }))
+      dispatch(fetchProjectTasks({ project_id: project_id, id: id }))
       setDataLoading(false)
+      dispatch(fetchProjectTaskDetails(id))
+      dispatch(fetchProjectDetails(project_id))
+
+    }
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response?.data || error.message);
+  }
+});
+
+export const updateTaskPriority = createAsyncThunk("task/updateTaskPriority", async ({ id, priority, dispatch, project_id, setDataLoading }, { rejectWithValue }) => {
+  try {
+    const response = await axiosInstance.post(`/task/priority`, { id, priority, project_id });
+    if (response?.data?.success === true) {
+      setDataLoading(false)
+      dispatch(fetchProjectTasks({ project_id: project_id, id: id }))
+
       dispatch(fetchProjectTaskDetails(id))
       dispatch(fetchProjectDetails(project_id))
 
@@ -181,12 +213,12 @@ export const fetchTaskComment = createAsyncThunk(
 
 export const addTaskComment = createAsyncThunk(
   "task/addTaskComment",
-  async ({formData, project_id, task_id, dispatch,setFormData, setSelectedFile, setAudioURL, setMentionList}, { rejectWithValue }) => {
+  async ({ formData, project_id, task_id, dispatch, setFormData, setSelectedFile, setAudioURL, setMentionList }, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post(`/comment/create`, formData);
       if (response?.data?.success === true) {
         // toast.success(response?.data?.message);
-        dispatch(fetchTaskComment({ project_id, task_id}))
+        dispatch(fetchTaskComment({ project_id, task_id }))
         setFormData({
           project_id: project_id,
           task_id: task_id,
@@ -212,12 +244,12 @@ export const addTaskComment = createAsyncThunk(
 
 
 
-export const deleteTaskComment = createAsyncThunk("task/deleteTaskComment", async ({ id, project_id, task_id, dispatch}, { rejectWithValue }) => {
+export const deleteTaskComment = createAsyncThunk("task/deleteTaskComment", async ({ id, project_id, task_id, dispatch }, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.post(`/comment/destroy`, { id });
     if (response?.data?.success === true) {
       // toast.success(response?.data?.message);
-      dispatch(fetchTaskComment({project_id, task_id}))
+      dispatch(fetchTaskComment({ project_id, task_id }))
     }
     return response.data;
   } catch (error) {
@@ -235,8 +267,10 @@ const projectSlice = createSlice({
     taskListLoading: false,
     taskDetailsLoading: false,
     loading: false,
-    commentLoading:false,
-   
+    loading2: false,
+
+    commentLoading: false,
+
     error: null,
   },
   reducers: {
@@ -301,9 +335,9 @@ const projectSlice = createSlice({
         if (!state.list || !Array.isArray(state.list)) {
           state.list = []; // Ensure state.list is an array before mapping
         }
-      
+
         const updatedProject = action.payload;
-      
+
         state.list = state.list.map(project =>
           project.id === updatedProject.id
             ? { ...project, status: updatedProject.status }
@@ -315,7 +349,7 @@ const projectSlice = createSlice({
         state.error = action.payload;
       })
 
-      // Handle Update  Status
+      // Handle Update project Status
       .addCase(updateStatus.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -329,6 +363,30 @@ const projectSlice = createSlice({
         );
       })
       .addCase(updateStatus.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      // Handle Update project priority
+      .addCase(updateProjectPriority.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateProjectPriority.fulfilled, (state, action) => {
+        state.loading = false;
+        // Update the user status in the list
+        const updatedProject = action.payload;
+
+        // ✅ Ensure state.list is an array before using map()
+        if (Array.isArray(state.list)) {
+          state.list = state.list.map(user =>
+            user.id === updatedProject.id ? { ...user, priority: updatedProject?.priority } : user
+          );
+        } else {
+          state.list = [updatedProject]; // ✅ Ensure it's always an array
+        }
+      })
+      .addCase(updateProjectPriority.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
@@ -395,7 +453,7 @@ const projectSlice = createSlice({
         state.error = action.payload;
       })
 
-      // Handle Update User Status
+      // Handle Update task Status
       .addCase(updateTaskStatus.pending, (state) => {
         state.taskListLoading = true;
         state.error = null;
@@ -413,6 +471,23 @@ const projectSlice = createSlice({
         state.error = action.payload;
       })
 
+      // Handle Update task Status
+      .addCase(updateTaskPriority.pending, (state) => {
+        state.taskListLoading = true;
+        state.error = null;
+      })
+      .addCase(updateTaskPriority.fulfilled, (state, action) => {
+        state.taskListLoading = false;
+        // Update the user status in the list
+        const updatedUser = action.payload;
+        state.taskList = state.taskList.map(user =>
+          user.id === updatedUser.id ? { ...user, priority: updatedUser.priority } : user
+        );
+      })
+      .addCase(updateTaskPriority.rejected, (state, action) => {
+        state.taskListLoading = false;
+        state.error = action.payload;
+      })
 
       // Add task Comment
       .addCase(addTaskComment.pending, (state) => {

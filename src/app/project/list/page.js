@@ -1,13 +1,15 @@
 "use client"
-import { fetchProjects, updateProjectStatus } from '@/app/store/projectSlice';
+import { fetchProjects, updateProjectPriority, updateProjectStatus } from '@/app/store/projectSlice';
 import { OtherIcons } from '@/assests/icons';
 import LayOut from '@/components/LayOut';
 import DataNotFound from '@/components/common/DataNotFound/DataNotFound';
 import Dropdown01 from '@/components/common/Dropdown/Dropdown01';
+import DropdownPriority from '@/components/common/Dropdown/DropdownPriority';
 import DropdownStatus01 from '@/components/common/Dropdown/DropdownStatus01';
 import { formatDate, projectPriority, projectPriority2, statusProject, statusProject2, view } from '@/components/common/Helper/Helper';
 import { useDebounceSearch } from '@/components/common/Helper/HelperFunction';
 import useUserData from '@/components/common/Helper/useUserData';
+import { ScreenFreezeLoader } from '@/components/common/Loader/Loader';
 import Pagenation from '@/components/common/Pagenation/Pagenation';
 import SearchComponent from '@/components/common/SearchComponent/SearchComponent';
 import SortBy from '@/components/common/Sort/SortBy';
@@ -28,7 +30,8 @@ const ProjectList = () => {
   const projectLoading = useSelector((state) => state.project);
   const totalCount = useSelector((state) => state?.project?.list?.total || 0);
   const [selectedView, setSelectedView] = useState('List');
-  const [dataLoading, setDataLoading]=useState(true)
+  const [dataLoading, setDataLoading] = useState(true)
+
 
   const [selectedDesignation, setSelectedDesignation] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -71,7 +74,7 @@ const ProjectList = () => {
   useEffect(() => {
     if (userData?.id) {
       // setDataLoading(true); // Set loading to true before fetching
-  
+
       let sendData = {
         limit: itemsPerPage,
         page: currentPage,
@@ -81,40 +84,36 @@ const ProjectList = () => {
         ...(selectedStatus ? { status: selectedStatus } : {}),
         ...(selectedPriority ? { priority: selectedPriority } : {})
       };
-  
+
       if (userData?.is_client == 1) {
         sendData.client_id = userData?.id;
       } else if (userData?.is_employee == 1) {
         sendData.team_id = userData?.id;
       }
-  
+
       dispatch(fetchProjects(sendData)).finally(() => {
         // setDataLoading(false); // Reset loading after fetching
       });
     }
   }, [searchTrigger, dispatch, selectedStatus, selectedDesignation, userData, selectedPriority]);
-  
+
 
 
   // filter short-list
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [selectedStatus2, setSelectedStatus2] = useState('View');
-  const [statusUpdating, setStatusUpdating] = useState(false);
-    const handleStatusChange = async (value, itemId) => {
-      const result = await Swal.fire({
-        text: `Do you want to update the status of this Project?`,
-        showCancelButton: true,
-        confirmButtonText: "Yes",
-        cancelButtonText: "No",
-      });
-  
-      if (result.isConfirmed && itemId) {
-        // setStatusUpdating(true)
-        // setDataLoading(false)
-        dispatch(updateProjectStatus({ id: itemId, status: value , dispatch, setDataLoading}))}
-    };
+ 
+  const handleStatusChange = async (value, itemId) => {
+    dispatch(updateProjectStatus({ id: itemId, status: value, dispatch, setDataLoading }))
+  };
+
+  const handlePriorityChange = async (value, itemId) => {
+   dispatch(updateProjectPriority({ id: itemId, priority: value, dispatch, setDataLoading }))
+  };
+
   return (
-    <LayOut> <div>
+    <LayOut>
+          
+      <div>
       {/* Top Section with Filters and Buttons */}
       <div className="flex h-[44px] justify-between w-full items-center">
 
@@ -137,10 +136,10 @@ const ProjectList = () => {
         {/* Right Section (Filters & Search) */}
         <div className="gap-6 hidden items-center md:flex">
           <Dropdown01 options={view} selectedValue={selectedView} onSelect={setSelectedView} label="View" icon={OtherIcons.view_svg} />
-         {selectedView=="List" && <><Dropdown01 options={statusProject2} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />
-          <Dropdown01 options={projectPriority2} selectedValue={selectedPriority} onSelect={setSelectedPriority} label="Priority" icon={OtherIcons.user_svg} />
-          <SearchComponent onSearch={onSearch} placeholder="Search By Using Project Name, Client Name.." section={searchTrigger} />
-          </> }
+          {selectedView == "List" && <><Dropdown01 options={statusProject2} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />
+            <Dropdown01 options={projectPriority2} selectedValue={selectedPriority} onSelect={setSelectedPriority} label="Priority" icon={OtherIcons.user_svg} />
+            <SearchComponent onSearch={onSearch} placeholder="Search By Using Project Name, Client Name.." section={searchTrigger} />
+          </>}
 
           <div className="bg-gray-400 h-[40px] w-[1px] opacity-40" />
           <Tooltip title='Add Project' arrow disableInteractive>
@@ -205,7 +204,8 @@ const ProjectList = () => {
       {selectedView == "List" && (
         <>
           <div className="max-w-full mt-6 overflow-x-auto">
-            {(projectLoading?.loading && dataLoading ) ? (
+         
+            {(projectLoading?.loading && dataLoading) ? (
               <TableSkeleton rows={7} columns={6} />
             ) : (
               <table className="border-2 border-spacing-y-1 border-transparent w-full min-w-[1000px]">
@@ -233,13 +233,14 @@ const ProjectList = () => {
                       <td className="rounded text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px] text-gray-700" onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.client?.name || ""}</td>
                       <td className="rounded text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[14px] text-gray-700">
                         {item?.status ? (
-                         <DropdownStatus01
-                         options={statusProject}
-                         selectedValue={item?.status}
-                         onSelect={(value) => handleStatusChange(value, item?.id)}
-                         label="Status"
-                         className="w-[140px]"
-                       />
+                          <DropdownStatus01
+                            options={statusProject}
+                            selectedValue={item?.status}
+                            onSelect={(value) => handleStatusChange(value, item?.id)}
+                            label="Status"
+                            className="w-[140px]"
+                            setDataLoading={setDataLoading}
+                          />
                         ) : (
                           "" // Placeholder for empty status
                         )}
@@ -253,21 +254,18 @@ const ProjectList = () => {
                       <td className="text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px] text-gray-700" onClick={() => router.push(`/project/details?id=${item?.id}`)}>
                         <TruncatedTooltipText text={item?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")} maxLength={25} onClick={() => router.push(`/project/details?id=${item?.id}`)} />
                       </td>
-                      <td className={`py-2 sm:py-3 px-2 sm:px-4 text-[12px] sm:text-[15px] text-gray-700`} onClick={() => router.push(`/project/details?id=${item?.id}`)}>
+                      <td className={`py-2 sm:py-3 px-2 sm:px-4 text-[12px] sm:text-[15px] text-gray-700`} >
                         {item?.priority ? (
-                          <span
-                            className={`py-1 sm:py-1 px-2 sm:px-4 text-[12px] sm:text-[15px] border rounded-md inline-block 
-      ${item.priority === "High"
-                                ? "text-[#4976F4] border-[#4976F4]"
-                                : item.priority === "Low"
-                                  ? "text-red-400 border-red-400"
-                                  : "text-[#954BAF] border-[#954BAF]"
-                              }`}
-                          >
-                            {item.priority.charAt(0).toUpperCase() + item.priority.slice(1)}
-                          </span>
+                          <DropdownPriority
+                            options={projectPriority}
+                            selectedValue={item?.priority ? item.priority.charAt(0).toUpperCase() + item.priority.slice(1) : ""}
+                            onSelect={(value) => handlePriorityChange(value, item?.id)}
+                            label="Priority"
+                            className="w-[90px]"
+                            setDataLoading={setDataLoading}
+                          />
                         ) : (
-                          ""
+                          "" // Placeholder for empty status
                         )}
                       </td>
                     </tr>

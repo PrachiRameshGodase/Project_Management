@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { formatDate } from "../Helper/Helper";
 import { Drawer001 } from "../Drawer/Drawer01";
+import TruncatedTooltipText from "../TruncatedTooltipText/TruncatedTooltipText";
 
 const DraggableCard = ({ user, index, status, itemId }) => {
   const handleDragStart = (e) => {
@@ -21,7 +22,7 @@ const DraggableCard = ({ user, index, status, itemId }) => {
     <div
       draggable
       onDragStart={handleDragStart}
-      className="w-[300px] h-full mt-4 bg-white p-4 gap-4 shadow-md rounded cursor-pointer " onClick={() => handleTaskClick(user?.id)}
+      className="w-[300px] h-full mt-4 bg-white p-4 gap-4 shadow-md rounded cursor-pointer px-3" onClick={() => handleTaskClick(user?.id)}
     >
       <p
         className={`px-3 py-1 border rounded-md text-[15px] inline-block ${user.priority === "High"
@@ -33,23 +34,24 @@ const DraggableCard = ({ user, index, status, itemId }) => {
       >
         {user.priority}
       </p>
-      <p className="text-[18px] mt-2">{user?.task_title || ""}</p>
+      <p className="text-[16px] mt-2">{user?.task_title || ""}</p>
       <ul>
         <li className="flex items-center gap-2">
-          <p className="text-[15px] text-gray-400 w-[120px]">Due Date</p>
-          <span className="text-[15px] text-gray-700 w-[150px]">
+          <p className="text-[14px] text-gray-400 w-[120px]">Due Date</p>
+          <span className="text-[14px] text-gray-700 w-[150px]">
             {formatDate(user?.due_date) || ""}
           </span>
         </li>
         <li className="flex items-center gap-2">
-          <p className="text-[15px] text-gray-400 w-[120px] z">Team</p>
-          <span className="text-[15px] text-gray-700 w-[150px]">
-          {user?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")}
+          <p className="text-[14px] text-gray-400 w-[120px] z">Team</p>
+          <span className="text-[14px] text-gray-700 w-[150px]">
+          {/* {user?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")} */}
+            <TruncatedTooltipText text={user?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")} maxLength={32}  />
           </span>
         </li>
         <li className="flex items-center gap-2">
-          <p className="text-[15px] text-gray-400 w-[120px]">Type</p>
-          <span className="text-[15px] text-gray-700 w-[150px]">
+          <p className="text-[14px] text-gray-400 w-[120px]">Type</p>
+          <span className="text-[14px] text-gray-700 w-[150px]">
             {user?.task_type || "-"}
           </span>
         </li>
@@ -87,52 +89,40 @@ const DroppableColumn = ({ status, users, moveUser, moveCard, itemId }) => {
 
   return (
     <div
-      onDragOver={handleDragOver}
-      onDrop={handleDrop}
-      className="w-[310px] h-full border border-gray-100 rounded bg-gray-100 mb-4 min-h-[1000px] flex flex-col"
-    >
-      <div className="w-full h-[40px] bg-[#F0E7FA] flex items-center px-4" >
-        <p
-          className={`w-[13px] h-[13px] rounded-full ${status === "To Do"
-              ? "bg-[#6C757D]"
-              : status === "In Progress"
-                ? "bg-[#CA9700]"
-                : status === "Under Review"
-                  ? "bg-[#0D4FA7]"
-                  : "bg-[#048339]"
-            }`}
-        ></p>
-        <p className="text-[15px] ml-2">{status}</p>
-        <p className="text-[14px] ml-4">{users.length}</p>
-      </div>
-
-      <div className="w-full h-full bg-gray-50 p-2  flex flex-col">
-        {
-        // users.length > 0 ? (
-          users?.map((user, index) => (
-            <DraggableCard
-              key={user.id}
-              user={user}
-              index={index}
-              status={status}
-              itemId={itemId}
-            // moveUser={moveUser}
-            // moveCard={moveCard}
-            />
-          ))
-        // ) : (
-        //   <div className="w-full flex items-center justify-center text-gray-400 text-sm">
-        //     Drag here
-        //   </div>
-        // )
-        }
-      </div>
+    onDragOver={handleDragOver}
+    onDrop={handleDrop}
+    className="w-[310px] border border-gray-100 rounded bg-gray-100 mb-4 flex flex-col flex-grow"
+  >
+    <div className="w-full h-[40px] bg-[#F0E7FA] flex items-center px-4">
+      <p
+        className={`w-[13px] h-[13px] rounded-full ${
+          status === "To Do"
+            ? "bg-[#6C757D]"
+            : status === "In Progress"
+            ? "bg-[#CA9700]"
+            : status === "Under Review"
+            ? "bg-[#0D4FA7]"
+            : "bg-[#048339]"
+        }`}
+      ></p>
+      <p className="text-[15px] ml-2">{status}</p>
+      <p className="text-[14px] ml-4">{users.length}</p>
     </div>
+  
+    {/* Card Container */}
+    <div className="w-full bg-gray-50 p-2 flex flex-col ">
+      {users?.map((user, index) => (
+        <DraggableCard key={user.id} user={user} index={index} status={status} itemId={itemId} />
+      ))}
+    </div>
+  </div>
+  
+
   );
 };
 
 const KanBanView = ({ groupedUsers, itemId, setDataLoading }) => {
-  console.log("itemId2", itemId)
+ 
   const dispatch = useDispatch();
   // Define the required statuses
   const statuses = ["To Do", "In Progress", "Under Review", "Completed"];
@@ -145,7 +135,7 @@ const KanBanView = ({ groupedUsers, itemId, setDataLoading }) => {
 
   const [columns, setColumns] = useState(groupedByStatus);
 
-  console.log("columns", columns);
+  
 
   const moveUser = async (userId, fromStatus, toStatus) => {
     if (fromStatus === toStatus) return;

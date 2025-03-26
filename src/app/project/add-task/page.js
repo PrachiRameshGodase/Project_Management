@@ -17,12 +17,11 @@ import Swal from 'sweetalert2'
 const AddTask = () => {
     const router = useRouter()
     const dispatch = useDispatch();
-    const usersList = useSelector((state) => state.user?.employeeList?.data);
+    
    
     const addTaskLoading = useSelector((state) => state.project);
 
     const [itemId2, setStoredValue] = useState(null);
-
     useEffect(() => {
         if (typeof window !== "undefined") {
             const storedId = localStorage.getItem("itemId");
@@ -42,6 +41,7 @@ const AddTask = () => {
             setIsEditMode(params.get("edit") === "true"); // Convert string to boolean
         }
     }, []);
+    
     const taskDetailsData = useSelector((state) => state.project?.projectTaskDetails?.data);
     useEffect(() => {
         if (itemId) {
@@ -49,12 +49,6 @@ const AddTask = () => {
         }
     }, [dispatch, itemId]);
 
-    const [searchTrigger, setSearchTrigger] = useState(0);
-
-    useEffect(() => {
-        const sendData = { is_employee: 1, };
-        dispatch(fetchUsers(sendData));
-    }, [searchTrigger, dispatch,]);
 
     const [formData, setFormData] = useState({
         project_id: null,
@@ -69,8 +63,7 @@ const AddTask = () => {
         description: "",
         attachment: [],
     })
-    // console.log("formData", formData)
-    // console.log("itemId", itemId)
+ 
     const [errors, setErrors] = useState({
         task_title: false,
 
@@ -224,10 +217,11 @@ const AddTask = () => {
                         <div className="justify-between sm:flex">
                             <label className="text-[20px] block">Team</label>
                             <Dropdown002
-                                options={usersList}
+                                // options={usersList}
                                 selectedValue={formData?.team}
                                 onSelect={(value) => handleDropdownChange("team", value)}
                                 label="Select Team"
+                                project_id={Number(itemId2)}
                             />
                         </div>
 

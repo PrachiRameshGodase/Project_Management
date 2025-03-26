@@ -5,11 +5,14 @@ import {
   fetchProjectTasks,
   updateProjectStatus,
   updateStatus,
+  updateTaskPriority,
+  updateTaskStatus,
 } from "@/app/store/projectSlice";
 import { OtherIcons } from "@/assests/icons";
 import DataNotFound from "@/components/common/DataNotFound/DataNotFound";
 import Drawer01, { Drawer001 } from "@/components/common/Drawer/Drawer01";
 import Dropdown01 from "@/components/common/Dropdown/Dropdown01";
+import DropdownPriority from "@/components/common/Dropdown/DropdownPriority";
 import DropdownStatus01 from "@/components/common/Dropdown/DropdownStatus01";
 import {
   formatDate,
@@ -23,7 +26,7 @@ import {
 import { useDebounceSearch } from "@/components/common/Helper/HelperFunction";
 import useUserData from "@/components/common/Helper/useUserData";
 import KanBanView from "@/components/common/KanBanView/KanBanView";
-import Loader from "@/components/common/Loader/Loader";
+import Loader, { ScreenFreezeLoader } from "@/components/common/Loader/Loader";
 import { OutsideClick } from "@/components/common/OutsideClick/OutsideClick";
 import Pagenation from "@/components/common/Pagenation/Pagenation";
 import SearchComponent from "@/components/common/SearchComponent/SearchComponent";
@@ -92,7 +95,7 @@ const TaskList = () => {
   const [selectedSort, setSelectedSort] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isDrawerOpen1, setIsDrawerOpen1] = useState(false);
-  const [dataLoading, setDataLoading]=useState(true)
+  const [dataLoading, setDataLoading] = useState(true)
 
   const [isActive, setIsActive] = useState(
     projectDetailData?.project_status || ""
@@ -144,8 +147,8 @@ const TaskList = () => {
         limit: itemsPerPage,
         page: currentPage,
         ...(searchTermFromChild ? { search: searchTermFromChild } : {}),
-        ...(selectedSortBy ? { sort_by: selectedSortBy, sort_order: sortOrder }: {}),
-        ...(selectedStatus  ? { status: selectedStatus } : {}),
+        ...(selectedSortBy ? { sort_by: selectedSortBy, sort_order: sortOrder } : {}),
+        ...(selectedStatus ? { status: selectedStatus } : {}),
         ...(selectedPriority ? { priority: selectedPriority } : {})
       };
       dispatch(fetchProjectTasks(sendData));
@@ -156,9 +159,9 @@ const TaskList = () => {
         limit: itemsPerPage,
         page: currentPage,
         ...(searchTermFromChild ? { search: searchTermFromChild } : {}),
-        ...(selectedSortBy ? { sort_by: selectedSortBy, sort_order: sortOrder }:{}),
-        ...(selectedStatus  ? { status: selectedStatus } : {}),
-        ...(selectedPriority ?  { priority: selectedPriority } : {})
+        ...(selectedSortBy ? { sort_by: selectedSortBy, sort_order: sortOrder } : {}),
+        ...(selectedStatus ? { status: selectedStatus } : {}),
+        ...(selectedPriority ? { priority: selectedPriority } : {})
       };
 
       dispatch(fetchProjectTasks(sendData));
@@ -228,11 +231,19 @@ const TaskList = () => {
     router.push(`/project/list`)
     // localStorage.removeItem("itemId", itemId2)
   }
+  const handleStatusChange2 = async (value, itemId2) => {
+    dispatch(updateTaskStatus({ id: itemId2, status: value, dispatch, project_id: Number(itemId), setDataLoading }))
+  };
 
+  const handlePriorityChange = async (value, itemId2) => {
+    dispatch(updateTaskPriority({ id: itemId2, priority: value, dispatch, project_id: Number(itemId), setDataLoading }))
+  }
   return (
     <>
+    {projectLoading?.loading && !dataLoading && <ScreenFreezeLoader />}
       {(projectLoading?.loading && dataLoading) ? (
         <Loader />
+     
       ) : (
         <LayOut>
           <div className="flex justify-end absolute right-3 top-[90px]">
@@ -269,6 +280,7 @@ const TaskList = () => {
                   onSelect={(value) => handleStatusChange(value)}
                   label="Status"
                   className="w-[140px]"
+                  setDataLoading={setDataLoading}
                 />
               </div>
               <div className="flex max-[850px]:flex-col justify-between gap-5 md:gap-10 lg:gap-4 max-[1250px]:mt-4">
@@ -366,7 +378,7 @@ const TaskList = () => {
 
               {/* Right Section (Filters & Search) */}
               <div className="hidden min-[950px]:flex gap-6 items-center">
-              <Dropdown01
+                <Dropdown01
                   options={taskView}
                   selectedValue={selectedView}
                   onSelect={setSelectedView}
@@ -380,7 +392,7 @@ const TaskList = () => {
 
                 </>}
 
-                
+
 
                 {/* <Dropdown01 options={projectSortConstant} selectedValue={selectedSort} onSelect={setSelectedSort} label="Sort By" icon={OtherIcons.sort_by_svg} /> */}
 
@@ -530,9 +542,10 @@ const TaskList = () => {
             {/* Table Section */}
             {selectedView == "List" && (
               <>
-                <div className="max-w-full  overflow-x-auto mt-6 ">
-                  {projectLoading?.taskListLoading ? (
+                <div className="max-w-full  overflow-x-auto mt-6 h-[calc(100vh+20px)] overflow-y-auto">
+                  {(projectLoading?.taskListLoading && dataLoading) ? (
                     <TableSkeleton rows={7} columns={5} />
+                  
                   ) : (
                     <table className="w-full border-spacing-y-1 min-w-[1000px] border-2 border-transparent  ">
                       <thead className=" ">
@@ -571,18 +584,19 @@ const TaskList = () => {
                             </td>
                             <td
                               className={`py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[14px]  min-w-[150px] rounded text-gray-700`}
-                              onClick={() => handleTaskClick(item?.id)}>
-                              <span
-                                className={`py-1 px-2 sm:px-2   text-[12px] sm:text-[14px]  border rounded-md ${item?.status === "To Do"
-                                  ? "text-[#6C757D] border-[#6C757D]"
-                                  : item?.status === "In progress"
-                                    ? "text-[#CA9700] border-[#CA9700]"
-                                    : item?.status === "Completed"
-                                      ? "text-[#008053] border-[#008053]"
-                                      : "text-[#0D4FA7] border-[#0D4FA7]"
-                                  } inline-block`}>
-                                {item?.status || ""}
-                              </span>
+                            >
+                              {item?.status ? (
+                                <DropdownStatus01
+                                  options={statusProject}
+                                  selectedValue={item?.status}
+                                  onSelect={(value) => handleStatusChange2(value, item?.id)}
+                                  label="Status"
+                                  className="w-[140px]"
+                                  setDataLoading={setDataLoading}
+                                />
+                              ) : (
+                                "" // Placeholder for empty status
+                              )}
                             </td>
                             <td
                               className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px] text-gray-700"
@@ -606,21 +620,18 @@ const TaskList = () => {
                             </td>
                             <td
                               className={` text-[12px] sm:text-[14px] text-gray-700`}
-                              onClick={() => handleTaskClick(item?.id)}>
+                            >
                               {item?.priority ? (
-                                <span
-                                  className={`py-1 sm:py-1 px-2 sm:px-4 text-[12px] sm:text-[15px] border rounded-md inline-block 
-      ${item.priority === "High"
-                                      ? "text-[#4976F4] border-[#4976F4]"
-                                      : item.priority === "Low"
-                                        ? "text-red-400 border-red-400"
-                                        : "text-[#954BAF] border-[#954BAF]"
-                                    }`}
-                                >
-                                  {item.priority.charAt(0).toUpperCase() + item.priority.slice(1)}
-                                </span>
+                                <DropdownPriority
+                                  options={projectPriority}
+                                  selectedValue={item?.priority ? item.priority.charAt(0).toUpperCase() + item.priority.slice(1) : ""}
+                                  onSelect={(value) => handlePriorityChange(value, item?.id)}
+                                  label="Priority"
+                                  className="w-[90px]"
+                                  setDataLoading={setDataLoading}
+                                />
                               ) : (
-                                ""
+                                "" // Placeholder for empty status
                               )}
                             </td>
                           </tr>
@@ -649,7 +660,7 @@ const TaskList = () => {
             )}
 
             {selectedView == "Kanban" && (
-              <KanBanView groupedUsers={projectTaskListData} itemId={itemId} setDataLoading={setDataLoading}/>
+              <KanBanView groupedUsers={projectTaskListData} itemId={itemId} setDataLoading={setDataLoading} />
             )}
           </div>
           <Drawer01

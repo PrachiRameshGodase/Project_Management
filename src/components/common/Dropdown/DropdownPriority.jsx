@@ -3,14 +3,12 @@ import { OutsideClick } from "../OutsideClick/OutsideClick";
 import { ChevronDown, ChevronUp } from "lucide-react"; // Import arrow icons
 import useUserData from "../Helper/useUserData";
 
-const DropdownStatus01 = ({
+const DropdownPriority = ({
   options = [],
   selectedValue = "",
   onSelect,
-  label = "Select",
-  icon = null,
-  className = "",
-  setDataLoading
+ className = "",
+ setDataLoading
 }) => {
   const dropdownOutsideClick = OutsideClick();
   const userData = useUserData();
@@ -26,17 +24,16 @@ const DropdownStatus01 = ({
 
   // Dynamically set color based on selected status
   const getStatusColor = (status) => {
+    console.log("status", status)
     switch (status) {
-      case "To Do":
-        return "#6C757D"; // Gray
-      case "In Progress":
-        return "#CA9700"; // Yellow
-      case "Completed":
-        return "#008053"; // Green
-      case "Under Review":
-        return "#0D4FA7"; // Blue
-      default:
-        return "gray"; // Default color
+      case "High":
+        return "#DC143C";
+      case "Medium":
+        return "#0D4FA7";
+      case "Low":
+        return "#CA9700";
+        default:
+        return "#DC143C"; // Default color
     }
   };
 
@@ -65,14 +62,22 @@ const DropdownStatus01 = ({
         }
         ref={dropdownOutsideClick?.buttonRef}
       >
-        {icon}
-        <span className={`${!selected ? "text-gray-400 text-[12px]" : "text-[13px]"}`}>
+        {/* {icon} */}
+        <span
+          className={`${
+            !selected ? "text-gray-400 text-[13px]" : "text-[13px]"
+          }`}
+        >
           {selected || selectedValue}
         </span>
 
         {/* Up & Down arrow toggle button with dynamic color */}
         {userData?.is_client == 0 && (
-          <button type="button" onClick={dropdownOutsideClick?.handleToggle}  ref={dropdownOutsideClick?.buttonRef}>
+          <button
+            type="button"
+            onClick={dropdownOutsideClick?.handleToggle}
+            ref={dropdownOutsideClick?.buttonRef}
+          >
             {dropdownOutsideClick?.isOpen ? (
               <ChevronUp
                 size={16}
@@ -91,12 +96,12 @@ const DropdownStatus01 = ({
       </div>
 
       {dropdownOutsideClick?.isOpen && (
-        <div className="absolute top-[100%] mt-1 bg-white shadow-lg border border-gray-300 rounded-lg min-w-[110px] w-[150px] z-50">
+        <div className="absolute top-[100%] mt-1 bg-white shadow-lg border border-gray-300 rounded-lg min-w-[90px] w-[90px] z-50">
           <ul>
             {options.map((option, index) => (
               <li
                 key={index}
-                className={`font-[400] text-[12px] leading-[16.8px] rounded flex items-center justify-start pl-2 cursor-pointer transition-all duration-200
+                className={`font-[400] text-[13px] leading-[16.8px] rounded flex items-center justify-start pl-2 cursor-pointer transition-all duration-200
                   ${`text-[${getStatusColor(option)}] h-[30px] hover:shadow-md`}
                   ${selected === option ? "bg-opacity-50" : ""}`}
                 onClick={() => handleOptionSelect(option)}
@@ -111,4 +116,4 @@ const DropdownStatus01 = ({
   );
 };
 
-export default DropdownStatus01;
+export default DropdownPriority;

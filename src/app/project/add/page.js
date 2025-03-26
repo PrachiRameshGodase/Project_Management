@@ -241,10 +241,11 @@ const AddProject = () => {
                         <div className="justify-between sm:flex">
                             <label className="text-[20px] block mr-20">Team</label>
                             <Dropdown002
-                                options={usersList}
+                                // options={usersList}
                                 selectedValue={formData.team}
                                 onSelect={(value) => handleDropdownChange("team", value)}
                                 label="Select Team"
+                                project_id=""
                             />
                         </div>
 
