@@ -22,7 +22,7 @@ const DraggableCard = ({ user, index, status, itemId }) => {
     <div
       draggable
       onDragStart={handleDragStart}
-      className="w-[300px] h-full mt-4 bg-white p-4 gap-4 shadow-md rounded cursor-pointer px-3" onClick={() => handleTaskClick(user?.id)}
+      className="w-[300px] h-full mt-4 bg-white p-4 gap-4 shadow-md rounded cursor-grab active:cursor-grabbing px-3" onClick={() => handleTaskClick(user?.id)}
     >
       <p
         className={`px-3 py-1 border rounded-md text-[15px] inline-block ${user.priority === "High"
