@@ -39,7 +39,7 @@ const DraggableCard = ({ user, index, status, itemId }) => {
         <li className="flex items-center gap-2">
           <p className="text-[14px] text-gray-400 w-[120px]">Due Date</p>
           <span className="text-[14px] text-gray-700 w-[150px]">
-            {formatDate(user?.due_date) || ""}
+            {user?.due_date ? formatDate(user?.due_date):"" || ""}
           </span>
         </li>
         <li className="flex items-center gap-2">

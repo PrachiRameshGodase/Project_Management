@@ -248,8 +248,8 @@ const ProjectList = () => {
 
                       </td>
 
-                      <td className="text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px] text-gray-700" onClick={() => router.push(`/project/details?id=${item?.id}`)}>{formatDate(item?.start_date) || ""}</td>
-                      <td className="text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px] text-gray-700" onClick={() => router.push(`/project/details?id=${item?.id}`)}>{formatDate(item?.due_date || "")}</td>
+                      <td className="text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px] text-gray-700" onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.start_date ? formatDate(item?.start_date):"" || ""}</td>
+                      <td className="text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px] text-gray-700" onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.due_date ? formatDate(item?.due_date):""}</td>
                       <td className="text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px] text-gray-700" onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.project_leader_name || ""}</td>
                       <td className="text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px] text-gray-700" onClick={() => router.push(`/project/details?id=${item?.id}`)}>
                         <TruncatedTooltipText text={item?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")} maxLength={25} onClick={() => router.push(`/project/details?id=${item?.id}`)} />
@@ -319,7 +319,7 @@ const ProjectList = () => {
                   </ul>
                   <ul className="flex flex-col gap-1">
                     <li className="text-[12.8px] text-gray-400">Due Date</li>
-                    <li className="text-[12.8px] text-gray-800">{formatDate(item?.due_date) || ""}</li>
+                    <li className="text-[12.8px] text-gray-800">{item?.due_date ? formatDate(item?.due_date):"" || ""}</li>
 
                   </ul>
 

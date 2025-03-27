@@ -601,7 +601,7 @@ const TaskList = () => {
                             <td
                               className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px] text-gray-700"
                               onClick={() => handleTaskClick(item?.id)}>
-                              {formatDate(item?.due_date) || ""}
+                              {item?.due_date ? formatDate(item?.due_date):"" || ""}
                             </td>
                             <td
                               className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px] text-gray-700"
@@ -611,6 +611,7 @@ const TaskList = () => {
                             <td
                               className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px] text-gray-700"
                               onClick={() => handleTaskClick(item?.id)}>
+                                {console.log("item?.team_leaders", item?.team_leaders)}
                               <TruncatedTooltipText
                                 text={item?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")}
 

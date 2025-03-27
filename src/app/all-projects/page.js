@@ -78,7 +78,7 @@ const HomePage = () => {
                                             {OtherIcons.dateTime_svg}
                                         </div>
                                         <div className="flex flex-col">
-                                            <p className="text-gray-800 text-[14px]">{formatDate(card?.due_date) || ""}</p>
+                                            <p className="text-gray-800 text-[14px]">{card?.due_date ? formatDate(card?.due_date):"" || ""}</p>
                                             <p className="text-[#320b5775] text-[12px]">Deadline Date</p>
                                         </div>
                                     </div>

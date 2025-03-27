@@ -70,13 +70,10 @@ const ClientList = () => {
             limit: itemsPerPage,
             page: currentPage,
             is_client: 1,
+           status: selectedStatus !== '' ? selectedStatus : 0,
             ...(searchTermFromChild ? { search: searchTermFromChild } : {}),
             ...(selectedSortBy && { sort_by: selectedSortBy, sort_order: sortOrder }),
-            // ...(selectedDesignation && { designation: selectedDesignation }),
-
-            ...(selectedStatus !== null && selectedStatus !== undefined
-                ? { status: selectedStatus }
-                : {}),
+            
         };
 
         dispatch(fetchUsers(sendData));

@@ -103,10 +103,10 @@ const AddTask = () => {
             (value) => value === true
         );
         if (hasAnyError) {
-            await Swal.fire({
-                text: "Please fill all the required fields.",
-                confirmButtonText: "OK",
-            });
+            // await Swal.fire({
+            //     text: "Please fill all the required fields.",
+            //     confirmButtonText: "OK",
+            // });
             return;
         } else {
             try {

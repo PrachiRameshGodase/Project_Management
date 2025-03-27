@@ -59,7 +59,7 @@ const UserList = () => {
   //sortby
 
   // filter
-  const [selectedStatus, setSelectedStatus] = useState('All');
+  const [selectedStatus, setSelectedStatus] = useState('');
   // filter
 
   useEffect(() => {
@@ -67,13 +67,12 @@ const UserList = () => {
       limit: itemsPerPage,
       page: currentPage,
       is_employee: 1,
+      status: selectedStatus !== '' ? selectedStatus : 0,
       ...(searchTermFromChild ? { search: searchTermFromChild } : {}),
       ...(selectedSortBy && { sort_by: selectedSortBy, sort_order: sortOrder }),
       ...(selectedDesignation && { designation: selectedDesignation }),
-
-      ...(selectedStatus !== null && selectedStatus !== undefined
-        ? { status: selectedStatus }
-        : {}),
+      //  ...(selectedStatus && { status: selectedStatus }),
+      
     };
 
     dispatch(fetchUsers(sendData));

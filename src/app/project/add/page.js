@@ -55,7 +55,7 @@ const AddProject = () => {
     const [searchTrigger, setSearchTrigger] = useState(0);
 
     useEffect(() => {
-        const sendData = { is_employee: 1 };
+        const sendData = { is_employee: 1, status:0, };
         dispatch(fetchUsers(sendData));
     }, [searchTrigger, dispatch,]);
 
@@ -117,10 +117,10 @@ const AddProject = () => {
             (value) => value === true
         );
         if (hasAnyError) {
-            await Swal.fire({
-                text: "Please fill all the required fields.",
-                confirmButtonText: "OK",
-            });
+            // await Swal.fire({
+            //     text: "Please fill all the required fields.",
+            //     confirmButtonText: "OK",
+            // });
             return;
         } else {
             try {

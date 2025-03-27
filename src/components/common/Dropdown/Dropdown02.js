@@ -155,18 +155,25 @@ console.log("usersList", usersList)
   const removeSelected = (id) => {
     const updatedSelection = selected.filter((user) => user.id !== id);
     setSelected(updatedSelection);
-    onSelect(updatedSelection);
+    onSelect(updatedSelection.map((user) => user.id)); // Ensure only IDs are passed
   };
+  
   useEffect(() => {
-    console.log("selectedValue:", selectedValue);
-    console.log("usersList:", usersList);
-    
-    if (Array.isArray(selectedValue) && selectedValue.length > 0 && usersList?.length > 0) {
+   
+  
+    if (
+      Array.isArray(selectedValue) &&
+      selectedValue.length > 0 &&
+      usersList?.length > 0
+    ) {
       const selectedUsers = usersList.filter((user) => selectedValue.includes(user.id));
-      console.log("Filtered Selected Users:", selectedUsers);
-      setSelected(selectedUsers);
+  
+      if (JSON.stringify(selectedUsers) !== JSON.stringify(selected)) {
+        setSelected(selectedUsers);
+      }
     }
   }, [selectedValue, usersList]);
+  
   
   
 

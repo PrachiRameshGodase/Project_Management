@@ -104,7 +104,7 @@ export const Dropdown003 = ({ selectedValue, onSelect, label, icon }) => {
   const options = usersList
 
   useEffect(() => {
-    const sendData = { is_client: 1 };
+    const sendData = { is_client: 1 , status:0,};
     dispatch(fetchUsers(sendData));
   }, [searchTrigger, dispatch,]);
   
