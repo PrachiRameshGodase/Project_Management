@@ -19,6 +19,7 @@ const AddProject = () => {
     const router = useRouter()
     const dispatch = useDispatch();
     const usersList = useSelector((state) => state.user?.employeeList?.data);
+    
     const projectDetailData = useSelector((state) => state?.project?.projectDetails?.data);
     const projectLoading = useSelector((state) => state.project);
 
@@ -241,8 +242,8 @@ const AddProject = () => {
                         <div className="justify-between sm:flex">
                             <label className="text-[20px] block mr-20">Team</label>
                             <Dropdown002
-                                // options={usersList}
-                                selectedValue={formData.team}
+                                
+                                selectedValue={formData?.team}
                                 onSelect={(value) => handleDropdownChange("team", value)}
                                 label="Select Team"
                                 project_id=""

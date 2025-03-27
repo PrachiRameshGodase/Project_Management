@@ -93,14 +93,16 @@ export const Dropdown03 = ({ options, selectedValue, onSelect, label, icon }) =>
 };
 
 export const Dropdown003 = ({ selectedValue, onSelect, label, icon }) => {
+
   const dropdownOutsideClick = OutsideClick();
   const dispatch = useDispatch()
-  const [selected, setSelected] = useState(null); // Store selected object
+  const [selected, setSelected] = useState(selectedValue); // Store selected object
   const [searchQuery, setSearchQuery] = useState(""); // Store search input
   const [searchTrigger, setSearchTrigger] = useState(0);
 
   const usersList = useSelector((state) => state.user?.clientList?.data);
   const options = usersList
+
   useEffect(() => {
     const sendData = { is_client: 1 };
     dispatch(fetchUsers(sendData));
@@ -112,19 +114,17 @@ export const Dropdown003 = ({ selectedValue, onSelect, label, icon }) => {
     onSelect(option?.id); // Pass only the ID
     dropdownOutsideClick.handleToggle(); // Close dropdown after selection
   };
-
+ 
   // Update selected state when selectedValue (ID) changes
   useEffect(() => {
-    if (selectedValue) {
-      // Find the full option object by ID
-      const foundOption = options?.find((option) => option.id === selectedValue);
-      setSelected(foundOption || null);
-    } else {
-      setSelected(null);
-    }
-  }, [selectedValue, options]);
+   
+    // if (selectedValue) { 
+      const foundOption = options?.find((option) => option?.id == selectedValue);
+     
+      setSelected(foundOption);
+    // }
+  }, [options,selectedValue])
 
-// console.log("usersList", usersList)
   return (
     <div className="relative w-[310px] sm:w-[350px] md:w-[400px]" ref={dropdownOutsideClick?.ref}>
       {/* Dropdown Header */}

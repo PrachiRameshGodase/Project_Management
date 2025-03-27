@@ -62,7 +62,7 @@ const ClientList = () => {
     //sortby
 
     // filter
-    const [selectedStatus, setSelectedStatus] = useState('All');
+    const [selectedStatus, setSelectedStatus] = useState('');
     // filter
 
     useEffect(() => {
