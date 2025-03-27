@@ -169,8 +169,8 @@ export const Dropdown002 = ({ selectedValue, onSelect, label, project_id }) => {
         onClick={dropdownOutsideClick?.handleToggle}
       >
         <div className="flex items-center gap-2 flex-wrap">
-          {selected.length > 0 ? (
-            selected.map((user) => (
+          {selected?.length > 0 ? (
+            selected?.map((user) => (
               <div key={user.id} className="flex items-center bg-gray-200 rounded-md px-2 py-1">
                 {user.name}
                 <span
@@ -205,14 +205,14 @@ export const Dropdown002 = ({ selectedValue, onSelect, label, project_id }) => {
             />
           </div>
           <ul className="max-h-60 overflow-y-auto">
-            {usersList.length > 0 ? (
-              usersList.map((option) => (
+            {usersList?.length > 0 ? (
+              usersList?.map((option) => (
                 <li
-                  key={option.id}
+                  key={option?.id}
                   className={`flex px-4 py-2 hover:bg-gray-100 cursor-pointer ${selected.some((user) => user.id === option.id) ? "bg-gray-200" : ""}`}
                   onClick={() => handleOptionSelect(option)}
                 >
-                  {option.name}
+                  {option?.name}
                 </li>
               ))
             ) : (
