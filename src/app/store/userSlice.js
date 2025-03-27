@@ -19,7 +19,7 @@ export const addUser = createAsyncThunk(
       return response.data;
     } catch (error) {
       console.error("Add User API Error:", error);
-      toast.error(error?.response?.data?.message || "Something went wrong");
+      toast.error(response?.data?.message);
       return rejectWithValue(error.response?.data || error.message);
     }
   }
