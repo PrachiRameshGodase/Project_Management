@@ -102,7 +102,7 @@ const Drawer01 = ({
         <div className="flex justify-between">
           <div className="w-full h-[69px] flex items-center justify-between ">
             <div className="text-xl text-gray-700 ">
-              <p className="font-bold">{details?.project_name || "--"}</p>
+              <span className="font-bold">{details?.project_name || "--"}</span>
               <p className="text-xs text-gray-500">
                 {details?.client?.name || "--"}
               </p>
@@ -349,13 +349,13 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId2, itemId, details })
         <div className="flex justify-between">
           <div className="w-full flex items-center gap-[10px] ">
             <div className="text-xl text-gray-700">
-              <p className="font-bold">{details?.task_title || ""}</p>
+              <span className="font-bold">{details?.task_title || ""}</span>
             </div>
           </div>
 
           <div>
             <span
-              className={`px-3 py-1 border rounded-md inline-block text-[12px] h-[25px]
+              className={`px-3 py-1 border rounded-md  text-[12px] h-[25px] w-[110px] flex items-center align-middle text-center
         ${details?.status === "To Do"
                   ? "text-[#6C757D] border-[#6C757D]"
                   : details?.status === "In progress"

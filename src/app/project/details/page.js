@@ -591,7 +591,7 @@ const TaskList = () => {
                             <td
                               className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px]   rounded  text-gray-700"
                               onClick={() => handleTaskClick(item?.id)}>
-                              {item?.task_title || ""}
+                               <TruncatedTooltipText text={item?.task_title ||""} maxLength={15}  onClick={() => handleTaskClick(item?.id)} />
                             </td>
                             <td
                               className={`py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[14px]  min-w-[150px] rounded text-gray-700`}
@@ -617,7 +617,7 @@ const TaskList = () => {
                                 <span>{item?.due_date ? formatDate(item?.due_date) : ""}</span>
                                 {item?.due_date && new Date(item.due_date) >= new Date() && (
                                   <span
-                                    className={`text-[10px] px-1 rounded mt-1 flex w-[100px] h-[18px] border items-center justify-center text-center mx-auto
+                                    className={`text-[10px] px-1 rounded mt-1 flex w-[100px] h-[18px] border items-center justify-center
                                     ${item.status === "Completed"
                                         ? "text-green-600 border-green-400"
                                         : "text-gray-500 border-gray-300"
