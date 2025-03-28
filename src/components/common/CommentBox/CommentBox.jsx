@@ -37,9 +37,11 @@ const ChatBox = ({ projectId, taskId }) => {
   const usersList = useSelector((state) => state.user?.employeeList?.data);
   
   const CommentListData = useSelector(
-    (state) => state.project?.taskCommentList?.data
+    (state) => state.project?.taskCommentList?.data ||[]
   );
-  const CommentListLoading = useSelector((state) => state.project);
+  const CommentListLoading = useSelector(
+    (state) => state.project?.taskCommentList?.commentLoading || false
+  );
 
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
@@ -527,7 +529,7 @@ console.log("formData", formData)
           <PhotoProvider>
             <div ref={chatStartRef} />
 
-            {CommentListLoading?.commentLoading ? (
+            {CommentListLoading? (
               <TableSkeleton />
             ) : (
               CommentListData?.map((msg) => {
