@@ -127,26 +127,27 @@ console.log("formData", formData)
   // };
   const handleSelectMention = (user) => {
     setFormData((prev) => {
+      if (prev.assigned_ids.includes(user.id)) return prev; // Prevent duplicate mentions
+  
       const comment = prev.comments;
-      const cursorPos = inputRef.current.selectionStart; // Get cursor position
+      const cursorPos = inputRef.current.selectionStart;
   
-      // Find the last '@' before cursor
       const lastAtIndex = comment.lastIndexOf("@", cursorPos - 1);
-      if (lastAtIndex === -1) return prev; // No '@' found, return original
+      if (lastAtIndex === -1) return prev;
   
-      // Insert selected username
       const newComment =
         comment.substring(0, lastAtIndex + 1) + user.name + " " + comment.substring(cursorPos);
   
       return {
         ...prev,
-        comments: newComment, // ✅ Show `@user.name` in the input
-        assigned_ids: [...prev.assigned_ids, user.id], // ✅ Store user ID
+        comments: newComment,
+        assigned_ids: [...prev.assigned_ids, user.id],
       };
     });
   
-    setMentionList([]); // Clear mention list after selection
+    setMentionList([]);
   };
+  
   
   // File Select
 
@@ -491,15 +492,15 @@ console.log("formData", formData)
             )}
             {formData.assigned_ids.length > 0 && (
               <div className="flex flex-wrap mt-2">
-                {formData.assigned_ids.map((id) => {
-                  const user = usersList.find((u) => u.id === id);
+                {formData.assigned_ids?.map((id) => {
+                  const user = usersList?.find((u) => u?.id === id);
                   return (
                     user && (
                       <span
                         key={id}
                         className="bg-blue-50 text-blue-400 px-2 py-1 rounded-lg m-1 text-sm flex items-center"
                       >
-                        @ {user.name}
+                        @ {user?.name}
                         <button
                           onClick={() => handleRemoveMention(id)}
                           className="ml-1 text-red-700 text-xs"
@@ -548,7 +549,7 @@ console.log("formData", formData)
                 }
 
                 return (
-                  <div key={msg.id} className="flex gap-1 items-start group">
+                  <div key={msg?.id} className="flex gap-1 items-start group">
                     <UserAvatar
                       name={user?.name}
                       dotcolor=""
@@ -569,7 +570,7 @@ console.log("formData", formData)
                                       key={id}
                                       className="bg-blue-50 text-blue-400 rounded-lg m-1 text-sm flex items-center"
                                     >
-                                      @ {user.name}
+                                      @ {user?.name}
                                       {/* <button
                                       onClick={() => handleRemoveMention(id)}
                                       className="ml-1 text-red-700 text-xs"
@@ -583,7 +584,7 @@ console.log("formData", formData)
                             </div>
                           )}
                         <span className="text-xs text-gray-500 mt-1 fl justify-end">
-                          {formatTime(msg.created_at)}
+                          {formatTime(msg?.created_at)}
                         </span>
                       </div>
 
