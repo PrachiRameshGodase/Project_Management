@@ -422,9 +422,9 @@ console.log("formData", formData)
               )}
 
               {/* Mention List Dropdown */}
-              {mentionList.length > 0 && (
+              {mentionList?.length > 0 && (
                 <ul className="absolute  -mt-56 max-h-[180px]  overflow-y-auto bg-white border rounded-md shadow-md w-full z-10">
-                  {mentionList.map((user, index) => (
+                  {mentionList?.map((user, index) => (
                     <li
                       key={index}
                       className="p-2 hover:bg-gray-100 cursor-pointer"
@@ -441,11 +441,11 @@ console.log("formData", formData)
             {/* File & Audio Preview Inside Input Box */}
             {selectedFile && (
               <div className="mt-2 p-1 bg-gray-100 rounded-md flex items-center gap-2 relative">
-                {selectedFile.type === "image" ? (
+                {selectedFile?.type === "image" ? (
                   <PhotoProvider>
-                    <PhotoView src={selectedFile.url}>
+                    <PhotoView src={selectedFile?.url}>
                       <img
-                        src={selectedFile.url}
+                        src={selectedFile?.url}
                         alt="Preview"
                         className="w-fit h-14 rounded-md cursor-pointer"
                       />
@@ -455,11 +455,11 @@ console.log("formData", formData)
                   <div className="text-gray-700 flex gap-1 cursor-pointer">
                     <FileText size={20} color="#292929" />
                     <a
-                      href={selectedFile.url}
+                      href={selectedFile?.url}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      {selectedFile.name}
+                      {selectedFile?.name}
                     </a>
                   </div>
                 )}
@@ -490,7 +490,7 @@ console.log("formData", formData)
                 </button>
               </div>
             )}
-            {formData.assigned_ids.length > 0 && (
+            {formData.assigned_ids?.length > 0 && (
               <div className="flex flex-wrap mt-2">
                 {formData.assigned_ids?.map((id) => {
                   const user = usersList?.find((u) => u?.id === id);
