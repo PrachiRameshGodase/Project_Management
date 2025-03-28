@@ -8,22 +8,29 @@ export const addUser = createAsyncThunk(
   async ({ userData, router, section }, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post(`/users/create/update`, userData);
-      if (response?.data?.success === true) {
-        toast.success(response?.data?.message);
+      console.log("response", response)
+      if (response?.data?.success) {
+        toast.success(response.data.message);
+
         if (section === "client") {
           router.push("/client/list");
         } else {
           router.push("/user/list");
         }
+
+        return response.data; // Return data on success
+      } else {
+        toast.error(response.message);
+        return rejectWithValue(response.data); // Reject with API error response
       }
-      return response.data;
     } catch (error) {
       console.error("Add User API Error:", error);
-      toast.error(response?.data?.message);
-      return rejectWithValue(error.response?.data || error.message);
+      toast.error(response?.message);
+      return rejectWithValue(response?.data || error.message);
     }
   }
 );
+
 
 // Async thunk to fetch users list
 export const fetchUsers = createAsyncThunk(

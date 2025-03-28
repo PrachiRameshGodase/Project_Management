@@ -10,12 +10,14 @@ import {
 } from "@/app/store/projectSlice";
 import { OtherIcons } from "@/assests/icons";
 import DataNotFound from "@/components/common/DataNotFound/DataNotFound";
+import DatePickerWithIcon from "@/components/common/DatePicker/CalenderWithIcon";
 import Drawer01, { Drawer001 } from "@/components/common/Drawer/Drawer01";
 import Dropdown01 from "@/components/common/Dropdown/Dropdown01";
 import DropdownPriority from "@/components/common/Dropdown/DropdownPriority";
 import DropdownStatus01 from "@/components/common/Dropdown/DropdownStatus01";
 import {
   formatDate,
+  getDueMessage,
   getStatusDetails,
   projectPriority,
   projectPriority2,
@@ -238,12 +240,19 @@ const TaskList = () => {
   const handlePriorityChange = async (value, itemId2) => {
     dispatch(updateTaskPriority({ id: itemId2, priority: value, dispatch, project_id: Number(itemId), setDataLoading }))
   }
+
+  const [selectedDate, setSelectedDate] = useState("");
+
+  const handleDateChange = (event) => {
+    setSelectedDate(event.target.value);
+  };
+
   return (
     <>
-    {projectLoading?.loading && !dataLoading && <ScreenFreezeLoader />}
+      {projectLoading?.loading && !dataLoading && <ScreenFreezeLoader />}
       {(projectLoading?.loading && dataLoading) ? (
         <Loader />
-     
+
       ) : (
         <LayOut>
           <div className="flex justify-end absolute right-3 top-[90px]">
@@ -545,7 +554,7 @@ const TaskList = () => {
                 <div className="max-w-full  overflow-x-auto mt-6 h-[calc(100vh+20px)] overflow-y-auto">
                   {(projectLoading?.taskListLoading && dataLoading) ? (
                     <TableSkeleton rows={7} columns={5} />
-                  
+
                   ) : (
                     <table className="w-full border-spacing-y-1 min-w-[1000px] border-2 border-transparent  ">
                       <thead className=" ">
@@ -570,6 +579,17 @@ const TaskList = () => {
                           <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] text-gray-800">
                             PRIORITY
                           </th>
+                          <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] text-gray-800">
+                            GITHUB
+                            <br />
+                            <span className="text-[10px] sm:text-[12px] text-gray-600">Frontend</span>
+                          </th>
+                          <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] text-gray-800">
+                            GITHUB
+                            <br />
+                            <span className="text-[10px] sm:text-[12px] text-gray-600">Backend</span>
+                          </th>
+
                         </tr>
                       </thead>
                       <tbody>
@@ -599,19 +619,28 @@ const TaskList = () => {
                               )}
                             </td>
                             <td
-                              className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px] text-gray-700"
-                              onClick={() => handleTaskClick(item?.id)}>
-                              {item?.due_date ? formatDate(item?.due_date):"" || ""}
+                              className="py-2 sm:py-3 px-2 sm:px-4 text-[12px] sm:text-[15px] text-gray-700"
+                              onClick={() => handleTaskClick(item?.id)}
+                            >
+                              <div className="flex flex-col">
+                                <span>{item?.due_date ? formatDate(item?.due_date) : ""}</span>
+                                <span className="text-xs text-red-500 bg-red-100 px-1 rounded mt-1 inline-block w-[100px]">
+                                  {getDueMessage(item?.due_date)}
+                                </span>
+                              </div>
                             </td>
+
+
                             <td
                               className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px] text-gray-700"
                               onClick={() => handleTaskClick(item?.id)}>
                               {item?.task_type || ""}
+
                             </td>
                             <td
                               className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px] text-gray-700"
                               onClick={() => handleTaskClick(item?.id)}>
-                                {console.log("item?.team_leaders", item?.team_leaders)}
+                              {console.log("item?.team_leaders", item?.team_leaders)}
                               <TruncatedTooltipText
                                 text={item?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")}
 
@@ -634,6 +663,17 @@ const TaskList = () => {
                               ) : (
                                 "" // Placeholder for empty status
                               )}
+                            </td>
+                            <td className="py-2 sm:py-3 px-2 sm:px-4 text-[12px] sm:text-[15px] text-gray-700">
+                              <DatePickerWithIcon date={selectedDate} handleDateChange={handleDateChange} />
+                            </td>
+
+                            <td
+                              className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px] text-gray-700"
+                            >
+                              <DatePickerWithIcon date={selectedDate} handleDateChange={handleDateChange} />
+
+
                             </td>
                           </tr>
                         ))) : (<tr>

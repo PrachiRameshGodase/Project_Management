@@ -226,7 +226,7 @@ console.log("usersList", usersList)
               usersList?.map((option,index) => (
                 <li
                   key={option?.id || `option-${index}`}
-                  className={`flex px-4 py-2 hover:bg-gray-100 cursor-pointer ${selected.some((user) => user.id === option.id) ? "bg-gray-200" : ""}`}
+                  className={`flex px-4 py-2 hover:bg-gray-100 cursor-pointer ${selected?.some((user) => user?.id === option?.id) ? "bg-gray-200" : ""}`}
                   onClick={() => handleOptionSelect(option)}
                 >
                   {option?.name}

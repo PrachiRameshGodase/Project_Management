@@ -51,3 +51,21 @@ export const statusOptions = [
   export const formatDate = (date) => {
     return new Date(date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 }
+
+export const getDueMessage = (dueDate) => {
+  if (!dueDate) return "";
+
+  const currentDate = new Date();
+  const due = new Date(dueDate);
+
+  // Calculate difference in days
+  const diffTime = due - currentDate;
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Convert milliseconds to days
+
+  if (diffDays > 0) {
+    return `${diffDays} days remaining`;
+  } else if (diffDays === 0) {
+    return "Due today";
+  } 
+};
+
