@@ -123,8 +123,7 @@ export const Dropdown002 = ({ selectedValue, onSelect, label, project_id }) => {
   const dropdownOutsideClick = OutsideClick();
   const dispatch = useDispatch();
   const usersList = useSelector((state) => state.user?.employeeList?.data);
-console.log("usersList", usersList)
-  const [selected, setSelected] = useState(selectedValue);
+  const [selected, setSelected] = useState(selectedValue ||[]);
   const [searchQuery, setSearchQuery] = useState("");
  
   
@@ -140,20 +139,21 @@ console.log("usersList", usersList)
   }, [searchQuery, project_id]);
 
   const handleOptionSelect = (option) => {
-    setSelected((prev) => {
-      const isAlreadySelected = prev.some((user) => user.id === option.id);
+    setSelected((prev = []) => { // Ensure prev is an array
+      const isAlreadySelected = Array.isArray(prev) && prev?.some((user) => user?.id === option?.id);
       const updatedSelection = isAlreadySelected
-        ? prev.filter((user) => user.id !== option.id)
+        ? prev?.filter((user) => user?.id !== option?.id)
         : [...prev, option];
   
-      onSelect(updatedSelection.map((user) => user.id)); // Ensure `onSelect` gets an array of IDs
+      onSelect(updatedSelection.map((user) => user.id));
       return updatedSelection;
     });
   };
   
+  
 
   const removeSelected = (id) => {
-    const updatedSelection = selected.filter((user) => user.id !== id);
+    const updatedSelection = selected?.filter((user) => user.id !== id);
     setSelected(updatedSelection);
     onSelect(updatedSelection.map((user) => user.id)); // Ensure only IDs are passed
   };
@@ -166,7 +166,7 @@ console.log("usersList", usersList)
       selectedValue.length > 0 &&
       usersList?.length > 0
     ) {
-      const selectedUsers = usersList.filter((user) => selectedValue.includes(user.id));
+      const selectedUsers = usersList?.filter((user) => selectedValue?.includes(user.id));
   
       if (JSON.stringify(selectedUsers) !== JSON.stringify(selected)) {
         setSelected(selectedUsers);
