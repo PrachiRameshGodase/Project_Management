@@ -219,7 +219,7 @@ const ProjectList = () => {
                 <table className="border-2 border-spacing-y-1 border-transparent w-full min-w-[1000px]">
                   <thead>
                     <tr className="m-1 rounded-md shadow-tr-border text-gray-600 text-left text-sm uppercase">
-                      <th className="flex text-[13px] min-w-[180px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px]">
+                      <th className="flex text-[13px] min-w-[180px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px]  text-center mt-[10px]">
                         <div className='flex w-full justify-between items-center text-gray-700'>
                           <span className='text-gray-700'>PROJECT NAME</span>
                           <SortBy setSearchTrigger={setSearchTrigger} selectedSortBy={selectedSortBy} setSelectedSortBy={setSelectedSortBy} sortOrder={sortOrder} setSortOrder={setSortOrder} sortOptions="project_name" resetPageIfNeeded={resetPageIfNeeded} />
@@ -232,7 +232,7 @@ const ProjectList = () => {
                       <th className="text-[13px] min-w-[180px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px] text-gray-700">PROJECT LEADER</th>
                       {/* <th className="text-[13px] min-w-[150px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px] text-gray-700">TEAM</th> */}
                       <th className="text-[13px] min-w-[100px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px] text-gray-700">PRIORITY</th>
-                      <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] text-gray-800">
+                      <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] text-gray-800 ">
                         GITHUB
                         <br />
                         <span className="text-[10px] sm:text-[12px] text-gray-600">Frontend</span>
@@ -272,10 +272,9 @@ const ProjectList = () => {
                           className="py-2 sm:py-3 px-2 sm:px-4 text-[12px] sm:text-[15px] text-gray-700"
                           onClick={() => router.push(`/project/details?id=${item?.id}`)}
                         >
-                          {console.log("(formatDate(new Date()) > formatDate(item.due_date))", (formatDate(new Date()) > formatDate(item.due_date)))}
                           <div className="flex flex-col">
                             <span>{item?.due_date ? formatDate(item?.due_date) : ""}</span>
-                            {item?.due_date && (
+                            {item?.due_date && new Date(item.due_date) >= new Date() && (
                               <span
                                 className={`text-[10px] px-1 rounded mt-1 flex w-[100px] h-[18px] border items-center justify-center text-center mx-auto
       ${item.status === "Completed"
@@ -286,6 +285,7 @@ const ProjectList = () => {
                                 {item.status === "Completed" ? "Completed" : getDueMessage(item.due_date)}
                               </span>
                             )}
+
 
 
 

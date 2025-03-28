@@ -244,8 +244,8 @@ const TaskList = () => {
   }
 
 
-  
-  
+
+
 
   return (
     <>
@@ -579,7 +579,7 @@ const TaskList = () => {
                           <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] text-gray-800">
                             PRIORITY
                           </th>
-                          
+
 
                         </tr>
                       </thead>
@@ -615,17 +615,17 @@ const TaskList = () => {
                             >
                               <div className="flex flex-col">
                                 <span>{item?.due_date ? formatDate(item?.due_date) : ""}</span>
-                                {item?.due_date && (new Date() > new Date(item.due_date)) && (
-  <span
-    className={`text-[10px] px-1 rounded mt-1 flex w-[100px] h-[18px] border items-center justify-center text-center mx-auto
-      ${item.status === "Completed"
-        ? "text-green-600 border-green-400"
-        : "text-gray-500 border-gray-300"
-      }`}
-  >
-    {item.status === "Completed" ? "Completed" : getDueMessage(item.due_date)}
-  </span>
-)}
+                                {item?.due_date && new Date(item.due_date) >= new Date() && (
+                                  <span
+                                    className={`text-[10px] px-1 rounded mt-1 flex w-[100px] h-[18px] border items-center justify-center text-center mx-auto
+                                    ${item.status === "Completed"
+                                        ? "text-green-600 border-green-400"
+                                        : "text-gray-500 border-gray-300"
+                                      }`}
+                                  >
+                                    {item.status === "Completed" ? "Completed" : getDueMessage(item.due_date)}
+                                  </span>
+                                )}
 
                               </div>
                             </td>
@@ -663,7 +663,7 @@ const TaskList = () => {
                                 "" // Placeholder for empty status
                               )}
                             </td>
-                           
+
                           </tr>
                         ))) : (<tr>
                           <td colSpan="8" className="text-center py-8">
