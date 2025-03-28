@@ -177,7 +177,6 @@ export const Dropdown002 = ({ selectedValue, onSelect, label, project_id }) => {
   
   
 
- console.log("selected", selected)
   return (
     <div className="relative w-[310px] sm:w-[350px] md:w-[400px]" ref={dropdownOutsideClick?.ref}>
       <div

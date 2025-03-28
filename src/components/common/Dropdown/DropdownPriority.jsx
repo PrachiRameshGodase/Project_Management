@@ -24,7 +24,6 @@ const DropdownPriority = ({
 
   // Dynamically set color based on selected status
   const getStatusColor = (status) => {
-    console.log("status", status)
     switch (status) {
       case "High":
         return "#DC143C";

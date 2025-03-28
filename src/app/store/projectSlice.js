@@ -211,6 +211,37 @@ export const fetchTaskComment = createAsyncThunk(
   }
 );
 
+export const updateTaskGithubFronted = createAsyncThunk("task/updateTaskStatus", async ({ id, status, dispatch, project_id, setDataLoading }, { rejectWithValue }) => {
+  try {
+    const response = await axiosInstance.post(`/task/status`, { id, status, project_id });
+    if (response?.data?.success === true) {
+      dispatch(fetchProjectTasks({ project_id: project_id, id: id }))
+      setDataLoading(false)
+      dispatch(fetchProjectTaskDetails(id))
+      dispatch(fetchProjectDetails(project_id))
+
+    }
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response?.data || error.message);
+  }
+});
+
+export const updateTaskGithubBackend = createAsyncThunk("task/updateTaskStatus", async ({ id, status, dispatch, project_id, setDataLoading }, { rejectWithValue }) => {
+  try {
+    const response = await axiosInstance.post(`/task/status`, { id, status, project_id });
+    if (response?.data?.success === true) {
+      dispatch(fetchProjectTasks({ project_id: project_id, id: id }))
+      setDataLoading(false)
+      dispatch(fetchProjectTaskDetails(id))
+      dispatch(fetchProjectDetails(project_id))
+
+    }
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response?.data || error.message);
+  }
+});
 export const addTaskComment = createAsyncThunk(
   "task/addTaskComment",
   async ({ formData, project_id, task_id, dispatch, setFormData, setSelectedFile, setAudioURL, setMentionList }, { rejectWithValue }) => {
@@ -485,6 +516,43 @@ const projectSlice = createSlice({
         );
       })
       .addCase(updateTaskPriority.rejected, (state, action) => {
+        state.taskListLoading = false;
+        state.error = action.payload;
+      })
+
+
+       // Handle Update task github frontend
+       .addCase(updateTaskGithubFronted.pending, (state) => {
+        state.taskListLoading = true;
+        state.error = null;
+      })
+      .addCase(updateTaskGithubFronted.fulfilled, (state, action) => {
+        state.taskListLoading = false;
+        // Update the user status in the list
+        const updatedUser = action.payload;
+        state.taskList = state.taskList.map(user =>
+          user.id === updatedUser.id ? { ...user, priority: updatedUser.priority } : user
+        );
+      })
+      .addCase(updateTaskGithubFronted.rejected, (state, action) => {
+        state.taskListLoading = false;
+        state.error = action.payload;
+      })
+
+       // Handle Update task github frontend
+       .addCase(updateTaskGithubBackend.pending, (state) => {
+        state.taskListLoading = true;
+        state.error = null;
+      })
+      .addCase(updateTaskGithubBackend.fulfilled, (state, action) => {
+        state.taskListLoading = false;
+        // Update the user status in the list
+        const updatedUser = action.payload;
+        state.taskList = state.taskList.map(user =>
+          user.id === updatedUser.id ? { ...user, priority: updatedUser.priority } : user
+        );
+      })
+      .addCase(updateTaskGithubBackend.rejected, (state, action) => {
         state.taskListLoading = false;
         state.error = action.payload;
       })

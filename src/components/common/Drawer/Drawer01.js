@@ -44,21 +44,7 @@ const Drawer01 = ({
     }
   }, [details]);
 
-  const handleStatusChange = async (value) => {
-    const result = await Swal.fire({
-      text: `Do you want to update the status of this Project?`,
-      showCancelButton: true,
-      confirmButtonText: "Yes",
-      cancelButtonText: "No",
-    });
 
-    if (result.isConfirmed && itemId) {
-      setSelectedStatus(value);
-
-      // Dispatch updateUserStatus with the new status
-      dispatch(updateProjectStatus({ id: itemId, status: value, router }));
-    }
-  };
 
   const handleToggleStatus = async (event) => {
     const newStatus = !isActive ? 1 : 0; // Toggle logic: Active (0) → Inactive (1), Inactive (1) → Active (0)
@@ -195,7 +181,7 @@ const Drawer01 = ({
                 <span className="text-gray-400 w-[120px] text-[14px]">Priority</span>
                 <h4>:</h4>
                 <span className="text-gray-700 w-[200px] text-[14px]">
-                  {details?.priority?.charAt(0).toUpperCase() + details?.priority?.slice(1)}
+                  {details?.priority || ""}
                 </span>
               </li>
               <li className="flex mb-2 gap-4">
@@ -253,7 +239,7 @@ const Drawer01 = ({
 
         {/* Comment Section - Fixed at Bottom */}
         <div className="p-4">
-          <CommentBox projectId={Number(itemId)} taskId="" />
+          <CommentBox projectId={Number(itemId)} taskId={null} />
         </div>
       </div>
     </motion.div>

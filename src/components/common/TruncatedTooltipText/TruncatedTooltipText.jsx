@@ -4,7 +4,7 @@ import { Tooltip } from "@mui/material";
 import { useRouter } from "next/navigation";
 
 const TruncatedTooltipText = ({ text, maxLength = 22, onClick}) => {
-    console.log("text", text)
+   
     const router = useRouter();
     const isTruncated = text?.length > maxLength;
     const displayText = isTruncated ? text?.slice(0, maxLength) + "..." : text;
