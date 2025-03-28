@@ -1,8 +1,9 @@
 "use client"
-import { fetchProjects, updateProjectPriority, updateProjectStatus } from '@/app/store/projectSlice';
+import { fetchProjects, updateProjectGithubBackend, updateProjectGithubFrontend, updateProjectPriority, updateProjectStatus } from '@/app/store/projectSlice';
 import { OtherIcons } from '@/assests/icons';
 import LayOut from '@/components/LayOut';
 import DataNotFound from '@/components/common/DataNotFound/DataNotFound';
+import DatePickerWithIcon from '@/components/common/DatePicker/CalenderWithIcon';
 import Dropdown01 from '@/components/common/Dropdown/Dropdown01';
 import DropdownPriority from '@/components/common/Dropdown/DropdownPriority';
 import DropdownStatus01 from '@/components/common/Dropdown/DropdownStatus01';
@@ -109,6 +110,13 @@ const ProjectList = () => {
   const handlePriorityChange = async (value, itemId) => {
     dispatch(updateProjectPriority({ id: itemId, priority: value, dispatch, setDataLoading }))
   };
+
+  const handleGitFrontendDateChange = async (value, itemId2) => {
+    dispatch(updateProjectGithubFrontend({ id: itemId2, github_frontend_date: value, dispatch, setDataLoading }))
+  }
+  const handleGitBackendDateChange = async (value, itemId2) => {
+    dispatch(updateProjectGithubBackend({ id: itemId2, github_backend_date: value, dispatch, setDataLoading }))
+  }
 
   return (
     <LayOut>
@@ -222,8 +230,19 @@ const ProjectList = () => {
                       <th className="text-[13px] min-w-[150px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px] text-gray-700">START DATE</th>
                       <th className="text-[13px] min-w-[100px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px] text-gray-700">DUE DATE</th>
                       <th className="text-[13px] min-w-[180px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px] text-gray-700">PROJECT LEADER</th>
-                      <th className="text-[13px] min-w-[150px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px] text-gray-700">TEAM</th>
+                      {/* <th className="text-[13px] min-w-[150px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px] text-gray-700">TEAM</th> */}
                       <th className="text-[13px] min-w-[100px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px] text-gray-700">PRIORITY</th>
+                      <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] text-gray-800">
+                        GITHUB
+                        <br />
+                        <span className="text-[10px] sm:text-[12px] text-gray-600">Frontend</span>
+                      </th>
+                      <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] text-gray-800">
+                        GITHUB
+                        <br />
+                        <span className="text-[10px] sm:text-[12px] text-gray-600">Backend</span>
+                      </th>
+
                     </tr>
                   </thead>
                   <tbody>
@@ -253,19 +272,31 @@ const ProjectList = () => {
                           className="py-2 sm:py-3 px-2 sm:px-4 text-[12px] sm:text-[15px] text-gray-700"
                           onClick={() => router.push(`/project/details?id=${item?.id}`)}
                         >
+                          {console.log("(formatDate(new Date()) > formatDate(item.due_date))", (formatDate(new Date()) > formatDate(item.due_date)))}
                           <div className="flex flex-col">
                             <span>{item?.due_date ? formatDate(item?.due_date) : ""}</span>
-                            <span className="text-[10px] text-red-500 bg-red-100 px-1 rounded mt-1 inline-block w-[100px]">
-                              {getDueMessage(item?.due_date)}
-                            </span>
+                            {item?.due_date && (
+                              <span
+                                className={`text-[10px] px-1 rounded mt-1 flex w-[100px] h-[18px] border items-center justify-center text-center mx-auto
+      ${item.status === "Completed"
+                                    ? "text-green-600 border-green-400"
+                                    : "text-gray-500 border-gray-300"
+                                  }`}
+                              >
+                                {item.status === "Completed" ? "Completed" : getDueMessage(item.due_date)}
+                              </span>
+                            )}
+
+
+
                           </div>
                         </td>
 
                         {/* <td className="text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px] text-gray-700" onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.due_date ? formatDate(item?.due_date):""}</td> */}
                         <td className="text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px] text-gray-700" onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.project_leader_name || ""}</td>
-                        <td className="text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px] text-gray-700" onClick={() => router.push(`/project/details?id=${item?.id}`)}>
+                        {/* <td className="text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px] text-gray-700" onClick={() => router.push(`/project/details?id=${item?.id}`)}>
                           <TruncatedTooltipText text={item?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")} maxLength={25} onClick={() => router.push(`/project/details?id=${item?.id}`)} />
-                        </td>
+                        </td> */}
                         <td className={`py-2 sm:py-3 px-2 sm:px-4 text-[12px] sm:text-[15px] text-gray-700`} >
                           {item?.priority ? (
                             <DropdownPriority
@@ -279,6 +310,23 @@ const ProjectList = () => {
                           ) : (
                             "" // Placeholder for empty status
                           )}
+                        </td>
+                        <td className="py-2 sm:py-3 px-2 sm:px-4 text-[12px] sm:text-[15px] text-gray-700">
+                          <DatePickerWithIcon
+                            date={item?.github_frontend_date ? new Date(item?.github_frontend_date).toISOString().split("T")[0] : ""}
+                            handleDateChange={(value) => handleGitFrontendDateChange(value, item?.id)}
+                          />
+                        </td>
+
+                        <td
+                          className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px] text-gray-700"
+                        >
+                          <DatePickerWithIcon
+                            date={item?.github_backend_date ? new Date(item?.github_backend_date).toISOString().split("T")[0] : ""}
+
+                            handleDateChange={(value) => handleGitBackendDateChange(value, item?.id)} />
+
+
                         </td>
                       </tr>
                     ))) : (<tr>

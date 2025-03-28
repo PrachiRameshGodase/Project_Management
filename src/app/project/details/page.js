@@ -243,18 +243,9 @@ const TaskList = () => {
     dispatch(updateTaskPriority({ id: itemId2, priority: value, dispatch, project_id: Number(itemId), setDataLoading }))
   }
 
-  const [selectedDate, setSelectedDate] = useState("");
 
-  const handleDateChange = (event) => {
-    setSelectedDate(event.target.value);
-  };
   
-  const handleGitFrontendDateChange = async (value, itemId2) => {
-    dispatch(updateTaskGithubFronted({ id: itemId2, priority: value, dispatch, project_id: Number(itemId), setDataLoading }))
-  }
-  const handleGitBackendDateChange = async (value, itemId2) => {
-    dispatch(updateTaskGithubBackend({ id: itemId2, priority: value, dispatch, project_id: Number(itemId), setDataLoading }))
-  }
+  
 
   return (
     <>
@@ -588,16 +579,7 @@ const TaskList = () => {
                           <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] text-gray-800">
                             PRIORITY
                           </th>
-                          <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] text-gray-800">
-                            GITHUB
-                            <br />
-                            <span className="text-[10px] sm:text-[12px] text-gray-600">Frontend</span>
-                          </th>
-                          <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] text-gray-800">
-                            GITHUB
-                            <br />
-                            <span className="text-[10px] sm:text-[12px] text-gray-600">Backend</span>
-                          </th>
+                          
 
                         </tr>
                       </thead>
@@ -633,9 +615,18 @@ const TaskList = () => {
                             >
                               <div className="flex flex-col">
                                 <span>{item?.due_date ? formatDate(item?.due_date) : ""}</span>
-                                <span className="text-xs text-red-500 bg-red-100 px-1 rounded mt-1 inline-block w-[100px]">
-                                  {getDueMessage(item?.due_date)}
-                                </span>
+                                {item?.due_date && (new Date() > new Date(item.due_date)) && (
+  <span
+    className={`text-[10px] px-1 rounded mt-1 flex w-[100px] h-[18px] border items-center justify-center text-center mx-auto
+      ${item.status === "Completed"
+        ? "text-green-600 border-green-400"
+        : "text-gray-500 border-gray-300"
+      }`}
+  >
+    {item.status === "Completed" ? "Completed" : getDueMessage(item.due_date)}
+  </span>
+)}
+
                               </div>
                             </td>
 
@@ -672,17 +663,7 @@ const TaskList = () => {
                                 "" // Placeholder for empty status
                               )}
                             </td>
-                            <td className="py-2 sm:py-3 px-2 sm:px-4 text-[12px] sm:text-[15px] text-gray-700">
-                              <DatePickerWithIcon date={selectedDate} handleDateChange={handleDateChange} />
-                            </td>
-
-                            <td
-                              className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px] text-gray-700"
-                            >
-                              <DatePickerWithIcon date={selectedDate} handleDateChange={handleDateChange} />
-
-
-                            </td>
+                           
                           </tr>
                         ))) : (<tr>
                           <td colSpan="8" className="text-center py-8">

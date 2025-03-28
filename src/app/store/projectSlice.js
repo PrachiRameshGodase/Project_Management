@@ -211,14 +211,14 @@ export const fetchTaskComment = createAsyncThunk(
   }
 );
 
-export const updateTaskGithubFronted = createAsyncThunk("task/updateTaskStatus", async ({ id, status, dispatch, project_id, setDataLoading }, { rejectWithValue }) => {
+export const updateProjectGithubFrontend = createAsyncThunk("task/updateProjectGithubFronted", async ({ id, github_frontend_date, dispatch, setDataLoading }, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.post(`/task/status`, { id, status, project_id });
+    const response = await axiosInstance.post(`/project/github_frontend_date`, { id, github_frontend_date });
     if (response?.data?.success === true) {
-      dispatch(fetchProjectTasks({ project_id: project_id, id: id }))
-      setDataLoading(false)
-      dispatch(fetchProjectTaskDetails(id))
-      dispatch(fetchProjectDetails(project_id))
+      // setDataLoading(false)
+      dispatch(fetchProjects())
+
+
 
     }
     return response.data;
@@ -227,14 +227,12 @@ export const updateTaskGithubFronted = createAsyncThunk("task/updateTaskStatus",
   }
 });
 
-export const updateTaskGithubBackend = createAsyncThunk("task/updateTaskStatus", async ({ id, status, dispatch, project_id, setDataLoading }, { rejectWithValue }) => {
+export const updateProjectGithubBackend = createAsyncThunk("project/updateProjectGithubBackend", async ({ id, github_backend_date, dispatch, setDataLoading }, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.post(`/task/status`, { id, status, project_id });
+    const response = await axiosInstance.post(`/project/github_backend_date`, { id, github_backend_date });
     if (response?.data?.success === true) {
-      dispatch(fetchProjectTasks({ project_id: project_id, id: id }))
-      setDataLoading(false)
-      dispatch(fetchProjectTaskDetails(id))
-      dispatch(fetchProjectDetails(project_id))
+      // setDataLoading(false)
+      dispatch(fetchProjects())
 
     }
     return response.data;
@@ -521,39 +519,53 @@ const projectSlice = createSlice({
       })
 
 
-       // Handle Update task github frontend
-       .addCase(updateTaskGithubFronted.pending, (state) => {
-        state.taskListLoading = true;
+      // Handle Update post github frontend
+      .addCase(updateProjectGithubFrontend.pending, (state) => {
+        state.list = true;
         state.error = null;
       })
-      .addCase(updateTaskGithubFronted.fulfilled, (state, action) => {
-        state.taskListLoading = false;
-        // Update the user status in the list
+      .addCase(updateProjectGithubFrontend.fulfilled, (state, action) => {
         const updatedUser = action.payload;
-        state.taskList = state.taskList.map(user =>
-          user.id === updatedUser.id ? { ...user, priority: updatedUser.priority } : user
+
+        // Ensure state.list is an array before mapping
+        if (!Array.isArray(state.list)) {
+          state.list = []; // Initialize as empty array if it's not already an array
+        }
+
+        // Update the list
+        state.list = state.list.map(user =>
+          user.id === updatedUser.id
+            ? { ...user, github_frontend_date: updatedUser?.github_frontend_date }
+            : user
         );
       })
-      .addCase(updateTaskGithubFronted.rejected, (state, action) => {
-        state.taskListLoading = false;
+      .addCase(updateProjectGithubFrontend.rejected, (state, action) => {
+        state.list = false;
         state.error = action.payload;
       })
 
-       // Handle Update task github frontend
-       .addCase(updateTaskGithubBackend.pending, (state) => {
-        state.taskListLoading = true;
+      // Handle Update task github frontend
+      .addCase(updateProjectGithubBackend.pending, (state) => {
+        state.list = true;
         state.error = null;
       })
-      .addCase(updateTaskGithubBackend.fulfilled, (state, action) => {
-        state.taskListLoading = false;
-        // Update the user status in the list
+      .addCase(updateProjectGithubBackend.fulfilled, (state, action) => {
         const updatedUser = action.payload;
-        state.taskList = state.taskList.map(user =>
-          user.id === updatedUser.id ? { ...user, priority: updatedUser.priority } : user
+
+        // Ensure state.list is an array before mapping
+        if (!Array.isArray(state.list)) {
+          state.list = []; // Initialize as empty array if it's not already an array
+        }
+
+        // Update the list
+        state.list = state.list.map(user =>
+          user.id === updatedUser.id
+            ? { ...user, github_backend_date: updatedUser?.github_backend_date }
+            : user
         );
       })
-      .addCase(updateTaskGithubBackend.rejected, (state, action) => {
-        state.taskListLoading = false;
+      .addCase(updateProjectGithubBackend.rejected, (state, action) => {
+        state.list = false;
         state.error = action.payload;
       })
 

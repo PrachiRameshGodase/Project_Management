@@ -16,13 +16,13 @@ const DatePickerWithIcon = ({ date, handleDateChange }) => {
                     className="text-gray-800 text-[14px] font-medium cursor-pointer"
                     onClick={openDatePicker}
                 >
-                    {date}
+                    {new Date(date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
                 </span>
             ) : (
                 <button
                     type="button"
                     onClick={openDatePicker}
-                    className="p-2 rounded-full bg-gray-200 hover:bg-gray-300"
+                    className="p-2 rounded-full bg-gray-50 hover:bg-gray-300"
                 >
                     <Calendar className="w-5 h-5 text-gray-600" />
                 </button>
@@ -32,7 +32,7 @@ const DatePickerWithIcon = ({ date, handleDateChange }) => {
             <input
                 type="date"
                 value={date || ""}
-                onChange={handleDateChange}
+                onChange={(e) => handleDateChange(e.target.value)}
                 ref={dateInputRef}
                 className="absolute opacity-0 w-0 h-0"
             />
