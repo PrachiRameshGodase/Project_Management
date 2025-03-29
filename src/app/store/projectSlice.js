@@ -385,8 +385,13 @@ const projectSlice = createSlice({
       })
       .addCase(updateStatus.fulfilled, (state, action) => {
         state.loading = false;
-        // Update the user status in the list
         const updatedUser = action.payload;
+      
+        // Ensure state.list is an array before mapping
+        if (!Array.isArray(state.list)) {
+          state.list = [];
+        }
+      
         state.list = state.list.map(user =>
           user.id === updatedUser.id ? { ...user, project_status: updatedUser.project_status } : user
         );

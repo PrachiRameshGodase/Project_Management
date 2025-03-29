@@ -79,6 +79,7 @@ const ProjectList = () => {
       let sendData = {
         limit: itemsPerPage,
         page: currentPage,
+        project_status:1,
         ...(searchTermFromChild ? { search: searchTermFromChild } : {}),
         ...(selectedSortBy ? { sort_by: selectedSortBy, sort_order: sortOrder } : {}),
         ...(selectedDesignation && { designation: selectedDesignation }),
@@ -254,7 +255,11 @@ const ProjectList = () => {
                         <TruncatedTooltipText text={item?.project_name ||""} maxLength={15} onClick={() => router.push(`/project/details?id=${item?.id}`)} />
                           
                         </td>
-                        <td className="rounded text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px] text-gray-700" onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.client?.name || ""}</td>
+                        <td className="rounded text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px] text-gray-700" onClick={() => router.push(`/project/details?id=${item?.id}`)}>
+                       
+                        <TruncatedTooltipText text={item?.client?.name  ||""} maxLength={15} onClick={() => router.push(`/project/details?id=${item?.id}`)} />
+                          
+                          </td>
                         <td className="rounded text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[14px] text-gray-700">
                           {item?.status ? (
                             <DropdownStatus01
@@ -298,7 +303,11 @@ const ProjectList = () => {
                         </td>
 
                         {/* <td className="text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px] text-gray-700" onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.due_date ? formatDate(item?.due_date):""}</td> */}
-                        <td className="text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px] text-gray-700" onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.project_leader_name || ""}</td>
+                        <td className="text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px] text-gray-700" onClick={() => router.push(`/project/details?id=${item?.id}`)}>
+                         
+                        <TruncatedTooltipText text={item?.project_leader_name ||""} maxLength={15} onClick={() => router.push(`/project/details?id=${item?.id}`)} />
+                          
+                        </td>
                         {/* <td className="text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px] text-gray-700" onClick={() => router.push(`/project/details?id=${item?.id}`)}>
                           <TruncatedTooltipText text={item?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")} maxLength={25} onClick={() => router.push(`/project/details?id=${item?.id}`)} />
                         </td> */}
