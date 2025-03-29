@@ -59,14 +59,15 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../Config/axiosInstance";
 
-const API_URL = "https://pm.codesquarry.com/api/login";
+// const API_URL = "https://pm.codesquarry.com/api/login";
 
 // Async thunk for login
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (credentials, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post(API_URL, credentials);
+      const response = await axiosInstance.post("/login", credentials);
+      console.log("response", response)
       const token = response.data.access_token;
       localStorage.setItem("access_token", token);
   
@@ -83,6 +84,7 @@ export const fetchLoggedInUser = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem("access_token");
+      console.log("token", token)
       if (!token) throw new Error("No token found");
 
       // axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
