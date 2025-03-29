@@ -4,7 +4,7 @@ const nextConfig = {
     ignoreDuringBuilds: true, // Disables ESLint checks during builds
   },
   output: 'standalone', // Ensures the build output is accessible
-  distDir: 'build', // Changes the build folder from ".next" to "build"
+  // distDir: 'build', // Changes the build folder from ".next" to "build"
   devIndicators: {
     buildActivity: false,
   },
