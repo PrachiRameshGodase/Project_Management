@@ -20,7 +20,7 @@ export const addUser = createAsyncThunk(
 
         return response.data; // Return data on success
       } else {
-        toast.error(response.message);
+        toast.error(response?.data?.message);
         return rejectWithValue(response.data); // Reject with API error response
       }
     } catch (error) {
