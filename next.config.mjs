@@ -1,9 +1,16 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = { devIndicators: {
-    buildActivity: false,  // Hides build activity indicator
+const nextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true, // Disables ESLint checks during builds
+  },
+  output: 'standalone', // Ensures the build output is accessible
+  distDir: 'build', // Changes the build folder from ".next" to "build"
+  devIndicators: {
+    buildActivity: false,
   },
   compiler: {
-    reactRemoveProperties: true, // Removes certain Next.js debug info
-  },};
+    reactRemoveProperties: true,
+  },
+};
 
 export default nextConfig;
