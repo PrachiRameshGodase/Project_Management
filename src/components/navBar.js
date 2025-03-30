@@ -35,7 +35,9 @@ const NavBar = () => {
     { path: "/home", icon: OtherIcons.home_svg, label: "Home" },
     { path: ["/project/list", "/project/add", "/project/details", "/project/add-task"], icon: OtherIcons.projects_svg, label: "Projects" },
     isAdmin ? { path: ["/user/list", "/user/add", "/user/details"], icon: OtherIcons.user_svg, label: "User" } : null,
-    isAdmin ? { path: ["/client/list", "/client/add", "/client/details"], icon: OtherIcons.clients_svg, label: "Clients" } : null
+    isAdmin ? { path: ["/client/list", "/client/add", "/client/details"], icon: OtherIcons.clients_svg, label: "Clients" } : null,
+    isAdmin ? { path: ["/master/list", "/master/add", "/master/details"], icon: OtherIcons.clients_svg, label: "Masters" } : null
+
   ].filter(Boolean); // Removes `null` values
 
 
@@ -146,7 +148,7 @@ const NavBar = () => {
               onClick={() => router.push(Array.isArray(item.path) ? item.path[0] : item.path)}
               className={`hover:opacity-80 rounded-lg flex items-center gap-1.5 px-2 py-1.5 cursor-pointer 
                 ${isActive ? "border border-gray-200 bg-gray-100" : "opacity-70"} 
-                ${(item.label === "Projects" || item.label === "Clients") ? "w-[110px] h-[44px]" : "w-[93px] h-[44px]"}`}
+                ${(item.label === "Projects" || item.label === "Clients" || item.label === "Masters") ? "w-[110px] h-[44px]" : "w-[93px] h-[44px]"}`}
             >
               {item.icon}
               <span className={`text-[18px] mt-1 ${isActive && 'text-[#0E004B] '}`}>{item.label}</span>

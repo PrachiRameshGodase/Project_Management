@@ -4,7 +4,7 @@ import userReducer from "./userSlice";
 import projectReducer from "./projectSlice"
 import dashboardReducer from "./dashboardSlice"
 import notificationReducer from "./notificationSlice"
-
+import mastersReducers from "./masterSlice"
 
 
 export const store = configureStore({
@@ -13,6 +13,7 @@ export const store = configureStore({
         user: userReducer,
         project: projectReducer,
         dashboard: dashboardReducer,
-        notification: notificationReducer
+        notification: notificationReducer,
+        master:mastersReducers,
     }
 })
