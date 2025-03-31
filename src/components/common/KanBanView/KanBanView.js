@@ -1,7 +1,7 @@
 import { updateTaskStatus } from "@/app/store/projectSlice";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { formatDate } from "../Helper/Helper";
+import { formatDate, getDueMessage } from "../Helper/Helper";
 import { Drawer001 } from "../Drawer/Drawer01";
 import TruncatedTooltipText from "../TruncatedTooltipText/TruncatedTooltipText";
 
@@ -26,10 +26,10 @@ const DraggableCard = ({ user, index, status, itemId }) => {
     >
       <p
         className={`px-3 py-1 border rounded-md text-[15px] inline-block ${user.priority === "High"
-            ? "text-[#4976F4] border-[#4976F4]"
-            : user.priority === "Low"
-              ? "text-red-400 border-red-400"
-              : "text-[#954BAF] border-[#954BAF]"
+          ? "text-[#4976F4] border-[#4976F4]"
+          : user.priority === "Low"
+            ? "text-red-400 border-red-400"
+            : "text-[#954BAF] border-[#954BAF]"
           }`}
       >
         {user.priority}
@@ -39,14 +39,25 @@ const DraggableCard = ({ user, index, status, itemId }) => {
         <li className="flex items-center gap-2">
           <p className="text-[14px] text-gray-400 w-[120px]">Due Date</p>
           <span className="text-[14px] text-gray-700 w-[150px]">
-            {user?.due_date ? formatDate(user?.due_date):"" || ""}
+            {user?.due_date ? formatDate(user?.due_date) : "" || ""}
+            {user?.due_date && new Date(user?.due_date) >= new Date() && (
+              <span
+                className={`text-[10px] px-1 rounded mt-1 flex w-[100px] h-[18px] border items-center justify-center
+                                                ${user?.status === "Completed"
+                    ? "text-green-600 border-green-400"
+                    : "text-gray-500 border-gray-300"
+                  }`}
+              >
+                {user?.status === "Completed" ? "Completed" : getDueMessage(user?.due_date)}
+              </span>
+            )}
           </span>
         </li>
         <li className="flex items-center gap-2">
           <p className="text-[14px] text-gray-400 w-[120px] z">Team</p>
           <span className="text-[14px] text-gray-700 w-[150px]">
-          {/* {user?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")} */}
-            <TruncatedTooltipText text={user?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")} maxLength={32}  />
+            {/* {user?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")} */}
+            <TruncatedTooltipText text={user?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")} maxLength={32} />
           </span>
         </li>
         <li className="flex items-center gap-2">
@@ -89,40 +100,39 @@ const DroppableColumn = ({ status, users, moveUser, moveCard, itemId }) => {
 
   return (
     <div
-    onDragOver={handleDragOver}
-    onDrop={handleDrop}
-    className="w-[310px] border border-gray-100 rounded bg-gray-100 mb-4 flex flex-col flex-grow"
-  >
-    <div className="w-full h-[40px] bg-[#F0E7FA] flex items-center px-4">
-      <p
-        className={`w-[13px] h-[13px] rounded-full ${
-          status === "To Do"
-            ? "bg-[#6C757D]"
-            : status === "In Progress"
-            ? "bg-[#CA9700]"
-            : status === "Under Review"
-            ? "bg-[#0D4FA7]"
-            : "bg-[#048339]"
-        }`}
-      ></p>
-      <p className="text-[15px] ml-2">{status}</p>
-      <p className="text-[14px] ml-4">{users.length}</p>
+      onDragOver={handleDragOver}
+      onDrop={handleDrop}
+      className="w-[310px] border border-gray-100 rounded bg-gray-100 mb-4 flex flex-col flex-grow"
+    >
+      <div className="w-full h-[40px] bg-[#F0E7FA] flex items-center px-4">
+        <p
+          className={`w-[13px] h-[13px] rounded-full ${status === "To Do"
+              ? "bg-[#6C757D]"
+              : status === "In Progress"
+                ? "bg-[#CA9700]"
+                : status === "Under Review"
+                  ? "bg-[#0D4FA7]"
+                  : "bg-[#048339]"
+            }`}
+        ></p>
+        <p className="text-[15px] ml-2">{status}</p>
+        <p className="text-[14px] ml-4">{users.length}</p>
+      </div>
+
+      {/* Card Container */}
+      <div className="w-full bg-gray-50 p-2 flex flex-col ">
+        {users?.map((user, index) => (
+          <DraggableCard key={user.id} user={user} index={index} status={status} itemId={itemId} />
+        ))}
+      </div>
     </div>
-  
-    {/* Card Container */}
-    <div className="w-full bg-gray-50 p-2 flex flex-col ">
-      {users?.map((user, index) => (
-        <DraggableCard key={user.id} user={user} index={index} status={status} itemId={itemId} />
-      ))}
-    </div>
-  </div>
-  
+
 
   );
 };
 
 const KanBanView = ({ groupedUsers, itemId, setDataLoading }) => {
- 
+
   const dispatch = useDispatch();
   // Define the required statuses
   const statuses = ["To Do", "In Progress", "Under Review", "Completed"];
@@ -135,7 +145,7 @@ const KanBanView = ({ groupedUsers, itemId, setDataLoading }) => {
 
   const [columns, setColumns] = useState(groupedByStatus);
 
-  
+
 
   const moveUser = async (userId, fromStatus, toStatus) => {
     if (fromStatus === toStatus) return;
@@ -155,7 +165,7 @@ const KanBanView = ({ groupedUsers, itemId, setDataLoading }) => {
     if (!userToMove) return;
 
     const { id } = userToMove;
-    
+
     dispatch(
       updateTaskStatus({
         id: id,
@@ -163,7 +173,7 @@ const KanBanView = ({ groupedUsers, itemId, setDataLoading }) => {
         dispatch,
         project_id: Number(itemId),
         setDataLoading
-        
+
       })
     );
 
@@ -196,7 +206,7 @@ const KanBanView = ({ groupedUsers, itemId, setDataLoading }) => {
 
     setColumns(updatedColumns);
   };
- 
+
 
   return (
     <div className="w-full mx-auto max-w-full overflow-x-auto mt-[50px]">

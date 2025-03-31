@@ -1,3 +1,7 @@
+import { fetchMaster } from "@/app/store/masterSlice";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 export const status=["All", "Active", "Inactive"]
 export const statusProject = [ "To Do","In Progress", "Under Review", 'Completed']
 export const statusProject2 = ["All", "To Do","In Progress", "Under Review", 'Completed']
@@ -69,3 +73,13 @@ export const getDueMessage = (dueDate) => {
   } 
 };
 
+export const ShowMasterData = (type) => {
+  const masterData = useSelector((state) => state?.master?.list);
+  console.log("masterData", masterData)
+  // console.log("formData?.payment_terms", masterData)
+  const filteredData = masterData?.filter(item => item.type == type);
+  return filteredData || [];
+
+};
+
+ 

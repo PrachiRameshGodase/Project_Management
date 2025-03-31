@@ -8,7 +8,7 @@ export const addUser = createAsyncThunk(
   async ({ userData, router, section }, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post(`/users/create/update`, userData);
-      console.log("response", response)
+      
       if (response?.data?.success) {
         toast.success(response.data.message);
 

@@ -64,32 +64,42 @@ export default Dropdown01;
 
 export const Dropdown001 = ({ options, selectedValue, onSelect, label, icon }) => {
   const dropdownOutsideClick = OutsideClick();
-  const [selected, setSelected] = useState(selectedValue); // Store selected option
+  const [selected, setSelected] = useState(selectedValue || null);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // Update selected state when selectedValue changes
+  useEffect(() => {
+    if (selectedValue) {
+      // Ensure selectedValue is an object from options
+      const foundOption = options?.find((opt) => opt.label === selectedValue);
+      setSelected(foundOption || null);
+    }
+  }, [selectedValue, options]);
 
   const handleOptionSelect = (value) => {
-    setSelected(value);
-    onSelect(value);
-    dropdownOutsideClick.handleToggle(); // Close dropdown after selection
+    setSelected(value); // Store full object
+    onSelect(value.label); // Pass only label
+    dropdownOutsideClick.handleToggle(); // Close dropdown
   };
-  useEffect(() => {
-    setSelected(selectedValue); // Update state when selectedDate changes
-  }, [selectedValue]);
+
+  const filteredOptions = options?.filter((option) =>
+    option?.label?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="relative" ref={dropdownOutsideClick?.ref}>
       <div
-        className="h-10 flex items-center justify-between gap-2 border border-[#0000004D] rounded-lg px-3 py-2 cursor-pointer w-[310px] sm:w-[350px]  md:w-[400px]"
+        className="h-10 flex items-center justify-between gap-2 border border-[#0000004D] rounded-lg px-3 py-2 cursor-pointer w-[310px] sm:w-[350px] md:w-[400px]"
         onClick={dropdownOutsideClick?.handleToggle}
         ref={dropdownOutsideClick?.buttonRef}
       >
         <div className="flex items-center gap-2">
           {icon}
           <span className={`text-gray-400 ${selected ? "text-gray-700" : ""}`}>
-            {selected || label}
+            {selected?.label || label} {/* ✅ Fix: Show selected label */}
           </span>
         </div>
-        {/* Dynamic Arrow Icon */}
-        <div className="ml-auto cursor-pointer" onClick={dropdownOutsideClick?.handleToggle}>
+        <div className="ml-auto cursor-pointer">
           {dropdownOutsideClick?.isOpen ? (
             <ChevronUp className="w-4 h-4 text-gray-500" />
           ) : (
@@ -98,26 +108,42 @@ export const Dropdown001 = ({ options, selectedValue, onSelect, label, icon }) =
         </div>
       </div>
 
-      {/* Dropdown Menu */}
       {dropdownOutsideClick?.isOpen && (
-        <div className="absolute top-[100%] mt-2 bg-white shadow-lg border border-[#0000004D] rounded-lg w-[310px] sm:w-[350px]  md:w-[400px]  z-50">
-          <ul>
-            {options.map((option) => (
-              <li
-                key={option}
-                className={`flex px-4 py-2 hover:bg-gray-100 cursor-pointer text-left ${selected === option ? "bg-gray-200" : ""
+        <div className="absolute top-[100%] mt-2 bg-white shadow-lg border border-[#0000004D] rounded-lg w-[310px] sm:w-[350px] md:w-[400px] z-50">
+          {/* Search Input */}
+          <input
+            type="text"
+            className="w-full p-2 border-b border-gray-300 outline-none"
+            placeholder="Search..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+
+          {/* Dropdown Options */}
+          <ul className="max-h-60 overflow-y-auto">
+            {filteredOptions?.length > 0 ? (
+              filteredOptions?.map((option) => (
+                <li
+                  key={option.id}
+                  className={`flex px-4 py-2 hover:bg-gray-100 cursor-pointer text-left ${
+                    selected?.id === option?.id ? "bg-gray-200" : ""
                   }`}
-                onClick={() => handleOptionSelect(option)}
-              >
-                {option}
-              </li>
-            ))}
+                  onClick={() => handleOptionSelect(option)}
+                >
+                  {option?.label}
+                </li>
+              ))
+            ) : (
+              <li className="px-4 py-2 text-gray-500">No results found</li>
+            )}
           </ul>
         </div>
       )}
     </div>
   );
 };
+
+
 
 
 export const DropdownStatus = ({ selectedValue, onSelect }) => {

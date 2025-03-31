@@ -352,9 +352,9 @@ const TaskList = () => {
                     </label>
                   </div>
                   <button
-                    className="w-[140px] mt-3 sm:mt-0 h-[35px] text-[10px] rounded-[4px] py-[4px] border border-gray-400 text-black text-lg mr-[10px] mb-2 hover:bg-black hover:text-white"
+                    className="w-[80px] mt-3 sm:mt-0 h-[35px] text-[10px] rounded-[4px] py-[4px] border border-gray-400 text-black text-lg mr-[10px] mb-2 hover:bg-black hover:text-white"
                     onClick={() => setIsDrawerOpen(true)}>
-                    See All Details
+                   Details
                   </button>
                   <button
                     onClick={() => router.push(`/project/add?id=${itemId}`)}
@@ -534,13 +534,13 @@ const TaskList = () => {
                     label="View"
                     icon={OtherIcons.view_svg}
                   />
-                  <Dropdown01
-                    options={statusProject}
-                    selectedValue={selectedStatus}
-                    onSelect={setSelectedStatus}
-                    label="Status"
-                    icon={OtherIcons.user_svg}
-                  />
+                  {selectedView == "List" && <>
+                  <Dropdown01 options={statusProject2} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />
+                  <Dropdown01 options={projectPriority2} selectedValue={selectedPriority} onSelect={setSelectedPriority} label="Priority" icon={OtherIcons.user_svg} />
+                  {/* <SearchComponent onSearch={onSearch} placeholder="Search By Using Task Title..." section={searchTrigger} /> */}
+
+                </>}
+
                   {/* <Dropdown01 options={projectSortConstant} selectedValue={selectedSort} onSelect={setSelectedSort} label="Sort By" icon={OtherIcons.sort_by_svg} /> */}
                   {/* <SearchComponent /> */}
                 </div>

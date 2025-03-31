@@ -1,51 +1,17 @@
 "use client";
 import { fetchMaster, masterDelete } from "@/app/store/masterSlice";
-import {
-    fetchProjectDetails,
-    fetchProjectTaskDetails,
-    fetchProjectTasks,
-    updateProjectStatus,
-    updateStatus,
-    updateTaskGithubBackend,
-    updateTaskGithubFronted,
-    updateTaskPriority,
-    updateTaskStatus,
-} from "@/app/store/projectSlice";
 import { OtherIcons } from "@/assests/icons";
 import DataNotFound from "@/components/common/DataNotFound/DataNotFound";
-import DatePickerWithIcon from "@/components/common/DatePicker/CalenderWithIcon";
-import Drawer01, { Drawer001 } from "@/components/common/Drawer/Drawer01";
-import Dropdown01 from "@/components/common/Dropdown/Dropdown01";
-import DropdownPriority from "@/components/common/Dropdown/DropdownPriority";
-import DropdownStatus01 from "@/components/common/Dropdown/DropdownStatus01";
-import {
-    formatDate,
-    getDueMessage,
-    getStatusDetails,
-    projectPriority,
-    projectPriority2,
-    statusProject,
-    statusProject2,
-    taskView
-} from "@/components/common/Helper/Helper";
-import { useDebounceSearch } from "@/components/common/Helper/HelperFunction";
 import useUserData from "@/components/common/Helper/useUserData";
-import KanBanView from "@/components/common/KanBanView/KanBanView";
 import Loader, { ScreenFreezeLoader } from "@/components/common/Loader/Loader";
 import { OutsideClick } from "@/components/common/OutsideClick/OutsideClick";
-import Pagenation from "@/components/common/Pagenation/Pagenation";
-import SearchComponent from "@/components/common/SearchComponent/SearchComponent";
-import SortBy from "@/components/common/Sort/SortBy";
 import TableSkeleton from "@/components/common/TableSkeleton/TableSkeleton";
 import TruncatedTooltipText from "@/components/common/TruncatedTooltipText/TruncatedTooltipText";
-import UserAvatar from "@/components/common/UserAvatar/UserAvatar";
 import LayOut from "@/components/LayOut";
-import { Tooltip } from "@mui/material";
-import { Check, CircleX, X } from "lucide-react";
+import { CircleX } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Swal from "sweetalert2";
 
 const MasterDetails = () => {
     const router = useRouter();
@@ -88,7 +54,7 @@ const MasterDetails = () => {
 
     }
     const handleDelete=(id)=>{
-        dispatch(masterDelete({id, dispatch, section:"master", router}))
+        dispatch(masterDelete({id, dispatch, section:"master", router, setDataLoading}))
     }
 
     const handleDeleteMainMaster=(id)=>{

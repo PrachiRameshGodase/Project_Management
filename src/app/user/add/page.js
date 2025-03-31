@@ -4,19 +4,24 @@ import { OtherIcons } from '@/assests/icons';
 import CustomDatePicker from '@/components/common/DatePicker/CustomDatePicker';
 import { Dropdown001 } from '@/components/common/Dropdown/Dropdown01';
 import { Dropdown02 } from '@/components/common/Dropdown/Dropdown02';
-import { departmentOptions, designation, Skills } from '@/components/common/Helper/Helper';
+import { Skills } from '@/components/common/Helper/Helper';
+import useMasterData from '@/components/common/Helper/usemasterData';
 import LayOut from '@/components/LayOut';
+import { Tooltip } from '@mui/material';
 import { CircleX, Eye, EyeOff } from "lucide-react";
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Swal from 'sweetalert2';
-import { Tooltip } from '@mui/material';
 
 
 const AddUser = () => {
   const router = useRouter();
   const dispatch = useDispatch();
+
+  const departmentOptions=useMasterData("44")
+  const designation=useMasterData("45")
+  const Skills=useMasterData("46")
+ 
 
   const [itemId, setItemId] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
@@ -132,7 +137,7 @@ const AddUser = () => {
     router.push(`/user/list`)
     localStorage.removeItem("itemId", itemId2)
   }
-
+console.log("formData", formData)
   return (
     <LayOut>
       <div className="flex-col justify-center items-center mx-auto sm:flex sm:mx-0">

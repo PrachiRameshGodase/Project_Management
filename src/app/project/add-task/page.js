@@ -1,24 +1,25 @@
 "use client"
 import { addProjectTask, fetchProjectTaskDetails } from '@/app/store/projectSlice'
-import { fetchUsers } from '@/app/store/userSlice'
 import { OtherIcons } from '@/assests/icons'
 import FileUpload from '@/components/common/Attachments/FileUpload'
 import CustomDatePicker from '@/components/common/DatePicker/CustomDatePicker'
 import { Dropdown001 } from '@/components/common/Dropdown/Dropdown01'
-import { Dropdown002, Dropdown02 } from '@/components/common/Dropdown/Dropdown02'
-import { departmentOptions, projectPriority, taskType, taskVisibility } from '@/components/common/Helper/Helper'
+import { Dropdown002 } from '@/components/common/Dropdown/Dropdown02'
+import useMasterData from '@/components/common/Helper/usemasterData'
 import LayOut from '@/components/LayOut'
 import { CircleX } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import Swal from 'sweetalert2'
 
 const AddTask = () => {
     const router = useRouter()
     const dispatch = useDispatch();
-    
-   
+
+    const departmentOptions = useMasterData("44")
+    const projectPriority = useMasterData("47")
+    const taskType = useMasterData("49")
+    const taskVisibility = useMasterData("52")
     const addTaskLoading = useSelector((state) => state.project);
 
     const [itemId2, setStoredValue] = useState(null);
@@ -41,7 +42,7 @@ const AddTask = () => {
             setIsEditMode(params.get("edit") === "true"); // Convert string to boolean
         }
     }, []);
-    
+
     const taskDetailsData = useSelector((state) => state.project?.projectTaskDetails?.data);
     useEffect(() => {
         if (itemId) {
@@ -63,7 +64,7 @@ const AddTask = () => {
         description: "",
         attachment: [],
     })
- 
+
     const [errors, setErrors] = useState({
         task_title: false,
 
@@ -227,7 +228,7 @@ const AddTask = () => {
 
                         <div className="justify-between sm:flex">
                             <label className="text-[20px] block">Link</label>
-                            <input className="border border-gray-400 h-10 p-2 rounded-lg text-m w-[310px] md:w-[400px] placeholder:text-gray-400 sm:ml-[78px] sm:w-[350px]" type='text' placeholder='Enter Link' value={formData?.link} name='link' onChange={handleChange} autoComplete='off'/>
+                            <input className="border border-gray-400 h-10 p-2 rounded-lg text-m w-[310px] md:w-[400px] placeholder:text-gray-400 sm:ml-[78px] sm:w-[350px]" type='text' placeholder='Enter Link' value={formData?.link} name='link' onChange={handleChange} autoComplete='off' />
                         </div>
 
                         <div className="justify-between sm:flex">
@@ -257,7 +258,7 @@ const AddTask = () => {
                         </div>
                         <div className="justify-between sm:flex">
                             <label className="text-[20px] block">Description</label>
-                            <textarea className="border border-gray-300 h-40 p-2 rounded-lg text-m w-[310px] md:w-[400px] placeholder:text-gray-400 sm:ml-[35px] sm:w-[350px]" type='text' placeholder='Enter Description' value={formData?.description} name='description' onChange={handleChange} autoComplete='off'/>
+                            <textarea className="border border-gray-300 h-40 p-2 rounded-lg text-m w-[310px] md:w-[400px] placeholder:text-gray-400 sm:ml-[35px] sm:w-[350px]" type='text' placeholder='Enter Description' value={formData?.description} name='description' onChange={handleChange} autoComplete='off' />
                         </div>
 
                         <div className='justify-end w-full sm:flex'>

@@ -46,11 +46,13 @@ export const fetchMaster = createAsyncThunk(
 // Async thunk to fetch user details by ID
 export const masterDelete = createAsyncThunk(
   "master/masterDeletes",
-  async ({id, dispatch, section, router}, { rejectWithValue }) => {
+  async ({id, dispatch, section, router,setDataLoading}, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post(`/master/delete`, { id: id });
       if (response?.data?.success) {
         toast.success("Master deleted successfully");
+        setDataLoading(false)
+       
         dispatch(fetchMaster())
         if(section=="main-master"){
           router.push("./list")

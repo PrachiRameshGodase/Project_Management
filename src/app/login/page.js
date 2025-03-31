@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast"; // Import react-hot-toast
 import { Eye, EyeOff } from "lucide-react";
 import useUserData from "@/components/common/Helper/useUserData";
+import { fetchMaster } from "../store/masterSlice";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -46,6 +47,7 @@ const LoginPage = () => {
           const isAdmin = userRes?.payload?.is_admin === 1;
           router.push(isAdmin ? "/home" : "/all-projects");
         });
+        dispatch(fetchMaster())
       } else {
         toast.error(res?.payload?.message || "Login Failed!");
       }

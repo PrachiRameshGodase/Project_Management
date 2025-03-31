@@ -10,6 +10,9 @@ export const Dropdown02 = ({ options, selectedValues, onSelect, label, icon }) =
   const [selected, setSelected] = useState(selectedValues || []); // Store selected options
   const [searchQuery, setSearchQuery] = useState(""); // Store search input
 
+  // Extract only label values
+  const labelOptions = options?.map((option) => option.label) || [];
+
   // Handle select/deselect option
   const handleOptionSelect = (value) => {
     let updatedSelection;
@@ -30,16 +33,16 @@ export const Dropdown02 = ({ options, selectedValues, onSelect, label, icon }) =
   };
 
   // Filter options based on search query
-  const filteredOptions = options?.filter((option) =>
+  const filteredOptions = labelOptions.filter((option) =>
     option.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
   useEffect(() => {
     setSelected(Array.isArray(selectedValues) ? selectedValues : []);
   }, [selectedValues]);
 
-
   return (
-    <div className="relative w-[310px] sm:w-[350px] md:w-[400px]  " ref={dropdownOutsideClick?.ref}>
+    <div className="relative w-[310px] sm:w-[350px] md:w-[400px]" ref={dropdownOutsideClick?.ref}>
       {/* Dropdown Header */}
       <div
         className="h-auto min-h-10 flex items-center gap-2 border border-[#0000004D] rounded-lg px-3 py-2 cursor-pointer w-full flex-wrap"
@@ -50,10 +53,10 @@ export const Dropdown02 = ({ options, selectedValues, onSelect, label, icon }) =
           {icon}
           {/* Show selected items as pills */}
           {selected?.length > 0 ? (
-            selected?.map((item) => (
+            selected?.map((item, index) => (
               <div
-                key={item}
-                className={`flex items-center bg-gray-200 text-gray-700 rounded-md px-2 py-1 text-sm }`}
+                key={index}
+                className="flex items-center bg-gray-200 text-gray-700 rounded-md px-2 py-1 text-sm"
               >
                 {item}
                 <X
@@ -97,12 +100,13 @@ export const Dropdown02 = ({ options, selectedValues, onSelect, label, icon }) =
 
           {/* Options List (Scrollable) */}
           <ul className="max-h-60 overflow-y-auto">
-            {filteredOptions.length > 0 ? (
-              filteredOptions.map((option) => (
+            {filteredOptions?.length > 0 ? (
+              filteredOptions?.map((option, index) => (
                 <li
-                  key={option}
-                  className={`flex px-4 py-2 hover:bg-gray-100 cursor-pointer text-left ${selected.includes(option) ? "bg-gray-200" : ""
-                    }`}
+                  key={index}
+                  className={`flex px-4 py-2 hover:bg-gray-100 cursor-pointer text-left ${
+                    selected?.includes(option) ? "bg-gray-200" : ""
+                  }`}
                   onClick={() => handleOptionSelect(option)}
                 >
                   {option}
@@ -117,6 +121,7 @@ export const Dropdown02 = ({ options, selectedValues, onSelect, label, icon }) =
     </div>
   );
 };
+
 
 export const Dropdown002 = ({ selectedValue, onSelect, label, project_id }) => {
   

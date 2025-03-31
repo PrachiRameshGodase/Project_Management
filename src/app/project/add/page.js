@@ -1,25 +1,26 @@
 "use client"
+import { addProject, fetchProjectDetails } from '@/app/store/projectSlice';
+import { fetchUsers } from '@/app/store/userSlice';
+import { OtherIcons } from '@/assests/icons';
+import FileUpload from '@/components/common/Attachments/FileUpload';
+import CustomDatePicker from '@/components/common/DatePicker/CustomDatePicker';
 import { Dropdown001 } from '@/components/common/Dropdown/Dropdown01';
 import { Dropdown002 } from '@/components/common/Dropdown/Dropdown02';
-import CustomDatePicker from '@/components/common/DatePicker/CustomDatePicker';
-import { projectPriority, projectStage } from '@/components/common/Helper/Helper';
-import LayOut from '@/components/LayOut';
-import React, { useEffect, useState } from 'react'
-import FileUpload from '@/components/common/Attachments/FileUpload';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchUsers } from '@/app/store/userSlice';
-import { useRouter } from 'next/navigation';
 import { Dropdown003, Dropdown03 } from '@/components/common/Dropdown/Dropdown03';
-import { addProject, fetchProjectDetails } from '@/app/store/projectSlice';
-import Swal from 'sweetalert2';
-import { OtherIcons } from '@/assests/icons';
+import useMasterData from '@/components/common/Helper/usemasterData';
+import LayOut from '@/components/LayOut';
 import { CircleX } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 const AddProject = () => {
     const router = useRouter()
     const dispatch = useDispatch();
-    const usersList = useSelector((state) => state.user?.employeeList?.data);
     
+    const projectPriority=useMasterData("47")
+    const projectStage=useMasterData("48")
+    const usersList = useSelector((state) => state.user?.employeeList?.data);
     const projectDetailData = useSelector((state) => state?.project?.projectDetails?.data);
     const projectLoading = useSelector((state) => state.project);
 
