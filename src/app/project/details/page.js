@@ -79,20 +79,13 @@ const TaskList = () => {
   };
 
   const [selectedStatus, setSelectedStatus] = useState("");
-  const handleStatusChange = async (value) => {
-    const result = await Swal.fire({
-      text: `Do you want to update the status of this Project?`,
-      showCancelButton: true,
-      confirmButtonText: "Yes",
-      cancelButtonText: "No",
-    });
-
-    if (result.isConfirmed && itemId) {
-      setSelectedStatus(value);
-
+  const [selectedStatus2, setSelectedStatus2] = useState("");
+  
+  const handleStatusChange = (value) => {
+   
       // Dispatch updateUserStatus with the new status
       dispatch(updateProjectStatus({ id: itemId, status: value, router }));
-    }
+    
   };
 
   const [selectedView, setSelectedView] = useState("List");
@@ -152,7 +145,7 @@ const TaskList = () => {
         page: currentPage,
         ...(searchTermFromChild ? { search: searchTermFromChild } : {}),
         ...(selectedSortBy ? { sort_by: selectedSortBy, sort_order: sortOrder } : {}),
-        ...(selectedStatus ? { status: selectedStatus } : {}),
+        ...(selectedStatus2 ? { status: selectedStatus2 } : {}),
         ...(selectedPriority ? { priority: selectedPriority } : {})
       };
       dispatch(fetchProjectTasks(sendData));
@@ -164,13 +157,13 @@ const TaskList = () => {
         page: currentPage,
         ...(searchTermFromChild ? { search: searchTermFromChild } : {}),
         ...(selectedSortBy ? { sort_by: selectedSortBy, sort_order: sortOrder } : {}),
-        ...(selectedStatus ? { status: selectedStatus } : {}),
+        ...(selectedStatus2 ? { status: selectedStatus2 } : {}),
         ...(selectedPriority ? { priority: selectedPriority } : {})
       };
 
       dispatch(fetchProjectTasks(sendData));
     }
-  }, [searchTrigger, dispatch, selectedStatus, itemId, selectedPriority]); // Include all dependencies
+  }, [searchTrigger, dispatch, selectedStatus2, itemId, selectedPriority]); // Include all dependencies
 
   useEffect(() => {
     if (projectDetailData?.project_status !== undefined) {
@@ -395,7 +388,7 @@ const TaskList = () => {
                   icon={OtherIcons.view_svg}
                 />
                 {selectedView == "List" && <>
-                  <Dropdown01 options={statusProject2} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />
+                  <Dropdown01 options={statusProject2} selectedValue={selectedStatus2} onSelect={setSelectedStatus2} label="Status" icon={OtherIcons.user_svg} />
                   <Dropdown01 options={projectPriority2} selectedValue={selectedPriority} onSelect={setSelectedPriority} label="Priority" icon={OtherIcons.user_svg} />
                   <SearchComponent onSearch={onSearch} placeholder="Search By Using Task Title..." section={searchTrigger} />
 
@@ -535,7 +528,7 @@ const TaskList = () => {
                     icon={OtherIcons.view_svg}
                   />
                   {selectedView == "List" && <>
-                  <Dropdown01 options={statusProject2} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />
+                  <Dropdown01 options={statusProject2} selectedValue={selectedStatus2} onSelect={setSelectedStatus2} label="Status" icon={OtherIcons.user_svg} />
                   <Dropdown01 options={projectPriority2} selectedValue={selectedPriority} onSelect={setSelectedPriority} label="Priority" icon={OtherIcons.user_svg} />
                   {/* <SearchComponent onSearch={onSearch} placeholder="Search By Using Task Title..." section={searchTrigger} /> */}
 
