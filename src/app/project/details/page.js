@@ -559,7 +559,7 @@ const TaskList = () => {
                           <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] text-gray-800">
                             STATUS
                           </th>
-                          <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] text-gray-800">
+                          <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] text-gray-800 flex items-center justify-center" >
                             DUE DATE
                           </th>
                           <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] text-gray-800">
@@ -603,7 +603,7 @@ const TaskList = () => {
                               )}
                             </td>
                             <td
-                              className="py-2 sm:py-3 px-2 sm:px-4 text-[12px] sm:text-[15px] text-gray-700"
+                              className="flex py-2 sm:py-3 px-2 sm:px-4 text-[12px] sm:text-[15px] text-gray-700 text-center items-center justify-center"
                               onClick={() => handleTaskClick(item?.id)}
                             >
                               <div className="flex flex-col">

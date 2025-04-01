@@ -229,7 +229,7 @@ const ProjectList = () => {
                       <th className="text-[13px] min-w-[140px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px] text-gray-700">CLIENT  NAME</th>
                       <th className="text-[13px] min-w-[138px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px] sm:w-[160px] text-gray-700">STATUS</th>
                       <th className="text-[13px] min-w-[150px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px] text-gray-700">START DATE</th>
-                      <th className="text-[13px] min-w-[100px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px] text-gray-700">DUE DATE</th>
+                      <th className="text-[13px] min-w-[100px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px] text-gray-700 flex items-center justify-center">DUE DATE</th>
                       <th className="text-[13px] min-w-[180px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px] text-gray-700">PROJECT LEADER</th>
                       {/* <th className="text-[13px] min-w-[150px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px] text-gray-700">TEAM</th> */}
                       <th className="text-[13px] min-w-[100px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px] text-gray-700">PRIORITY</th>
@@ -279,11 +279,11 @@ const ProjectList = () => {
 
                         <td className="text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px] text-gray-700" onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.start_date ? formatDate(item?.start_date) : "" || ""}</td>
                         <td
-                          className="py-2 sm:py-3 px-2 sm:px-4 text-[12px] sm:text-[15px] text-gray-700"
+                          className="py-2 sm:py-3 px-2 sm:px-4 text-[12px] sm:text-[15px] text-gray-700 flex items-center justify-center"
                           onClick={() => router.push(`/project/details?id=${item?.id}`)}
                         >
-                          <div className="flex flex-col">
-                            <span>{item?.due_date ? formatDate(item?.due_date) : ""}</span>
+                          <div className="flex flex-col items-center justify-center">
+                            <span className='flex items-center justify-center'>{item?.due_date ? formatDate(item?.due_date) : ""}</span>
                             {item?.due_date && new Date(item.due_date) >= new Date() && (
                               <span
                                 className={`text-[10px] px-1 rounded mt-1 flex w-[100px] h-[18px] border items-center justify-center text-center mx-auto
