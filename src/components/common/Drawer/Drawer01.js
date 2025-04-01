@@ -209,7 +209,7 @@ const Drawer01 = ({
                 <span className="text-gray-400 w-[120px] text-[14px]">Project Leader</span>
                 <h4>:</h4>
                 <span className="text-gray-700 w-[200px] text-[14px]">
-                  {details?.project_leader?.name || ""}
+                  {details?.project_leader_name || ""}
                 </span>
               </li>
               <li className="flex mb-2 gap-4">

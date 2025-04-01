@@ -125,8 +125,8 @@ const AddMaster = () => {
                         id: masterListData[0]?.id,
                         type: masterListData[0]?.type,
                         label: masterListData[0]?.label,
-                        value_string: masterListData[0]?.value_string,
-                        value: masterListData[0]?.value,
+                        // value_string: masterListData[0]?.value_string,
+                        // value: masterListData[0]?.value,
                         note: masterListData[0]?.note
                     };
                 }
@@ -179,7 +179,7 @@ const AddMaster = () => {
                         </div>
                     </div>
 
-                    <div className="flex-col justify-between items-start sm:flex sm:flex-row sm:items-center">
+                    {/* <div className="flex-col justify-between items-start sm:flex sm:flex-row sm:items-center">
                         <label className="text-[20px] block">
                             Number Value
                         </label>
@@ -213,7 +213,7 @@ const AddMaster = () => {
 
 
                         </div>
-                    </div>
+                    </div> */}
                     <div className="justify-between sm:flex">
                         <label className="text-[20px] block">Comment</label>
                         <textarea className="border border-[#0000004D] h-40 p-2 rounded-lg text-m w-[310px] md:w-[400px] placeholder:text-gray-400 sm:ml-[35px] sm:w-[350px]" type='text' placeholder='Enter Comment....' value={formData?.note || ""} onChange={handleChange} name='note' autoComplete='off' />

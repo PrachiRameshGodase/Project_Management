@@ -166,7 +166,7 @@ const MasterList = () => {
                     </div>
                   </th>
                   <th className="text-[13px] min-w-[140px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px] text-gray-700">Label Id</th>
-                  <th className="text-[13px] min-w-[150px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px] text-gray-700">Value</th>
+                  {/* <th className="text-[13px] min-w-[150px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px] text-gray-700">Value</th> */}
                   <th className="text-[13px] min-w-[100px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px] text-gray-700">Comment</th>
                   <th className="text-[13px] min-w-[180px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[16px] text-gray-700 flex justify-center">Actions</th>
 
@@ -185,11 +185,11 @@ const MasterList = () => {
 
                       {item?.labelid || ""}
                     </td>
-                    <td className="rounded text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[14px] text-gray-700" onClick={() => router.push(`/master/details?id=${item?.id}`)}>
+                    {/* <td className="rounded text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[14px] text-gray-700" onClick={() => router.push(`/master/details?id=${item?.id}`)}>
                       {item?.value || ""}
 
 
-                    </td>
+                    </td> */}
 
                     <td className="text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px] text-gray-700" onClick={() => router.push(`/master/details?id=${item?.id}`)}>
                       <TruncatedTooltipText text={item?.note || ""} maxLength={35} onClick={() => router.push(`/master/details?id=${item?.id}`)} />
