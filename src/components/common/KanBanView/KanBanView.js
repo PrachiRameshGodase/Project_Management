@@ -49,7 +49,7 @@ const DraggableCard = ({ user, index, status, itemId }) => {
 
       <ul className="mt-3">
         <li className="flex items-center gap-2">
-          <p className="text-[14px] text-gray-400 w-[120px]">Due Date</p>
+          <p className="text-[15px] text-gray-400 w-[120px]">Due Date</p>
           <span className="text-[14px] text-gray-700 w-[150px]">
             {user?.due_date ? formatDate(user?.due_date) : "" || ""}
             {user?.due_date && new Date(user?.due_date) >= new Date() && (
@@ -66,14 +66,14 @@ const DraggableCard = ({ user, index, status, itemId }) => {
           </span>
         </li>
         <li className="flex items-center gap-2 mt-3">
-          <p className="text-[14px] text-gray-400 w-[120px] z">Team</p>
+          <p className="text-[15px] text-gray-400 w-[120px] z">Team</p>
           <span className="text-[14px] text-gray-700 w-[150px]">
             {/* {user?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")} */}
             <TruncatedTooltipText text={user?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")} maxLength={32} />
           </span>
         </li>
         <li className="flex items-center gap-2 mt-3">
-          <p className="text-[14px] text-gray-400 w-[120px]">Type</p>
+          <p className="text-[15px] text-gray-400 w-[120px]">Type</p>
           <span className="text-[14px] text-gray-700 w-[150px]">
             {user?.task_type || "-"}
           </span>
