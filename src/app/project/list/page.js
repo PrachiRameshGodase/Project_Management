@@ -374,7 +374,17 @@ const ProjectList = () => {
               {projectListData?.map((item, index) => (
                 <div key={item?.id} className="border border-gray-100  p-4 rounded-xl shadow-md w-full hover:border-gray-200 hover:cursor-pointer hover:shadow-lg min-w-[305px] max-h-[250px] overflow-auto scrollbar-hide" onClick={() => router.push(`/project/details?id=${item?.id}`)}>
                   <div className="flex justify-between items-center mb-4">
-                    <p className="text-[21px] font-600">{item?.project_name || ""}</p>
+                    <p className="text-[21px] font-600">
+                      
+                      <TruncatedTooltipText
+                                text={item?.project_name ||""}
+
+                                maxLength={20}
+                                onClick={()=>{}}
+                                section="project"
+                                
+                              />
+                      </p>
                     {/* <p className="flex h-[20px] justify-center rounded text-[12px] text-green-600 w-[70px] font-[400] items-center leading-[16.8px]">
                 Completed
               </p> */}
@@ -388,45 +398,69 @@ const ProjectList = () => {
                   </div>
                   <div className="flex justify-between items-center mb-2">
                     <ul className="flex flex-col w-[150px] gap-1">
-                      <li className="text-[12.8px] text-gray-400 leading-[17.28px]">Team</li>
-                      <li className="text-[12.8px] text-gray-800 leading-[17.28px]">{item?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")}</li>
+                      <li className="text-[14px] text-gray-400 ">Team</li>
+                      <li className="text-[14px] text-gray-800 ">
+                        {/* {item?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")} */}
+                        <TruncatedTooltipText
+                                text={item?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")}
+
+                                maxLength={25}
+                                onClick={()=>{}}
+                                section=""
+                              />
+                        </li>
                     </ul>
-                    <ul className="flex flex-col gap-1">
-                      <li className="text-[12.8px] text-gray-400">Due Date</li>
-                      <li className="text-[12.8px] text-gray-800">{item?.due_date ? formatDate(item?.due_date) : "" || ""}</li>
+                    <ul className="flex flex-col gap-1  items-center justify-center">
+                      <li className="text-[14px] text-gray-400 items-center justify-center">Due Date</li>
+                      <li className="text-[14px] text-gray-800 ">
+                        {/* {item?.due_date ? formatDate(item?.due_date) : "" || ""} */}
+                        <span className='flex items-center justify-center'>{item?.due_date ? formatDate(item?.due_date) : ""}</span>
+                                {item?.due_date && new Date(item.due_date) >= new Date() && (
+                                  <span
+                                    className={`text-[10px] px-1 rounded mt-1 flex w-[100px] h-[18px] border items-center justify-center
+                                    ${item.status === "Completed"
+                                        ? "text-green-600 border-green-400"
+                                        : "text-gray-500 border-gray-300"
+                                      }`}
+                                  >
+                                    {item.status === "Completed" ? "Completed" : getDueMessage(item.due_date)}
+                                  </span>
+                                )}
+                        </li>
 
                     </ul>
 
                   </div>
                   <div className="flex justify-between gap-2 items-center mb-2">
                     <p className='flex flex-row gap-1 items-center'> {OtherIcons.projects_svg}
-                      <span className="text-[12.8px] font-normal leading-[17.28px]">Tasks ( {item?.total_tasks_count || 0} )</span></p>
+                      <span className="text-[14px]">Tasks ( {item?.total_tasks_count || 0} )</span></p>
 
-                    <ul className="flex flex-col gap-1 mr-[20px]">
+                    <ul className="flex flex-col gap-1 mr-[15px]">
 
-                      <li className="text-[12.8px] text-gray-400">Priority</li>
-                      <li className={`text-[12.8px]  text-gray-800 font-700 ${item.priority == 'High'
-                        ? 'text-[#4976F4]' : item?.priority == 'Low' ?
-                          'text-red-400' : 'text-[#954BAF]'
-                        }`}>{item?.priority?.charAt(0).toUpperCase() + item?.priority?.slice(1)}</li>
+                      <li className="text-[14px] text-gray-400">Priority</li>
+                      {item?.priority && (
+                      <li className={`flex text-[14px]  text-gray-800 items-center justify-center  ${item.priority == 'high'
+                        ? 'text-[#355cc6]' : item?.priority == 'low' ?
+                          'text-red-400' : 'text-[#b13fdb]'
+                        }`}>{item?.priority?.charAt(0).toUpperCase() + item?.priority?.slice(1)}</li>)}
                     </ul>
                   </div>
                   <div className="h-[39px] w-[270px]">
                     <table className="w-full">
                       <thead>
                         <tr className="text-left">
-                          <td className='text-[12px] text-gray-400 font-300'>To Do</td>
-                          <td className='text-[12px] text-gray-400 font-300'>In Progress</td>
-                          <td className='text-[12px] text-gray-400 font-300'>Under Review</td>
-                          <td className='text-[12px] text-gray-400 font-300'>Completed</td>
+                          <td className='text-[13px] text-gray-400 '>To Do</td>
+                          <td className='text-[13px] text-gray-400 '>In Progress</td>
+                          <td className='text-[13px] text-gray-400 '>Under Review</td>
+                          <td className='text-[13px] text-gray-400 '>Completed</td>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
-                          <td className='text-[12px] text-center text-gray-700 font-300'>{item?.to_do_tasks_count || 0}</td>
-                          <td className='text-[12px] text-center text-gray-700 font-300'>{item?.in_progress_tasks_count || 0}</td>
-                          <td className='text-[12px] text-center text-gray-700 font-300'>{item?.under_review_tasks_count || 0}</td>
-                          <td className='text-[12px] text-center text-gray-700 font-300'>{item?.completed_tasks_count || 0}</td>
+                          <td className='text-[14px] text-center text-gray-700 '>{item?.to_do_tasks_count || 0}</td>
+                          <td className='text-[14px] text-center text-gray-700 '>{item?.in_progress_tasks_count || 0}</td>
+                          <td className='text-[14px] text-center text-gray-700 '>{item?.under_review_tasks_count || 0}</td>
+                          <td className='text-[14px] text-center text-gray-700 '>{item?.completed_tasks_count || 0}</td>
                         </tr>
                       </tbody>
                     </table>

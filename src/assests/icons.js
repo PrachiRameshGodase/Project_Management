@@ -59,13 +59,14 @@ export const OtherIcons = {
     <path d="M14.7539 9.5C14.7539 11.0188 13.5227 12.25 12.0039 12.25C10.4851 12.25 9.25391 11.0188 9.25391 9.5C9.25391 7.98122 10.4851 6.75 12.0039 6.75C13.5227 6.75 14.7539 7.98122 14.7539 9.5Z" stroke="black" strokeWidth="1.5" />
     <path d="M5.50391 19L6.06431 18.0193C6.95452 16.4615 8.61124 15.5 10.4056 15.5H13.6023C15.3966 15.5 17.0533 16.4615 17.9435 18.0193L18.5039 19" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>,
-  projects_svg: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M7.20248 2.98742C8.57933 2.38448 9.26783 2.08301 10 2.08301C10.7322 2.08301 11.4207 2.38448 12.7975 2.98742L14.2182 3.60955C16.4061 4.56762 17.5 5.04667 17.5 5.83301C17.5 6.61935 16.4061 7.09839 14.2182 8.05647L12.7975 8.67859C11.4207 9.28151 10.7322 9.58301 10 9.58301C9.26783 9.58301 8.57933 9.28151 7.20248 8.67859L5.78181 8.05647C3.59393 7.09839 2.5 6.61935 2.5 5.83301C2.5 5.04667 3.59393 4.56762 5.7818 3.60955L7.20248 2.98742Z" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    <path d="M17.5 5.83301V14.9997C17.5 15.786 16.4061 16.2651 14.2182 17.2232L12.7975 17.8453C11.4207 18.4482 10.7322 18.7497 10 18.7497C9.26783 18.7497 8.57933 18.4482 7.20248 17.8453L5.78181 17.2232C3.59393 16.2651 2.5 15.786 2.5 14.9997V5.83301" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    <path d="M17.5 10.833L10 14.583L2.5 11.2497" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    <path d="M13.7526 17.0833V7.91667L5.83594 3.75" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-    <path d="M6.25 17.0833V7.91667L14.1667 3.75" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>,
+projects_svg: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M7.20248 2.98742C8.57933 2.38448 9.26783 2.08301 10 2.08301C10.7322 2.08301 11.4207 2.38448 12.7975 2.98742L14.2182 3.60955C16.4061 4.56762 17.5 5.04667 17.5 5.83301C17.5 6.61935 16.4061 7.09839 14.2182 8.05647L12.7975 8.67859C11.4207 9.28151 10.7322 9.58301 10 9.58301C9.26783 9.58301 8.57933 9.28151 7.20248 8.67859L5.78181 8.05647C3.59393 7.09839 2.5 6.61935 2.5 5.83301C2.5 5.04667 3.59393 4.56762 5.7818 3.60955L7.20248 2.98742Z" stroke="#606060" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+<path d="M17.5 5.83301V14.9997C17.5 15.786 16.4061 16.2651 14.2182 17.2232L12.7975 17.8453C11.4207 18.4482 10.7322 18.7497 10 18.7497C9.26783 18.7497 8.57933 18.4482 7.20248 17.8453L5.78181 17.2232C3.59393 16.2651 2.5 15.786 2.5 14.9997V5.83301" stroke="#606060" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+<path d="M17.5 10.833L10 14.583L2.5 11.2497" stroke="#606060" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+<path d="M13.7526 17.0833V7.91667L5.83594 3.75" stroke="#606060" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+<path d="M6.25 17.0833V7.91667L14.1667 3.75" stroke="#606060" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+</svg>,
+
   clients_svg: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M6.25 16.2497C6.25 15.445 6.52378 14.631 7.19243 14.1833C7.99434 13.6464 8.96033 13.333 10 13.333C11.0397 13.333 12.0057 13.6464 12.8076 14.1833C13.4762 14.631 13.75 15.445 13.75 16.2497" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     <path d="M9.9974 11.2507C11.148 11.2507 12.0807 10.3179 12.0807 9.16732C12.0807 8.01672 11.148 7.08398 9.9974 7.08398C8.8468 7.08398 7.91406 8.01672 7.91406 9.16732C7.91406 10.3179 8.8468 11.2507 9.9974 11.2507Z" stroke="black" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

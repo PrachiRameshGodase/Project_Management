@@ -638,6 +638,7 @@ const TaskList = () => {
 
                                 maxLength={25}
                                 onClick={() => handleTaskClick(item?.id)}
+                                
                               />
                             </td>
                             <td

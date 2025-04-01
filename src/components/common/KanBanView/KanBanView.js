@@ -24,18 +24,30 @@ const DraggableCard = ({ user, index, status, itemId }) => {
       onDragStart={handleDragStart}
       className="w-[300px] h-full mt-4 bg-white p-4 gap-4 shadow-md rounded cursor-grab active:cursor-grabbing px-3" onClick={() => handleTaskClick(user?.id)}
     >
-      <p
-        className={`px-3 py-1 border rounded-md text-[15px] inline-block ${user.priority === "High"
-          ? "text-[#4976F4] border-[#4976F4]"
-          : user.priority === "Low"
-            ? "text-red-400 border-red-400"
-            : "text-[#954BAF] border-[#954BAF]"
-          }`}
-      >
-        {user.priority}
+      <div className="flex justify-between"><p className="text-[16px] ">
+
+        <TruncatedTooltipText
+          text={user?.task_title || ""}
+
+          maxLength={20}
+          onClick={() => { }}
+          section="project"
+
+        />
       </p>
-      <p className="text-[16px] mt-2">{user?.task_title || ""}</p>
-      <ul>
+        <p
+          className={`px-3 h-[25px] border rounded-md text-[15px] inline-block ${user.priority === "High"
+            ? "text-[#4976F4] border-[#4976F4]"
+            : user.priority === "Low"
+              ? "text-red-400 border-red-400"
+              : "text-[#954BAF] border-[#954BAF]"
+            }`}
+        >
+          {user.priority}
+        </p></div>
+
+
+      <ul className="mt-3">
         <li className="flex items-center gap-2">
           <p className="text-[14px] text-gray-400 w-[120px]">Due Date</p>
           <span className="text-[14px] text-gray-700 w-[150px]">
@@ -53,14 +65,14 @@ const DraggableCard = ({ user, index, status, itemId }) => {
             )}
           </span>
         </li>
-        <li className="flex items-center gap-2">
+        <li className="flex items-center gap-2 mt-3">
           <p className="text-[14px] text-gray-400 w-[120px] z">Team</p>
           <span className="text-[14px] text-gray-700 w-[150px]">
             {/* {user?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")} */}
             <TruncatedTooltipText text={user?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")} maxLength={32} />
           </span>
         </li>
-        <li className="flex items-center gap-2">
+        <li className="flex items-center gap-2 mt-3">
           <p className="text-[14px] text-gray-400 w-[120px]">Type</p>
           <span className="text-[14px] text-gray-700 w-[150px]">
             {user?.task_type || "-"}
@@ -107,12 +119,12 @@ const DroppableColumn = ({ status, users, moveUser, moveCard, itemId }) => {
       <div className="w-full h-[40px] bg-[#F0E7FA] flex items-center px-4">
         <p
           className={`w-[13px] h-[13px] rounded-full ${status === "To Do"
-              ? "bg-[#6C757D]"
-              : status === "In Progress"
-                ? "bg-[#CA9700]"
-                : status === "Under Review"
-                  ? "bg-[#0D4FA7]"
-                  : "bg-[#048339]"
+            ? "bg-[#6C757D]"
+            : status === "In Progress"
+              ? "bg-[#CA9700]"
+              : status === "Under Review"
+                ? "bg-[#0D4FA7]"
+                : "bg-[#048339]"
             }`}
         ></p>
         <p className="text-[15px] ml-2">{status}</p>
