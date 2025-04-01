@@ -29,7 +29,7 @@ const DraggableCard = ({ user, index, status, itemId }) => {
         <TruncatedTooltipText
           text={user?.task_title || ""}
 
-          maxLength={20}
+          maxLength={18}
           onClick={() => { }}
           section="project"
 
