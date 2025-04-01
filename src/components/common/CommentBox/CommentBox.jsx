@@ -32,15 +32,16 @@ import {
 } from "../../../configs/firebase";
 
 const ChatBox = ({ projectId, taskId }) => {
- 
   const dispatch = useDispatch();
   const usersList = useSelector((state) => state.user?.employeeList?.data);
-  
   const CommentListData = useSelector(
-    (state) => state.project?.taskCommentList?.data ||[]
+    (state) => state.project?.taskCommentList?.data || []
   );
   const CommentListLoading = useSelector(
     (state) => state.project?.taskCommentList?.commentLoading || false
+  );
+  const createCommentLoading = useSelector(
+    (state) => state.project?.commentLoading || false
   );
 
   const [messages, setMessages] = useState([]);
@@ -69,7 +70,7 @@ const ChatBox = ({ projectId, taskId }) => {
     assigned_ids: [],
     comments: "",
   });
-console.log("formData", formData)
+
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,
@@ -115,62 +116,36 @@ console.log("formData", formData)
     setMessage((prev) => prev + "@");
     inputRef.current?.focus();
 
-    const searchText = "";
+    // Directly show the full mention list on "@" click
     setMentionList(usersList);
   };
 
-  // Select Mention
-  // const handleSelectMention = (user) => {
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     assigned_ids: [...prev.assigned_ids, user.id], // ✅ Add selected user ID
-  //   }));
-  //   setMentionList([]);
-  // };
   const handleSelectMention = (user) => {
+    console.log("user", user);
     setFormData((prev) => {
       if (prev.assigned_ids.includes(user.id)) return prev; // Prevent duplicate mentions
-  
+
       const comment = prev.comments;
       const cursorPos = inputRef.current.selectionStart;
-  
+
       const lastAtIndex = comment.lastIndexOf("@", cursorPos - 1);
       if (lastAtIndex === -1) return prev;
-  
+
       const newComment =
-        comment.substring(0, lastAtIndex + 1) + user.name + " " + comment.substring(cursorPos);
-  
+        comment.substring(0, lastAtIndex + 1) +
+        user.name +
+        " " +
+        comment.substring(cursorPos);
+
       return {
         ...prev,
         comments: newComment,
         assigned_ids: [...prev.assigned_ids, user.id],
       };
     });
-  
+
     setMentionList([]);
   };
-  
-  
-  // File Select
-
-  // const handleFileSelect = (event) => {
-  //   const file = event.target.files[0];
-  //   if (!file) return;
-
-  //   const newFile = {
-  //     name: file.name,
-  //     url: URL.createObjectURL(file),
-  //     type: file.type.startsWith("image/") ? "image" : "document",
-  //   };
-
-  //   // ✅ Update formData with the new file
-  //   setFormData((prevData) => ({
-  //     ...prevData,
-  //     documents: newFile, // Store the file inside `documents`
-  //   }));
-
-  //   setSelectedFile(newFile); // Optional, if you need it elsewhere
-  // };
 
   const handleFileSelect = async (event) => {
     const file = event.target.files[0];
@@ -212,32 +187,6 @@ console.log("formData", formData)
     );
   };
   console.log("form Data", formData);
-
-  // Start Recording
-  // const startRecording = async () => {
-  //   setRecording(true);
-  //   const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-  //   const mediaRecorder = new MediaRecorder(stream);
-  //   mediaRecorderRef.current = mediaRecorder;
-
-  //   const chunks = [];
-  //   mediaRecorder.ondataavailable = (e) => chunks.push(e.data);
-  //   mediaRecorder.onstop = () => {
-  //     const audioBlob = new Blob(chunks, { type: "audio/mp3" });
-  //     const audioURL = URL.createObjectURL(audioBlob);
-
-  //     setAudioBlob(audioBlob);
-  //     setAudioURL(audioURL);
-
-  //     // ✅ Store recording in `formData.audio_recording`
-  //     setFormData((prevData) => ({
-  //       ...prevData,
-  //       audio_recording: audioBlob, // Storing the Blob
-  //     }));
-  //   };
-
-  //   mediaRecorder.start();
-  // };
 
   const startRecording = async () => {
     setRecording(true);
@@ -287,10 +236,9 @@ console.log("formData", formData)
         setFormData,
         setSelectedFile,
         setAudioURL,
-        setMentionList
-      
+        setMentionList,
       })
-    )
+    );
 
     setTimeout(() => {
       scrollToTop();
@@ -346,7 +294,7 @@ console.log("formData", formData)
     const sendData = {
       is_employee: 1,
       project_id: projectId,
-      task_id:taskId
+      task_id: taskId,
     };
 
     dispatch(fetchUsers(sendData));
@@ -396,12 +344,12 @@ console.log("formData", formData)
                 autoComplete="off"
               />
 
-              <button
+              {/* <button
                 onClick={handleMentionClick}
                 className="p-1 hidden sm:block  text-[26px] text-gray-500 hover:text-black cursor-pointer"
               >
                 @
-              </button>
+              </button> */}
 
               <button
                 className={`p-1  text-gray-500 hover:text-black `}
@@ -517,8 +465,13 @@ console.log("formData", formData)
             )}
           </div>
           <button
-            className=" text-gray-500 pl-2 hover:text-black"
+            className={`text-gray-500 pl-2 hover:text-black ${
+              createCommentLoading
+                ? "opacity-50 cursor-not-allowed text-gray-300"
+                : ""
+            }`}
             onClick={handleSend}
+            disabled={createCommentLoading} // Disable the button while loading
           >
             <Send size={20} />
           </button>
@@ -529,7 +482,7 @@ console.log("formData", formData)
           <PhotoProvider>
             <div ref={chatStartRef} />
 
-            {CommentListLoading? (
+            {CommentListLoading ? (
               <TableSkeleton />
             ) : (
               CommentListData?.map((msg) => {
@@ -565,7 +518,9 @@ console.log("formData", formData)
                           JSON.parse(msg?.assigned_ids).length > 0 && (
                             <div className="flex flex-wrap">
                               {JSON.parse(msg.assigned_ids)?.map((id) => {
-                                const user = usersList?.find((u) => u.id === id);
+                                const user = usersList?.find(
+                                  (u) => u.id === id
+                                );
                                 return (
                                   user && (
                                     <span

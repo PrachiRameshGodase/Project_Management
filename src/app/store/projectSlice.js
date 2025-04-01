@@ -582,7 +582,10 @@ const projectSlice = createSlice({
       })
       .addCase(addTaskComment.fulfilled, (state, action) => {
         state.commentLoading = false;
-        state.taskCommentList = [...state.taskCommentList, action.payload];
+        if (!Array.isArray(state.taskCommentList)) {
+          state.taskCommentList = []; // Initialize it as an empty array if it's not already an array
+        }
+        state.taskCommentList.push(action.payload)
       })
       .addCase(addTaskComment.rejected, (state, action) => {
         state.commentLoading = false;
@@ -610,11 +613,11 @@ const projectSlice = createSlice({
       })
       .addCase(deleteTaskComment.fulfilled, (state, action) => {
         state.commentLoading = false;
-        // Update the user status in the list
-        const updatedUser = action.payload;
-        state.taskCommentList = state.taskCommentList.map(user =>
-          user.id === updatedUser.id ? { ...user, id: updatedUser.id } : user
-        );
+        if (!Array.isArray(state.taskCommentList)) {
+          state.taskCommentList = []; // Initialize as an empty array if it's not already an array
+        }
+       const updatedUser = action.payload;
+       state.taskCommentList = state.taskCommentList.map(user =>user.id === updatedUser.id? { ...user, id: updatedUser.id } : user);
       })
       .addCase(deleteTaskComment.rejected, (state, action) => {
         state.commentLoading = false;
