@@ -45,7 +45,7 @@ const MasterDetails = () => {
 
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const handleClose = () => {
-        router.push(`/project/list`)
+        router.push(`/master/list`)
         // localStorage.removeItem("itemId", itemId2)
     }
 
