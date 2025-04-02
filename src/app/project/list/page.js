@@ -79,7 +79,7 @@ const ProjectList = () => {
       let sendData = {
         limit: itemsPerPage,
         page: currentPage,
-        project_status:1,
+        project_status: 1,
         ...(searchTermFromChild ? { search: searchTermFromChild } : {}),
         ...(selectedSortBy ? { sort_by: selectedSortBy, sort_order: sortOrder } : {}),
         ...(selectedDesignation && { designation: selectedDesignation }),
@@ -247,19 +247,19 @@ const ProjectList = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    
+
                     {projectListData?.length > 0 ? (projectListData?.map((item, index) => (
                       <tr key={item?.id} className="rounded-md cursor-pointer duration-200 hover:bg-gray-100 hover:shadow-tr-border transition-all">
                         <td className="rounded text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px] text-gray-700" onClick={() => router.push(`/project/details?id=${item?.id}`)}>
 
-                        <TruncatedTooltipText text={item?.project_name ||""} maxLength={15} onClick={() => router.push(`/project/details?id=${item?.id}`)} />
-                          
+                          <TruncatedTooltipText text={item?.project_name || ""} maxLength={15} onClick={() => router.push(`/project/details?id=${item?.id}`)} />
+
                         </td>
                         <td className="rounded text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px] text-gray-700" onClick={() => router.push(`/project/details?id=${item?.id}`)}>
-                       
-                        <TruncatedTooltipText text={item?.client?.name  ||""} maxLength={15} onClick={() => router.push(`/project/details?id=${item?.id}`)} />
-                          
-                          </td>
+
+                          <TruncatedTooltipText text={item?.client?.name || ""} maxLength={15} onClick={() => router.push(`/project/details?id=${item?.id}`)} />
+
+                        </td>
                         <td className="rounded text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[14px] text-gray-700">
                           {item?.status ? (
                             <DropdownStatus01
@@ -304,9 +304,9 @@ const ProjectList = () => {
 
                         {/* <td className="text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px] text-gray-700" onClick={() => router.push(`/project/details?id=${item?.id}`)}>{item?.due_date ? formatDate(item?.due_date):""}</td> */}
                         <td className="text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px] text-gray-700" onClick={() => router.push(`/project/details?id=${item?.id}`)}>
-                         
-                        <TruncatedTooltipText text={item?.project_leader_name ||""} maxLength={15} onClick={() => router.push(`/project/details?id=${item?.id}`)} />
-                          
+
+                          <TruncatedTooltipText text={item?.project_leader_name || ""} maxLength={15} onClick={() => router.push(`/project/details?id=${item?.id}`)} />
+
                         </td>
                         {/* <td className="text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px] text-gray-700" onClick={() => router.push(`/project/details?id=${item?.id}`)}>
                           <TruncatedTooltipText text={item?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")} maxLength={25} onClick={() => router.push(`/project/details?id=${item?.id}`)} />
@@ -375,16 +375,16 @@ const ProjectList = () => {
                 <div key={item?.id} className="border border-gray-100  p-4 rounded-xl shadow-md w-full hover:border-gray-200 hover:cursor-pointer hover:shadow-lg min-w-[305px] max-h-[250px] overflow-auto scrollbar-hide" onClick={() => router.push(`/project/details?id=${item?.id}`)}>
                   <div className="flex justify-between items-center mb-4">
                     <p className="text-[21px] font-600">
-                      
-                      <TruncatedTooltipText
-                                text={item?.project_name ||""}
 
-                                maxLength={20}
-                                onClick={()=>{}}
-                                section="project"
-                                
-                              />
-                      </p>
+                      <TruncatedTooltipText
+                        text={item?.project_name || ""}
+
+                        maxLength={20}
+                        onClick={() => { }}
+                        section="project"
+
+                      />
+                    </p>
                     {/* <p className="flex h-[20px] justify-center rounded text-[12px] text-green-600 w-[70px] font-[400] items-center leading-[16.8px]">
                 Completed
               </p> */}
@@ -402,31 +402,31 @@ const ProjectList = () => {
                       <li className="text-[14px] text-gray-800 ">
                         {/* {item?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")} */}
                         <TruncatedTooltipText
-                                text={item?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")}
+                          text={item?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")}
 
-                                maxLength={25}
-                                onClick={()=>{}}
-                                section=""
-                              />
-                        </li>
+                          maxLength={25}
+                          onClick={() => { }}
+                          section=""
+                        />
+                      </li>
                     </ul>
                     <ul className="flex flex-col gap-1  items-center justify-center">
                       <li className="text-[14px] text-gray-400 items-center justify-center">Due Date</li>
                       <li className="text-[14px] text-gray-800 ">
                         {/* {item?.due_date ? formatDate(item?.due_date) : "" || ""} */}
                         <span className='flex items-center justify-center'>{item?.due_date ? formatDate(item?.due_date) : ""}</span>
-                                {item?.due_date && new Date(item.due_date) >= new Date() && (
-                                  <span
-                                    className={`text-[10px] px-1 rounded mt-1 flex w-[100px] h-[18px] border items-center justify-center
+                        {item?.due_date && new Date(item.due_date) >= new Date() && (
+                          <span
+                            className={`text-[10px] px-1 rounded mt-1 flex w-[100px] h-[18px] border items-center justify-center
                                     ${item.status === "Completed"
-                                        ? "text-green-600 border-green-400"
-                                        : "text-gray-500 border-gray-300"
-                                      }`}
-                                  >
-                                    {item.status === "Completed" ? "Completed" : getDueMessage(item.due_date)}
-                                  </span>
-                                )}
-                        </li>
+                                ? "text-green-600 border-green-400"
+                                : "text-gray-500 border-gray-300"
+                              }`}
+                          >
+                            {item.status === "Completed" ? "Completed" : getDueMessage(item.due_date)}
+                          </span>
+                        )}
+                      </li>
 
                     </ul>
 
@@ -439,10 +439,10 @@ const ProjectList = () => {
 
                       <li className="text-[14px] text-gray-400">Priority</li>
                       {item?.priority && (
-                      <li className={`flex text-[14px]  text-gray-800 items-center justify-center  ${item.priority == 'high'
-                        ? 'text-[#355cc6]' : item?.priority == 'low' ?
-                          'text-red-400' : 'text-[#b13fdb]'
-                        }`}>{item?.priority?.charAt(0).toUpperCase() + item?.priority?.slice(1)}</li>)}
+                        <li className={`flex text-[14px]  text-gray-800 items-center justify-center  ${item.priority == 'high'
+                          ? 'text-[#355cc6]' : item?.priority == 'low' ?
+                            'text-red-400' : 'text-[#b13fdb]'
+                          }`}>{item?.priority?.charAt(0).toUpperCase() + item?.priority?.slice(1)}</li>)}
                     </ul>
                   </div>
                   <div className="h-[39px] w-[270px]">

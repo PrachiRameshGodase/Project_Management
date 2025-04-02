@@ -52,20 +52,7 @@ export const fetchProjectDetails = createAsyncThunk("project/fetchDetails", asyn
 });
 
 // Async thunk to fetch user details by ID
-export const updateProjectStatus = createAsyncThunk("project/updateProjectStatus", async ({ id, status, dispatch, setDataLoading }, { rejectWithValue }) => {
-  try {
-    const response = await axiosInstance.post(`/project_status`, { id, status });
-    if (response?.data?.success === true) {
-      toast.success(response?.data?.message);
-      setDataLoading(false)
-      dispatch(fetchProjects()); // Refresh the list
 
-    }
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response?.data || error.message);
-  }
-});
 
 
 // Async thunk to add a new task
@@ -114,6 +101,23 @@ export const updateStatus = createAsyncThunk("project/updateStatus", async ({ id
     if (response?.data?.success === true) {
       toast.success(response?.data?.message);
       router.push("/project/list"); // Navigate on success
+    }
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response?.data || error.message);
+  }
+});
+
+export const updateProjectStatus = createAsyncThunk("project/updateProjectStatus", async ({ id, status, dispatch, setDataLoading }, { rejectWithValue }) => {
+  try {
+    const response = await axiosInstance.post(`/project_status`, { id, status });
+    if (response?.data?.success === true) {
+      toast.success(response?.data?.message);
+      dispatch(fetchProjectTasks({}))
+      setDataLoading(false)
+     
+      dispatch(fetchProjects()); // Refresh the list
+
     }
     return response.data;
   } catch (error) {

@@ -30,9 +30,11 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from "../../../configs/firebase";
+import useUserData from "../Helper/useUserData";
 
 const ChatBox = ({ projectId, taskId }) => {
   const dispatch = useDispatch();
+  const userData=useUserData()
   const usersList = useSelector((state) => state.user?.employeeList?.data);
   const CommentListData = useSelector(
     (state) => state.project?.taskCommentList?.data || []
@@ -69,7 +71,16 @@ const ChatBox = ({ projectId, taskId }) => {
     audio_recording: "",
     assigned_ids: [],
     comments: "",
+    user_id:userData?.id
   });
+  useEffect(() => {
+    if (userData?.id) {
+      setFormData((prev) => ({
+        ...prev,
+        user_id: userData.id, // Update user_id when userData is available
+      }));
+    }
+  }, [userData]);
 
   useEffect(() => {
     setFormData((prev) => ({
@@ -514,32 +525,8 @@ const ChatBox = ({ projectId, taskId }) => {
                     />
                     <div className="bg-gray-100 p-2 rounded-lg w-fit max-w-[90%] relative">
                       <div className="flex justify-between">
-                        {msg?.assigned_ids &&
-                          JSON.parse(msg?.assigned_ids).length > 0 && (
-                            <div className="flex flex-wrap">
-                              {JSON.parse(msg.assigned_ids)?.map((id) => {
-                                const user = usersList?.find(
-                                  (u) => u.id === id
-                                );
-                                return (
-                                  user && (
-                                    <span
-                                      key={id}
-                                      className="bg-blue-50 text-blue-400 rounded-lg m-1 text-sm flex items-center"
-                                    >
-                                      @ {user?.name}
-                                      {/* <button
-                                      onClick={() => handleRemoveMention(id)}
-                                      className="ml-1 text-red-700 text-xs"
-                                    >
-                                      <Trash2 size={12} />
-                                    </button> */}
-                                    </span>
-                                  )
-                                );
-                              })}
-                            </div>
-                          )}
+                        <span className="bg-blue-50 text-blue-400 rounded-lg m-1 text-sm flex items-center">{msg?.user_detail?.name}</span>
+                       
                         <span className="text-xs text-gray-500 mt-1 fl justify-end">
                           {formatTime(msg?.created_at)}
                         </span>
