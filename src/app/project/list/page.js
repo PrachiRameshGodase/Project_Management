@@ -385,9 +385,7 @@ const ProjectList = () => {
 
                       />
                     </p>
-                    {/* <p className="flex h-[20px] justify-center rounded text-[12px] text-green-600 w-[70px] font-[400] items-center leading-[16.8px]">
-                Completed
-              </p> */}
+                 
                     <p className={`font-[400] text-[12px] leading-[16.8px] border rounded flex items-center justify-center ${item.status === 'To Do'
                       ? 'text-[#6C757D] border-[#6C757D]  w-[50px] h-[20px]'
                       : item?.status === 'In progress' ?
