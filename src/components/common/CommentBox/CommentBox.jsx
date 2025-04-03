@@ -35,7 +35,7 @@ import useUserData from "../Helper/useUserData";
 const ChatBox = ({ projectId, taskId }) => {
   const dispatch = useDispatch();
   const userData=useUserData()
-  const usersList = useSelector((state) => state.user?.employeeList?.data);
+  const usersList = useSelector((state) => state.user?.employeeList?.data?.data);
   const CommentListData = useSelector(
     (state) => state.project?.taskCommentList?.data || []
   );

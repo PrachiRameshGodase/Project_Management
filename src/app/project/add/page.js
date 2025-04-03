@@ -20,7 +20,7 @@ const AddProject = () => {
     
     const projectPriority=useMasterData("47")
     const projectStage=useMasterData("48")
-    const usersList = useSelector((state) => state.user?.employeeList?.data);
+    const usersList = useSelector((state) => state.user?.employeeList?.data?.data);
     const projectDetailData = useSelector((state) => state?.project?.projectDetails?.data);
     const projectLoading = useSelector((state) => state.project);
 

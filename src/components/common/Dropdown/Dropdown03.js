@@ -100,7 +100,7 @@ export const Dropdown003 = ({ selectedValue, onSelect, label, icon }) => {
   const [searchQuery, setSearchQuery] = useState(""); // Store search input
   const [searchTrigger, setSearchTrigger] = useState(0);
 
-  const usersList = useSelector((state) => state.user?.clientList?.data);
+  const usersList = useSelector((state) => state.user?.clientList?.data?.data);
   const options = usersList
 
   useEffect(() => {
