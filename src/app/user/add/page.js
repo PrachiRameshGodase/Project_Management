@@ -137,7 +137,7 @@ const AddUser = () => {
     router.push(`/user/list`)
     localStorage.removeItem("itemId", itemId2)
   }
-console.log("formData", formData)
+
   return (
     <LayOut>
       <div className="flex-col justify-center items-center mx-auto sm:flex sm:mx-0">

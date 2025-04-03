@@ -19,7 +19,7 @@ const ClientList = () => {
     const router = useRouter()
     const userData = useUserData()
     const dispatch = useDispatch();
-    const usersList = useSelector((state) => state.user?.clientList?.data?.data);
+    const usersList = useSelector((state) => state.user?.clientList?.data);
     const usersLoading = useSelector((state) => state.user);
     const totalCount = useSelector((state) => state?.user?.clientList?.total);
 

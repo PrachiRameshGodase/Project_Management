@@ -137,7 +137,7 @@ const AddTask = () => {
                 visibility: taskDetailsData?.visibility,
                 description: taskDetailsData?.description,
                 attachment: taskDetailsData?.attachments ? JSON.parse(taskDetailsData?.attachments) : [],
-                team: taskDetailsData?.team?.map((item) => item?.id)
+                team: taskDetailsData?.team_leaders?.map((item) => item?.id)
             });
         }
     }, [taskDetailsData, itemId]);

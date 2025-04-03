@@ -115,8 +115,7 @@ const AddMaster = () => {
         }
     };
 
-    console.log("formData", formData)
-    console.log("masterListData", masterListData)
+   
     useEffect(() => {
         if (masterListData?.length > 0 && editId && isEdit) {
             setFormData((prev) => {

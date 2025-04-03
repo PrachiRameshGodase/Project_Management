@@ -130,7 +130,7 @@ const AddClient = () => {
                     </button>
                 </div>
             </div>
-            <div className="h-screen justify-between items-center mx-auto sm:-mt-16 sm:flex xl:lg:-mt-[115px]">
+            <div className="h-screen justify-between items-center mx-auto sm:-mt-16 sm:flex xl:lg:-mt-[74px]">
                 <form className="bg-white h-[656px] p-3 rounded-lg sm:p-8 sm:w-[690px] space-y-8" onSubmit={handleSubmit}>
                     <div className="flex-col justify-between items-start sm:flex sm:flex-row sm:items-center">
                         <label className="text-[20px] block">

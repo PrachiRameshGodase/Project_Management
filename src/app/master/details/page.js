@@ -58,7 +58,7 @@ const MasterDetails = () => {
     }
 
     const handleDeleteMainMaster=(id)=>{
-        dispatch(masterDelete({id, dispatch, section:"main-master", router}))
+        dispatch(masterDelete({id, dispatch, section:"main-master", router, setDataLoading}))
     }
 
     const handleEditMainMaster =(id)=>{

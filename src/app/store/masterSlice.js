@@ -8,7 +8,7 @@ export const addMaster = createAsyncThunk(
   async ({ userData, router }, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post(`/master/create/update`, userData);
-      console.log("response", response)
+     
       router.push(`/master/list`)
       // if (response?.data?.success === true) {
       //   toast.success(response?.data?.message);
@@ -48,14 +48,17 @@ export const masterDelete = createAsyncThunk(
   "master/masterDeletes",
   async ({id, dispatch, section, router,setDataLoading}, { rejectWithValue }) => {
     try {
+     
       const response = await axiosInstance.post(`/master/delete`, { id: id });
       if (response?.data?.success) {
         toast.success("Master deleted successfully");
         setDataLoading(false)
-       
         dispatch(fetchMaster())
+     
         if(section=="main-master"){
-          router.push("./list")
+          setDataLoading(false)
+          router.push("/master/list")
+          dispatch(fetchMaster())
         }
         return response.data;
       } else {
@@ -78,6 +81,7 @@ const masterSlice = createSlice({
     list: [], 
     postDetails: null,
     loading: false,
+    detailsLoading:false,
     error: null,
   },
   reducers: {

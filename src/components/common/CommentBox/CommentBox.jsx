@@ -19,6 +19,7 @@ import { fetchUsers } from "@/app/store/userSlice";
 import {
   addTaskComment,
   deleteTaskComment,
+  fetchcommentUsers,
   fetchTaskComment,
 } from "@/app/store/projectSlice";
 import { formatTime } from "../Helper/Helper";
@@ -35,7 +36,8 @@ import useUserData from "../Helper/useUserData";
 const ChatBox = ({ projectId, taskId }) => {
   const dispatch = useDispatch();
   const userData=useUserData()
-  const usersList = useSelector((state) => state.user?.employeeList?.data?.data);
+  const usersList = useSelector((state) => state.project?.userlist?.members);
+  console.log("usersList", usersList)
   const CommentListData = useSelector(
     (state) => state.project?.taskCommentList?.data || []
   );
@@ -132,7 +134,7 @@ const ChatBox = ({ projectId, taskId }) => {
   };
 
   const handleSelectMention = (user) => {
-    console.log("user", user);
+   
     setFormData((prev) => {
       if (prev.assigned_ids.includes(user.id)) return prev; // Prevent duplicate mentions
 
@@ -197,7 +199,7 @@ const ChatBox = ({ projectId, taskId }) => {
       }
     );
   };
-  console.log("form Data", formData);
+  
 
   const startRecording = async () => {
     setRecording(true);
@@ -308,7 +310,7 @@ const ChatBox = ({ projectId, taskId }) => {
       task_id: taskId,
     };
 
-    dispatch(fetchUsers(sendData));
+    dispatch(fetchcommentUsers(sendData));
   }, [dispatch]);
 
   return (

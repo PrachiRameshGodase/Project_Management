@@ -20,10 +20,9 @@ const AddProject = () => {
     
     const projectPriority=useMasterData("47")
     const projectStage=useMasterData("48")
-    const usersList = useSelector((state) => state.user?.employeeList?.data?.data);
+    const usersList = useSelector((state) => state.user?.employeeList?.data);
     const projectDetailData = useSelector((state) => state?.project?.projectDetails?.data);
     const projectLoading = useSelector((state) => state.project);
-
 
     const [itemId, setItemId] = useState(null);
     const [isEditMode, setIsEditMode] = useState(false);
@@ -98,7 +97,7 @@ const AddProject = () => {
                 start_date: projectDetailData?.start_date,
                 due_date: projectDetailData?.due_date,
                 priority: projectDetailData?.priority,
-                project_leader: projectDetailData?.project_leader?.id,
+                project_leader: projectDetailData?.project_leader,
                 project_stage: projectDetailData?.project_stage,
                 team: (projectDetailData?.team_leaders.map((item) => item?.id)),
                 attachments: projectDetailData?.attachments ? JSON.parse(projectDetailData?.attachments) : [],

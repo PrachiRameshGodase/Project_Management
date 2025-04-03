@@ -10,7 +10,7 @@ export const loginUser = createAsyncThunk(
   async (credentials, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post("/login", credentials);
-      console.log("response", response)
+     
       const token = response.data.access_token;
       localStorage.setItem("access_token", token);
   
@@ -27,7 +27,7 @@ export const fetchLoggedInUser = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem("access_token");
-      console.log("token", token)
+     
       if (!token) throw new Error("No token found");
 
       // axiosInstance.defaults.headers.common["Authorization"] = `Bearer ${token}`;

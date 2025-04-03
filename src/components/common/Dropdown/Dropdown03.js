@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 export const Dropdown03 = ({ options, selectedValue, onSelect, label, icon }) => {
   const dropdownOutsideClick = OutsideClick();
-  const [selected, setSelected] = useState(null); // Store selected object
+  const [selected, setSelected] = useState(selectedValue); // Store selected object
   const [searchQuery, setSearchQuery] = useState(""); // Store search input
 
   // Handle option selection and pass the ID
@@ -21,8 +21,10 @@ export const Dropdown03 = ({ options, selectedValue, onSelect, label, icon }) =>
   useEffect(() => {
     if (selectedValue) {
       // Find the full option object by ID
-      const foundOption = options?.find((option) => option.id === selectedValue);
-      setSelected(foundOption || null);
+     
+      const foundOption = options?.find((option) => option.id == selectedValue);
+  
+      setSelected(foundOption);
     } else {
       setSelected(null);
     }
@@ -100,7 +102,7 @@ export const Dropdown003 = ({ selectedValue, onSelect, label, icon }) => {
   const [searchQuery, setSearchQuery] = useState(""); // Store search input
   const [searchTrigger, setSearchTrigger] = useState(0);
 
-  const usersList = useSelector((state) => state.user?.clientList?.data?.data);
+  const usersList = useSelector((state) => state.user?.clientList?.data);
   const options = usersList
 
   useEffect(() => {

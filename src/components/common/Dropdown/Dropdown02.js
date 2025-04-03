@@ -127,7 +127,7 @@ export const Dropdown002 = ({ selectedValue, onSelect, label, project_id }) => {
   
   const dropdownOutsideClick = OutsideClick();
   const dispatch = useDispatch();
-  const usersList = useSelector((state) => state.user?.employeeList?.data?.data);
+  const usersList = useSelector((state) => state.user?.employeeList?.data);
   const [selected, setSelected] = useState(selectedValue ||[]);
   const [searchQuery, setSearchQuery] = useState("");
  

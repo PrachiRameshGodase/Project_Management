@@ -289,16 +289,34 @@ export const deleteTaskComment = createAsyncThunk("task/deleteTaskComment", asyn
     return rejectWithValue(error.response?.data || error.message);
   }
 });
+
+// Async thunk to fetch users list
+export const fetchcommentUsers = createAsyncThunk(
+  "project/fetchCUsersList",
+  async (filters = {}, { rejectWithValue }) => {
+    try {
+
+      const response = await axiosInstance.post(`/comment/users`, filters);
+
+      return response.data;
+    } catch (error) {
+      console.error("API Error:", error);
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
 const projectSlice = createSlice({
   name: "project",
   initialState: {
     taskCommentList: [],
     list: [],
+    userlist:[],
     projectDetails: null,
     taskList: [],
     projectTaskDetails: null,
     taskListLoading: false,
     taskDetailsLoading: false,
+    userLoading:false,
     loading: false,
     loading2: false,
 
@@ -625,6 +643,21 @@ const projectSlice = createSlice({
       })
       .addCase(deleteTaskComment.rejected, (state, action) => {
         state.commentLoading = false;
+        state.error = action.payload;
+      })
+
+      //fetch commented user list
+       // Fetch Project List
+       .addCase(fetchcommentUsers.pending, (state) => {
+        state.userLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchcommentUsers.fulfilled, (state, action) => {
+        state.userLoading = false;
+        state.userlist = action.payload;
+      })
+      .addCase(fetchcommentUsers.rejected, (state, action) => {
+        state.userLoading = false;
         state.error = action.payload;
       })
 

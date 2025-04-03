@@ -75,7 +75,7 @@ export const Dropdown001 = ({ options, selectedValue, onSelect, label, icon }) =
       setSelected(foundOption || null);
     }
   }, [selectedValue, options]);
-
+ 
   const handleOptionSelect = (value) => {
     setSelected(value); // Store full object
     onSelect(value.label); // Pass only label
