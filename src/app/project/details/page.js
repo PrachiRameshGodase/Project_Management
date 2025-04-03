@@ -55,9 +55,11 @@ const TaskList = () => {
 
   const projectLoading = useSelector((state) => state.project);
   const projectDetailData = useSelector((state) => state?.project?.projectDetails?.data);
-  const projectTaskListData = useSelector((state) => state.project?.list?.data);
+  const projectTaskListData = useSelector((state) => state.project?.taskList?.data);
   const projectTaskLoading = useSelector((state) => state.project);
-  const totalCount = useSelector((state) => state?.project?.list?.total);
+  const totalCount = useSelector((state) => state?.project?.taskList?.total);
+console.log("projectTaskListData", projectTaskListData)
+  const [dataLoading, setDataLoading] = useState(true)
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -84,7 +86,7 @@ const TaskList = () => {
   const handleStatusChange = (value) => {
    
       // Dispatch updateUserStatus with the new status
-      dispatch(updateProjectStatus({ id: itemId, status: value, router }));
+      dispatch(updateProjectStatus({ id: itemId, status: value ,dispatch, setDataLoading, project_id:Number(itemId)}));
     
   };
 
@@ -92,7 +94,7 @@ const TaskList = () => {
   const [selectedSort, setSelectedSort] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isDrawerOpen1, setIsDrawerOpen1] = useState(false);
-  const [dataLoading, setDataLoading] = useState(true)
+
 
   const [isActive, setIsActive] = useState(
     projectDetailData?.project_status || ""

@@ -108,13 +108,14 @@ export const updateStatus = createAsyncThunk("project/updateStatus", async ({ id
   }
 });
 
-export const updateProjectStatus = createAsyncThunk("project/updateProjectStatus", async ({ id, status, dispatch, setDataLoading }, { rejectWithValue }) => {
+export const updateProjectStatus = createAsyncThunk("project/updateProjectStatus", async ({ id, status, dispatch, setDataLoading,project_id }, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.post(`/project_status`, { id, status });
     if (response?.data?.success === true) {
       toast.success(response?.data?.message);
-      dispatch(fetchProjectTasks({}))
       setDataLoading(false)
+      dispatch(fetchProjectTasks({project_id}))
+      
      
       dispatch(fetchProjects()); // Refresh the list
 
@@ -469,7 +470,7 @@ const projectSlice = createSlice({
       })
       .addCase(fetchProjectTasks.fulfilled, (state, action) => {
         state.taskListLoading = false;
-        state.list = action.payload;
+        state.taskList = action.payload;
       })
       .addCase(fetchProjectTasks.rejected, (state, action) => {
         state.taskListLoading = false;
@@ -518,8 +519,16 @@ const projectSlice = createSlice({
         state.taskListLoading = false;
         // Update the user status in the list
         const updatedUser = action.payload;
+       
+        if (!Array.isArray(state.taskList)) {
+          state.taskList = []; // Initialize as empty array if it's not already an array
+        }
+
+        // Update the list
         state.taskList = state.taskList.map(user =>
-          user.id === updatedUser.id ? { ...user, status: updatedUser.status } : user
+          user.id === updatedUser.id
+            ? { ...user,  status: updatedUser.status }
+            : user
         );
       })
       .addCase(updateTaskStatus.rejected, (state, action) => {
@@ -536,8 +545,17 @@ const projectSlice = createSlice({
         state.taskListLoading = false;
         // Update the user status in the list
         const updatedUser = action.payload;
+       
+        
+        if (!Array.isArray(state.taskList)) {
+          state.taskList = []; // Initialize as empty array if it's not already an array
+        }
+
+        // Update the list
         state.taskList = state.taskList.map(user =>
-          user.id === updatedUser.id ? { ...user, priority: updatedUser.priority } : user
+          user.id === updatedUser.id
+            ? { ...user,  priority: updatedUser.priority }
+            : user
         );
       })
       .addCase(updateTaskPriority.rejected, (state, action) => {
