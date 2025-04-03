@@ -83,11 +83,27 @@ export const updateUserStatus = createAsyncThunk(
   }
 );
 
+
+//user limited
+export const fetchUsersProjects = createAsyncThunk(
+  "users/fetchUsersList",
+  async (filters = {}, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.post(`/user/limitedUser`, filters);
+      return response.data;
+    } catch (error) {
+      console.error("API Error:", error);
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "users",
   initialState: {
     clientList: [], 
     employeeList: [],
+    limitedList:[],
     userDetails: null,
     listLoading:false,
     loading: false,
@@ -164,7 +180,24 @@ const userSlice = createSlice({
       .addCase(updateUserStatus.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      })
+
+      
+      // Fetch Users (Separate Clients & Employees)
+      .addCase(fetchUsersProjects.pending, (state) => {
+        state.listLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchUsersProjects.fulfilled, (state, action) => {
+        state.listLoading = false;
+        
+          state.limitedList = action.payload; // Store clients separately
+       
+      })
+      .addCase(fetchUsersProjects.rejected, (state, action) => {
+        state.listLoading = false;
+        state.error = action.payload;
+      })
   },
 });
 

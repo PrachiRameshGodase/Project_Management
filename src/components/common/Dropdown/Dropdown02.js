@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { ChevronDown, ChevronUp, X, Search } from "lucide-react";
 import { OutsideClick } from "../OutsideClick/OutsideClick"; // Ensure this is properly implemented
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUsers } from "@/app/store/userSlice";
+import { fetchUsers, fetchUsersProjects } from "@/app/store/userSlice";
 import { useDebounceSearch } from "../Helper/HelperFunction";
 
 export const Dropdown02 = ({ options, selectedValues, onSelect, label, icon }) => {
@@ -246,3 +246,125 @@ export const Dropdown002 = ({ selectedValue, onSelect, label, project_id }) => {
   );
 };
 
+export const Dropdown0023 = ({ selectedValue, onSelect, label, project_id }) => {
+  
+  const dropdownOutsideClick = OutsideClick();
+  const dispatch = useDispatch();
+  const usersList = useSelector((state) => state.user?.limitedList?.members);
+  const [selected, setSelected] = useState(selectedValue ||[]);
+  const [searchQuery, setSearchQuery] = useState("");
+ 
+  
+   // Debounce function for search
+   const debouncedSearch = useDebounceSearch(() => {
+    dispatch(fetchUsersProjects({ is_employee: 1, search: searchQuery, project_id:project_id , status:0}));
+  }, 800);
+
+  // Trigger API call when searchQuery changes, but with debounce
+  useEffect(() => {
+    debouncedSearch();
+    
+  }, [searchQuery, project_id]);
+
+  const handleOptionSelect = (option) => {
+    setSelected((prev = []) => { // Ensure prev is an array
+      const isAlreadySelected = Array.isArray(prev) && prev?.some((user) => user?.id === option?.id);
+      const updatedSelection = isAlreadySelected
+        ? prev?.filter((user) => user?.id !== option?.id)
+        : [...prev, option];
+  
+      onSelect(updatedSelection.map((user) => user.id));
+      return updatedSelection;
+    });
+  };
+  
+  
+
+  const removeSelected = (id) => {
+    const updatedSelection = selected?.filter((user) => user.id !== id);
+    setSelected(updatedSelection);
+    onSelect(updatedSelection.map((user) => user.id)); // Ensure only IDs are passed
+  };
+  
+  useEffect(() => {
+   
+  
+    if (
+      Array.isArray(selectedValue) &&
+      selectedValue.length > 0 &&
+      usersList?.length > 0
+    ) {
+      const selectedUsers = usersList?.filter((user) => selectedValue?.includes(user.id));
+  
+      if (JSON.stringify(selectedUsers) !== JSON.stringify(selected)) {
+        setSelected(selectedUsers);
+      }
+    }
+  }, [selectedValue, usersList]);
+  
+  
+  
+
+  return (
+    <div className="relative w-[310px] sm:w-[350px] md:w-[400px]" ref={dropdownOutsideClick?.ref}>
+      <div
+        className="h-auto min-h-10 flex items-center gap-2 border border-gray-400 rounded-lg px-3 py-2 cursor-pointer w-full flex-wrap"
+        ref={dropdownOutsideClick?.buttonRef}
+        onClick={dropdownOutsideClick?.handleToggle}
+      >
+        <div className="flex items-center gap-2 flex-wrap">
+          {selected?.length > 0 ? (
+            selected?.map((user, index) => (
+              <div key={user?.id || `option-${index}`} className="flex items-center bg-gray-200 rounded-md px-2 py-1">
+                {user?.name}
+                <span
+                  className="w-4 h-4 ml-2 cursor-pointer text-gray-500 hover:text-gray-700"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    removeSelected(user.id);
+                  }}
+                >
+                  ✕
+                </span>
+              </div>
+            ))
+          ) : (
+            <span className="text-gray-400">{label}</span>
+          )}
+        </div>
+        <div className="ml-auto cursor-pointer" onClick={dropdownOutsideClick?.handleToggle}>
+          {dropdownOutsideClick?.isOpen ? <ChevronUp className="w-4 h-4 text-gray-500" /> : <ChevronDown className="w-4 h-4 text-gray-500" />}
+        </div>
+      </div>
+      {dropdownOutsideClick?.isOpen && (
+        <div className="absolute top-[100%] mt-1 bg-white shadow-lg border border-gray-200 rounded-lg w-full z-50 mb-4">
+          <div className="flex items-center border-b border-gray-400 px-3 py-2">
+            <Search className="w-4 h-4 text-gray-500 mr-2" />
+            <input
+              type="text"
+              className="w-full outline-none text-sm"
+              placeholder="Search..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+          <ul className="max-h-60 overflow-y-auto">
+            {usersList?.length > 0 ? (
+              usersList?.map((option,index) => (
+                <li
+                  key={option?.id || `option-${index}`}
+                  className={`flex px-4 py-2 hover:bg-gray-100 cursor-pointer ${selected?.some((user) => user?.id === option?.id) ? "bg-gray-200" : ""}`}
+                  onClick={() => handleOptionSelect(option)}
+                >
+                  {option?.name}
+                </li>
+              ))
+            ) : (
+              <p className="px-4 py-2 text-gray-500 text-sm">No results found</p>
+            )}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+};
