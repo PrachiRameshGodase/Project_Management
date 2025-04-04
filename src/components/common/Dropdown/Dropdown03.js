@@ -42,7 +42,7 @@ export const Dropdown03 = ({ options, selectedValue, onSelect, label, icon }) =>
         <div className="flex items-center gap-2">
           {icon}
           <span className={`text-gray-400 ${selected ? "text-gray-700" : ""}`}>
-            {selected ? `${selected?.first_name} ${selected?.last_name}` : label}
+            {selected ? `${selected?.name}` : label}
           </span>
         </div>
 
@@ -81,7 +81,7 @@ export const Dropdown03 = ({ options, selectedValue, onSelect, label, icon }) =>
                     }`}
                   onClick={() => handleOptionSelect(option)}
                 >
-                  {`${option?.first_name} ${option?.last_name}`}
+                  {`${option?.name}`}
                 </li>
               ))
             ) : (

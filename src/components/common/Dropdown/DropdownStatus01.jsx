@@ -18,7 +18,7 @@ const DropdownStatus01 = ({
 
   const handleOptionSelect = (value) => {
     const newValue = value === "All" ? "" : value; // Convert "All" to an empty string
-    setDataLoading(false)
+    // setDataLoading(false)
     onSelect(newValue);
     setSelected(newValue);
     dropdownOutsideClick.handleToggle();
@@ -35,6 +35,8 @@ const DropdownStatus01 = ({
         return "#008053"; // Green
       case "Under Review":
         return "#0D4FA7"; // Blue
+      case "On Hold":
+        return "#D62828";
       default:
         return "gray"; // Default color
     }

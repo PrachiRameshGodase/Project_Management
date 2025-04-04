@@ -3,8 +3,8 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export const status=["All", "Active", "Inactive"]
-export const statusProject = [ "To Do","In Progress", "Under Review", 'Completed']
-export const statusProject2 = ["All", "To Do","In Progress", "Under Review", 'Completed']
+export const statusProject = [ "To Do","In Progress", "Under Review", 'Completed', 'On Hold']
+export const statusProject2 = ["All", "To Do","In Progress", "Under Review", 'Completed', 'On Hold']
 
 export const designation = ["Manager", "Team Lead", "Tester", "Jr. Developer", "Sr. Developer"];
 export const designationFilter = ["All","Manager", "Team Lead", "Tester", "Jr. Developer", "Sr. Developer"];
