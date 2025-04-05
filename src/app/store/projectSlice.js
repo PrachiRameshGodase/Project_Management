@@ -42,9 +42,9 @@ export const fetchProjects = createAsyncThunk(
 
 
 // Async thunk to fetch user details by ID
-export const fetchProjectDetails = createAsyncThunk("project/fetchDetails", async (projectId, { rejectWithValue }) => {
+export const fetchProjectDetails = createAsyncThunk("project/fetchDetails", async (id, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.post(`/project/details`, { id: projectId });
+    const response = await axiosInstance.post(`/project/details`, { id });
     return response.data;
   } catch (error) {
     return rejectWithValue(error.response?.data || error.message);
@@ -95,12 +95,14 @@ export const fetchProjectTasks = createAsyncThunk(
 );
 
 // Async thunk to fetch user details by ID
-export const updateStatus = createAsyncThunk("project/updateStatus", async ({ id, project_status, router }, { rejectWithValue }) => {
+export const updateStatus = createAsyncThunk("project/updateStatus", async ({ id, project_status, dispatch, setDataLoading }, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.post(`/project/status`, { id, project_status });
     if (response?.data?.success === true) {
       toast.success(response?.data?.message);
-      router.push("/project/list"); // Navigate on success
+      setDataLoading(false)
+      dispatch(fetchProjectDetails(id))
+      // router.push("/project/list"); // Navigate on success
     }
     return response.data;
   } catch (error) {
@@ -108,15 +110,15 @@ export const updateStatus = createAsyncThunk("project/updateStatus", async ({ id
   }
 });
 
-export const updateProjectStatus = createAsyncThunk("project/updateProjectStatus", async ({ id, status, dispatch, setDataLoading,project_id }, { rejectWithValue }) => {
+export const updateProjectStatus = createAsyncThunk("project/updateProjectStatus", async ({ id, status, dispatch, setDataLoading, project_id }, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.post(`/project_status`, { id, status });
     if (response?.data?.success === true) {
       toast.success(response?.data?.message);
       setDataLoading(false)
-      dispatch(fetchProjectTasks({project_id}))
-      
-     
+      dispatch(fetchProjectTasks({ project_id }))
+
+
       dispatch(fetchProjects()); // Refresh the list
 
     }
@@ -172,12 +174,13 @@ export const updateTaskStatus = createAsyncThunk("task/updateTaskStatus", async 
   try {
     const response = await axiosInstance.post(`/task/status`, { id, status, project_id });
     if (response?.data?.success === true) {
-      dispatch(fetchProjectTasks({ project_id: project_id, id: id }))
       setDataLoading(false)
-      dispatch(fetchProjectTaskDetails(id))
       dispatch(fetchProjectDetails(project_id))
+      // toast.success(response?.data?.message);
+      // router.push("/project/list"); // Navigate on success
 
     }
+    return response.data;
     return response.data;
   } catch (error) {
     return rejectWithValue(error.response?.data || error.message);
@@ -189,9 +192,7 @@ export const updateTaskPriority = createAsyncThunk("task/updateTaskPriority", as
     const response = await axiosInstance.post(`/task/priority`, { id, priority, project_id });
     if (response?.data?.success === true) {
       setDataLoading(false)
-      dispatch(fetchProjectTasks({ project_id: project_id, id: id }))
 
-      dispatch(fetchProjectTaskDetails(id))
       dispatch(fetchProjectDetails(project_id))
 
     }
@@ -216,11 +217,36 @@ export const fetchTaskComment = createAsyncThunk(
   }
 );
 
+export const taskDelete = createAsyncThunk(
+  "task/taskDeletes",
+  async ({ id, dispatch, project_id, setDataLoading }, { rejectWithValue }) => {
+    try {
+
+      const response = await axiosInstance.post(`/task/rolledback`, { id: id });
+      if (response?.data?.success) {
+        toast.success("Task deleted successfully");
+        setDataLoading(false)
+        dispatch(fetchProjectTasks({project_id:project_id}))
+
+
+        return response.data;
+      } else {
+        toast.error(response?.data?.message || "Failed to delete");
+        return rejectWithValue(response?.data);
+      }
+
+
+    } catch (error) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
 export const updateProjectGithubFrontend = createAsyncThunk("task/updateProjectGithubFronted", async ({ id, github_frontend_date, dispatch, setDataLoading }, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.post(`/project/github_frontend_date`, { id, github_frontend_date });
     if (response?.data?.success === true) {
-      // setDataLoading(false)
+      setDataLoading(false)
       dispatch(fetchProjects())
 
 
@@ -278,11 +304,12 @@ export const addTaskComment = createAsyncThunk(
 
 
 
-export const deleteTaskComment = createAsyncThunk("task/deleteTaskComment", async ({ id, project_id, task_id, dispatch }, { rejectWithValue }) => {
+export const deleteTaskComment = createAsyncThunk("task/deleteTaskComment", async ({ id, project_id, task_id, dispatch ,setDataLoading}, { rejectWithValue }) => {
   try {
     const response = await axiosInstance.post(`/comment/destroy`, { id });
     if (response?.data?.success === true) {
       // toast.success(response?.data?.message);
+      setDataLoading(false)
       dispatch(fetchTaskComment({ project_id, task_id }))
     }
     return response.data;
@@ -311,15 +338,19 @@ const projectSlice = createSlice({
   initialState: {
     taskCommentList: [],
     list: [],
-    userlist:[],
+    userlist: [],
     projectDetails: null,
+    detailLoading: false,
     taskList: [],
     projectTaskDetails: null,
     taskListLoading: false,
     taskDetailsLoading: false,
-    userLoading:false,
+    taskDeleteLoading: false,
+    projectGitLoading: false,
+    userLoading: false,
     loading: false,
     loading2: false,
+    commentdLoading: false,
 
     commentLoading: false,
 
@@ -341,7 +372,6 @@ const projectSlice = createSlice({
       })
       .addCase(addProject.fulfilled, (state, action) => {
         state.loading = false;
-        state.successMessage = "Project added successfully!";
         state.list.push(action.payload);
       })
       .addCase(addProject.rejected, (state, action) => {
@@ -364,15 +394,15 @@ const projectSlice = createSlice({
 
       // Fetch project Details
       .addCase(fetchProjectDetails.pending, (state) => {
-        state.loading = true;
+        state.detailLoading = true;
         state.error = null;
       })
       .addCase(fetchProjectDetails.fulfilled, (state, action) => {
-        state.loading = false;
+        state.detailLoading = false;
         state.projectDetails = action.payload;
       })
       .addCase(fetchProjectDetails.rejected, (state, action) => {
-        state.loading = false;
+        state.detailLoading = false;
         state.error = action.payload;
       })
 
@@ -409,12 +439,12 @@ const projectSlice = createSlice({
       .addCase(updateStatus.fulfilled, (state, action) => {
         state.loading = false;
         const updatedUser = action.payload;
-      
+
         // Ensure state.list is an array before mapping
         if (!Array.isArray(state.list)) {
           state.list = [];
         }
-      
+
         state.list = state.list.map(user =>
           user.id === updatedUser.id ? { ...user, project_status: updatedUser.project_status } : user
         );
@@ -456,7 +486,7 @@ const projectSlice = createSlice({
       })
       .addCase(addProjectTask.fulfilled, (state, action) => {
         state.loading = false;
-        state.taskList.push(action.payload);
+        // state.taskList.push(action.payload);
       })
       .addCase(addProjectTask.rejected, (state, action) => {
         state.loading = false;
@@ -474,6 +504,32 @@ const projectSlice = createSlice({
       })
       .addCase(fetchProjectTasks.rejected, (state, action) => {
         state.taskListLoading = false;
+        state.error = action.payload;
+      })
+      //task delete
+      // Handle Update task github frontend
+      .addCase(taskDelete.pending, (state) => {
+        state.taskDeleteLoading = true;
+        state.error = null;
+      })
+      .addCase(taskDelete.fulfilled, (state, action) => {
+        state.taskDeleteLoading = false;
+        const updatedUser = action.payload;
+
+        // // Ensure state.list is an array before mapping
+        // if (!Array.isArray(state.list)) {
+        //   state.list = []; // Initialize as empty array if it's not already an array
+        // }
+
+        // // Update the list
+        // state.list = state.list.map(user =>
+        //   user.id === updatedUser.id
+        //     ? { ...user, github_backend_date: updatedUser?.github_backend_date }
+        //     : user
+        // );
+      })
+      .addCase(taskDelete.rejected, (state, action) => {
+        state.taskDeleteLoading = false;
         state.error = action.payload;
       })
 
@@ -518,18 +574,10 @@ const projectSlice = createSlice({
       .addCase(updateTaskStatus.fulfilled, (state, action) => {
         state.taskListLoading = false;
         // Update the user status in the list
-        const updatedUser = action.payload;
-       
-        if (!Array.isArray(state.taskList)) {
-          state.taskList = []; // Initialize as empty array if it's not already an array
-        }
 
-        // Update the list
-        state.taskList = state.taskList.map(user =>
-          user.id === updatedUser.id
-            ? { ...user,  status: updatedUser.status }
-            : user
-        );
+
+
+
       })
       .addCase(updateTaskStatus.rejected, (state, action) => {
         state.taskListLoading = false;
@@ -543,20 +591,7 @@ const projectSlice = createSlice({
       })
       .addCase(updateTaskPriority.fulfilled, (state, action) => {
         state.taskListLoading = false;
-        // Update the user status in the list
-        const updatedUser = action.payload;
-       
-        
-        if (!Array.isArray(state.taskList)) {
-          state.taskList = []; // Initialize as empty array if it's not already an array
-        }
 
-        // Update the list
-        state.taskList = state.taskList.map(user =>
-          user.id === updatedUser.id
-            ? { ...user,  priority: updatedUser.priority }
-            : user
-        );
       })
       .addCase(updateTaskPriority.rejected, (state, action) => {
         state.taskListLoading = false;
@@ -566,51 +601,53 @@ const projectSlice = createSlice({
 
       // Handle Update post github frontend
       .addCase(updateProjectGithubFrontend.pending, (state) => {
-        state.list = true;
+        state.projectGitLoading = true;
         state.error = null;
       })
       .addCase(updateProjectGithubFrontend.fulfilled, (state, action) => {
+        state.projectGitLoading = false;
         const updatedUser = action.payload;
 
-        // Ensure state.list is an array before mapping
-        if (!Array.isArray(state.list)) {
-          state.list = []; // Initialize as empty array if it's not already an array
-        }
+        // // Ensure state.list is an array before mapping
+        // if (!Array.isArray(state.list)) {
+        //   state.list = []; // Initialize as empty array if it's not already an array
+        // }
 
-        // Update the list
-        state.list = state.list.map(user =>
-          user.id === updatedUser.id
-            ? { ...user, github_frontend_date: updatedUser?.github_frontend_date }
-            : user
-        );
+        // // Update the list
+        // state.list = state.list.map(user =>
+        //   user.id === updatedUser.id
+        //     ? { ...user, github_frontend_date: updatedUser?.github_frontend_date }
+        //     : user
+        // );
       })
       .addCase(updateProjectGithubFrontend.rejected, (state, action) => {
-        state.list = false;
+        state.projectGitLoading = false;
         state.error = action.payload;
       })
 
       // Handle Update task github frontend
       .addCase(updateProjectGithubBackend.pending, (state) => {
-        state.list = true;
+        state.projectGitLoading = true;
         state.error = null;
       })
       .addCase(updateProjectGithubBackend.fulfilled, (state, action) => {
+        state.projectGitLoading = false;
         const updatedUser = action.payload;
 
-        // Ensure state.list is an array before mapping
-        if (!Array.isArray(state.list)) {
-          state.list = []; // Initialize as empty array if it's not already an array
-        }
+        // // Ensure state.list is an array before mapping
+        // if (!Array.isArray(state.list)) {
+        //   state.list = []; // Initialize as empty array if it's not already an array
+        // }
 
-        // Update the list
-        state.list = state.list.map(user =>
-          user.id === updatedUser.id
-            ? { ...user, github_backend_date: updatedUser?.github_backend_date }
-            : user
-        );
+        // // Update the list
+        // state.list = state.list.map(user =>
+        //   user.id === updatedUser.id
+        //     ? { ...user, github_backend_date: updatedUser?.github_backend_date }
+        //     : user
+        // );
       })
       .addCase(updateProjectGithubBackend.rejected, (state, action) => {
-        state.list = false;
+        state.projectGitLoading = false;
         state.error = action.payload;
       })
 
@@ -622,10 +659,8 @@ const projectSlice = createSlice({
       })
       .addCase(addTaskComment.fulfilled, (state, action) => {
         state.commentLoading = false;
-        if (!Array.isArray(state.taskCommentList)) {
-          state.taskCommentList = []; // Initialize it as an empty array if it's not already an array
-        }
-        state.taskCommentList.push(action.payload)
+        
+        // state.taskCommentList.push(action.payload)
       })
       .addCase(addTaskComment.rejected, (state, action) => {
         state.commentLoading = false;
@@ -648,25 +683,25 @@ const projectSlice = createSlice({
 
       // Handle Delete Task Comment
       .addCase(deleteTaskComment.pending, (state) => {
-        state.commentLoading = true;
+        state.commentdLoading = true;
         state.error = null;
       })
       .addCase(deleteTaskComment.fulfilled, (state, action) => {
-        state.commentLoading = false;
-        if (!Array.isArray(state.taskCommentList)) {
-          state.taskCommentList = []; // Initialize as an empty array if it's not already an array
-        }
-       const updatedUser = action.payload;
-       state.taskCommentList = state.taskCommentList.map(user =>user.id === updatedUser.id? { ...user, id: updatedUser.id } : user);
+        state.commentdLoading = false;
+        // if (!Array.isArray(state.taskCommentList)) {
+        //   state.taskCommentList = []; // Initialize as an empty array if it's not already an array
+        // }
+        // const updatedUser = action.payload;
+        // state.taskCommentList = state.taskCommentList.map(user => user.id === updatedUser.id ? { ...user, id: updatedUser.id } : user);
       })
       .addCase(deleteTaskComment.rejected, (state, action) => {
-        state.commentLoading = false;
+        state.commentdLoading = false;
         state.error = action.payload;
       })
 
       //fetch commented user list
-       // Fetch Project List
-       .addCase(fetchcommentUsers.pending, (state) => {
+      // Fetch Project List
+      .addCase(fetchcommentUsers.pending, (state) => {
         state.userLoading = true;
         state.error = null;
       })

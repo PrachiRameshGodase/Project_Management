@@ -164,7 +164,7 @@ const AddUser = () => {
                   type="text"
                   name="first_name"
                   placeholder="Enter First Name"
-                  value={formData.first_name}
+                  value={formData.first_name ??""}
                   onChange={handleChange}
                   autoComplete="off"
                 />
@@ -184,7 +184,7 @@ const AddUser = () => {
                 type="text"
                 name="last_name"
                 placeholder="Enter Last Name"
-                value={formData.last_name}
+                value={formData.last_name ??""}
                 onChange={handleChange}
                 autoComplete="off"
               />
@@ -212,7 +212,7 @@ const AddUser = () => {
                   type="email"
                   name="email"
                   placeholder="Enter Email"
-                  value={formData.email}
+                  value={formData.email ??""}
                   onChange={handleChange}
                   autoComplete="off"
                 />
@@ -234,7 +234,7 @@ const AddUser = () => {
                   type={showPassword ? "text" : "password"}
                   name="password"
                   placeholder="Enter Password"
-                  value={formData?.password}
+                  value={formData?.password ??""}
                   onChange={handleChange}
                   autoComplete="new-password"
                 />
@@ -268,7 +268,7 @@ const AddUser = () => {
                 type="text"
                 name="phone_number"
                 placeholder="Enter Phone Number"
-                value={formData.phone_number}
+                value={formData.phone_number ??""}
                 onChange={handleChange}
                 autoComplete='off'
               />

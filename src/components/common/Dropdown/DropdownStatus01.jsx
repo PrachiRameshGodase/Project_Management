@@ -18,7 +18,7 @@ const DropdownStatus01 = ({
 
   const handleOptionSelect = (value) => {
     const newValue = value === "All" ? "" : value; // Convert "All" to an empty string
-    // setDataLoading(false)
+    setDataLoading(false)
     onSelect(newValue);
     setSelected(newValue);
     dropdownOutsideClick.handleToggle();

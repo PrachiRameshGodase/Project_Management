@@ -145,10 +145,11 @@ const ProjectList = () => {
           {/* Right Section (Filters & Search) */}
           <div className="gap-6 hidden items-center md:flex">
             <Dropdown01 options={view} selectedValue={selectedView} onSelect={setSelectedView} label="View" icon={OtherIcons.view_svg} />
-            {selectedView == "List" && <><Dropdown01 options={statusProject2} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />
-              <Dropdown01 options={projectPriority2} selectedValue={selectedPriority} onSelect={setSelectedPriority} label="Priority" icon={OtherIcons.user_svg} />
-              <SearchComponent onSearch={onSearch} placeholder="Search By Using Project Name, Client Name.." section={searchTrigger} />
-            </>}
+            {/* {selectedView == "List" && <> */}
+            <Dropdown01 options={statusProject2} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />
+            <Dropdown01 options={projectPriority2} selectedValue={selectedPriority} onSelect={setSelectedPriority} label="Priority" icon={OtherIcons.user_svg} />
+            <SearchComponent onSearch={onSearch} placeholder="Search By Using Project Name, Client Name.." section={searchTrigger} />
+            {/* </>} */}
 
             <div className="bg-gray-400 h-[40px] w-[1px] opacity-40" />
             <Tooltip title='Add Project' arrow disableInteractive>
@@ -213,7 +214,7 @@ const ProjectList = () => {
         {selectedView == "List" && (
           <>
             <div className="max-w-full mt-6 overflow-x-auto">
-
+              {(projectLoading?.loading || projectLoading?.projectGitLoading) && !dataLoading && <ScreenFreezeLoader />}
               {(projectLoading?.loading && dataLoading) ? (
                 <TableSkeleton rows={7} columns={6} />
               ) : (
@@ -260,16 +261,21 @@ const ProjectList = () => {
                           <TruncatedTooltipText text={item?.client?.name || ""} maxLength={15} onClick={() => router.push(`/project/details?id=${item?.id}`)} />
 
                         </td>
-                        <td className="rounded text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[14px] text-gray-700">
+                        <td className="rounded text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[14px] text-gray-700" onClick={() => router.push(`/project/details?id=${item?.id}`)}>
                           {item?.status ? (
-                            <DropdownStatus01
-                              options={statusProject}
-                              selectedValue={item?.status}
-                              onSelect={(value) => handleStatusChange(value, item?.id)}
-                              label="Status"
-                              className="w-[140px]"
-                              setDataLoading={setDataLoading}
-                            />
+                            <span
+                              className={`px-3 py-1 border rounded-md inline-block text-[12px]
+        ${item.status === "To Do"
+                                  ? "text-[#6C757D] border-[#6C757D]"
+                                  : item.status === "In progress"
+                                    ? "text-[#CA9700] border-[#CA9700]"
+                                    : item.status === "Completed"
+                                      ? "text-[#008053] border-[#008053]"
+                                      : "text-[#0D4FA7] border-[#0D4FA7]"
+                                }`}
+                            >
+                              {item?.status}
+                            </span>
                           ) : (
                             "" // Placeholder for empty status
                           )}
@@ -311,20 +317,29 @@ const ProjectList = () => {
                         {/* <td className="text-[12px] px-2 py-2 sm:px-4 sm:py-3 sm:text-[15px] text-gray-700" onClick={() => router.push(`/project/details?id=${item?.id}`)}>
                           <TruncatedTooltipText text={item?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")} maxLength={25} onClick={() => router.push(`/project/details?id=${item?.id}`)} />
                         </td> */}
-                        <td className={`py-2 sm:py-3 px-2 sm:px-4 text-[12px] sm:text-[15px] text-gray-700`} >
+                        <td
+                          className={`py-2 sm:py-3 px-2 sm:px-4 text-[12px] sm:text-[15px] text-gray-700`}
+                          onClick={() => router.push(`/project/details?id=${item?.id}`)}
+                        >
                           {item?.priority ? (
-                            <DropdownPriority
-                              options={projectPriority}
-                              selectedValue={item?.priority ? item.priority.charAt(0).toUpperCase() + item.priority.slice(1) : ""}
-                              onSelect={(value) => handlePriorityChange(value, item?.id)}
-                              label="Priority"
-                              className="w-[90px]"
-                              setDataLoading={setDataLoading}
-                            />
+                            <span
+                              className={`px-3 py-1 border rounded-md inline-block text-[12px]
+        ${item.priority === "High"
+                                  ? "text-red-400 border-red-400"
+                                  : item.priority === "Medium"
+                                    ? "text-[#0D4FA7] border-[#0D4FA7]"
+                                    : item.priority === "Low"
+                                      ? "text-[#2c94ae] border-[#2c94ae]"
+                                      : "text-[#0D4FA7] border-[#0D4FA7]"
+                                }`}
+                            >
+                              {item?.priority || ""}
+                            </span>
                           ) : (
-                            "" // Placeholder for empty status
+                            ""
                           )}
                         </td>
+
                         <td className="py-2 sm:py-3 px-2 sm:px-4 text-[12px] sm:text-[15px] text-gray-700">
                           <DatePickerWithIcon
                             date={item?.github_frontend_date ? new Date(item?.github_frontend_date).toISOString().split("T")[0] : ""}
@@ -385,14 +400,14 @@ const ProjectList = () => {
 
                       />
                     </p>
-                 
-                    <p className={`font-[400] text-[12px] leading-[16.8px] border rounded flex items-center justify-center ${item.status === 'To Do'
+
+                    {item?.status ? <p className={`font-[400] text-[12px] leading-[16.8px] border rounded flex items-center justify-center ${item.status === 'To Do'
                       ? 'text-[#6C757D] border-[#6C757D]  w-[50px] h-[20px]'
                       : item?.status === 'In progress' ?
                         'text-[#CA9700] border-[#CA9700]  w-[90px] h-[20px]' : item?.status === 'Completed' ? 'text-[#008053] border-[#008053]  w-[90px] h-[20px]' : 'text-[#0D4FA7] border-[#0D4FA7]  w-[90px] h-[20px]'
                       }`}>
                       {item?.status}
-                    </p>
+                    </p> : ""}
                   </div>
                   <div className="flex justify-between items-center mb-2">
                     <ul className="flex flex-col w-[150px] gap-1">
@@ -440,11 +455,11 @@ const ProjectList = () => {
                     <ul className="flex flex-col gap-1 mr-[15px]">
 
                       <li className="text-[14px] text-gray-400">Priority</li>
-                      {item?.priority && (
+                      {item?.priority ? (
                         <li className={`flex text-[14px]  text-gray-800 items-center justify-center  ${item.priority == 'high'
                           ? 'text-[#355cc6]' : item?.priority == 'low' ?
                             'text-red-400' : 'text-[#b13fdb]'
-                          }`}>{item?.priority?.charAt(0).toUpperCase() + item?.priority?.slice(1)}</li>)}
+                          }`}>{item?.priority || ""}</li>) : ""}
                     </ul>
                   </div>
                   <div className="h-[39px] w-[270px]">

@@ -191,7 +191,7 @@ const MasterDetails = () => {
 
                         <div className="max-w-full  overflow-x-auto mt-6 h-[calc(100vh+20px)] overflow-y-auto">
                             {(masterLoading?.taskListLoading && dataLoading) ? (
-                                <TableSkeleton rows={7} columns={5} />
+                                <TableSkeleton rows={7} columns={4} />
 
                             ) : (
                                 <table className="w-full border-spacing-y-1 min-w-[1000px] border-2 border-transparent ">

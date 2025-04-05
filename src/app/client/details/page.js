@@ -2,6 +2,7 @@
 import { fetchUserDetails, updateUserStatus } from '@/app/store/userSlice';
 import { OtherIcons } from '@/assests/icons';
 import Loader from '@/components/common/Loader/Loader';
+import TruncatedTooltipText from '@/components/common/TruncatedTooltipText/TruncatedTooltipText';
 import UserAvatar from '@/components/common/UserAvatar/UserAvatar';
 import LayOut from '@/components/LayOut';
 import { Check, CircleX, X } from 'lucide-react';
@@ -74,7 +75,7 @@ const ClientDetails = () => {
     const handleClose = () => {
         router.push(`/client/list`)
         // localStorage.removeItem("itemId", itemId2)
-      }
+    }
     return (
         <>{usersLoading?.loading ? (<Loader />) : <LayOut>
             <div className="flex justify-end absolute right-3 top-[90px]">
@@ -133,9 +134,9 @@ const ClientDetails = () => {
                         </button>
                     </div>
                 </div>
-                <div className="p-4 mt-16 sm:mt-0 flex flex-col gap-4 xl:gap-6  xl:flex-row items-start justify-between px-2">
+                <div className="p-4 mt-16 sm:mt-0 flex flex-col gap-[100px] xl:gap-[200px]  xl:flex-row items-start  px-2">
                     {/* Avatar Section */}
-                    <div className="sm:w-full h-[69px] flex items-center gap-[20px] mt-6">
+                    <div className="h-[69px] flex items-center gap-[20px] mt-6">
                         <UserAvatar name={user.name} dotcolor='purple' size={66} image={user.image} isActive={user.isActive} />
                         <div className=" text-xl text-gray-700">
                             <p className="font-medium flex w-full ">{userDetailData?.name || ""}</p>
@@ -144,40 +145,25 @@ const ClientDetails = () => {
                     </div>
 
                     {/* User Information Section */}
-                    <div className="md:flex  flex-row gap-4 mt-4">
-                        <ul className="flex flex-col space-y-1">
-                            <li className=" w-fit sm:w-full h-[24px] flex items-center mt-3 mb-3">
-                                <span className=" h-[24px] opacity-90 text-[20px]">Contact Person</span>
+                    <div className="md:flex  flex-row mt-6">
+                        <ul className="flex flex-row mt-4 w-full gap-[100px]">
+                          
+                            <li className="w-fit h-[24px] flex items-center gap-6">
+                                <span className=" h-[24px] opacity-70">Email</span>
+                                <span>:</span>
+                                <span className=" h-[23px]">{userDetailData?.email || ""}</span>
                             </li>
-                            {/* <li className="w-fit sm:w-[367px] h-[24px] flex items-center">
-                                <span className="sm:w-[130px] h-[24px] opacity-50">Name:</span>
-                                <span className="sm:w-[183px] h-[23px] ml-[35px]">{userDetailData?.name || ""}</span>
-                            </li> */}
-                            <li className="sm:w-full h-[24px] flex mb-4">
-                                <span className="sm:w-[180px] h-[24px] opacity-70">Contact Person Name:</span>
-                                <span className="sm:w-[183px] h-[23px]">{userDetailData?.contact_name}</span>
+
+                            <li className="w-fit h-[24px] flex gap-6">
+                                <span className=" h-[24px] opacity-70">Contact Person Name</span>
+                                <span>:</span>
+                                <span className=" h-[23px]">{userDetailData?.contact_name}</span>
                             </li>
-                            <li className="sm:w-[367px] h-[24px] flex items-center mt-4" style={{marginTop:"15px"}}>
-                                <span className="sm:w-[180px] h-[24px] opacity-70">Client ID:</span>
-                                <span className="sm:w-[183px] h-[23px]">{userDetailData?.client_id || ""}</span>
-                            </  li>
+
 
                         </ul>
 
-                        <ul className="flex  flex-col space-y-1">
-                            <li className="sm:w-[367px] h-[24px] flex items-center mt-3 mb-3">
 
-                            </li>
-                            <li className="sm:w-[367px] h-[24px] flex items-center">
-                                <span className="sm:w-[114px] h-[24px] opacity-70">Email:</span>
-                                <span className="sm:w-[183px] h-[23px]">{userDetailData?.email || ""}</span>
-                            </li>
-                            {/* <li className="sm:w-[367px] h-[24px] flex items-center">
-                                <span className="sm:w-[114px] h-[24px] opacity-70">Client ID:</span>
-                                <span className="sm:w-[183px] h-[23px]">{userDetailData?.client_id || ""}</span>
-                            </  li> */}
-
-                        </ul>
                     </div>
                 </div>
 
@@ -193,20 +179,20 @@ const ClientDetails = () => {
                         {visibleProjects?.map((item, index) => (
                             <div
                                 key={item?.id}
-                                className="w-[100%] h-[150px] border border-gray-300 rounded-[8.93px] p-4 shadow-md hover:shadow-lg transition-all"
+                                className="w-[100%] h-[120px] border border-gray-300 rounded-[8.93px] p-4 shadow-md hover:shadow-lg transition-all"
                             >
                                 <div className='flex justify-between'>
                                     <p className="text-[18px] leading-[24.3px] tracking-[-3%] text-gray-800">
                                         {item?.project_name || ""}
                                     </p>
-                                    <p
-                                        className={`px-2  border rounded-md text-[13px] ${item?.priority === 'high'
-                                            ? 'text-[#4976F4] border-[#4976F4]' : item?.priority === 'low' ?
+                                    {item?.priority ? <p
+                                        className={`px-2  border rounded-md text-[13px] ${item?.priority === 'High'
+                                            ? 'text-[#4976F4] border-[#4976F4]' : item?.priority === 'Low' ?
                                                 'text-red-400 border-red-400' : 'text-[#954BAF] border-[#954BAF] h-[20px] w-[70px]'
                                             } inline-block`}
                                     >
-                                        {item?.priority ? item.priority.charAt(0).toUpperCase() + item.priority.slice(1) : ""}
-                                    </p>
+                                        {item?.priority || ""}
+                                    </p> : ""}
                                 </div>
 
 
@@ -225,7 +211,17 @@ const ClientDetails = () => {
                                         </span>
                                         <span className="text-[12px] ml-9">
 
-                                            {item?.team_members?.map((item) => item?.name).join(", ") || ""}
+                                            <TruncatedTooltipText
+                                                text={item?.team_members
+                                                    ?.map((item) =>
+                                                        item?.first_name + (item?.last_name ? " " + item?.last_name : "")
+                                                    )
+                                                    .join(", ")}
+
+                                                maxLength={25}
+                                                onClick={() => { }}
+                                                section=""
+                                            />
                                         </span>
                                     </li>
                                 </ul>

@@ -58,6 +58,8 @@ const notificationSlice = createSlice({
   initialState: {
     list: [],
     loading: false,
+    loading2: false,
+    loading3: false,
     error: null,
   },
   reducers: {
@@ -83,12 +85,14 @@ const notificationSlice = createSlice({
 
       // Delete notification
       .addCase(deleteNotification.fulfilled, (state, action) => {
-        state.list =[]
+        state.loading2 = false;
+        // state.list =[]
       })
 
       // Mark notification as read
       .addCase(markAsReadNotification.fulfilled, (state, action) => {
-        state.list = []
+        state.loading3 = false;
+        // state.list = []
       });
   },
 });

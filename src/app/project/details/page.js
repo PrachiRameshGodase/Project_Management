@@ -3,6 +3,7 @@ import {
   fetchProjectDetails,
   fetchProjectTaskDetails,
   fetchProjectTasks,
+  taskDelete,
   updateProjectStatus,
   updateStatus,
   updateTaskGithubBackend,
@@ -58,7 +59,7 @@ const TaskList = () => {
   const projectTaskListData = useSelector((state) => state.project?.taskList?.data);
   const projectTaskLoading = useSelector((state) => state.project);
   const totalCount = useSelector((state) => state?.project?.taskList?.total);
-  console.log("projectTaskListData", projectTaskListData)
+
   const [dataLoading, setDataLoading] = useState(true)
 
   useEffect(() => {
@@ -136,7 +137,7 @@ const TaskList = () => {
   // const [selectedStatus, setSelectedStatus] = useState('View');
   // // filter
   const [selectedPriority, setSelectedPriority] = useState('');
-
+  console.log("selectedStatus2", selectedStatus2)
   useEffect(() => {
     if (!itemId) return;
     if (userData?.is_client == 1) {
@@ -190,7 +191,7 @@ const TaskList = () => {
       setIsActive(!isActive); // Update local state immediately
 
       // Dispatch updateUserStatus with the new status
-      dispatch(updateStatus({ id: itemId, project_status: newStatus, router }));
+      dispatch(updateStatus({ id: itemId, project_status: newStatus, dispatch, setDataLoading }));
     }
   };
   const [itemId2, setItemId2] = useState(null);
@@ -239,7 +240,14 @@ const TaskList = () => {
   }
 
 
+  const handleEdit = (id) => {
+    localStorage.setItem("itemId", itemId)
+    router.push(`/project/add-task?id=${id}&edit=true`);
+  };
 
+   const handleDelete=(id)=>{
+          dispatch(taskDelete({id, dispatch,project_id:Number(itemId),  setDataLoading}))
+   }
 
 
   return (
@@ -547,6 +555,7 @@ const TaskList = () => {
             {selectedView == "List" && (
               <>
                 <div className="max-w-full  overflow-x-auto mt-6 h-[calc(100vh+20px)] overflow-y-auto">
+                {projectLoading?.taskDeleteLoading  && !dataLoading && <ScreenFreezeLoader />}
                   {(projectLoading?.taskListLoading && dataLoading) ? (
                     <TableSkeleton rows={7} columns={5} />
 
@@ -574,7 +583,9 @@ const TaskList = () => {
                           <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] text-gray-800">
                             PRIORITY
                           </th>
-
+                          <th className="py-2 sm:py-3 px-2 sm:px-4 text-[13px] sm:text-[16px] text-gray-800">
+                            Actions
+                          </th>
 
                         </tr>
                       </thead>
@@ -648,7 +659,7 @@ const TaskList = () => {
                               />
                             </td>
                             <td
-                              className={` text-[12px] sm:text-[14px] text-gray-700`}
+                              className={`ml-2 text-[12px] sm:text-[14px] text-gray-700`}
                             >
                               {item?.priority ? (
                                 <DropdownPriority
@@ -662,6 +673,14 @@ const TaskList = () => {
                               ) : (
                                 "" // Placeholder for empty status
                               )}
+                            </td>
+                            <td className="flex flex-row text-left mt-4 ml-2">
+                              <span onClick={() => handleEdit(item?.id)} className="ml-2 hover:cursor-pointer bg-white border border-gray-200 rounded px-2 py-0.5 hover:bg-gray-100" title="Edit ">
+                                {OtherIcons?.edit_svg}
+                              </span>
+                              <span onClick={() => handleDelete(item?.id)} className="ml-2 hover:cursor-pointer bg-white border border-gray-200 rounded px-2 py-0.5 hover:bg-gray-100" title="Delete">
+                                {OtherIcons.delete_svg}
+                              </span>
                             </td>
 
                           </tr>
@@ -699,6 +718,7 @@ const TaskList = () => {
             details={projectDetailData}
             itemId={itemId}
             setSelectedStatus={setSelectedStatus}
+            projectLoading={projectLoading}
           />
           <Drawer001
             isOpen={isDrawerOpen1}
@@ -706,6 +726,7 @@ const TaskList = () => {
             itemId2={itemId}
             itemId={itemId2}
             details={taskDetailsData}
+            projectLoading={projectLoading}
           />
         </LayOut>
       )}

@@ -35,7 +35,7 @@ const DraggableCard = ({ user, index, status, itemId }) => {
 
         />
       </p>
-        <p
+       {user.priority ? <p
           className={`px-3 h-[25px] border rounded-md text-[15px] inline-block ${user.priority === "High"
             ? "text-[#4976F4] border-[#4976F4]"
             : user.priority === "Low"
@@ -44,7 +44,8 @@ const DraggableCard = ({ user, index, status, itemId }) => {
             }`}
         >
           {user.priority}
-        </p></div>
+        </p>:""}
+        </div>
 
 
       <ul className="mt-3">

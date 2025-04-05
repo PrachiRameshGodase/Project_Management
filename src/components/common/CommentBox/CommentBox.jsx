@@ -23,7 +23,7 @@ import {
   fetchTaskComment,
 } from "@/app/store/projectSlice";
 import { formatTime } from "../Helper/Helper";
-import TableSkeleton from "../TableSkeleton/TableSkeleton";
+import TableSkeleton, { TableSkeleton2 } from "../TableSkeleton/TableSkeleton";
 import {
   storage,
   ref,
@@ -37,12 +37,12 @@ const ChatBox = ({ projectId, taskId }) => {
   const dispatch = useDispatch();
   const userData=useUserData()
   const usersList = useSelector((state) => state.project?.userlist?.members);
-  console.log("usersList", usersList)
+ 
   const CommentListData = useSelector(
     (state) => state.project?.taskCommentList?.data || []
   );
   const CommentListLoading = useSelector(
-    (state) => state.project?.taskCommentList?.commentLoading || false
+    (state) => state.project?.commentLoading || false
   );
   const createCommentLoading = useSelector(
     (state) => state.project?.commentLoading || false
@@ -68,13 +68,15 @@ const ChatBox = ({ projectId, taskId }) => {
 
   const [formData, setFormData] = useState({
     project_id: "",
+    user_id:null,
     task_id: "",
     documents: [],
     audio_recording: "",
     assigned_ids: [],
     comments: "",
-    user_id:userData?.id
+  
   });
+  console.log("formData", formData)
   useEffect(() => {
     if (userData?.id) {
       setFormData((prev) => ({
@@ -240,9 +242,16 @@ const ChatBox = ({ projectId, taskId }) => {
   };
 
   const handleSend = () => {
+    const currentFormData = {
+      ...formData,
+      user_id: userData?.id, // ensure it's fresh
+      project_id: projectId,
+      task_id: taskId,
+    };
+  
     dispatch(
       addTaskComment({
-        formData,
+        formData: currentFormData,
         project_id: projectId,
         task_id: taskId,
         dispatch,
@@ -252,12 +261,8 @@ const ChatBox = ({ projectId, taskId }) => {
         setMentionList,
       })
     );
-
-    setTimeout(() => {
-      scrollToTop();
-    }, 100);
   };
-
+const [dataLoading, setDataLoading]=useState(true)
   // Delete Message
   const handleDelete = (id) => {
     dispatch(
@@ -266,6 +271,7 @@ const ChatBox = ({ projectId, taskId }) => {
         project_id: projectId,
         task_id: taskId,
         dispatch,
+        setDataLoading
       })
     );
   };
@@ -495,8 +501,8 @@ const ChatBox = ({ projectId, taskId }) => {
           <PhotoProvider>
             <div ref={chatStartRef} />
 
-            {CommentListLoading ? (
-              <TableSkeleton />
+            {(CommentListLoading) ? (
+              <TableSkeleton2 />
             ) : (
               CommentListData?.map((msg) => {
                 let fileData = null;

@@ -8,7 +8,7 @@ import { Tooltip } from "@mui/material";
 
 const Dropdown01 = ({ options, selectedValue, onSelect, label, icon }) => {
   const dropdownOutsideClick = OutsideClick();
-  const [selected, setSelected] = useState(selectedValue || ""); // Ensure default selection
+  const [selected, setSelected] = useState("All"); // Ensure default selection
 
   const handleOptionSelect = (value) => {
     const newValue = value === "All" ? " " : value; // Convert "All" to an empty string
@@ -16,48 +16,50 @@ const Dropdown01 = ({ options, selectedValue, onSelect, label, icon }) => {
     setSelected(newValue);
     dropdownOutsideClick.handleToggle();
   };
-  
+
 
   return (
     <div className="relative" ref={dropdownOutsideClick?.ref}>
-      <Tooltip title={selected || label} arrow disableInteractive>
-        <div
-          className={`h-[44px] flex items-center gap-2 border border-[#D8D8D8] hover:border-purple-500 hover:ring-2 hover:ring-purple-200 rounded-lg px-3 py-2 cursor-pointer ${label === "Designation"
-            ? "w-fit"
-            : label === "Sort By"
-              ? "w-fit"
-              : label === "Task Type"
-                ? "w-fit" // Fixed incorrect "W-[120px]" to "w-[120px]"
-                : "w-fit"
-            }`}
-          onClick={dropdownOutsideClick?.handleToggle}
-          ref={dropdownOutsideClick?.buttonRef}
-        >
-          {icon}
-          <span className={`text-gray-700 ${!selected ? "text-gray-400" : ""}`}>
-            {selected== " " ? "All" :selected || label}
-          </span>
-        </div>
-      </Tooltip>
+      <div
+        className="h-[44px] flex items-center gap-2 border border-[#D8D8D8] hover:border-purple-500 hover:ring-2 hover:ring-purple-200 rounded-lg px-3 py-2 cursor-pointer"
+        onClick={dropdownOutsideClick?.handleToggle}
+        ref={dropdownOutsideClick?.buttonRef}
+      >
+        {icon}
+        <span className="text-gray-700">{label}</span>
+      </div>
 
       {dropdownOutsideClick?.isOpen && (
-        <div className="absolute top-[100%] mt-2 bg-white shadow-lg border border-[#D8D8D8] rounded-lg w-[150px] z-50">
+        <div className="absolute top-[100%] mt-2 bg-white shadow-lg border border-[#D8D8D8] rounded-lg w-[160px] z-50">
           <ul>
             {options.map((option) => (
               <li
                 key={option}
-                className={`flex px-4 py-2 hover:bg-gray-100 cursor-pointer text-left ${selected === option ? "bg-gray-200" : ""
+                className={`flex items-center justify-between px-4 py-2 hover:bg-gray-100 cursor-pointer text-left ${selected === option ? "bg-gray-200" : ""
                   }`}
                 onClick={() => handleOptionSelect(option)}
               >
-                {option}
+                <span>{option}</span>
+
+                {/* Always render the tick container, conditionally fill it */}
+                <span className="w-5 h-5 flex items-center justify-center">
+                  <span
+                    className={`w-5 h-5 rounded-full flex items-center justify-center text-sm ${selected === option
+                        ? "bg-blue-500 text-white"
+                        : "invisible"
+                      }`}
+                  >
+                    ✓
+                  </span>
+                </span>
               </li>
             ))}
           </ul>
         </div>
       )}
     </div>
-  );
+
+  )
 };
 export default Dropdown01;
 
@@ -75,7 +77,7 @@ export const Dropdown001 = ({ options, selectedValue, onSelect, label, icon }) =
       setSelected(foundOption || null);
     }
   }, [selectedValue, options]);
- 
+
   const handleOptionSelect = (value) => {
     setSelected(value); // Store full object
     onSelect(value.label); // Pass only label
@@ -125,9 +127,8 @@ export const Dropdown001 = ({ options, selectedValue, onSelect, label, icon }) =
               filteredOptions?.map((option) => (
                 <li
                   key={option.id}
-                  className={`flex px-4 py-2 hover:bg-gray-100 cursor-pointer text-left ${
-                    selected?.id === option?.id ? "bg-gray-200" : ""
-                  }`}
+                  className={`flex px-4 py-2 hover:bg-gray-100 cursor-pointer text-left ${selected?.id === option?.id ? "bg-gray-200" : ""
+                    }`}
                   onClick={() => handleOptionSelect(option)}
                 >
                   {option?.label}

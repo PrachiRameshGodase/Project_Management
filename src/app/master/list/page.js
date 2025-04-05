@@ -155,7 +155,7 @@ const MasterList = () => {
         <div className="max-w-full mt-6 overflow-x-auto">
 
           {(masterLoading?.loading) ? (
-            <TableSkeleton rows={7} columns={6} />
+            <TableSkeleton rows={7} columns={4} />
           ) : (
             <table className="border-2 border-spacing-y-1 border-transparent w-full min-w-[1000px]">
               <thead>

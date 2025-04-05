@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { OtherIcons } from "@/assests/icons";
 import { Tooltip } from "@mui/material";
 
@@ -8,7 +8,7 @@ const SearchComponent = ({ onSearch,placeholder, section,  }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState(""); // Local state for search term
   const [searchCall, setSearchCall] = useState(false); // Local state to trigger search calls
-
+  const wrapperRef = useRef(null)
   const handleSearch = (e) => {
     const term = e.target.value;
     setSearchTerm(term);
@@ -45,8 +45,26 @@ const SearchComponent = ({ onSearch,placeholder, section,  }) => {
       onSearch(""); // Reset search
     }
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen]);
   return (
-    <div className="relative">
+    <div className="relative" ref={wrapperRef}>
       {/* Search Icon Button */}
       <Tooltip title='Search' arrow disableInteractive>
         <div

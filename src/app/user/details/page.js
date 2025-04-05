@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
 import Loader from "@/components/common/Loader/Loader";
 import { Check, CircleX, X } from "lucide-react";
 import { formatDate } from "@/components/common/Helper/Helper";
+import TruncatedTooltipText from "@/components/common/TruncatedTooltipText/TruncatedTooltipText";
 
 const UserDetails = () => {
   const router = useRouter();
@@ -188,7 +189,7 @@ const UserDetails = () => {
                     Date of Join:
                   </span>
                   <span className="sm:w-[183px] h-[23px] ml-[35px]">
-                    {userDetailData?.joining_date ? (userDetailData?.joining_date):"" || ""}
+                    {userDetailData?.joining_date ? formatDate(userDetailData?.joining_date):"" || ""}
                   </span>
                 </li>
                 <li className="sm:w-[767px] sm:pt-[120px] sm:pb-10 sm:mt-[200px] t-2 sm:absolute  flex items-start">
@@ -206,14 +207,14 @@ const UserDetails = () => {
                     {userDetailData?.phone_number || ""}
                   </span>
                 </li>
-                <li className="sm:w-[367px] h-[24px] flex items-center">
+                {/* <li className="sm:w-[367px] h-[24px] flex items-center">
                   <span className="sm:w-[114px] h-[24px] opacity-70">
                     Employee ID:
                   </span>
                   <span className="sm:w-[183px] h-[23px] ml-[35px]">
                     {userDetailData?.employee_id || ""}
                   </span>
-                </li>
+                </li> */}
                 <li className="sm:w-[367px] h-[24px] flex items-center">
                   <span className="sm:w-[114px] h-[24px] opacity-70">
                     Department:
@@ -246,20 +247,20 @@ const UserDetails = () => {
               {visibleProjects?.map((item, index) => (
                 <div
                   key={item?.id}
-                  className="w-[100%] h-[150px] border border-gray-300 rounded-[8.93px] p-4 shadow-md hover:shadow-lg transition-all"
+                  className="w-[100%] h-[120px] border border-gray-300 rounded-[8.93px] p-4 shadow-md hover:shadow-lg transition-all"
                 >
                   <div className='flex justify-between'>
                     <p className="text-[18px] leading-[24.3px] tracking-[-3%] text-gray-800">
                       {item?.project_name || ""}
                     </p>
-                    <p
-                      className={`px-2  border rounded-md text-[13px] ${item?.priority === 'high'
-                        ? 'text-[#4976F4] border-[#4976F4]' : item?.priority === 'low' ?
+                   {item?.priority ? <p
+                      className={`px-2  border rounded-md text-[13px] ${item?.priority === 'High'
+                        ? 'text-[#4976F4] border-[#4976F4]' : item?.priority === 'Low' ?
                           'text-red-400 border-red-400' : 'text-[#954BAF] border-[#954BAF] h-[20px] w-[70px]'
                         } inline-block`}
                     >
-                      {item?.priority ? item.priority.charAt(0).toUpperCase() + item.priority.slice(1) : ""}
-                    </p>
+                      {item?.priority || ""}
+                    </p>:""}
                   </div>
 
                   <ul className="mt-2 space-y-2">
@@ -272,8 +273,17 @@ const UserDetails = () => {
                     <li className="flex text-gray-700">
                       <span className="text-[12px] w-6">Team</span>
                       <span className="text-[12px] ml-9">
-                        {item?.team_members?.map((item) => item?.first_name + " " + item?.last_name).join(", ") || ""}
+                        <TruncatedTooltipText
+                          text={item?.team_members
+                            ?.map((item) =>
+                              item?.first_name + (item?.last_name ? " " + item?.last_name : "")
+                            )
+                            .join(", ")}
 
+                          maxLength={25}
+                          onClick={() => { }}
+                          section=""
+                        />
                       </span>
                     </li>
                   </ul>

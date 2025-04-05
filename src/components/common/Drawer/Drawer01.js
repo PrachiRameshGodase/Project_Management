@@ -9,13 +9,16 @@ import { motion } from "framer-motion";
 import { Check, CircleX, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import AttachmentPreview from "../Attachments/AttachmentPreview";
 import CommentBox from "../CommentBox/CommentBox";
 import DropdownStatus01 from "../Dropdown/DropdownStatus01";
 import { formatDate, statusProject } from "../Helper/Helper";
 import useUserData from "../Helper/useUserData";
+import TruncatedTooltipText from "../TruncatedTooltipText/TruncatedTooltipText";
+import { OtherIcons } from "@/assests/icons";
+import { TableSkeleton2 } from "../TableSkeleton/TableSkeleton";
 
 const Drawer01 = ({
   isOpen,
@@ -23,12 +26,14 @@ const Drawer01 = ({
   details,
   itemId,
   setSelectedStatus,
+  projectLoading
 }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const userData = useUserData()
   const drawerRef = useRef(null);
 
+ 
   const documents = details?.attachments ? JSON.parse(details?.attachments) : []
   const [isActive, setIsActive] = useState(details?.project_status || "");
   const [isActive2, setIsActive2] = useState(details?.status || "");
@@ -98,13 +103,13 @@ const Drawer01 = ({
           <CircleX size={30} strokeWidth={1.5} />
         </button>
       </div>
-      <div className="p-1 sm:p-4 overflow-y-auto h-full">
+      {projectLoading?.detailLoading ? (<TableSkeleton2/>):( <div className="p-1 sm:p-4 overflow-y-auto h-full">
         <div className="flex justify-between">
-          <div className="w-full h-[69px] flex items-center justify-between ">
+          <div className="w-full h-[69px] flex items-center justify-between pl-[18px]">
             <div className="text-xl text-gray-700 ">
-              <span className="font-bold">{details?.project_name || "--"}</span>
+              <span className="font-bold">{details?.project_name || "-"}</span>
               <p className="text-xs text-gray-500">
-                {details?.client?.name || "--"}
+                {details?.client?.name || "-"}
               </p>
             </div>
             {/* <DropdownStatus01
@@ -217,10 +222,10 @@ const Drawer01 = ({
                 <h4>:</h4>
                 <span className="text-gray-700 w-[200px] text-[14px]">
                   {details?.team_leaders
-                                  ?.map((item) =>
-                                    item?.first_name + (item?.last_name ? " " + item?.last_name : "")
-                                  )
-                                  .join(", ") || ""}
+                    ?.map((item) =>
+                      item?.first_name + (item?.last_name ? " " + item?.last_name : "")
+                    )
+                    .join(", ") || ""}
                 </span>
               </li>
               <li className="flex mb-2 gap-4">
@@ -245,19 +250,22 @@ const Drawer01 = ({
         <div className="p-4">
           <CommentBox projectId={Number(itemId)} taskId={null} />
         </div>
-      </div>
+      </div>)}
+     
     </motion.div>
   );
 };
 
 export default Drawer01;
 
-export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId2, itemId, details }) => {
+export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId2, itemId, details, projectLoading }) => {
 
   const dispatch = useDispatch();
   const router = useRouter()
   const userData = useUserData()
   const drawerRef = useRef(null)
+  
+
   const documents = details?.attachments ? JSON.parse(details?.attachments) : []
   const [selectedStatus, setSelectedStatus] = useState("");
   const [isActive, setIsActive] = useState(details?.task_status || "");
@@ -349,18 +357,21 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId2, itemId, details })
           <CircleX size={25} />
         </button> */}
       </div>
-      <div className="p-1 sm:p-4 overflow-y-auto h-full">
-        <div className="flex justify-between">
-          <div className="w-full flex items-center gap-[10px] ">
+      {projectLoading?.taskDetailsLoading ? (<TableSkeleton2/>):( <div className="p-1 sm:p-4 overflow-y-auto h-full mt-4">
+        <div className="flex justify-between pl-[19px] w-full">
+          <div className="flex items-center gap-[10px] ">
             <div className="text-xl text-gray-700">
-              <span className="font-bold">{details?.task_title || ""}</span>
+              <span className="font-bold">
+                <TruncatedTooltipText text={details?.task_title || ""} maxLength={20} onClick={() => { }} section="project" />
+              </span>
+
             </div>
           </div>
 
-          <div>
-            <span
-              className={`px-3 py-1 border rounded-md  text-[12px] h-[25px] w-[110px] flex items-center align-middle text-center
-        ${details?.status === "To Do"
+          <div className="flex ">
+            {details?.status ? <span
+              className={`px-3 py-1 border rounded-md text-[12px] h-[25px]  flex items-center justify-center
+    ${details?.status === "To Do"
                   ? "text-[#6C757D] border-[#6C757D]"
                   : details?.status === "In progress"
                     ? "text-[#CA9700] border-[#CA9700]"
@@ -370,15 +381,17 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId2, itemId, details })
                 }`}
             >
               {details?.status}
-            </span>
+            </span> : ""}
+
+           
 
 
           </div>
         </div>
         <div className="flex justify-between">
-          
+
           <div className="flex items-center mr-2">
-            <label className="flex items-center cursor-pointer">
+            {/* <label className="flex items-center cursor-pointer">
               <span className="ml-2 text-[15px] mr-2">
                 {isActive ? "Inactive" : "Active"}
               </span>
@@ -408,11 +421,11 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId2, itemId, details })
                   )}
                 </div>
               </div>
-            </label>
+            </label> */}
           </div>
-          <button className="w-[100px] h-[35px] rounded-[4px] py-[4px] bg-black text-white text-[16px] mb-2 p-4 mt-4" onClick={handleEditUser}>
+          {/* <button className="w-[100px] h-[35px] rounded-[4px] py-[4px] bg-black text-white text-[16px] mb-2 p-4 mt-4" onClick={handleEditUser}>
             Edit
-          </button>
+          </button> */}
         </div>
         {/* Project Details Section */}
         <div className="p-1 sm:p-4 overflow-y-auto flex-grow">
@@ -439,10 +452,10 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId2, itemId, details })
                 <h4>:</h4>
                 <span className="text-gray-700 w-[200px] text-[14px]">
                   {details?.team_leaders
-                                  ?.map((item) =>
-                                    item?.first_name + (item?.last_name ? " " + item?.last_name : "")
-                                  )
-                                  .join(", ")}{" "}
+                    ?.map((item) =>
+                      item?.first_name + (item?.last_name ? " " + item?.last_name : "")
+                    )
+                    .join(", ")}{" "}
                 </span>
               </li>
               <li className="flex mb-2 gap-4">
@@ -491,7 +504,8 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId2, itemId, details })
         <div className="p-4">
           <CommentBox projectId={Number(itemId2)} taskId={itemId} />
         </div>
-      </div>
+      </div>)}
+     
     </motion.div>
   );
 };

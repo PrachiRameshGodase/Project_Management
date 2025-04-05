@@ -155,7 +155,7 @@ const AddTask = () => {
                         </button>
                     </div>
                 </div>
-                <div className="h-screen justify-center items-center mx-auto sm:-mt-16 sm:flex xl:lg:-mt-[65px]">
+                <div className="h-screen justify-center items-center mx-auto sm:-mt-16 sm:flex xl:lg:-mt-[60px]">
                     <form className="bg-white h-[656px] p-8 rounded-lg w-full mb-4 sm:w-[650px] space-y-6" onSubmit={handleSubmit}>
                         <div className="flex-col justify-between sm:flex sm:flex-row">
                             <label className="text-[20px] block">Task Title <span className="text-red-600">*</span></label>
@@ -258,13 +258,13 @@ const AddTask = () => {
                         </div>
                         <div className="justify-between sm:flex">
                             <label className="text-[20px] block">Description</label>
-                            <textarea className="border border-gray-300 h-40 p-2 rounded-lg text-m w-[310px] md:w-[400px] placeholder:text-gray-400 sm:ml-[35px] sm:w-[350px]" type='text' placeholder='Enter Description' value={formData?.description} name='description' onChange={handleChange} autoComplete='off' />
+                            <textarea className="border border-gray-300 h-40 p-2 rounded-lg text-m w-[310px] md:w-[400px] placeholder:text-gray-400 sm:ml-[35px] sm:w-[350px]" type='text' placeholder='Enter Description' value={formData?.description ?? ""} name='description' onChange={handleChange} autoComplete='off' />
                         </div>
 
-                        <div className='justify-end w-full sm:flex'>
+                        <div className='justify-end w-full sm:flex mb-8'>
                             <button
                                 type="submit"
-                                className="flex bg-black border border-[#0000004D] h-10 justify-center p-2 rounded-lg text-gray-100 text-m w-[310px] items-center md:w-[400px] sm:w-[350px]"
+                                className="flex bg-black border border-[#0000004D] h-10 justify-center p-2 rounded-lg text-gray-100 text-m w-[310px] items-center md:w-[400px] sm:w-[350px] mb-8"
                                 disabled={addTaskLoading?.loading}
                             >
                                 {addTaskLoading?.loading ? (

@@ -142,7 +142,7 @@ const AddClient = () => {
                                 type="text"
                                 name="name"
                                 placeholder="Enter Client Name"
-                                value={formData.name}
+                                value={formData.name ??""}
                                 onChange={handleChange}
                                 autoComplete='off'
                             />
@@ -164,7 +164,7 @@ const AddClient = () => {
                                 type="email"
                                 name="email"
                                 placeholder="Enter Email"
-                                value={formData.email}
+                                value={formData.email ??""}
                                 onChange={handleChange}
                                 autoComplete="off"
                             />
@@ -185,7 +185,7 @@ const AddClient = () => {
                                 type={showPassword ? "text" : "password"}
                                 name="password"
                                 placeholder="Enter Password"
-                                value={formData?.password}
+                                value={formData?.password ??""}
                                 onChange={handleChange}
                                 autoComplete="new-password"
                             />
@@ -225,7 +225,7 @@ const AddClient = () => {
 
                     <div className="justify-between items-center sm:flex">
                         <label className="text-[20px] block">Contact Person Name</label>
-                        <input className="border border-[#0000004D] h-10 p-2 rounded-lg text-m w-[310px] placeholder:text-gray-400 sm:ml-3 sm:w-[400px]" type='text' placeholder='Enter Name' value={formData.contact_name} name='contact_name'
+                        <input className="border border-[#0000004D] h-10 p-2 rounded-lg text-m w-[310px] placeholder:text-gray-400 sm:ml-3 sm:w-[400px]" type='text' placeholder='Enter Name' value={formData.contact_name ??""} name='contact_name'
                             onChange={handleChange} autoComplete='off' />
                     </div>
 

@@ -273,10 +273,10 @@ const AddProject = () => {
                             <textarea className="border border-[#0000004D] h-40 p-2 rounded-lg text-m w-[310px] md:w-[400px] placeholder:text-gray-600 sm:ml-[35px] sm:w-[350px]" type='text' placeholder='Enter Description....'  value={formData?.description ?? ""} onChange={handleChange} name='description' autoComplete='off'/>
                         </div>
 
-                        <div className='justify-end w-full sm:flex '>
+                        <div className='justify-end w-full sm:flex mb-6'>
                             <button
                                 type="submit"
-                                className="flex bg-black border border-[#0000004D] h-10 justify-center p-2 rounded-lg text-gray-100 text-m w-[310px] items-center md:w-[400px] sm:w-[350px]"
+                                className="flex bg-black border border-[#0000004D] h-10 justify-center p-2 rounded-lg text-gray-100 text-m w-[310px] items-center md:w-[400px] sm:w-[350px] mb-6"
                                 disabled={projectLoading?.loading}
                             >
                                 {projectLoading?.loading ? (

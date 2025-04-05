@@ -33,7 +33,7 @@ const TableSkeleton = ({ rows, columns }) => {
 export default TableSkeleton;
 
 
-export const TableSkeleton2 = ({ rows = 5, columns = 1 }) => {
+export const TableSkeleton2 = ({ rows = 15, columns = 1 }) => {
     return (
         <div className="w-full overflow-x-auto">
             <table className="w-full border-collapse">

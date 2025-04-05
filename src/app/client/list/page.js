@@ -180,12 +180,12 @@ const ClientList = () => {
 
                     <div className="max-w-full overflow-x-auto mt-6">
                         {usersLoading?.listLoading ? (
-                            <TableSkeleton rows={7} columns={5} />
+                            <TableSkeleton rows={7} columns={4} />
                         ) : (
                             <table className="w-full border-spacing-y-1 min-w-[1000px] border-2 border-transparent  ">
                                 <thead>
                                     <tr className="text-left m-1 text-sm uppercase text-black opacity-80 shadow-tr-border rounded-md  ">
-                                        <th className="py-2 sm:py-3 px-2 sm:px-4    text-[13px]  sm:text-[14px] border-b border-gray-100 rounded-t-lg flex">
+                                        {/* <th className="py-2 sm:py-3 px-2 sm:px-4    text-[13px]  sm:text-[14px] border-b border-gray-100 rounded-t-lg flex">
                                             <div className='flex items-center justify-between'>
                                                 <span className='text-gray-800'>Client ID</span>
 
@@ -199,7 +199,7 @@ const ClientList = () => {
                                                     resetPageIfNeeded={resetPageIfNeeded}
                                                 />
                                             </div>
-                                        </th>
+                                        </th> */}
                                         <th className="py-2 sm:py-3 px-2 sm:px-4   text-[13px] sm:text-[16px]  rounded-t-lg text-gray-800">Client Name</th>
                                         <th className="py-2 sm:py-3 px-2 sm:px-4   text-[13px] sm:text-[16px]  rounded-t-lg text-gray-800">Email ID</th>
                                         <th className="py-2 sm:py-3 px-2 sm:px-4   text-[13px] sm:text-[16px]  rounded-t-lg text-gray-800">CONTACT PERSON NAME</th>
@@ -211,7 +211,7 @@ const ClientList = () => {
                                 <tbody>
                                     {usersList?.map((user, index) => (
                                         <tr key={user?.id} className="cursor-pointer   hover:shadow-tr-border hover:bg-gray-100   rounded-md  transition-all duration-200">
-                                            <td className="py-2 sm:py-3 px-2 sm:px-4    text-[12px] sm:text-[15px]  border-gray-50 text-gray-700" onClick={() => router.push(`/client/details?id=${user?.id}`)}>{user?.client_id}</td>
+                                            {/* <td className="py-2 sm:py-3 px-2 sm:px-4    text-[12px] sm:text-[15px]  border-gray-50 text-gray-700" onClick={() => router.push(`/client/details?id=${user?.id}`)}>{user?.client_id}</td> */}
                                             <td className="py-2 sm:py-3 px-2 sm:px-4    text-[12px] sm:text-[15px]  border-gray-50 text-gray-700" onClick={() => router.push(`/client/details?id=${user?.id}`)}>{user?.name}</td>
                                             <td className="py-2 sm:py-3 px-2 sm:px-4    text-[12px] sm:text-[15px] text-gray-700" onClick={() => router.push(`/client/details?id=${user?.id}`)}>{user?.email}</td>
                                             {/* <td className="py-2 sm:py-3 px-2 sm:px-4    text-[12px] sm:text-[15px]" onClick={() => router.push(`/client/details?id=${user.userId}`)}>{user.mobileNumber}</td> */}
