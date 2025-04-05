@@ -145,6 +145,59 @@ export const Dropdown001 = ({ options, selectedValue, onSelect, label, icon }) =
 };
 
 
+export const Dropdown0001 = ({ options, selectedValue, onSelect, label, icon }) => {
+  const dropdownOutsideClick = OutsideClick();
+  const [selected, setSelected] = useState(selectedValue);
+
+  const handleOptionSelect = (value) => {
+    onSelect(value);
+    setSelected(value);
+    dropdownOutsideClick.handleToggle();
+  };
+
+  return (
+    <div className="relative" ref={dropdownOutsideClick?.ref}>
+      <div
+        className="h-[44px] flex items-center gap-2 border border-[#D8D8D8] hover:border-purple-500 hover:ring-2 hover:ring-purple-200 rounded-lg px-3 py-2 cursor-pointer"
+        onClick={dropdownOutsideClick?.handleToggle}
+        ref={dropdownOutsideClick?.buttonRef}
+      >
+        {icon}
+        <span className="text-gray-700">
+          {label}
+        </span>
+      </div>
+
+      {dropdownOutsideClick?.isOpen && (
+        <div className="absolute top-[100%] mt-2 bg-white shadow-lg border border-[#D8D8D8] rounded-lg w-[160px] z-50">
+          <ul>
+            {options.map((option) => (
+              <li
+                key={option.value}
+                className={`flex items-center justify-between px-4 py-2 hover:bg-gray-100 cursor-pointer text-left ${selected === option.value ? "bg-gray-200" : ""
+                  }`}
+                onClick={() => handleOptionSelect(option.value)}
+              >
+                <span>{option.label}</span>
+                <span className="w-5 h-5 flex items-center justify-center">
+                  <span
+                    className={`w-5 h-5 rounded-full flex items-center justify-center text-sm ${selected === option.value
+                        ? "bg-blue-500 text-white"
+                        : "invisible"
+                      }`}
+                  >
+                    ✓
+                  </span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+};
+
 
 
 export const DropdownStatus = ({ selectedValue, onSelect }) => {

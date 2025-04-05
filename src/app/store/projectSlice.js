@@ -175,6 +175,8 @@ export const updateTaskStatus = createAsyncThunk("task/updateTaskStatus", async 
     const response = await axiosInstance.post(`/task/status`, { id, status, project_id });
     if (response?.data?.success === true) {
       setDataLoading(false)
+      dispatch(fetchProjectTasks({ project_id: project_id, id: task_id }))
+      
       dispatch(fetchProjectDetails(project_id))
       // toast.success(response?.data?.message);
       // router.push("/project/list"); // Navigate on success
@@ -192,6 +194,7 @@ export const updateTaskPriority = createAsyncThunk("task/updateTaskPriority", as
     const response = await axiosInstance.post(`/task/priority`, { id, priority, project_id });
     if (response?.data?.success === true) {
       setDataLoading(false)
+      dispatch(fetchProjectTasks({ project_id: project_id, id: task_id }))
 
       dispatch(fetchProjectDetails(project_id))
 
@@ -568,11 +571,11 @@ const projectSlice = createSlice({
 
       // Handle Update task Status
       .addCase(updateTaskStatus.pending, (state) => {
-        state.taskListLoading = true;
+        state.loading2 = true;
         state.error = null;
       })
       .addCase(updateTaskStatus.fulfilled, (state, action) => {
-        state.taskListLoading = false;
+        state.loading2 = false;
         // Update the user status in the list
 
 
@@ -580,21 +583,21 @@ const projectSlice = createSlice({
 
       })
       .addCase(updateTaskStatus.rejected, (state, action) => {
-        state.taskListLoading = false;
+        state.loading2 = false;
         state.error = action.payload;
       })
 
       // Handle Update task Status
       .addCase(updateTaskPriority.pending, (state) => {
-        state.taskListLoading = true;
+        state.loading2 = true;
         state.error = null;
       })
       .addCase(updateTaskPriority.fulfilled, (state, action) => {
-        state.taskListLoading = false;
+        state.loading2 = false;
 
       })
       .addCase(updateTaskPriority.rejected, (state, action) => {
-        state.taskListLoading = false;
+        state.loading2 = false;
         state.error = action.payload;
       })
 

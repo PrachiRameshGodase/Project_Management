@@ -4,10 +4,10 @@ import { OtherIcons } from '@/assests/icons';
 import LayOut from '@/components/LayOut';
 import DataNotFound from '@/components/common/DataNotFound/DataNotFound';
 import DatePickerWithIcon from '@/components/common/DatePicker/CalenderWithIcon';
-import Dropdown01 from '@/components/common/Dropdown/Dropdown01';
+import Dropdown01, { Dropdown0001 } from '@/components/common/Dropdown/Dropdown01';
 import DropdownPriority from '@/components/common/Dropdown/DropdownPriority';
 import DropdownStatus01 from '@/components/common/Dropdown/DropdownStatus01';
-import { formatDate, getDueMessage, projectPriority, projectPriority2, statusProject, statusProject2, view } from '@/components/common/Helper/Helper';
+import { formatDate, getDueMessage, projectPriority, projectPriority2, projectStatusOptions, status, statusProject, statusProject2, view } from '@/components/common/Helper/Helper';
 import { useDebounceSearch } from '@/components/common/Helper/HelperFunction';
 import useUserData from '@/components/common/Helper/useUserData';
 import { ScreenFreezeLoader } from '@/components/common/Loader/Loader';
@@ -69,6 +69,8 @@ const ProjectList = () => {
 
   // filter
   const [selectedStatus, setSelectedStatus] = useState('');
+  const [selectedStatus2, setSelectedStatus2] = useState(1);
+  
   const [selectedPriority, setSelectedPriority] = useState('');
 
   // filter
@@ -79,7 +81,7 @@ const ProjectList = () => {
       let sendData = {
         limit: itemsPerPage,
         page: currentPage,
-        project_status: 1,
+        project_status: selectedStatus2 ?? 1,
         ...(searchTermFromChild ? { search: searchTermFromChild } : {}),
         ...(selectedSortBy ? { sort_by: selectedSortBy, sort_order: sortOrder } : {}),
         ...(selectedDesignation && { designation: selectedDesignation }),
@@ -97,7 +99,7 @@ const ProjectList = () => {
         // setDataLoading(false); // Reset loading after fetching
       });
     }
-  }, [searchTrigger, dispatch, selectedStatus, selectedDesignation, userData, selectedPriority]);
+  }, [searchTrigger, dispatch, selectedStatus, selectedStatus2, selectedDesignation, userData, selectedPriority]);
 
 
 
@@ -124,7 +126,7 @@ const ProjectList = () => {
 
       <div>
         {/* Top Section with Filters and Buttons */}
-        <div className="flex h-[44px] justify-between w-full items-center">
+        <div className="flex h-[44px] justify-between items-center">
 
           {/* Left Section (Heading + Count) */}
           <div className="flex">
@@ -148,6 +150,7 @@ const ProjectList = () => {
             {/* {selectedView == "List" && <> */}
             <Dropdown01 options={statusProject2} selectedValue={selectedStatus} onSelect={setSelectedStatus} label="Status" icon={OtherIcons.user_svg} />
             <Dropdown01 options={projectPriority2} selectedValue={selectedPriority} onSelect={setSelectedPriority} label="Priority" icon={OtherIcons.user_svg} />
+            <Dropdown0001 options={projectStatusOptions} selectedValue={selectedStatus2} onSelect={setSelectedStatus2} label="Project Status" icon={OtherIcons.user_svg} />
             <SearchComponent onSearch={onSearch} placeholder="Search By Using Project Name, Client Name.." section={searchTrigger} />
             {/* </>} */}
 

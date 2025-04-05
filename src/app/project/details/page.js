@@ -555,7 +555,7 @@ const TaskList = () => {
             {selectedView == "List" && (
               <>
                 <div className="max-w-full  overflow-x-auto mt-6 h-[calc(100vh+20px)] overflow-y-auto">
-                {projectLoading?.taskDeleteLoading  && !dataLoading && <ScreenFreezeLoader />}
+                {(projectLoading?.loading2 || projectLoading?.taskDeleteLoading)   && !dataLoading && <ScreenFreezeLoader />}
                   {(projectLoading?.taskListLoading && dataLoading) ? (
                     <TableSkeleton rows={7} columns={5} />
 

@@ -28,6 +28,11 @@ export const statusOptions = [
     { label: "Inactive", value: 1 },
   ];
 
+ export const projectStatusOptions=[
+    { label: "All", value: "" },
+    { label: "Active", value: 1 },
+    { label: "Inactive", value: 0 },
+  ]
   export const getStatusDetails = (status) => {
     switch (status) {
       case "To do":
