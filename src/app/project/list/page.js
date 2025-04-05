@@ -400,7 +400,11 @@ const ProjectList = () => {
                       <li className="text-[14px] text-gray-800 ">
                         {/* {item?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")} */}
                         <TruncatedTooltipText
-                          text={item?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")}
+                          text={item?.team_leaders
+                            ?.map((item) =>
+                              item?.first_name + (item?.last_name ? " " + item?.last_name : "")
+                            )
+                            .join(", ")}
 
                           maxLength={25}
                           onClick={() => { }}

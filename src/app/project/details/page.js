@@ -58,7 +58,7 @@ const TaskList = () => {
   const projectTaskListData = useSelector((state) => state.project?.taskList?.data);
   const projectTaskLoading = useSelector((state) => state.project);
   const totalCount = useSelector((state) => state?.project?.taskList?.total);
-console.log("projectTaskListData", projectTaskListData)
+  console.log("projectTaskListData", projectTaskListData)
   const [dataLoading, setDataLoading] = useState(true)
 
   useEffect(() => {
@@ -82,12 +82,12 @@ console.log("projectTaskListData", projectTaskListData)
 
   const [selectedStatus, setSelectedStatus] = useState("");
   const [selectedStatus2, setSelectedStatus2] = useState("");
-  
+
   const handleStatusChange = (value) => {
-   
-      // Dispatch updateUserStatus with the new status
-      dispatch(updateProjectStatus({ id: itemId, status: value ,dispatch, setDataLoading, project_id:Number(itemId)}));
-    
+
+    // Dispatch updateUserStatus with the new status
+    dispatch(updateProjectStatus({ id: itemId, status: value, dispatch, setDataLoading, project_id: Number(itemId) }));
+
   };
 
   const [selectedView, setSelectedView] = useState("List");
@@ -349,7 +349,7 @@ console.log("projectTaskListData", projectTaskListData)
                   <button
                     className="w-[80px] mt-3 sm:mt-0 h-[35px] text-[10px] rounded-[4px] py-[4px] border border-gray-400 text-black text-lg mr-[10px] mb-2 hover:bg-black hover:text-white"
                     onClick={() => setIsDrawerOpen(true)}>
-                   Details
+                    Details
                   </button>
                   <button
                     onClick={() => router.push(`/project/add?id=${itemId}`)}
@@ -530,11 +530,11 @@ console.log("projectTaskListData", projectTaskListData)
                     icon={OtherIcons.view_svg}
                   />
                   {selectedView == "List" && <>
-                  <Dropdown01 options={statusProject2} selectedValue={selectedStatus2} onSelect={setSelectedStatus2} label="Status" icon={OtherIcons.user_svg} />
-                  <Dropdown01 options={projectPriority2} selectedValue={selectedPriority} onSelect={setSelectedPriority} label="Priority" icon={OtherIcons.user_svg} />
-                  {/* <SearchComponent onSearch={onSearch} placeholder="Search By Using Task Title..." section={searchTrigger} /> */}
+                    <Dropdown01 options={statusProject2} selectedValue={selectedStatus2} onSelect={setSelectedStatus2} label="Status" icon={OtherIcons.user_svg} />
+                    <Dropdown01 options={projectPriority2} selectedValue={selectedPriority} onSelect={setSelectedPriority} label="Priority" icon={OtherIcons.user_svg} />
+                    {/* <SearchComponent onSearch={onSearch} placeholder="Search By Using Task Title..." section={searchTrigger} /> */}
 
-                </>}
+                  </>}
 
                   {/* <Dropdown01 options={projectSortConstant} selectedValue={selectedSort} onSelect={setSelectedSort} label="Sort By" icon={OtherIcons.sort_by_svg} /> */}
                   {/* <SearchComponent /> */}
@@ -586,7 +586,7 @@ console.log("projectTaskListData", projectTaskListData)
                             <td
                               className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px]   rounded  text-gray-700"
                               onClick={() => handleTaskClick(item?.id)}>
-                               <TruncatedTooltipText text={item?.task_title ||""} maxLength={15}  onClick={() => handleTaskClick(item?.id)} />
+                              <TruncatedTooltipText text={item?.task_title || ""} maxLength={15} onClick={() => handleTaskClick(item?.id)} />
                             </td>
                             <td
                               className={`py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[14px]  min-w-[150px] rounded text-gray-700`}
@@ -636,11 +636,15 @@ console.log("projectTaskListData", projectTaskListData)
                               className="py-2 sm:py-3 px-2 sm:px-4   text-[12px] sm:text-[15px] text-gray-700"
                               onClick={() => handleTaskClick(item?.id)}>
                               <TruncatedTooltipText
-                                text={item?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")}
+                                text={item?.team_leaders
+                                  ?.map((item) =>
+                                    item?.first_name + (item?.last_name ? " " + item?.last_name : "")
+                                  )
+                                  .join(", ")}
 
                                 maxLength={25}
                                 onClick={() => handleTaskClick(item?.id)}
-                                
+
                               />
                             </td>
                             <td

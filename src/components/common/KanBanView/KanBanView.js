@@ -69,7 +69,11 @@ const DraggableCard = ({ user, index, status, itemId }) => {
           <p className="text-[15px] text-gray-400 w-[120px] z">Team</p>
           <span className="text-[14px] text-gray-700 w-[150px]">
             {/* {user?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")} */}
-            <TruncatedTooltipText text={user?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(",")} maxLength={32} />
+            <TruncatedTooltipText text={user?.team_leaders
+                                  ?.map((item) =>
+                                    item?.first_name + (item?.last_name ? " " + item?.last_name : "")
+                                  )
+                                  .join(", ")} maxLength={32} />
           </span>
         </li>
         <li className="flex items-center gap-2 mt-3">

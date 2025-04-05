@@ -216,7 +216,11 @@ const Drawer01 = ({
                 <span className="text-gray-400 w-[120px] text-[14px]">Team</span>
                 <h4>:</h4>
                 <span className="text-gray-700 w-[200px] text-[14px]">
-                  {details?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(", ") || ""}
+                  {details?.team_leaders
+                                  ?.map((item) =>
+                                    item?.first_name + (item?.last_name ? " " + item?.last_name : "")
+                                  )
+                                  .join(", ") || ""}
                 </span>
               </li>
               <li className="flex mb-2 gap-4">
@@ -434,7 +438,11 @@ export const Drawer001 = ({ isOpen, setIsDrawerOpen, itemId2, itemId, details })
                 <span className="text-gray-400 w-[120px] text-[14px]">Team</span>
                 <h4>:</h4>
                 <span className="text-gray-700 w-[200px] text-[14px]">
-                  {details?.team_leaders?.map((item) => item?.first_name + " " + item?.last_name).join(", ") || ""}{" "}
+                  {details?.team_leaders
+                                  ?.map((item) =>
+                                    item?.first_name + (item?.last_name ? " " + item?.last_name : "")
+                                  )
+                                  .join(", ")}{" "}
                 </span>
               </li>
               <li className="flex mb-2 gap-4">
